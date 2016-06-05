@@ -1,0 +1,16 @@
+Stack of articles to read
+=========================
+- Application of time decay functions and Elo system in student modeling (Pelanek, 2014)
+- Modeling students' memory for application in adaptive educational systems (Pelanek, 2015)
+- Elo systém a modelování času řešení (Libor Vaněk)
+- [all articles of our lab members]
+- adaptive-practice
+- adaptive-practice-irt-math
+- edu-improve
+- Flow: The Psychology of Optimal Experience
+- learner-skill-models-review
+- irt-guide
+- irt-theory-and-practice
+- irt-ability-estimation
+- Performance Factors Analysis--A New Alternative to Knowledge Tracing
+- tutoring-systems-behavior

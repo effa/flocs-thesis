@@ -1,0 +1,18 @@
+## Adaptive Practice: High-Efficiency Game-Based Learning [adaptive-practice]
+- Thomas Butt, 2012
+- goal: easy, fast and fun learning
+- "If it is possible that a student can effectively learn something in 10 seconds, it shouldn’t take 11"
+- for learning, what a student thinks is more important than what we teach
+- how practice helps to build long-term memories
+- flow
+  - "the sweet spot of learning"
+  - not too easy, not too hard
+  - balance between boredom (apathy) and frustration
+  - then we enjoy thinking and learning
+
+
+## Stupid Tutoring Systems, Intelligent Humans [stupid-tutoring-systems]
+- Ryan S. Baker
+- idea: instead of developing intelligent systems, develop systems intelligently
+  (focus on "intelligence amplification" rather than "artificial intelligence")
+- gap between papers (complex models) and real systems (e.g. "3 in a row")
