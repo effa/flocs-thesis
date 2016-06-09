@@ -4,6 +4,7 @@ Stack of articles to read
 - Modeling students' memory for application in adaptive educational systems (Pelanek, 2015)
 - Elo systém a modelování času řešení (Libor Vaněk)
 - [all articles of our lab members]
+- Towards reproducibility in recommender-systems research: http://link.springer.com/article/10.1007%2Fs11257-016-9174-x
 - adaptive-practice
 - adaptive-practice-irt-math
 - edu-improve
