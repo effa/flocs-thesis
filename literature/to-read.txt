@@ -15,3 +15,7 @@ Stack of articles to read
 - irt-ability-estimation
 - Performance Factors Analysis--A New Alternative to Knowledge Tracing
 - tutoring-systems-behavior
+- Vocabulary apps – time and motivation
+  https://adaptivelearninginelt.wordpress.com/2016/06/07/vocabulary-apps-time-and-motivation/
+- The Bright and Dark Sides of Gamification
+  http://link.springer.com/chapter/10.1007/978-3-319-39583-8_17
