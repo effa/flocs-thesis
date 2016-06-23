@@ -19,3 +19,4 @@ Stack of articles to read
   https://adaptivelearninginelt.wordpress.com/2016/06/07/vocabulary-apps-time-and-motivation/
 - The Bright and Dark Sides of Gamification
   http://link.springer.com/chapter/10.1007/978-3-319-39583-8_17
+- Ron Kohavi, e.g. "Seven rules of thumb for web site experimenters"
