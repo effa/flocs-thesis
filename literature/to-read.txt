@@ -20,3 +20,5 @@ Stack of articles to read
 - The Bright and Dark Sides of Gamification
   http://link.springer.com/chapter/10.1007/978-3-319-39583-8_17
 - Ron Kohavi, e.g. "Seven rules of thumb for web site experimenters"
+- Deep Learning (overview)
+  http://www.nature.com/nature/journal/v521/n7553/full/nature14539.html
