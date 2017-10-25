@@ -1,0 +1,150 @@
+\documentclass[
+    %twoside,   % Printed version
+    %printed,   % Printed version
+    digital,    % PC version
+    oneside,    % PC version
+    color,
+    11pt,
+    nocover,
+    notable,
+    nolof,
+    nolot,
+    final
+]{fithesis3}
+%% The following section sets up the locales used in the thesis.
+\usepackage[resetfonts]{cmap}
+\usepackage[T1]{fontenc}
+\usepackage[
+  main=english, %% By using `czech` or `slovak` as the main locale
+                %% instead of `english`, you can typeset the thesis
+                %% in either Czech or Slovak, respectively.
+  english, czech %german, russian, slovak %% The additional keys allow
+]{babel}        %% foreign texts to be typeset as follows:
+
+%%
+%% The following section sets up the metadata of the thesis.
+\thesissetup{
+    date          = \the\year/\the\month/\the\day,
+    university    = mu,
+    faculty       = fi,
+    type          = mgr,
+    author        = Tomáš Effenberger,
+    gender        = m,
+    advisor       = {doc. Mgr. Radek Pelánek, Ph.D},
+    title         = {Adaptive System for Learning Programming},
+    TeXtitle      = {Adaptive System for Learning Programming},
+    keywords      = {adaptive learning, elementary programming},
+    TeXkeywords   = {adaptive learning, elementary programming},
+    bib           = thesis.bib,
+}
+
+
+\thesislong{abstract}{%
+TBA: abstract
+}
+
+\thesislong{thanks}{%
+TBA: thanks
+
+TBA: mention RH and MU projects
+}
+
+\usepackage{makeidx}      %% The `makeidx` package contains
+\makeindex                %% helper commands for index typesetting.
+
+
+
+%% These additional packages are used within the document:
+\usepackage{paralist}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{url}
+\usepackage{menukeys}
+
+% cref, has to be loaded after hyperref
+\usepackage{hyperref}
+\usepackage[noabbrev,capitalise]{cleveref}
+% for long equation wrap
+\usepackage{wrapfig}
+% figure captions
+\usepackage{caption}
+% subcaption for 2 figures in one
+\usepackage{subcaption}
+% H figures
+\usepackage{float}
+% tables
+\usepackage{tabularx}
+% colored cells (cellcolor)
+\usepackage{colortbl}
+% colours
+\usepackage{xcolor}
+% enabling new fonts support (nicer)
+\usepackage{lmodern}
+% better typeset of line ends and so (nicer)
+\usepackage{microtype}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{decorations.pathreplacing}
+
+% package to make bullet list nicer
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=3pt,parsep=3pt,partopsep=3pt}
+
+% intendation
+\usepackage{parskip}
+
+
+\begin{document}
+
+\chapter{Introduction}
+\label{chap:introduction}
+
+TBA: introduction
+
+\chapter{Learning Elementary Programming}
+\label{chap:learning-elementary-programming}
+
+
+
+
+\chapter{Template Chapter}
+\label{chap:template}
+
+Citation:: \cite{borgman03}
+
+
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+\section{Summary}
+\label{sec:conclusion.summary}
+
+TBA
+
+\section{Future work}
+\label{sec:conclusion.future-work}
+
+TBA
+
+
+
+%%bibliography
+\printbibliography[heading=bibintoc]
+
+\appendix{}
+
+\chapter{Glossary}
+\label{chap:glossary}
+
+\begin{description}
+    \item[Flow] TBA: add definition of flow.
+\end{description}
+
+\chapter{Data attachment}
+\label{chap:data}
+
+TBA: data attachment
+
+\end{document}
