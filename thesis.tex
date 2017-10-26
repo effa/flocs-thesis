@@ -87,8 +87,6 @@ TBA: mention RH and MU projects
 \usepackage{colortbl}
 % colours
 \usepackage{xcolor}
-% enabling new fonts support (nicer)
-\usepackage{lmodern}
 % better typeset of line ends and so (nicer)
 \usepackage{microtype}
 
@@ -110,7 +108,143 @@ TBA: introduction
 \chapter{Learning Programming}
 \label{chap:learning-programming}
 
+This chapter describes the current state of the art of teaching programming, both from the view of successful learning systems and from the view of a research on learning programming.
 
+\section{Existing Systems for Learning Programming}
+\label{sec:existing-systems}
+
+There are many systems for learning programming.
+These systems can be grouped by several criteria:
+
+\begin{itemize}
+\item computer systems, or physical toys
+\item device: online web pages, mobile apps, offline computer programs
+\item target group, e.g. children in a class, children at home, …
+\item assumed prerequisites, e.g. reading, writing, computer skills, or even elementary programming
+\item covered concepts, e.g. loops, conditions, functions, recursion, particular language features
+free or paid
+\end{itemize}
+
+In this section, we present the most notable of them with brief descriptions. Next section attempt to extrapolate useful strategies for teaching programming.
+
+
+\subsection{LightBot}
+\label{sec:lightbot}
+LightBot%
+\footnote{Available at \url{http://lightbot.com/}.}
+is a web page with a sequence of tasks for learning programming using block-based programming language.
+Students write simple programs to control a robot living in a grid world.
+Two types of movement (walking and jumping) enables to create variety of easy tasks.
+The system provides clear and simple interactive instructions.
+The following concepts are covered: commands, procedures and simple loops via tail-recursion.
+
+// TBA: screenshot
+
+
+\subsection{Robozzle}
+\label{sec:robozzle}
+With a robot on a grid  and block-based programming, Robozzle%
+\footnote{Available at \url{http://www.robozzle.com/}.}
+is similar to LightBot.
+However, by adding colors to the grid, which can be used for conditioning and enables difficult tasks with recursion.
+Robozzle shows that a carefully chosen set of a few orthogonal commands is enough for creating hundreds of diverse tasks.
+Robozzle allows users to create their own tasks.
+These tasks can be tried and rated by other learners.
+
+// TBA: screenshot
+
+
+\subsection{BlocklyGames}
+\label{sec:blockly-games}
+Blockly is a popular block-based programming interface.
+In contrast to the block-based interfaces in LightBot and Robozzle,
+Blockly doesn’t constrain the “shape” of the program
+(program can be arbitrary long and can have arbitrary many functions).
+The main purpose of BlocklyGames%
+\footnote{Available at \url{https://blockly-games.appspot.com/}.}
+is to provide a demo of Blockly usage.
+The webpage consists of several games, ordered in increasing difficulty.
+For example, in the first level, students learn how to compose blocks together as a puzzle;
+in the second level they learn loops and conditions by solving tasks in a maze;
+next they practice compound conditions, etc.
+Final level serves as a transition from block-based programming to textual JavaScript programming.
+Each game consists of 5-10 tasks, again with fixed ordered by increasing difficulty, with no personalization.
+The fixed order enables use of the program from the previous task and thus gradually building more and more complex programs,
+resulting in e.g. a fairly sophisticated images in turtle graphics.
+Another notable feature of the system are non-ignorable instructions,
+which requires to take a described action before they disappear
+\cite{blockly-10-things}.
+
+// TBA: screenshot
+
+
+\subsection{Human Resource Machine}
+\label{sec:human-resource-machine}
+Human Resource Machine%
+\footnote{Available at \url{http://tomorrowcorporation.com/humanresourcemachine}.}
+is an example of a paid offline computer game for learning programming using block-based programming interface.
+Though being presented as a game,
+the player spends nearly all the time solving tasks similar to those as in the previously mentioned learning systems.
+The sequence of tasks is non-personalized and nearly linear,
+with only a few short side branches.
+Main difference from the other systems is a slightly different domain:
+it uses more low-level programing commands, such as
+input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
+The game comes with a debugger, giving a possibility to step through the program.
+All elements are explained when they first appear and programming blocks can be explained again simply by dragging the block onto a field with a questionmark.
+
+// TBA: screenshot
+
+
+\subsection{Ozobot}
+\label{sec:ozobot}
+Ozobot%
+\footnote{Information available at \url{http://ozobot.com/}, simulator at \url{http://games.ozoblockly.com}.}
+is a small physical robot,
+programmable by either a Blockly-based interface or by drawing lines on a paper.
+Therefore, it can be used completely without a computer and does not require ability to read and write,
+thus being suitable for very young children.
+
+// TBA: screenshot
+
+
+\subsection{Problem Solving Tutor}
+\label{sec:problem-solving-tutor}
+Problem Solving Tutor%
+\footnote{Available at \url{tutor.fi.muni.cz}.}
+includes a few problem sets for practicing programming,
+such as Interactive Python, Robot Karel or Robotanist.
+Robotanist is a variation on the Robozzle,
+offering both easy introductory tasks requiring no previous exposure to programming,
+and extremely difficult tasks on sophisticated use of recursion.
+After each solved task, Problem Solving Tutor shows a recommendation of two tasks,
+one easier and one more difficult,
+with a predicted solving time.
+According to authors, showing predicted problem solving time to the user serves as a motivational element
+– it poses a suitable challenge to ``overcome oneself''
+\cite{pelanek-student-modeling-times}.
+
+// TBA: screenshot
+
+
+\subsection{Project Euler}
+\label{sec:project-euler}
+The core of Project Euler%
+\footnote{Available at \url{projecteuler.net}.}
+is a list of several hundreds of programming problems with one correct answer (usually number).
+The problems can be solved in any language
+and then checked whether the computed answer is correct by the provided answer checker.
+The project is not meant to teach elementary programming,
+but rather to hone one’s programming skills;
+more complicated tasks require even some knowledge of algorithms and data structures.
+The system provides several means for motivation:
+levels (based purely on number of solved tasks), badges
+(e.g. for solving 10 consecutive problems, 50 prime numbered problems, etc.),
+comparison with user’s friends,
+statistics page with several leaderboard (e.g. by country),
+and a special score for solving the most recently published problems.
+
+// TBA: screenshot
 
 
 \chapter{Template Chapter}
