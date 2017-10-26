@@ -34,9 +34,17 @@
     title         = {Adaptive System for Learning Programming},
     TeXtitle      = {Adaptive System for Learning Programming},
     keywords      = {adaptive learning, elementary programming},
-    TeXkeywords   = {adaptive learning, elementary programming},
-    bib           = thesis.bib,
 }
+
+
+% Setup bibliography.
+\usepackage[backend=biber, 		% use biber as backend instead of BiBTeX
+	bibstyle=ieee-alphabetic, 	% bibliography style: IEEE with alphabetic citations
+	citestyle=alphabetic, 		% citation style
+	url=true, 			        % display urls in bibliography
+	hyperref=auto,			    % detect hyperref and create links
+]{biblatex}
+\addbibresource{thesis.bib}
 
 
 \thesislong{abstract}{%
@@ -84,10 +92,6 @@ TBA: mention RH and MU projects
 % better typeset of line ends and so (nicer)
 \usepackage{microtype}
 
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning}
-\usetikzlibrary{decorations.pathreplacing}
-
 % package to make bullet list nicer
 \usepackage{enumitem}
 \setitemize{noitemsep,topsep=3pt,parsep=3pt,partopsep=3pt}
@@ -103,8 +107,8 @@ TBA: mention RH and MU projects
 
 TBA: introduction
 
-\chapter{Learning Elementary Programming}
-\label{chap:learning-elementary-programming}
+\chapter{Learning Programming}
+\label{chap:learning-programming}
 
 
 
@@ -112,7 +116,7 @@ TBA: introduction
 \chapter{Template Chapter}
 \label{chap:template}
 
-Citation:: \cite{borgman03}
+Citation example: \cite{adaptive-practice} and \cite{flow}.
 
 
 \chapter{Conclusion}
@@ -129,11 +133,11 @@ TBA
 TBA
 
 
+% ===== APPENDIX AND BIBLIOGRAPHY =====
 
-%%bibliography
 \printbibliography[heading=bibintoc]
 
-\appendix{}
+\appendix
 
 \chapter{Glossary}
 \label{chap:glossary}
