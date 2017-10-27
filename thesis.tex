@@ -380,10 +380,86 @@ Theoretically, it is possible to generate a hint in any state,
   instead, a few manually prepared instructions are usually used.
 
 
+\section{Motivation}
+\label{sec:motivation}
+
+In addition to employing the teaching strategies mentioned in the previous section,
+  it is equally important to create an engaging environment supporting students’ motivation. Common strategies for increasing motivation are:
+
+\begin{itemize}
+\item explaining the usefulness of the programming skill,
+\item appealing game world, which is nice to look at and fun play with,
+\item gamification elements, such as points and badges,
+\item social elements, such as possibility to share programs or achievements,
+\item creativity and self-expression (possibility to create own programs),
+\item appropriate challenge.
+%TODO: consider also: feel of power/control; progress/learning
+%TODO: connect those to fulfilling common needs such as being recognized etc.
+\end{itemize}
+
+
+\subsection{Game World}
+\label{sec:motivation.game-world}
+Ideally, students should be appealed to the game world just by looking at it.
+Even without tasks to solve,
+  it should be an interesting toy to play with.
+In such environments, it is possible to assign open-ended tasks,
+  or even let the students create whatever they want,
+  which works well especially for creative students seeking for self-expression.
+
+// TBA: figures, providing diverse examples of interesting worlds, including several grid worlds and turtle graphics
+
+
+\subsection{Tasks}
+\label{sec:motivation.tasks}
+For many students, giving them specific small problems works better
+  than large loosely defined and open-ended tasks.
+By solving small problems quickly,
+  they get a feeling of progress and learning.
+Another advantage of close tasks
+  is a more straightforward implementation of gamification features and adaptive behavior.
+
+Small closed tasks result in short programs,
+  but their behavior should be still interesting for the students to be satisfied.
+To achieve complex behavior,
+  a system can either provide students with macro-commands (e.g. to draw a circle)
+  or with a skeleton of complex code, with a few gaps to fill in by students.
+It is important for the students to feel ownership over the code,
+  which is especially a concern with a code skeleton.
+Solution suggested by Neil Fraser (and implemented in Blockly Games)
+  is to make a series of tasks in which the students
+  build on their program from the previous task
+  \cite{blockly-10-things}.
+
+// TBA: again some examples in a form of figures + descriptions
+
+%TODO: other important aspects: variability
+
+
+\subsection{Challenge}
+\label{sec:motivation.challenge}
+For a great learning experience,
+  difficulty of the task must match the skill of the student.
+If the task it too easy,
+  student is not challenged and gets bored.
+If the task is too difficult,
+  student gets frustrated and desperate.
+If the task has appropriate difficulty,
+  student is likely to be challenged and focused.
+The complete immersion into the task the student is solving right now is called
+  a state of flow \cite{flow}.
+Achieving the state of flow maximizes the learning outcome \cite{adaptive-practice},
+  and even increases the long-term level of happiness. % TODO: find a source of this claim
+Next chapter describes techniques for estimating student’s skill
+  and show how use that estimate for task task recommendation.
+
+// TBA: flow diagram
+
+
 \chapter{Template Chapter}
 \label{chap:template}
 
-Citation example: \cite{adaptive-practice} and \cite{flow}.
+Citation example: \cite{adaptive-practice}.
 
 
 \chapter{Conclusion}
