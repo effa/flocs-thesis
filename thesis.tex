@@ -1,28 +1,24 @@
+%% Master thesis on Adaptive learing of programming.
 \documentclass[
-    %twoside,   % Printed version
-    %printed,   % Printed version
-    digital,    % PC version
-    oneside,    % PC version
+    %printed,
+    digital,
     color,
     11pt,
     nocover,
-    notable,
-    nolof,
-    nolot,
-    final
+    table,  % coloured tables; (to disable: notable)
+    nolof,  % hide List of Figures
+    nolot,  % hide List of Tables
+    microtype,
+    %final,
 ]{fithesis3}
-%% The following section sets up the locales used in the thesis.
+%% Locales.
 \usepackage[resetfonts]{cmap}
 \usepackage[T1]{fontenc}
 \usepackage[
-  main=english, %% By using `czech` or `slovak` as the main locale
-                %% instead of `english`, you can typeset the thesis
-                %% in either Czech or Slovak, respectively.
-  english, czech %german, russian, slovak %% The additional keys allow
-]{babel}        %% foreign texts to be typeset as follows:
-
-%%
-%% The following section sets up the metadata of the thesis.
+  main=english,
+  english, czech
+]{babel}
+%% Metadata.
 \thesissetup{
     date          = \the\year/\the\month/\the\day,
     university    = mu,
@@ -33,11 +29,9 @@
     advisor       = {doc. Mgr. Radek Pelánek, Ph.D},
     title         = {Adaptive System for Learning Programming},
     TeXtitle      = {Adaptive System for Learning Programming},
-    keywords      = {adaptive learning, elementary programming},
+    keywords      = {adaptive learning, student modeling, learning programming},
 }
-
-
-% Setup bibliography.
+%% Bibliography.
 \usepackage[backend=biber, 		% use biber as backend instead of BiBTeX
 	bibstyle=ieee-alphabetic, 	% bibliography style: IEEE with alphabetic citations
 	citestyle=alphabetic, 		% citation style
@@ -45,59 +39,28 @@
 	hyperref=auto,			    % detect hyperref and create links
 ]{biblatex}
 \addbibresource{thesis.bib}
-
-
+%% Abstract.
 \thesislong{abstract}{%
 TBA: abstract
 }
-
+%% Thanks.
 \thesislong{thanks}{%
-TBA: thanks
-
-TBA: mention RH and MU projects
+TBA: thanks, TBA: mention RH and MU projects
 }
-
+%% Index.
 \usepackage{makeidx}      %% The `makeidx` package contains
 \makeindex                %% helper commands for index typesetting.
-
-
-
-%% These additional packages are used within the document:
+%% Compact lists.
 \usepackage{paralist}
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=3pt,parsep=3pt,partopsep=3pt}
+%% Mathematics
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
+%% URLs.
 \usepackage{url}
-\usepackage{menukeys}
-
-% cref, has to be loaded after hyperref
 \usepackage{hyperref}
-\usepackage[noabbrev,capitalise]{cleveref}
-% for long equation wrap
-\usepackage{wrapfig}
-% figure captions
-\usepackage{caption}
-% subcaption for 2 figures in one
-\usepackage{subcaption}
-% H figures
-\usepackage{float}
-% tables
-\usepackage{tabularx}
-% colored cells (cellcolor)
-\usepackage{colortbl}
-% colours
-\usepackage{xcolor}
-% better typeset of line ends and so (nicer)
-\usepackage{microtype}
-
-% package to make bullet list nicer
-\usepackage{enumitem}
-\setitemize{noitemsep,topsep=3pt,parsep=3pt,partopsep=3pt}
-
-% intendation
-\usepackage{parskip}
-
-
 \begin{document}
 
 \chapter{Introduction}
