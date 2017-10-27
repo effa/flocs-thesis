@@ -289,6 +289,96 @@ paper \emph{Lowering barriers for Novice Programmers}
   provides a detailed overview.
 
 
+\subsection{Avoiding Syntax Errors}
+\label{sec:avoiding-syntax-errors}
+
+Common strategy in the current systems for learning programming is to avoid syntax errors
+  by replacing textual programming with a drag-and-drop block-based programming.
+There are two basic types of block-based interfaces:
+  either there is a square grid defining the program shape
+  (often one row per function),
+  or the blocks can be nested and assembled freely with no limitation on maximum program length
+  (often one vertical stack per function).
+Fixed grid is simpler for understanding and manipulation,
+  but it doesn’t allow for direct nesting,
+  which is a fundamental feature of computer programs.
+This restriction is usually overcome by
+  combining condition and a command into a single block,
+  using recursion instead of loops,
+  and replacing nested sequences of commands by a new function.
+
+// TBA: comparision figure; e.g. Robotanist - fixed grid, Blockly games - nested blocks
+
+
+\subsection{Potential Drawback of Block-based Interfaces}
+\label{sec:potential-drawback-of-block-based-interfaces}
+A drawback of using a block-based programming
+  is that students need to learn a proper textual languages afterwards anyway
+  to be able to implement more complex programs.
+Several controlled experiments were performed to test a hypothesis
+  that it is still beneficial to start an introductory programming course
+  with a block-based programming,
+  even when the students will be writing code later in the course.
+While the results of these experiment suggest that block-based interfaces
+  are the better choice for the start,
+  they do not provide strong convincing evidence for that,
+  because the programming interfaces used in most of the experiments differ in more aspects
+  than in just in using blocks instead of text
+  \cite{comparing-textual-and-block-interfaces}.
+
+\subsection{Transition Strategy}
+\label{sec:transition-strategy}
+Weintrop a Wilensky suggest that for an easy transition
+  it is helpful if the block representation of the code
+  matches the underlying programming language
+  to which the student is expect to move in the next learning phase
+  \cite{challenges-of-blocks-based-environments}.
+However, the readability of the blocks for learners
+  and the resemblance to a programming language
+  are sometimes conflicting requirements.
+Instead of making compromises,
+  BlocklyGames progressively change the available set of blocks in each level,
+  making them more similar to JavaScript.
+In the last level,
+  the text on blocks matches the generated JavaScript completely
+  \cite{blockly-10-things}.
+
+
+\subsection{Visual Output}
+\label{sec:visual-output}
+
+Good learning systems can help students to track a program execution
+  by providing a vivid visual representation of the effects of the program
+  together with the current state.
+This can be achieved naturally for turtle graphics,
+  where the whole state is just a position and orientation of the turtle.
+Similarly, in simple games, a grid world with a robot
+  contains the full information about the current state.
+For the simplicity of their visual output,
+  turtle graphics and grid world games have become prevalent task types
+  in the current systems for learning programming.
+
+// TBA: figures to illustrate the point; figures to show variants of graphical output
+
+
+\subsection{Instructions and Hints}
+\label{sec:instructions-and-hints}
+
+In \emph{Ten Things We’ve Learned from Blockly} \cite{blockly-10-things}
+  Neil Frase explains that students ignore instructions,
+  no matter how prominent they are.
+His solution in BlocklyGames are non-ignorable, actionable instructions,
+  which can’t be closed manually by the student;
+  they will only disappear once the student perform the action described in the instruction.
+
+BlocklyGames also include additional hints,
+  which only appears after a certain time of unsuccessful solving.
+Theoretically, it is possible to generate a hint in any state,
+  using data of students which have successfully solved the task before
+  \cite{generating-hints},
+  but these automatic approaches have not been employed in practice;
+  instead, a few manually prepared instructions are usually used.
+
 
 \chapter{Template Chapter}
 \label{chap:template}
