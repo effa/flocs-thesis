@@ -89,7 +89,7 @@ These systems can be grouped by several criteria:
 \end{itemize}
 
 In this section, we present the most notable of them with brief descriptions.
-Next section attempt to extrapolate useful strategies for teaching programming.
+Section \ref{sec:strategies-for-easier-learning} then attempts to extrapolate useful strategies for teaching programming.
 
 
 \subsection{LightBot}
@@ -99,7 +99,7 @@ LightBot%
 is a web page with a fixed sequence of tasks for learning programming
 using block-based programming language.
 Students create simple programs to control a robot living in a grid world.
-The robot can perform two types of movement, walking and jumping,
+The robot can perform two types of movement (walking and jumping),
 which is important for diversity of easy tasks.
 The system covers sequences of commands, procedures, and simple loops via tail-recursion.
 
@@ -110,9 +110,9 @@ The system covers sequences of commands, procedures, and simple loops via tail-r
 \label{sec:robozzle}
 With a robot on a grid and block-based programming, Robozzle%
 \footnote{Available at \url{http://www.robozzle.com/}.}
-is similar to LightBot.
-However, it adds a new feature: colors on the grid,
-  which can be used for conditioning.
+is similar to LightBot;
+however, it adds a new feature: colors on the grid.
+Colors can be used in conditional commands.
 Robozzle shows that a carefully chosen set of a few orthogonal commands is enough for creating hundreds of diverse tasks,
   including difficult tasks with sophisticated recursion.
 Robozzle also allows users to create their own tasks,
@@ -131,12 +131,12 @@ The main purpose of BlocklyGames%
 \footnote{Available at \url{https://blockly-games.appspot.com/}.}
 is to provide a demo of possible Blockly usages.
 The webpage consists of several simple games, ordered in increasing difficulty.
-For example, in the first level, students learn how to compose blocks together as a puzzle;
-in the second level they learn loops and conditions by solving tasks in a maze;
-next they practice compound conditions, etc.
+For example, in the first level, students learn how to compose blocks together as a puzzle,
+and in the second level they learn loops and conditions by solving tasks in a maze.
 Final level serves as a transition from block-based programming to textual JavaScript programming.
 Each game consists of 5-10 tasks, again with fixed ordered by increasing difficulty, with no personalization.
-The fixed order enables use of the program from the previous task and thus gradually building more and more complex programs,
+The fixed order enables to use the program from the previous task,
+thus gradually build more and more complex programs,
 resulting in, for example, sophisticated images in turtle graphics.
 Another notable feature of the system are non-ignorable instructions,
 which requires to take a described action before they disappear
@@ -156,7 +156,7 @@ The sequence of tasks is non-personalized and nearly linear,
 with only a few short side branches.
 Main difference from the other systems is a slightly different domain:
 it uses more low-level programming commands, such as
-input, output, move-from, move-to, add, and jump.
+input, output, move-from, move-to, add, or jump.
 % input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
 The game comes with a debugger, giving a possibility to step through the program.
 All elements are explained when they first appear and programming blocks can be explained again simply by dragging the block onto a field with a question mark.
@@ -168,9 +168,9 @@ All elements are explained when they first appear and programming blocks can be 
 \label{sec:ozobot}
 Ozobot%
 \footnote{Information available at \url{http://ozobot.com/}, simulator at \url{http://games.ozoblockly.com}.}
-is a small physical robot,
+is a small physical robot
 programmable by either a Blockly-based interface,
-  or even without a computer,
+  or even without a computer
   by drawing lines on a paper and reading them with a color sensor on the robot.
 As it does not require ability to read and write,
   Ozobot is suitable for even very young children.
@@ -230,11 +230,11 @@ also provides many training programming tasks for various topics,
 from introductory programming to machine learning.
 % Solutions are evaluated on a server against a prepared set of test cases with time limits.
 In addition to the classic motivation in the form of points, badges and leaderboards, students are motivated to practice to perform well in the competitions,
-where they can win some prices and sometimes even price offers.
-HackerRank also helps student to decide on a problem to solve by showing a difficulty according to the author of the task (on a 3-star scale),
+where they can win some prices and sometimes even job offers.
+HackerRank also helps student to decide on a problem to solve by showing its difficulty according to the author of the task (on a 3-star scale),
 as well as success rate among the past submissions.
 Furthermore, after solving a task,
-a specific recommendation for one task to solve next is shown.
+a specific recommendation the next task to solve is shown.
 
 // TBA: screenshot
 
@@ -262,7 +262,7 @@ article \emph{Lowering barriers for Novice Programmers}
 \subsection{Avoiding Syntax Errors}
 \label{sec:avoiding-syntax-errors}
 
-Common strategy in the current systems for learning programming is to avoid syntax errors
+A common strategy in the current systems for learning programming is to avoid syntax errors
   by replacing textual programming with a drag-and-drop block-based programming.
 There are two basic types of block-based interfaces:
   either there is a square grid defining the program shape
@@ -283,9 +283,9 @@ This restriction is usually overcome by
 \subsection{Potential Drawback of Block-based Interfaces}
 \label{sec:potential-drawback-of-block-based-interfaces}
 A drawback of using a block-based programming
-  is that students need to learn a proper textual languages afterwards anyway
+  is the students' need to learn a proper textual languages afterwards anyway
   to be able to implement more complex programs.
-Several controlled experiments were performed to test a hypothesis
+Several controlled experiments were performed to test the hypothesis
   that it is still beneficial to start an introductory programming course
   with a block-based programming,
   even when the students will be writing code later in the course.
@@ -298,9 +298,8 @@ While the results of these experiments suggest that block-based interfaces
 
 \subsection{Transition Strategy}
 \label{sec:transition-strategy}
-Weintrop a Wilensky suggest that for an easy transition
-  it is helpful if the block representation of the code
-  matches the underlying programming language
+Weintrop and Wilensky suggest that the block representation of the code
+  should match the underlying programming language
   to which the student is expected to move in the next phase
   \cite{challenges-of-blocks-based-environments}.
 However, the readability of the blocks for learners
@@ -339,7 +338,7 @@ Most systems for learning elementary programming includes instructions
 However, Neil Fraser explains that students ignore instructions,
   no matter how prominent they are \cite{blockly-10-things}.
 His solution in BlocklyGames are non-ignorable, actionable instructions,
-  which can’t be closed manually by the student;
+  which cannot be closed manually by the student;
   they will only disappear once the student perform the action described in the instruction.
 
 BlocklyGames also include additional hints,
@@ -355,7 +354,7 @@ Theoretically, it is possible to generate a hint in any state,
 \section{Motivation}
 \label{sec:motivation}
 
-In addition to employing the teaching strategies mentioned in the previous section,
+In addition to employing the teaching strategies mentioned in section \ref{sec:strategies-for-easier-learning},
   it is equally important to create an engaging environment supporting students’ motivation. Common strategies for increasing motivation are:
 
 \begin{itemize}
@@ -372,8 +371,8 @@ In addition to employing the teaching strategies mentioned in the previous secti
 
 \subsection{Game World}
 \label{sec:motivation.game-world}
-Ideally, students should be appealed to the game world just by looking at it.
-Even without tasks to solve,
+Ideally, game world should appeal students --
+even without tasks to solve,
   it should be an interesting toy to play with.
 In such environments, it is possible to assign open-ended tasks,
   or even let the students create whatever they want,
@@ -416,9 +415,9 @@ If the task it too easy,
   student is not challenged and gets bored.
 If the task is too difficult,
   student gets frustrated and desperate.
-If the task has appropriate difficulty,
+On the other hand, if the task has appropriate difficulty,
   student is likely to be challenged and focused.
-The complete immersion into the task the student is solving right now is called
+The complete immersion into the task the student is solving at the moment is called
   a state of flow \cite{flow}.
 Achieving the state of flow maximizes the learning outcome \cite{adaptive-practice},
   and even increases the long-term level of happiness. % TODO: find a source of this claim
