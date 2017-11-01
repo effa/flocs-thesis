@@ -71,13 +71,14 @@ TBA: introduction
 \chapter{Learning Programming}
 \label{chap:learning-programming}
 
+% TODO: move the chapter descripton into intro/thesis-structure
 This chapter describes the current state of the art of teaching programming, both from the view of successful learning systems and from the view of a research on learning programming.
 
 \section{Existing Systems for Learning Programming}
 \label{sec:existing-systems}
 
 There are many systems for learning programming.
-These systems can be grouped by several criteria:
+These systems can be categorized by several criteria:
 
 \begin{itemize}
 \item computer systems or physical toys,
@@ -88,7 +89,7 @@ These systems can be grouped by several criteria:
 \item free or paid.
 \end{itemize}
 
-In this section, we present the most notable of them with brief descriptions.
+The rest of this section describes the most notable systems.
 Section \ref{sec:strategies-for-easier-learning} then attempts to extrapolate useful strategies for teaching programming.
 
 
@@ -109,11 +110,11 @@ The system covers sequences of commands, procedures, and simple loops via tail-r
 \subsection{Robozzle}
 \label{sec:robozzle}
 With a robot on a grid and block-based programming, Robozzle%
-\footnote{Available at \url{http://www.robozzle.com/}.}
-is similar to LightBot;
-however, it adds a new feature: colors on the grid.
-Colors can be used in conditional commands.
-Robozzle shows that a carefully chosen set of a few orthogonal commands is enough for creating hundreds of diverse tasks,
+  \footnote{Available at \url{http://www.robozzle.com/}.}
+  is similar to LightBot;
+however, it adds a new feature: colored fields.
+Colors can be used in conditional commands,
+  which allows for hundreds of diverse tasks,
   including difficult tasks with sophisticated recursion.
 Robozzle also allows users to create their own tasks,
   which can be tried and rated by other learners.
@@ -139,7 +140,7 @@ The fixed order enables to use the program from the previous task,
 thus gradually build more and more complex programs,
 resulting in, for example, sophisticated images in turtle graphics.
 Another notable feature of the system are non-ignorable instructions,
-which requires to take a described action before they disappear
+which require to take a described action before they disappear
 \cite{blockly-10-things}.
 
 // TBA: screenshot
@@ -154,7 +155,7 @@ Although it is presented as a game,
 the player spends nearly all the time solving tasks similar to those in the previously mentioned learning systems.
 The sequence of tasks is non-personalized and nearly linear,
 with only a few short side branches.
-Main difference from the other systems is a slightly different domain:
+The main difference from the other systems is a slightly different domain:
 it uses more low-level programming commands, such as
 input, output, move-from, move-to, add, or jump.
 % input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
@@ -205,7 +206,7 @@ The problems can be solved in any language
 and then checked whether the computed answer is correct.
 The project is not meant to teach elementary programming,
 but rather to hone one’s programming skills;
-more complicated tasks require even some knowledge of algorithms and data structures.
+more complicated tasks even require some knowledge of algorithms and data structures.
 The system provides several means of motivation:
 levels (based purely on number of solved tasks), badges
 (e.g. for solving 10 consecutive problems, 50 prime numbered problems, etc.),
@@ -230,7 +231,7 @@ also provides many training programming tasks for various topics,
 from introductory programming to machine learning.
 % Solutions are evaluated on a server against a prepared set of test cases with time limits.
 In addition to the classic motivation in the form of points, badges and leaderboards, students are motivated to practice to perform well in the competitions,
-where they can win some prices and sometimes even job offers.
+where they can win some prizes and sometimes even job offers.
 HackerRank also helps student to decide on a problem to solve by showing its difficulty according to the author of the task (on a 3-star scale),
 as well as success rate among the past submissions.
 Furthermore, after solving a task,
@@ -283,7 +284,7 @@ This restriction is usually overcome by
 \subsection{Potential Drawback of Block-based Interfaces}
 \label{sec:potential-drawback-of-block-based-interfaces}
 A drawback of using a block-based programming
-  is the students' need to learn a proper textual languages afterwards anyway
+  is the students' need to later learn a proper textual language anyhow
   to be able to implement more complex programs.
 Several controlled experiments were performed to test the hypothesis
   that it is still beneficial to start an introductory programming course
@@ -371,7 +372,7 @@ In addition to employing the teaching strategies mentioned in section \ref{sec:s
 
 \subsection{Game World}
 \label{sec:motivation.game-world}
-Ideally, game world should appeal students --
+Ideally, game world should appeal to students --
 even without tasks to solve,
   it should be an interesting toy to play with.
 In such environments, it is possible to assign open-ended tasks,
