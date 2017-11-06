@@ -55,23 +55,265 @@ In addition to the geography, similar adaptive web applications
 \section{Student Modeling}
 \label{sec:student-modeling}
 
+For the system to be adaptive, models of
+  a student skill, task difficulty, and student-task interaction
+  need to be designed, implemented and evaluated using collected data.
+Purpose of these models is to predict the probability that a given student
+  would solve a given task
+  and also the time the student would need to complete the task.
+
+Various approaches for student models have been proposed.
+For instance, each attempt of a student to solve a task can be interpreted
+  as a match between the student and the task and after the match ends,
+  skill and difficulty estimates are revised.
+If the student solves the task quickly, their skill will be increased
+  and the difficulty of the task will be decreased.
+On the contrary, if the student fails to solve the task or if takes them too long,
+  their skill will be decreased and the difficulty of the task will be increased.
+% TODO: this is called elo -> in detail in section x.y, other models a, b, c in sections z, z, z)
+
+
+\section{Data}
+\label{sec:student-modeling.data}
+
+To learn model parameters, such as difficulty of individual tasks, some data is needed.
+Different models require different type and amount of data.
+Some data about tasks are independent of students and can be used
+  for initial task difficulty estimates.
+In addition to task statements, sample solutions and expert labels (e.g. levels)
+  are sometimes provided by an instructor for each task.
+
+Once the task is deployed in the running system,
+  rich data can be collected from each interaction between a student and the task:
 \begin{itemize}
-\item TBA
+  \item whether solved,
+  \item solving time,
+  \item number of attempts,
+  \item number of clicks,
+  \item program snapshots,
+  \item explicit student' evaluation (or labels). % TODO: needs explanation
 \end{itemize}
+
+% TODO: mention that times behave log-normal; and # clicks coveys similar
+% information (Klusacek 2014)
+% TODO: mention different granularity levels for taking program snapshots
+
+\section{Item Response Theory}
+\label{sec:irt}
+
+TODO: explain IRT
+
+%\section{Problem Response Theory}
+%\label{sec:problem-response-theory}
+
+Classical IRT was originally developed for knowledge testing
+  and so it contains some strong assumptions which does not hold for learning programming.
+First, it assumes a single constant skill, and
+second, it only deals with correctness (probability of success), not solving times.
+However, programming skill seems to be multidimensional;
+  for example, one student can be proficient with functions and struggle with loops,
+  while another student can master loops and struggle with functions.
+Furthermore these skills are changing significantly during interaction with the system,
+  at least in ideal case -- because learning (not testing) is the objective.
+
+IRT can be extended to address these issues.
+To predict problem solving times instead of probability of success
+  \emph{Problem Response Theory} (PRT)
+  assumes an exponential relationship between a problem solving skill
+  and the time to solve a problem  % TODO: explain + formula
+  \cite{alg.problem-response-theory}.
+% TODO: Add note that the assumption of exponential relationship is justified
+% by observed solving solving times distribution and it is also intuitively
+  % plausible - multiplicative nature of solving times.
+
+Similarly, multidiminsional skill and learning can be incorporated
+  \cite{pelanek-student-modeling-times}.
+% TODO: details and formulas
+
+\section{Elo}
+\label{sec:elo}
+
+TODO: explain elo (? from introductory paragraph?) \cite{alg.elo}
+Elo can be extended to work with solving times. (TBA: ref)
+
+Advantages of the Elo models are their simplicity, flexibility,
+online-computation and reasonably good performance.
+
+
+\section{Concepts}
+
+% TODO: fix and mention used terminology: concept vs. skill
+
+A lot of research in the area restrict its attention to single-dimensional skill.
+This assumption is reasonable for many logic puzzles (e.g. sudoku);
+however, programming tasks require diverse skills.
+Even on the elementary levels, loops, conditional commands and functions
+  can be taught in any order
+  and it is perfectly possibly to master one of these skills,
+  while struggle with the others, or even not been introduced to them.
+
+As we mentioned in sections \ref{irt} and \ref{elo},
+  both IRT and Elo models can be extended to work with multidimensional skills.
+% TODO: However, the way they compose multiple skills into a single prediction
+% is not completely justified / can differ depending on domain/skills (e.g.
+% adding skills vs taking best/worse)
+
+Although modeling multiple skills seems useful,
+  there is a classical trade-off between complexity of the model (number of skills)
+  and how well (or how fast) can be the parameters estimated.
+More parameters require more data for the estimates to converge.
+% TODO: which is especially concern for students; 1. predictions needed
+% immediately for new students (no/little data), 2. students' skills are
+% assumed to change (tasks didn't have these problems)
+
+
+% \subsection{Learning Concepts from Data}
+
+Concepts can be either defined manually or detected automatically
+  \cite{niznan-thesis}.  % TODO: specify chapter/pages
+Manually selected concepts, such as loops and conditional commands,
+  have the advantage of being interpretable,
+  so they can be also use for skills visualizations in the user interface
+  to provide students with the information of their learning progress.
+Furthermore, no data needs to be collected in advance,
+  while the automatic techniques require a lot of data to be stable.  % TODO: how much?
+
+
+% \subsection{Prerequisites}
+Undoubtedly, there are some relationships between skills;
+  for example, nested loops cannot be mastered without mastering simple loops.
+The hierarchical structure between concepts can be modeled
+  as a directed acyclic graph (DAG),
+  where each vertex is a concept and each edge represents a prerequisite.
+Having DAG of concepts then allows to model students using Bayes networks
+  \cite{its-programming}.
+
+% TODO: simple diagram: DAG of concepts example
 
 \section{Task Recommendation}
 \label{sec:task-recommendation}
 
-TBA
+Student models are used by an \emph{instructional policy} to recommend
+  the most suitable task for a student.
+In spite of having all the predictions about success probabilities
+  and time estimates in hand,
+  task recommendation is not an easy task.
+It is not clear what the optimal difficulty means and it may vary
+  for different students, domains or types of problems.
+Furthermore, optimal difficulty is not the only criterion to be considered.
+For instance, diversity of tasks is important to keep students interested.
+No principled techniques for task recommendation have been developed yet;
+however, several heuristic approaches have been used
+  and proved to work well. (TBA: ref)
 
+
+Note that task recommendation is not a necessary requirement
+  for the system to be adaptive.
+Student models can be utilized in other means to achieve personalized behavior,
+  e.g. mastery learning (section \ref{sec:mastery-learning}).
+System can also just provide students with predicted solving time
+  or probability of success
+  and leave the choice of the next task on them.
+Showing predictions can be already perceived as a mild form of recommendation.
+Indeed, recommendations can range from \emph{soft} to \emph{hard}.
+Soft recommendations can be achieved by
+  ordering tasks according to suitability,
+  filtering and only showing a subset of tasks,
+  or showing suggestion such as
+  ``too easy'', ``too difficult'' and ''ready to tackle'' next to each task
+  (Similar suggestions in the form of traffic-light colors
+  are used in the system described in \cite{its-programming}.)
+System can be more strict and show a single recommended task,
+  or even enforce the recommendation by immediately progressing student to
+  a next task without asking and giving them a chance to select a different task.
+
+% TODO: details about heuristics/methods for selecting single best task
+
+\section{Mastery Learning}
+\label{sec:mastery-learning}
+
+TODO: describe mastery learning + usage of student models (to show the progress
+and to determine that the student already achieved the mastery)
+
+% TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
 
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
 
-TBA
+To decide if the adaptivity of the system increases the learning outcomes,
+  a suitable metric must be chosen and incorporated into the system,
+  for example using pre-tests and post-tests.
+Ideally, the system should also allow to easily change various conditions
+  for subsets of students and hence perform controlled online AB experiments.
+
+
+\subsection{Metrics for Predictions}
+
+TODO: data we need -- this is simple: we can collect the objective solving times and compare
+with predicitons (there is some noise, because of students taking breaks, cheating, etc., but should be ok)
+
+TODO: mention standard metrics and evaluation methodologies in ML (for
+predicted times, RMSE vs. MAE etc.)
+
+
+\subsection{Metrics for Recommendation}
+
+TODO: what data to use? much less clear than  for predictions
+
+TODO: mention standard metrics and evaluation methodologies in RC (for recommended tasks)
+
+The tasks environment in learning systems often differ significantly
+  from the real-world environment,
+  e.g by using blocks instead of text
+  and other aspects mentioned in section \ref{sec:strategies-for-easier-learning}.
+This makes evaluation harder, because while the collected data on which we
+  evaluate the system comes from the system itself,
+  ultimately students leave this simplified environment
+  and the performance outside the learning system is the important criterion.
+
+% This issue is mentioned in \cite{challenges-of-blocks-based-environments},
+% by Werntrop and Wilensky
+% in the context of proper evaluation of block-base programming environments.
+
+% TODO: this relates to next subsection on ultimate goal vs. proxy metrics
+% TODO: also consider short discussion on high-level vs. low-level goals
+% (also known as mission/purpose/vision vs goals, or goals vs means
+% and discussion on goals vs metrics
+
+
+
+\subsection{Ultimate and Proxy Metrics}
+
+TODO: explain possible metrics derivation: -- with specific example of learning programming
+1. from the ultimate goal -- but make it precise to make it evaluable (if had all the data we need)
+2. proxing 1 to make it measurable in the long term (AB experiment)
+3. proxing 2 to make it measurable in the short term (live evaluation)
+4. proxing 3 to make it work with offline data (to learn hyperparameters + for holdout evaluation)
+5. proxing 4 to make it differentiable function (to guide learning, ie. for updates after new s-t interaction)
+
+
+
+\subsection{Perceived Flow}
+
+Instead of using objective (factual, measured) data (such as solving time),
+we can ask students to provide explicit ``rating'' (subjective/perceived difficulty),
+  e.g. by selecting tags after solving a task,
+  such as ``too easy'', ``too difficult'', `just right''
+  (or possibly even more specific such as ``boring'', ``weird'', ``fun'').
+Advantage: flow looks as a good proxy metric to optimize.
+Disadvantages:
+  bother students with another questions,
+  takes time (but this is negligible comparing to solving programming task),
+  inaccurate (noise depending on the mood etc.)
+
 
 
 \section{Iterative Improvement}
 \label{sec:iterative-improvement}
 
-TBA
+TODO: explain importance of offline analysis and monitoring;
+TODO: the term ``human in the loop'' \cite{stupid-tutoring-systems-intelligent-humans}
+
+TODO: AB experiments
+
+TODO: importance of iterative improvement, rule of the loop;
