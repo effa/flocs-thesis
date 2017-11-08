@@ -4,7 +4,6 @@
 % TODO:
 % - incorporate other notes from my/thesis gdoc
 % - inspiration from relevant articles
-% - check first paragraph using last-year feedback
 % - add references for provided examples (playing chess, autonomous car, ...)
 
 Artificial intelligence proved to be a mighty tool
@@ -21,12 +20,12 @@ In the existing systems (\ref{sec:existing-systems}),
 As a result, the progress is necessarily too slow for some students,
   who could skip some of the tasks,
   while being too fast for others,
-  which could highly benefit from solving many more similar tasks.
+  who could highly benefit from solving many more similar tasks.
 Artificial intelligence can be used to personalize
   the sequence of tasks for every student.
-By giving a student a task of the optimal difficulty
+By giving the student a suitable task
   -- neither too easy, nor too difficult --
-  it can help the student to get into a state of flow
+  it can help the student to get into the state of flow
   (\ref{sec:motivation.challenge}).
 
 In addition to choosing the most suitable task for given student,
@@ -46,8 +45,8 @@ For instance, Map Outlines,
 It has been used by tens of thousands of students
   and online experiments have confirmed
   that the adaptivity of the system helps to improve a learning outcome
-  (TBA: ref - see gdoc).
-In addition to the geography, similar adaptive web applications
+  \ref{alg.evaluation-geography}.
+In addition to geography, similar adaptive web applications
   for learning anatomy, biology, elementary mathematics and Czech grammar
   were developed by the research group in recent years
   (TBA: ref/links).
@@ -58,13 +57,13 @@ In addition to the geography, similar adaptive web applications
 For the system to be adaptive, models of
   a student skill, task difficulty, and student-task interaction
   need to be designed, implemented and evaluated using collected data.
-Purpose of these models is to predict the probability that a given student
+The purpose of these models is to predict the probability that a given student
   would solve a given task
   and also the time the student would need to complete the task.
 
 Various approaches for student models have been proposed.
-For instance, each attempt of a student to solve a task can be interpreted
-  as a match between the student and the task and after the match ends,
+For instance, each attempt to solve a task can be interpreted
+  as a match between the student and the task and after this match ends,
   skill and difficulty estimates are revised.
 If the student solves the task quickly, their skill will be increased
   and the difficulty of the task will be decreased.
@@ -198,8 +197,8 @@ Student models are used by an \emph{instructional policy} to recommend
 In spite of having all the predictions about success probabilities
   and time estimates in hand,
   task recommendation is not an easy task.
-It is not clear what the optimal difficulty means and it may vary
-  for different students, domains or types of problems.
+First, it is not clear what the optimal difficulty even means.
+Second, it may vary for different students, domains or types of problems.
 Furthermore, optimal difficulty is not the only criterion to be considered.
 For instance, diversity of tasks is important to keep students interested.
 No principled techniques for task recommendation have been developed yet;
