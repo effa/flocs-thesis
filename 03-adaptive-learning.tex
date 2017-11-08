@@ -64,6 +64,7 @@ Sections \ref{sec:task-recommendation} and \ref{sec:mastery-learning}
 Finally, section \ref{sec:metrics-and-evaluation} discusses how to evaluate
   different models or even whole learning systems.
 
+
 \section{Student Modeling}
 \label{sec:student-modeling}
 
@@ -89,58 +90,104 @@ On the contrary, if the student fails to solve the task or if takes them too lon
 \label{sec:student-modeling.data}
 
 To learn model parameters, such as difficulty of individual tasks, some data is needed.
-Different models require different type and amount of data.
-Some data about tasks are independent of students and can be used
-  for initial task difficulty estimates.
-In addition to task statements, sample solutions and expert labels (e.g. levels)
-  are sometimes provided by an instructor for each task.
+What data is needed and how much differs across models.
+Some data about tasks are independent of students;
+therefore, they can be obtained in advance,
+which can be useful for initial task difficulties estimates.
+Three types of task data are distinguished:
 
-Once the task is deployed in the running system,
-  rich data can be collected from each interaction between a student and the task:
 \begin{itemize}
-  \item whether solved,
-  \item solving time,
-  \item number of attempts,
-  \item number of clicks,
-  \item program snapshots,
-  \item explicit student' evaluation (or labels). % TODO: needs explanation
+  \item task statement (including name and world description),
+  \item sample solution (or multiple solutions),
+  \item expert labels (e.g. covered concepts).
 \end{itemize}
 
-% TODO: mention that times behave log-normal; and # clicks coveys similar
-% information (Klusacek 2014)
-% TODO: mention different granularity levels for taking program snapshots
+Task statements are always available,
+  because they are needed to present tasks to students.
+However, obtaining sample solutions and expert labels
+  incurs additional costs for a new system.
+% TODO: Note that quite often, systems needs sample solutions and some labels
+%       for the presentation purposes anyway.
+Moreover, they can be noisy and imperfect.
+For example, an annotator can forget to include some labels
+  or even make a mistake in the sample solution.
+
+Once the task is deployed in the running system,
+  rich data can be collected from each interaction between a student and a task:
+\begin{itemize}
+  \item whether the task was eventually solved,
+  \item solving time,
+  \item number of clicks, number of code executions,
+  \item program snapshots (e.g. after each code change),
+  \item rating or labels provided by the student (e.g. perceived difficulty).
+\end{itemize}
+
+% TODO: also consider to include hints in the list
+% TODO: mention different granularity levels for taking program snapshots (+cite)
 
 \subsection{Item Response Theory}
 \label{sec:irt}
 
-TODO: explain IRT
+The simplest version of item \emph{item response theory} \cite{irt-visual-guide}
+  models each student by a one-dimension skill $s$,
+  and each task by a one-dimension difficulty $d$.
+It assumes that the probability of a student with skill $s$
+  successfully solving a task with difficulty $d$
+  is given by the following function:
+  \begin{equation}\label{eq:logistic}
+  P(s, d) = \frac{1}{1 + e^{-(s - d)}}
+  \end{equation}
 
-%\subsection{Problem Response Theory}
-%\label{sec:problem-response-theory}
+% TODO: mention 2-parameter model (explain discrimination parameter)
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[domain=-2:4, smooth, samples=20, scale=1]
+  \draw [thick, ->] (-2,0) -- (4,0) node [below right] {$s$};
+  \draw [thick, ->] (0,0) -- (0,2.5) node [left] {$P(s,d)$};
+  \draw [thick] (-0.1,1) node [left] {$0.5$} -- (0.1,1);
+  \draw [thick] (-0.1,2) node [left] {$1$} -- (0.1,2);
+  \draw [thin, dashed] (0,2) -- (4,2);
+  \draw [thin, dashed] (0,1) -- (1,1) -- (1, 0);
+  \draw [thin, dashed] (-0.57,2) -- (-2,2);
+  \draw [thick] (1,0.1) -- (1,-0.1) node [below] {$d$};
+  \draw [very thick] plot (\x, {2 / (1 + exp(1 - \x))});
+  \end{tikzpicture}
+  \caption{One-parameter Unidimensional Logistic Model}
+  \label{fig:logistic-model}
+\end{figure}
 
-Classical IRT was originally developed for knowledge testing
-  and so it contains some strong assumptions which does not hold for learning programming.
-First, it assumes a single constant skill, and
-second, it only deals with correctness (probability of success), not solving times.
-However, programming skill seems to be multidimensional;
+This basic model was originally developed for a simple knowledge testing
+  and therefore it assumes a single constant skill.
+However, programming skill is multidimensional;
   for example, one student can be proficient with functions and struggle with loops,
   while another student can master loops and struggle with functions.
-Furthermore these skills are changing significantly during interaction with the system,
-  at least in ideal case -- because learning (not testing) is the objective.
+Furthermore, these skills should be ideally changing significantly during
+  the interaction with the system, because students are learning.
+% TODO: + we would like to work with solving times (because we want ideally
+% all interactions to end with solving a task and the time is what gives us
+% the information about the skill + it has better interpretation and can be
+% shown in the user interface... "In addition, predicting solving times
+% instead of probability of success would make more sense..."
 
-IRT can be extended to address these issues.
-To predict problem solving times instead of probability of success
-  \emph{Problem Response Theory} (PRT)
-  assumes an exponential relationship between a problem solving skill
-  and the time to solve a problem  % TODO: explain + formula
-  \cite{alg.problem-response-theory}.
+
+Item response theory can be extended to overcome these limitations.
+\emph{Problem Response Theory}
+\cite{alg.problem-response-theory, pelanek-student-modeling-times}
+% TODO: only cite the more relevant paper (or extend this section and cite both
+% on relevant places)
+incorporates both multidimensional skill and learning
+and it predicts problem solving times instead of probability of success.
+It assumes an exponential relationship between a problem solving skill
+and the time to solve a problem.
 % TODO: Add note that the assumption of exponential relationship is justified
 % by observed solving solving times distribution and it is also intuitively
   % plausible - multiplicative nature of solving times.
 
-Similarly, multidiminsional skill and learning can be incorporated
-  \cite{pelanek-student-modeling-times}.
-% TODO: details and formulas
+%% TODO: mention parameters estimation
+%The model parameters (skills and difficulties) can can be estimated from data
+%  using one of the \emph{maximum likelihood estimation} algorithms
+%  \cite{irt-theory-and-practice}.
+
 
 \subsection{Elo}
 \label{sec:elo}
@@ -163,6 +210,10 @@ Even on the elementary levels, loops, conditional commands and functions
   can be taught in any order
   and it is perfectly possibly to master one of these skills,
   while struggle with the others, or even not been introduced to them.
+
+%However, programming skill seems to be multidimensional;
+%  for example, one student can be proficient with functions and struggle with loops,
+%  while another student can master loops and struggle with functions.
 
 As we mentioned in sections \ref{irt} and \ref{elo},
   both IRT and Elo models can be extended to work with multidimensional skills.
