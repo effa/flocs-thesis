@@ -31,25 +31,38 @@ By giving the student a suitable task
 In addition to choosing the most suitable task for given student,
   artificial intelligence has also other possible uses in learning systems,
   for example automatic hints generation \cite{generating-hints}
-  or skill visualization (TBA: ref).
+  or skills visualization (TBA: ref).
 Furthermore, artificial intelligence techniques can be used
   to analyze collected data offline
   and, for example, detect problematic tasks
   or suggest how to group tasks into categories (TBA: ref).
 
-% TODO: Consider to remove (or add refs)
 Adaptive learning systems have been already successful in some domains.
-For instance, Map Outlines,
+For instance, Map Outlines%
+  \footnote{Available at \url{https://outlinemaps.org}.},
   developed by Adaptive Learning research group at Masaryk University,
   is an intelligent web application for learning geography.
 It has been used by tens of thousands of students
   and online experiments have confirmed
-  that the adaptivity of the system helps to improve a learning outcome
-  \ref{alg.evaluation-geography}.
+  that the adaptivity of the system helps to improve the learning outcome
+  \cite{alg.evaluation-geography}.
 In addition to geography, similar adaptive web applications
-  for learning anatomy, biology, elementary mathematics and Czech grammar
-  were developed by the research group in recent years
-  (TBA: ref/links).
+  for learning anatomy%
+  \footnote{Available at \url{https://practiceanatomy.com}.},
+  biology%
+  \footnote{Available at \url{https://poznavackaprirody.cz} (in Czech only).},
+  elementary mathematics%
+  \footnote{Available at \url{https://matmat.cz} (in Czech only).},
+  and Czech grammar%
+  \footnote{Available at \url{https://umimecesky.cz} (in Czech only).},
+  were developed by the research group in recent years.
+
+Section \ref{sec:student-modeling} presents how to model students
+  in the context of learning programming.
+Sections \ref{sec:task-recommendation} and \ref{sec:mastery-learning}
+  then describe how to use these models to make a learning system adaptive.
+Finally, section \ref{sec:metrics-and-evaluation} discusses how to evaluate
+  different models or even whole learning systems.
 
 \section{Student Modeling}
 \label{sec:student-modeling}
@@ -72,7 +85,7 @@ On the contrary, if the student fails to solve the task or if takes them too lon
 % TODO: this is called elo -> in detail in section x.y, other models a, b, c in sections z, z, z)
 
 
-\section{Data}
+\subsection{Data}
 \label{sec:student-modeling.data}
 
 To learn model parameters, such as difficulty of individual tasks, some data is needed.
@@ -97,12 +110,12 @@ Once the task is deployed in the running system,
 % information (Klusacek 2014)
 % TODO: mention different granularity levels for taking program snapshots
 
-\section{Item Response Theory}
+\subsection{Item Response Theory}
 \label{sec:irt}
 
 TODO: explain IRT
 
-%\section{Problem Response Theory}
+%\subsection{Problem Response Theory}
 %\label{sec:problem-response-theory}
 
 Classical IRT was originally developed for knowledge testing
@@ -129,7 +142,7 @@ Similarly, multidiminsional skill and learning can be incorporated
   \cite{pelanek-student-modeling-times}.
 % TODO: details and formulas
 
-\section{Elo}
+\subsection{Elo}
 \label{sec:elo}
 
 TODO: explain elo (? from introductory paragraph?) \cite{alg.elo}
@@ -139,7 +152,7 @@ Advantages of the Elo models are their simplicity, flexibility,
 online-computation and reasonably good performance.
 
 
-\section{Concepts}
+\subsection{Concepts}
 
 % TODO: fix and mention used terminology: concept vs. skill
 
@@ -307,8 +320,10 @@ Disadvantages:
 
 
 
-\section{Iterative Improvement}
+\subsection{Iterative Improvement}
 \label{sec:iterative-improvement}
+
+% TODO: provide more details -> extend to a section
 
 TODO: explain importance of offline analysis and monitoring;
 TODO: the term ``human in the loop'' \cite{stupid-tutoring-systems-intelligent-humans}
