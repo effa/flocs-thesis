@@ -6,12 +6,12 @@
 % - inspiration from relevant articles
 % - add references for provided examples (playing chess, autonomous car, ...)
 
-Artificial intelligence proved to be a mighty tool
-  for tackling difficult algorithmic tasks,
-  from playing chess to driving an autonomous car.
+From playing chess to driving an autonomous car,
+  artificial intelligence proved to be a mighty tool
+  for tackling difficult algorithmic tasks.
 The power of artificial intelligence can be also used
   to develop a personalized adaptive system for learning programming.
-Such system should create an optimal learning experience for each student
+Such system would create an optimal learning experience for each student
   by providing them with problems of difficulty matching their skill,
   so that the student stays challenged and interested in solving them.
 
@@ -20,7 +20,7 @@ In the existing systems (\ref{sec:existing-systems}),
 As a result, the progress is necessarily too slow for some students,
   who could skip some of the tasks,
   while being too fast for others,
-  who could highly benefit from solving many more similar tasks.
+  who could highly benefit from solving a couple of other similar tasks.
 Artificial intelligence can be used to personalize
   the sequence of tasks for every student.
 By giving the student a suitable task
@@ -33,8 +33,8 @@ In addition to choosing the most suitable task for given student,
   for example automatic hints generation \cite{generating-hints}
   or skills visualization (TBA: ref).
 Furthermore, artificial intelligence techniques can be used
-  to analyze collected data offline
-  and, for example, detect problematic tasks
+  to analyze collected data offline.
+Such analyses can reveal problematic tasks,
   or suggest how to group tasks into categories (TBA: ref).
 
 Adaptive learning systems have been already successful in some domains.
@@ -70,7 +70,7 @@ Finally, section \ref{sec:metrics-and-evaluation} discusses how to evaluate
 
 For the system to be adaptive, models of
   a student skill, task difficulty, and student-task interaction
-  need to be designed, implemented and evaluated using collected data.
+  need to be designed, implemented, and evaluated using collected data.
 The purpose of these models is to predict the probability that a given student
   would solve a given task
   and also the time the student would need to complete the task.
@@ -80,7 +80,7 @@ The purpose of these models is to predict the probability that a given student
 \label{sec:student-modeling.data}
 
 To learn model parameters, such as difficulty of individual tasks, some data is needed.
-What data is needed and how much differs across models.
+What data and how much data is needed differs across models.
 Some data about tasks are independent of students;
 therefore, they can be obtained in advance,
 which can be useful for initial task difficulties estimates.
@@ -190,15 +190,15 @@ The model parameters (skills and difficulties) can can be estimated from the dat
 The Elo model \cite{alg.elo}
   extends the logistic model presented in section \ref{sec:irt}
   to capture changing knowledge.
-The model is inspired by the rating of chess players \cite{elo-rating}.
-It interprets each attempt  to solve a task
-  as a ``match'' between the student and the task
-  and after this match ends, skill and difficulty estimates are revised.
+Inspired by the rating of chess players \cite{elo-rating},
+  the model interprets each attempt  to solve a task
+  as a ``match'' between the student and the task.
+After this match ends, skill and difficulty estimates are revised.
 
 If the student solves the task faster than expected by the model,
-  their skill is increased and the difficulty of the task is decreased.
+  their skill is increased and the difficulty estimate of the solved task is decreased.
 On the contrary, if the student fails to solve the task or if takes them too long,
-  their skill is decreased and the difficulty of the task is increased.
+  their skill is decreased and the difficulty estimate of this task is increased.
 
 % TODO: formulas (for time-variant of elo)
 % TODO: mention differnet updates for tasks (exponentially decayed) and
@@ -217,23 +217,22 @@ The main advantage of using the Elo model is its simplicity, flexibility,
 % models
 % TODO: fix and mention used terminology: concept vs. skill
 
-A lot of research in the field of adaptive learning
+A vast amount of research in the field of adaptive learning
   restricts its attention to a one-dimensional skill.
 This assumption is reasonable for many logic puzzles (e.g. sudoku);
-however, solving programming tasks requires diverse skills.
-Even in the introductory programming, loops, conditional commands and functions
-  can be taught in any order
-  and it is perfectly possibly to master one of these skills,
-  while struggle with the others, or even not been introduced to them.
+however, solving programming tasks requires multiple diverse skills,
+  such as loops, conditional commands, or functions.
+It is possible to master loops while struggling with functions,
+  and vice versa.
 
-As we mentioned in sections \ref{sec:irt} and \ref{sec:elo},
+As mentioned in sections \ref{sec:irt} and \ref{sec:elo},
   both the IRT and Elo models can be extended to work with multidimensional skills.
 % TODO: However, the way they compose multiple skills into a single prediction
 % is not completely justified / can differ depending on domain/skills (e.g.
 % adding skills vs taking best/worse)
 Although modeling multiple skills seems useful,
   there is a trade-off between the complexity of the model (number of skills)
-  and how well (or how fast) can be the parameters estimated.
+  and how well (or how fast) the parameters can be estimated.
 More parameters require more data and time for the estimates to converge.
 % TODO: which is especially concern for students; 1. predictions needed
 % immediately for new students (no/little data), 2. students' skills are
@@ -269,9 +268,9 @@ Having DAG of concepts then allows to model students using Bayes networks
 Student models are used by an \emph{instructional policy} to recommend
   the most suitable task for a student.
 In spite of having all the predictions about success probabilities
-  and time estimates in hand,
+  and time estimates available,
   task recommendation is not an easy task.
-First, it is not clear what the optimal difficulty even means.
+First, it is not clear what difficulty level is optimal.  % TODO: example (75 % of success etc.)
 Second, it may vary for different students, domains or types of problems.
 Furthermore, optimal difficulty is not the only criterion to be considered.
 For instance, diversity of tasks is important to keep students interested.
@@ -284,7 +283,7 @@ Task recommendation is not a necessary requirement
 Student models can be utilized by other means to achieve personalized behavior,
   e.g. in mastery learning (section \ref{sec:mastery-learning}).
 The system can also just provide students with predicted solving times
-  and let them to choose the next task they want to tackle.
+  and let them to choose the next task they want to solve.
 
 Showing predictions can be already perceived as a very mild form of recommendation.
 Indeed, recommendations can range from \emph{soft} to \emph{hard}.
@@ -292,7 +291,7 @@ Soft recommendations can be achieved either by
   ordering tasks according to suitability,
   filtering and only showing a subset of tasks,
   or showing suggestion such as
-  ``too easy'', ``too difficult'' and ''ready to tackle'' next to each task.
+  ``too easy'', ``too difficult'' and ''ready to attempt'' next to each task.
 For example, suggestions in the form of traffic-light colors
   are used in the system described in \cite{its-programming}.
 The system can be more strict and show only a single recommended task,
