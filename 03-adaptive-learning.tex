@@ -301,11 +301,15 @@ The system can be more strict and show only a single recommended task,
 \bigskip
 \emph{TODO:\\details about techniques (heuristics, methods) for selecting single best task}
 
+% TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
+
 \section{Mastery Learning}
 \label{sec:mastery-learning}
 
 \emph{TODO:\\describe mastery learning + usage of student models%
 (to show the progress and to determine that the student already achieved the mastery)}
+
+% "fixed outcome, varied time" (vs. classical education: fixed time, varied outcome)
 
 % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
 
@@ -319,23 +323,124 @@ Ideally, the system should also allow to easily change various conditions
   for subsets of students and hence perform controlled online AB experiments.
 
 
+% compared to other RS, evalution is more difficult,
+  % - what we care about (= learning) is what is in student's head
+  % (note on behavioral vs. cognitive view?)
+  % -> only indirect measures (proxies)
+
+% terminology:
+  % - metric = function from the space of models to real numbers (note that it's different from the mathematical "metric" which assigns a number to a pair of objects and must satisfy some properties) (also needs to specify the desired direction to be useful..)
+  % - objective = a metric which is optimized by an algorithm (often: we monitor multiple metrics, but only optize a single metric by a single algorithm; reasons for not opitmizing a metric: difficult/infeasible to optize, or we are not sure if this is actually what we want to optimize)
+
+
+% types of research methods
+  % experimental ("onlne experiments") - using live data
+  % non-experimental ("offline experiments") - using historical data
+  % (( formal derivations ...))
+  % simulations (simulated experiments) - using simulated data
+
+% subsection on simulated experiments:
+  % - choose model + add noise -> observe
+  % - sensitivity analysis - which parameters are important (leverage points)
+  % - cons: "results are just consequence of used assumptions"
+
 \subsection{Metrics for Predictions}
 
 \emph{TODO}
 
 %TODO: data we need -- this is simple: we can collect the objective solving times and compare
 %with predictions (there is some noise, because of students taking breaks, cheating, etc., but should be ok)
-%
-%TODO: mention standard metrics and evaluation methodologies in ML (for
-%predicted times, RMSE vs. MAE etc.)
+
+% methodology: Train-Test split of collected data
+% -> train on train-set -> predict for test-set -> compare
+% - K-fold cross-validation - on students ok ("user stratified"), but:
+% - make sure to predict future from the past
+% - REF: details in Radek's paper on student models
+
+% types:
+% - binary: solve/not
+% - continous: times, flow
+
+% predictied times (so we have actual and predicted times)
+% - should we average per student/task/student+task/nothing?
+% - usually: error on single interaction -> sum of error
+% - MAE (difference in absolute value)
+% - RMSE -> give more emphasis on larger mistakes
+% (note: log-likelihood is not discussed for continous predictions,
+% because it's under common assumption of normally distributed noise,
+% it's equivalent to RMSE - see Bishop, 2006)
+% - (correlation, cosine similarity?)
+% TBA: include formulas (unified notation)
+% recommended defualt choice: RMSE
+
+
+% for binary predictions (solve?, too-difficult?)
+% - for binary/binarized predictions: accuracy, precision (precision@n), recall, F1 (harmonic mean of precision and recall), confusion matrix
+% - for probabiity predictions:
+%   - MAE is bad! (ref Radek's example) \cite{pelanek-evaluation-student-models}
+%   - RMSE - as above
+%   - log-likelihood (TBA: also include derivation from MLE principle? or REF)
+%     likelihood (product ...) -> log -> sum ...
+%     (note that higher is better (as opposed to RMSE), not averaged -> decreases with the size of data set; negative values)
+%   - MAE, RMSE and LL - sum of individual errors
+% TODO: diagram: comaprison of these individual errors, see pelanek-evaluation-student-models, p.6
+
+% 2nd category: qualitative understanding of errors (? more suitable for discrete states)
+% --> accuracy etc., see below ("qualitative metrics")
+% not appropriate for student modeling (treats small and large divergences same...)
+
+% 3rd catgory: assesing ranking of predictions
+%   - AUC - explain; does't depend on a particular threshold - pros/cons
+%         - intution: probability that if we pick 2 random points with 1 and 0 labels, the one with label 1 will be assigned higher prediction than the other one
+%         - not useful for strongly unbalanced classes (will be nearly 1 for a constant classifier predicting the majority class)
+%   - another disadvantage: considers all thresholds, but some are irrelevant in practice (they will definitely not used) -> make sense to limit the thresholds ("global objectives")
+%     - only cconsiders ordering -> if all predictions are multiplied by a constant, AUC will be same
+%   -> good for intrinsically classification problems, but not for student modeling (?) \cite{pelanek-evaluation-student-models}
+%   - AUC-PR - definition + better than AUC for unbalanced classes
+% recommended default choice: RMSE
+
+
+% issue of averaging: global / per user / per item?
+
+\begin{table}
+  \centering
+  \caption{Most often used metrics based on probabilistic understanding of
+    errors. For MAE and RMSE lower is better, for LL higher is better.
+    TODO: explain notation}
+  \label{tab:metrics}
+  \begin{tabular}{lll}
+    \toprule
+    Mean Absolute Error & MAE & $\frac{1}{n} \sum_{i=1}^n |a_i - p_i|$ \\
+    Root Mean Square Error & RMSE & $\sqrt{\frac{1}{n} \sum_{i=1}^n (a_i -
+      p_i)^2}$ \\
+    Log-likelihood & LL & $\sum_{i=1}^n a_i\log(p_i) + (1-a_i)\log(1-p_i)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+% sometimes, these metrics are directly used as an objective during parameters fitting
+% (examples: OLS minimizing MSE, logistic regression minimizing log-likelihood ?)
 
 
 \subsection{Metrics for Recommendation}
 
 \emph{TODO}
 
+% good predictions are important, but at the end we care about the performance on some other task,
+% for example recommendation -> need to measure performance of recommendation
+% + don't apply changes improving predictions if they degrade performance on recommendation
+
 %TODO: what data to use? much less clear than  for predictions
-%
+% - manual labelling? (what task should be recommended to this student) -> very demanding (and probably error-prone)
+% - historical - collected data: con: only for the task we actually recommended (for this we can say, if the student has clicked on the recommendation and solved the task in a reasonable time)
+% - process: train-test split (with past-future consideration)
+%   -> train recommender on the train-set -> compare to the actual actions
+%   (e.g. did the student selected/solved the task we recommended to them)
+%   - drawback: student usually select the task which was recomended to them,
+%     that doesn't mean it was good and that they would choose it themselves
+%   ( -> can limit our data only to cases where the student decided themself x just another data bias?)
+
 %TODO: mention standard metrics and evaluation methodologies in RC (for recommended tasks)
 %
 %The tasks environment in learning systems often differ significantly
@@ -357,26 +462,118 @@ Ideally, the system should also allow to easily change various conditions
 % and discussion on goals vs metrics
 
 
+% mention ranking metrics, such as topK
+% - why: frist places are important, the last are not (because only the items on first places get recommended)
+% - ranking metrics: Spearman correlation coefficient, half-life utitily, liftindex, discounted cumulative gain, average precision (sounds similar to AUC-PR...?)
+
+
+% important properties x but harder to measure than simple accuracy:
+% e.g: confidence, diversity, utility, robustness
+% explain why: e.g. diversity - if we show multiple recommended tasks, they should be diverse, otherise we could have shown just one (+ diverse from the previous task ... in case the student solved the last task withou a problem) --> our current item-similarity research
+
+\subsection{Feedback Loops}
+
+\emph{TODO}
+
+% big issue in recommendation systems in general
+% TBA: give an examle (including the resulting problem)
+%   - we only collect data on what we recommend -> bias
+% REF: Google Rules of ML 36
+
 
 \subsection{Ultimate and Proxy Metrics}
 
 \emph{TODO}
 
 %TODO: explain possible metrics derivation: -- with specific example of learning programming
-%1. from the ultimate goal (vision, mission) -- but make it precise to make it evaluable (if had all the data we need)
+%1. from the ultimate goal (vision, mission, purpose, ultimate objective) -- but make it precise to make it evaluable (if had all the data we need)
 %2. proxing 1 to make it measurable in the long term (AB experiment)
 %3. proxing 2 to make it measurable in the short term (live evaluation)
 %4. proxing 3 to make it work with offline data (to learn hyperparameters + for holdout evaluation)
 %5. proxing 4 to make it differentiable function (to guide learning, ie. for updates after new s-t interaction)
 
+% Ultimate objective decomposition/proxying:
+% - need to start somewhere (position/paradigm): the higher level, the more difficult the derivation of metrics we will be actually able to use will be, but also it's important to make sure that we are doing a good thing
+% But: "there is often no "true" objective" -- Google Rules of ML, 39
+% Ultimate objective: "make the world a better place (as much as possible?)" (TBA: rephrase)
+% -> (...) long-term increase in algorithmic-problem-solving skill summed over all people
+% -> (...) having many satisied students who mastered elementary programming quickly while having fun (integrated over long-period of time, possibly infinite sum with exponential discount as in RL)
+% -> "sum exponentialy-time-decayed flow-minutes over all users" [this is already long-term measurable, but requires asking on flow / or furhter proxying]
+
+% Ultimate objectives are important, but impossible (or too difficult) to measure
+% -> that's why we use proxy metrics:
+% example: if the student is in flow, they will learn; flow is still difficult to measure,
+% but time spent by solving tasks can be a good proxy
+
+% Long-term live evaluation (for AB experiments - or just as reporting metrics)
+% - can be indirect as popposed to the immediate-evalution, ie. measuring aggregate effect of
+%   all recommendations during the period
+% - number of students who solved at least 10 tasks from the final level
+%   (or at least one from each level)
+% - total number of credits earned? (not well-defined unit)
+% - daily/monthly number of students /  number of students solving at least one task
+%   (terminology DAU = 1 day active users, 30DAU)
+% - daily number of solved tasks (-> would lead to recommendation of short tasks)
+% - total time spent on our site by all students (-> but we want them to practice not just be on our site)
+% - total time spent by solving tasks (-> but we want them to learn quickly?)
+% - total time spent in flow (requires measuring/proxying flow)
+% - direct: number/ratio of times the recommendation button was clicked
+%   + and followed by a succesfully solved task
+%   + and not marked as too-easy/difficult/boring/weird
+% - proportion of returning students (?)
+
+
+% Online experiemnts -> AB testing
+% -> randomized control trial
+% -> diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
+% - needs a metric for comparison
+% - there will be always a differnce -> needs to asses statistical significance
+% (is the difference due to changed condition or just because of random noise)
+% -> t-test and similar (but mind their assumpations!) -> p-value + alpha-level -> decision
+% -> add error bars to measured metrics: e.g. 95% confidence interval / standard eror / standard deviation / range
+% (+ effect size)
+
+% Short-term live evalution
+% - these need to be directly attributable to the recommendation action
+% (ie. we can link each recommendation to some error, then sum/average)
+% showed recommendation
+% -> was it clicked?
+% -> and solved
+% -> in some reasonable time (e.g. 1-15 minutes)
+% -> and not marked as too-easy/difficult/boring/weird
+
+
+% Multiple objectives dilemma (the one we will directly optimize):
+% - not so important when deploying a new ML system:
+% - REF Google Rules of ML, rule 12: "Don’t overthink which objective you choose to directly optimize. (...) early in the machine learning process, you will notice them all going up, even those that you do not directly optimize."
+% (example: we might care about daily number of students who solved at least 1 task, or total number of tasks solved during a day, or total number of clicks on our site etc. Optimizing one of them will most likely lead to optimizing the others as well, at least at the beginning - all relavant metrics will go up)
+% Rule 13: "Choose a simple, observable and attributable metric for your first objective."
+
+% enjoyment vs. learning metric
+% - enjoyment is easier to measure (length of interaction), but is not we we ultimatelly care about
+% (maximizing would lead to pure enjoyment without learning)
+% - and pure learning is also not enough, because intensive learning is not worth if the students lose interest and leave the site --> need for balance (as always...) ("principle of balance")
+% measuring enjoyment -> survival analysis
+% measuring learning
+% -> learning curves
+% - pretests and postests
+% - or only postests (to compare different models, AB experiment)
+
+% live evaluation:
+% - important
+% - issue: population shift (violation of the same train-test distribution assumption)
+
+
+% Danger: proxy metrics vs."the ultimate health of the system"
+% see Goole Rules of ML, rule 39
 
 
 \subsection{Perceived Flow}
 
 \emph{TODO}
 
-%Instead of using objective (factual, measured) data (such as solving time),
-%we can ask students to provide explicit ``rating'' (subjective/perceived difficulty),
+%Instead of using objective ("quantitative", "factual", "measured") data (such as solving time),
+%we can ask students to provide explicit ``rating'' ("qualitative","subjective") (e.g. perceived difficulty),
 %  e.g. by selecting tags after solving a task,
 %  such as ``too easy'', ``too difficult'', `just right''
 %  (or possibly even more specific such as ``boring'', ``weird'', ``fun'').
@@ -386,6 +583,15 @@ Ideally, the system should also allow to easily change various conditions
 %  takes time (but this is negligible comparing to solving programming task),
 %  inaccurate (noise depending on the mood etc.)
 %
+
+% Other qunatitative feedback: free feedback (via feedbck button or form, talking to people after formal/informal user testing) - extremelly useful as well (TODO: give some examples)
+
+% flow:
+% - principel of balance: in the real life, many things (maybe all) are about
+%   finind a balance, not about maximizing/minimazing something -> flow is a
+%   good demonstration of this principal
+% - not tangible (needs some units and precise definition?)
+% - set e.g. 0 as optimal, negative as too easy, positve as too difficult
 
 
 \subsection{Iterative Improvement}
@@ -399,3 +605,22 @@ Ideally, the system should also allow to easily change various conditions
 %TODO: AB experiments
 %TODO: importance of iterative improvement, rule of the loop;
 %TODO: provide more details -> extend to a section
+
+% REF: Google Rules of ML 16: "Plan to launch and iterate"
+
+% Experimental framework
+% Google Rules of ML: "(...) an experiment framework, where you can group users into buckets and aggregate statistics by experiment, is important."
+
+
+% deployment of new model
+% - useful to measure delta from the previous model
+%   (how much the recommendations differ)
+%   (first on offline data, then live data)
+%   (REF: Google Rules of ML 24: "Measure the delta between models"
+
+
+% monitoring:
+% - implement and measure all many metrics - even those not used for model selection/optimization
+%   [REF: Google Rules of ML, Rule 2: "Before formalizing what your machine learning system will do, track as much as possible in your current system."]
+%   - why: might be useful in future; understand impact of the model (what significantly changes and what not)
+\cite[][Rule \#2]{google-ml-rules}
