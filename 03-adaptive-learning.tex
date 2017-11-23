@@ -316,12 +316,119 @@ The system can be more strict and show only a single recommended task,
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
 
-To decide if the adaptivity of the system increases the learning outcomes,
-  a suitable metric must be chosen and incorporated into the system,
-  for example using pre-tests and post-tests.
-Ideally, the system should also allow to easily change various conditions
-  for subsets of students and hence perform controlled online AB experiments.
 
+To decide if the adaptivity improves the quality of the learning system,
+  a suitable metrics must be chosen and evaluated.
+Metrics are also used for optimizing models,
+  first for parameters fitting, second for choosing hyperparameters
+  and third for selecting best possible model from a set of possible models.
+
+TODO: table/diagram showing goals hierachy and their usage:
+1. mission -> guid for long term objectives? (not measurable)
+2. long term objectives -> AB experiments
+3. live evaluation
+4. offline evalution
+5. etc.
+
+\subsection{Mission Statement}
+\label{sec:mission}
+
+There are hundreds of possible metrics that the system could measure
+and for different purposes, different metrics are used.
+To make sure that chosen metrics are not misleading,
+  they should be derived from the ultimate goal of the system,
+  which is sometimes also called \emph{mission}.
+
+Even the mission itself can be questioned
+  and should follow from a higher-level goal.
+Nevertheless, goals create an infinite hierarchy
+  and a starting point must be chosen from which
+  the lower-level goals are derived.
+A common example of such starting point
+  is a paradigm of maximizing the overall happiness integral in the population.
+% TODO: Without going into further philosophical discussions or attempts for precise definitions,
+%       ... we will just adopt this paradigm for the rest of this thesis.
+
+At first sight, a reasonable mission of a system for learning programming
+  is a long-term increase in algorithmic-problem solving skill in the popluation.
+However, other factors than skill should be considered as well.
+For example, how much are students happy, self-confident and motivated for further learning
+  can be possible even more important for the overall happiness in the population.
+% TODO: reformulate the above factors so that they relate to elementary programming;
+%       otherwise, we could achieve the mission by doing completely different system...
+In the \emph{Rules of Machine Learning}, Martin Zinkevich
+  points out that there is usually no best objective \cite[][Rule \#39]{google-ml-rules}.
+Thus, the complete mission is to achieve a balance between these factors
+  such ase happiness, self-confidence, self-motivation and problem-solving skill.
+% TODO: Rethink and improve.
+
+
+\subsection{Long Term Objectives}
+
+The huge disadvantage of the mission statements
+  is the simple fact that they are not measurable.
+To make informed decisions, measurable metrics are needed.
+Therefore, various proxy metrics are used,
+  which should be precisely formulated and measurable,
+  while still related as much as possible to the system mission.
+
+To elaborate on the mission from section \ref{sec:mission},
+  some long term objectives could be:
+
+\begin{enumerate}
+  \item Monthly number of satisifed students who mastered elementary programming quickly while having fun.
+  \item Sum of exponentialy-time-decayed flow-minutes. (TODO: explain)
+  \item TBA
+\end{enumerate}
+
+These metrics differ in the time and data they need for computing them.
+Instead of fixed length time frame (e.g. month)
+  it is also possible to formulate the metric as
+  an infinite sum over all future time moments,
+  but with an exponential discount over time.
+
+For use in online experiments, the time should be at most a few weeks.
+Of course, data must be measurable, ideally easily.
+In the case of flow-minutes, one way is to ask students for the percieved flow.
+Alternatively, the metric can be proxied further to obtain a one
+  which is more easily measured,
+  e.g. number of minutes spent by solving task which end with successfully solved task.
+
+\subsection{Live Evaluation}
+TBA
+
+
+\subsection{Offline Evaluation}
+TBA
+
+
+\subsection{Simulation Experiments}
+TBA
+
+
+
+
+
+
+
+
+
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+% -------------------------------------------------
+
+
+\subsection{Metrics for Predictions}
 
 % compared to other RS, evalution is more difficult,
   % - what we care about (= learning) is what is in student's head
@@ -492,19 +599,6 @@ Ideally, the system should also allow to easily change various conditions
 %4. proxing 3 to make it work with offline data (to learn hyperparameters + for holdout evaluation)
 %5. proxing 4 to make it differentiable function (to guide learning, ie. for updates after new s-t interaction)
 
-% Ultimate objective decomposition/proxying:
-% - need to start somewhere (position/paradigm): the higher level, the more difficult the derivation of metrics we will be actually able to use will be, but also it's important to make sure that we are doing a good thing
-% But: "there is often no "true" objective" -- Google Rules of ML, 39
-% Ultimate objective: "make the world a better place (as much as possible?)" (TBA: rephrase)
-% -> (...) long-term increase in algorithmic-problem-solving skill summed over all people
-% -> (...) having many satisied students who mastered elementary programming quickly while having fun (integrated over long-period of time, possibly infinite sum with exponential discount as in RL)
-% -> "sum exponentialy-time-decayed flow-minutes over all users" [this is already long-term measurable, but requires asking on flow / or furhter proxying]
-
-% Ultimate objectives are important, but impossible (or too difficult) to measure
-% -> that's why we use proxy metrics:
-% example: if the student is in flow, they will learn; flow is still difficult to measure,
-% but time spent by solving tasks can be a good proxy
-
 % Long-term live evaluation (for AB experiments - or just as reporting metrics)
 % - can be indirect as popposed to the immediate-evalution, ie. measuring aggregate effect of
 %   all recommendations during the period
@@ -592,6 +686,10 @@ Ideally, the system should also allow to easily change various conditions
 %   good demonstration of this principal
 % - not tangible (needs some units and precise definition?)
 % - set e.g. 0 as optimal, negative as too easy, positve as too difficult
+
+
+% if the student is in flow, they will learn; flow is still difficult to measure,
+% but time spent by solving tasks can be a good proxy
 
 
 \subsection{Iterative Improvement}
