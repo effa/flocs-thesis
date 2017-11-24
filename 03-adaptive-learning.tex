@@ -323,8 +323,8 @@ Metrics are also used for optimizing models,
   first for parameters fitting, second for choosing hyperparameters
   and third for selecting best possible model from a set of possible models.
 
-TODO: table/diagram showing goals hierachy and their usage:
-1. mission -> guid for long term objectives? (not measurable)
+TODO: table/diagram showing goals hierarchy and their usage:
+1. mission -> guide for long term objectives? (not measurable)
 2. long term objectives -> AB experiments
 3. live evaluation
 4. offline evalution
@@ -333,66 +333,95 @@ TODO: table/diagram showing goals hierachy and their usage:
 \subsection{Mission Statement}
 \label{sec:mission}
 
-There are hundreds of possible metrics that the system could measure
-and for different purposes, different metrics are used.
+There are hundreds of possible metrics that the system could measure.
+What metric to choose depends on the purpose of the evaluation,
+  which can range from guiding a parameters-fitting algorithm
+  to interpreting results of an AB experiment.
 To make sure that chosen metrics are not misleading,
-  they should be derived from the ultimate goal of the system,
+  they should reflect the ultimate goal of the system,
   which is sometimes also called \emph{mission}.
 
-Even the mission itself can be questioned
-  and should follow from a higher-level goal.
+Even the mission itself should reflect some higher-level goals.
 Nevertheless, goals create an infinite hierarchy
-  and a starting point must be chosen from which
+  and a starting point (called \emph{paradigm}) must be chosen from which
   the lower-level goals are derived.
-A common example of such starting point
-  is a paradigm of maximizing the overall happiness integral in the population.
+An example of such paradigm is
+  ,,effort to maximize the overall happiness in the population''.
 % TODO: Without going into further philosophical discussions or attempts for precise definitions,
 %       ... we will just adopt this paradigm for the rest of this thesis.
 
 At first sight, a reasonable mission of a system for learning programming
-  is a long-term increase in algorithmic-problem solving skill in the popluation.
+  is a long-term increase in algorithmic-problem solving skill in the population.
 However, other factors than skill should be considered as well.
-For example, how much are students happy, self-confident and motivated for further learning
-  can be possible even more important for the overall happiness in the population.
-% TODO: reformulate the above factors so that they relate to elementary programming;
-%       otherwise, we could achieve the mission by doing completely different system...
+For example, how much students enjoyed the time in the system,
+  how they are satisfied with their accomplishments,
+  or if they are motivated for further learning of programming;
+  all of these may play an important role for the overall happiness in the population.
 In the \emph{Rules of Machine Learning}, Martin Zinkevich
-  points out that there is usually no best objective \cite[][Rule \#39]{google-ml-rules}.
-Thus, the complete mission is to achieve a balance between these factors
-  such ase happiness, self-confidence, self-motivation and problem-solving skill.
-% TODO: Rethink and improve.
+  points out that there is no single best objective \cite[][Rule \#39]{google-ml-rules}.
+As a solution to this ,,multiple objectives dilemma'',
+  the mission can be formulated as achieving a balanced increase in all
+  of these important factors.
+Such formulation helps to remind developers of the system not not overfocus on one factor
+  in the cost of the others factors.
 
 
 \subsection{Long Term Objectives}
 
 The huge disadvantage of the mission statements
-  is the simple fact that they are not measurable.
-To make informed decisions, measurable metrics are needed.
+  is the fact that they are not measurable.
+To make informed decisions,
+  such as which of the two recommendation algorithms to prefer,
+  measurable metrics are needed.
 Therefore, various proxy metrics are used,
   which should be precisely formulated and measurable,
-  while still related as much as possible to the system mission.
+  but at the same time they should be related as much as possible to the system mission.
 
 To elaborate on the mission from section \ref{sec:mission},
-  some long term objectives could be:
+  a long term objective could be
+  ,,maximizing the number of students
+  who mastered elementary programming quickly while having fun''.
+To make this metric usable,
+  terms ,,mastering elementary programming'', ,,quickly'', and ,,having fun''
+  must be defined in a measurable way.
+While ,,achieving mastery in elementary programming quickly'' can be
+  formulated as an objective criterion
+  (e.g. ,,the student solved at least 5 tasks for each concept, each in less than 5 minutes''),
+  ,,having fun'' requires the system to ask students about their subjective feelings.
+% TODO: note that looking at the mission statement above,
+% it's not clear that there must be an objective mastery criterion
+% which should be achieved by all students
 
-\begin{enumerate}
-  \item Monthly number of satisifed students who mastered elementary programming quickly while having fun.
-  \item Sum of exponentialy-time-decayed flow-minutes. (TODO: explain)
-  \item TBA
-\end{enumerate}
+Furthermore, a time frame must be specified
+  -- usually a few weeks for AB experiments.
+While short time frames allows for faster decisions and hence more improvements over time,
+there are several reasons for making the time frame longer:
+\begin{itemize}
+  \item to collect enough data for statistical significant results,
+  \item to avoid seasonality effects (such as different user behavior during weekends),
+  \item to allow the system for more exploration, which improves long-term performance of the system.
+\end{itemize}
 
-These metrics differ in the time and data they need for computing them.
-Instead of fixed length time frame (e.g. month)
+Instead of a fixed length time frame
   it is also possible to formulate the metric as
-  an infinite sum over all future time moments,
-  but with an exponential discount over time.
+  an infinite sum over all future time moments.
+To make sure the infinite sum converges
+  the values in the sum must be carefully weighted with respect to time.
+  % TODO: elaborate
+  % + this also makes it possible to compute the min-max interval at any given time
 
-For use in online experiments, the time should be at most a few weeks.
-Of course, data must be measurable, ideally easily.
-In the case of flow-minutes, one way is to ask students for the percieved flow.
-Alternatively, the metric can be proxied further to obtain a one
-  which is more easily measured,
-  e.g. number of minutes spent by solving task which end with successfully solved task.
+
+% TODO Some other examples:
+% TODO (consider): add "Maximizing XY" to all metrics below
+%\begin{enumerate}
+%  \item Sum of exponentialy-time-decayed flow-minutes. (TODO: explain)
+%  \item TBA
+%\end{enumerate}
+
+%In the case of flow-minutes, one way is to ask students for the perceived flow.
+%Alternatively, the metric can be proxied further to obtain a one
+%  which is more easily measured,
+%  e.g. number of minutes spent by solving task which end with successfully solved task.
 
 \subsection{Live Evaluation}
 TBA
