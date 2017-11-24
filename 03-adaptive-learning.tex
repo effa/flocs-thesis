@@ -323,12 +323,12 @@ Metrics are also used for optimizing models,
   first for parameters fitting, second for choosing hyperparameters
   and third for selecting best possible model from a set of possible models.
 
-TODO: table/diagram showing goals hierarchy and their usage:
-1. mission -> guide for long term objectives? (not measurable)
-2. long term objectives -> AB experiments
-3. live evaluation
-4. offline evalution
-5. etc.
+%TODO: table/diagram showing goals hierarchy and their usage:
+%1. mission -> guide for long term objectives? (not measurable)
+%2. long term objectives -> AB experiments
+%3. live evaluation
+%4. offline evalution
+%5. etc.
 
 \subsection{Mission Statement}
 \label{sec:mission}
@@ -367,6 +367,7 @@ Such formulation helps to remind developers of the system not not overfocus on o
 
 
 \subsection{Long Term Objectives}
+\label{sec:long-term-objectives}
 
 The huge disadvantage of the mission statements
   is the fact that they are not measurable.
@@ -414,7 +415,7 @@ To make sure the infinite sum converges
 % TODO Some other examples:
 % TODO (consider): add "Maximizing XY" to all metrics below
 %\begin{enumerate}
-%  \item Sum of exponentialy-time-decayed flow-minutes. (TODO: explain)
+%  \item Sum of exponentially-time-decayed flow-minutes. (TODO: explain)
 %  \item TBA
 %\end{enumerate}
 
@@ -424,24 +425,220 @@ To make sure the infinite sum converges
 %  e.g. number of minutes spent by solving task which end with successfully solved task.
 
 \subsection{Live Evaluation}
-TBA
+
+In some learning systems, a new version of a model is deployed every day
+  with parameters learned from the recent data.
+The behavior of the new model must be carefully monitored
+  to detect problems as soon as possible,
+  without waiting several weeks to evaluate an AB experiment.
+For this purpose, metrics that can be linked immediately
+  to the recommender actions are needed.
+These metrics are called ,,online attributable metrics''  % TODO: find used terminology
+and this type of evaluation ,,live evaluation''.
+
+These metrics are often formulated as a question concerning a single recommendation.
+To transform them into a number, either sum or average of these individual errors is computed.
+% TODO: so sum or average? or some other aggregation function?
+
+Reflecting the long-term objectives from section \ref{sec:long-term-objectives},
+  there are some examples of online attributable metrics:
+\begin{itemize}
+  \item Was the recommended task chosen by the student?
+  \item \ldots and did the student solved the task?
+  \item \ldots and in a reasonable time (e.g. 1-15 minutes)?
+  \item \ldots and did not the student marked it as ,,too easy'' or ,,too difficult''?
+\end{itemize}
+
+
+% TODO: note on online models (and relation to RL), these needs continuous online evaluation
+
+% TODO: taking delta wrt. previous model
 
 
 \subsection{Offline Evaluation}
-TBA
+
+Offline experiments use historical collected data
+  to avoid the cost of live evaluation.
+The advantages of offline experiments compared to online evaluation include
+  the possibility to run as many experiments as needed,
+  obtaining the results quickly,
+  reusing the same data to evaluating different models,
+  and avoiding potential negative impact on students if the evaluated model is poor.
+
+Of course, the offline evaluation is limited,
+  because there are not all the historical data needed
+  for proper evaluation.
+For example, when evaluating a new recommendation algorithm
+  the data on how the student would respond to a particular recommendation
+  are often not available.
+% TODO: mention another limitation - the population is changing
+% TODO: note: further decrease of relevance to the system mission - but worth
+
+Offline evaluation is typically used as a check before pushing
+  the model online to avoid problems as soon as possible.
+It can be also used for model selection,
+  including hyperparameters search.
+Finally, offline learning algorithms typically also use
+  a metric to guide them
+  (these are discussed in section \label{sec:metrics-to-guide-learning}).
+
+\subsection{Cross Validation}
+
+\emph{TODO}
+
+
+\subsection{Evaluating Student Model}
+
+Student models (described in \ref{sec:student-modeling})
+  are important subcomponent of techniques for adaptive learning,
+  such as recommendation algorithms.
+Therefore it is reasonable to believe that optimizing the quality
+  of used student models should result in better recommendations
+  and transitively in improving the long-term objectives.
+However, this relationship is not as simple
+  and improvements in the predictive power are not worth
+  if the online experiments show that they actually
+  decreased the long-term objectives.
+
+The next two sections present metrics for two most common
+  types of student models according to their output:
+  predicted solving times and predicted success.
+% TODO (consider): generalize: any real values (e.g. times)
+%                  vs probabilities (success, too-difficult)
+
+\subsection{Metrics for Time Predictions}
+\label{sec:metrics-for-time-predictions}
+
+% TBA: note on data we need (and easily collect in this case)
+To evaluate the quality of solving times predictions,
+  vector of predicted times $\hat{t}$ is compared to
+  the vector of true observed times $t$.
+Usually, individual errors between tuples $(t_i, \hat{t}_i)$ are computed
+  and then averaged.
+While it is possible to take an absolute value of the
+  difference $(t_i - \hat{t}_i)$,
+  which results in Mean Absolute Error (MAE),
+it is more common to taking square of the difference
+  to penalize more one large error than multiple small ones.
+In this case, it is common to take a square root of the final
+  average, to bring the units back to the original ones
+  for better interpretation.
+This metric is called Root Mean Squared Error (RMSE).
+
+$$
+RMSE(t, \hat{t}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (t_i - \hat{t}_i)^2}
+$$
+
+Note that the solving times are should be first log-transformed;
+  otherwise a single outlier could make the error extremely high.
+% TODO: provide more details/ref to an earlier section about taking logs
+% TODO: also note that these type of metrics will be always susceptible to
+% outliers anyway
+
+% TODO: Statistic notes why the RMSE makes sense:
+%       - explain that given some assumption
+%       -> results in best linear estimator
+%       - and even MLE (assumption of normally distributed noise),
+%                       -> it's equivalent to RMSE - see Bishop, 2006)
+
+%TODO: The metrics presented in this section
+%  can be also used for evaluation of other real-valued predicted variables,
+%  such as flow (if formalized to take real values.)
+
+
+\subsection{Metrics for Success Predictions}
+
+Some student models predicts a probability that
+  a given student will solve a given task.
+% TODO: statistics terminology - alternative distribution
+In this case, each the true labels are not any real number,
+  but just zeros and ones.
+This difference is important for the choice of a suitable metric.
+Good overview of possible metrics is presented in \cite{pelanek-evaluation-student-models},
+  which also shows a simple example demonstrating why MAE should not be used
+  as an error measure for binary predictions.
+In addition to RMSE, Log-Likelihood (LL) is sometimes used:
+$$
+LL(s, \hat{s}) = \sum_{i=1}^n s_i\log(\hat{s}_i) + (1-s_i)\log(1-\hat{s}_i)
+$$
+% TODO: include derivation of LL from MLE principle (product -> log -> sum)
+Note that LL differs from RMSE in several aspects.
+First, as opposed RMSE, the higher LL the better,
+second, it is negative,
+and third, it is not averaged, so it decreases with the size of data set.
+
+The RMSE and LL are based on a probabilistic view of errors.
+There is another set of metrics based on the qualitative understanding of errors,
+  which compares the observed success with binarized predictions,
+  instead of real-valued probabilities.
+For example, \emph{accuracy} is a ratio between correct predictions to all predictions.
+However, these metrics do not distinguish between small and large errors of the predictions,
+  which makes them less appropriate for student modelling.
+
+% TODO: details, possibly table of common metrics from the confusion matrix
+% (precision, recall, sensitivity, specificity, ...)
+% TODO: mention: allows for setting different risks (weights) on different types of errors
+% TODO: diagram: comparison of these individual errors, see pelanek-evaluation-student-models, p.6
+
+These error metrics depends on a particular threshold chosen
+  for binarization of predicted probabilities.
+There are metrics avoiding this problem byt using only ranking of predictions.
+The most common one is AUC -- ,,Area Under Curve'',
+  which is the probability that if one failure and one success are selected by random,
+  the predictor would assign a higher probability to the success event than to the failure.
+
+There are a few limitation of AUC.
+First, it considers all thresholds, but only a range of them is usually relevant.
+Second, by only considering the ordering of predictions,
+  if all predictions are multiplied by a constant, AUC remains unchanged.
+Third, if the predicted classes are strongly unbalanced, AUC of nearly 1
+  can be achieved by a simple baseline predicting the majority class.
+Generally, AUC is a reasonable choice for intrinsically classification problems,
+  but not for student modeling \cite{pelanek-evaluation-student-models}.
+
+% TODO: precise definition of AUC using ROC curve
+% TODO: check if the intuitive explanation of AUC is correct
+% TODO: how to deal with the limitations: global objectives (ranges of thresholds), AUC-PR for unbalanced problems
+
+
+\subsection{Metrics to Guide Learning}
+\label{sec:metrics-to-guide-learning}
+
+\emph{TODO}
+
+% aaah! both online and offline - how does it fit to the hierarchy?
+% examples
+% - LL to guide logistic regression
+% - (RMSE for linear model predicting solving times),
 
 
 \subsection{Simulation Experiments}
-TBA
+
+Online experiments relies on live data,
+while offline experiments use historical data.
+Simulated experiments provide a third alternative,
+  which does not require any collected data at all.
+
+Not needing collected data makes simulations widely and easily applicable.
+On the other hand, researchers must be careful when interpreting
+  the results of a simulation, as the simulation results are noting more than
+  just consequences of used assumptions.
+Nevertheless, simulation are perfect for models debugging,
+  for example to find fatal errors in the implementation.
+Furthermore, \emph{sensitivity analysis} is a technique to find
+  which parameters of the model are important and should be learned,
+  and which can be safely set manually without frequent retraining.
+
+In practice, simulations can also take advantage of collected data
+  if they are available; to estimate some of the model parameters
+  or to evaluate how much the model predictions agree with
+  what was observed in the reality.
 
 
 
 
 
 
-
-
-
 % -------------------------------------------------
 % -------------------------------------------------
 % -------------------------------------------------
@@ -457,7 +654,7 @@ TBA
 % -------------------------------------------------
 
 
-\subsection{Metrics for Predictions}
+% \subsection{Metrics for Predictions}
 
 % compared to other RS, evalution is more difficult,
   % - what we care about (= learning) is what is in student's head
@@ -469,21 +666,6 @@ TBA
   % - objective = a metric which is optimized by an algorithm (often: we monitor multiple metrics, but only optize a single metric by a single algorithm; reasons for not opitmizing a metric: difficult/infeasible to optize, or we are not sure if this is actually what we want to optimize)
 
 
-% types of research methods
-  % experimental ("onlne experiments") - using live data
-  % non-experimental ("offline experiments") - using historical data
-  % (( formal derivations ...))
-  % simulations (simulated experiments) - using simulated data
-
-% subsection on simulated experiments:
-  % - choose model + add noise -> observe
-  % - sensitivity analysis - which parameters are important (leverage points)
-  % - cons: "results are just consequence of used assumptions"
-
-\subsection{Metrics for Predictions}
-
-\emph{TODO}
-
 %TODO: data we need -- this is simple: we can collect the objective solving times and compare
 %with predictions (there is some noise, because of students taking breaks, cheating, etc., but should be ok)
 
@@ -493,66 +675,6 @@ TBA
 % - make sure to predict future from the past
 % - REF: details in Radek's paper on student models
 
-% types:
-% - binary: solve/not
-% - continous: times, flow
-
-% predictied times (so we have actual and predicted times)
-% - should we average per student/task/student+task/nothing?
-% - usually: error on single interaction -> sum of error
-% - MAE (difference in absolute value)
-% - RMSE -> give more emphasis on larger mistakes
-% (note: log-likelihood is not discussed for continous predictions,
-% because it's under common assumption of normally distributed noise,
-% it's equivalent to RMSE - see Bishop, 2006)
-% - (correlation, cosine similarity?)
-% TBA: include formulas (unified notation)
-% recommended defualt choice: RMSE
-
-
-% for binary predictions (solve?, too-difficult?)
-% - for binary/binarized predictions: accuracy, precision (precision@n), recall, F1 (harmonic mean of precision and recall), confusion matrix
-% - for probabiity predictions:
-%   - MAE is bad! (ref Radek's example) \cite{pelanek-evaluation-student-models}
-%   - RMSE - as above
-%   - log-likelihood (TBA: also include derivation from MLE principle? or REF)
-%     likelihood (product ...) -> log -> sum ...
-%     (note that higher is better (as opposed to RMSE), not averaged -> decreases with the size of data set; negative values)
-%   - MAE, RMSE and LL - sum of individual errors
-% TODO: diagram: comaprison of these individual errors, see pelanek-evaluation-student-models, p.6
-
-% 2nd category: qualitative understanding of errors (? more suitable for discrete states)
-% --> accuracy etc., see below ("qualitative metrics")
-% not appropriate for student modeling (treats small and large divergences same...)
-
-% 3rd catgory: assesing ranking of predictions
-%   - AUC - explain; does't depend on a particular threshold - pros/cons
-%         - intution: probability that if we pick 2 random points with 1 and 0 labels, the one with label 1 will be assigned higher prediction than the other one
-%         - not useful for strongly unbalanced classes (will be nearly 1 for a constant classifier predicting the majority class)
-%   - another disadvantage: considers all thresholds, but some are irrelevant in practice (they will definitely not used) -> make sense to limit the thresholds ("global objectives")
-%     - only cconsiders ordering -> if all predictions are multiplied by a constant, AUC will be same
-%   -> good for intrinsically classification problems, but not for student modeling (?) \cite{pelanek-evaluation-student-models}
-%   - AUC-PR - definition + better than AUC for unbalanced classes
-% recommended default choice: RMSE
-
-
-% issue of averaging: global / per user / per item?
-
-\begin{table}
-  \centering
-  \caption{Most often used metrics based on probabilistic understanding of
-    errors. For MAE and RMSE lower is better, for LL higher is better.
-    TODO: explain notation}
-  \label{tab:metrics}
-  \begin{tabular}{lll}
-    \toprule
-    Mean Absolute Error & MAE & $\frac{1}{n} \sum_{i=1}^n |a_i - p_i|$ \\
-    Root Mean Square Error & RMSE & $\sqrt{\frac{1}{n} \sum_{i=1}^n (a_i -
-      p_i)^2}$ \\
-    Log-likelihood & LL & $\sum_{i=1}^n a_i\log(p_i) + (1-a_i)\log(1-p_i)$ \\
-    \bottomrule
-  \end{tabular}
-\end{table}
 
 
 % sometimes, these metrics are directly used as an objective during parameters fitting
@@ -607,6 +729,10 @@ TBA
 % e.g: confidence, diversity, utility, robustness
 % explain why: e.g. diversity - if we show multiple recommended tasks, they should be diverse, otherise we could have shown just one (+ diverse from the previous task ... in case the student solved the last task withou a problem) --> our current item-similarity research
 
+
+% - for binary/binarized predictions: accuracy, precision (precision@n), recall, F1 (harmonic mean of precision and recall), confusion matrix
+
+
 \subsection{Feedback Loops}
 
 \emph{TODO}
@@ -617,9 +743,9 @@ TBA
 % REF: Google Rules of ML 36
 
 
-\subsection{Ultimate and Proxy Metrics}
-
-\emph{TODO}
+%\subsection{Ultimate and Proxy Metrics}
+%
+%\emph{TODO}
 
 %TODO: explain possible metrics derivation: -- with specific example of learning programming
 %1. from the ultimate goal (vision, mission, purpose, ultimate objective) -- but make it precise to make it evaluable (if had all the data we need)
@@ -656,15 +782,6 @@ TBA
 % -> add error bars to measured metrics: e.g. 95% confidence interval / standard eror / standard deviation / range
 % (+ effect size)
 
-% Short-term live evalution
-% - these need to be directly attributable to the recommendation action
-% (ie. we can link each recommendation to some error, then sum/average)
-% showed recommendation
-% -> was it clicked?
-% -> and solved
-% -> in some reasonable time (e.g. 1-15 minutes)
-% -> and not marked as too-easy/difficult/boring/weird
-
 
 % Multiple objectives dilemma (the one we will directly optimize):
 % - not so important when deploying a new ML system:
@@ -691,9 +808,9 @@ TBA
 % see Goole Rules of ML, rule 39
 
 
-\subsection{Perceived Flow}
-
-\emph{TODO}
+%\subsection{Perceived Flow}
+%
+%\emph{TODO}
 
 %Instead of using objective ("quantitative", "factual", "measured") data (such as solving time),
 %we can ask students to provide explicit ``rating'' ("qualitative","subjective") (e.g. perceived difficulty),
@@ -719,6 +836,10 @@ TBA
 
 % if the student is in flow, they will learn; flow is still difficult to measure,
 % but time spent by solving tasks can be a good proxy
+
+
+% TODO general?: issue of averaging: global / per user / per item?
+
 
 
 \subsection{Iterative Improvement}
@@ -750,4 +871,4 @@ TBA
 % - implement and measure all many metrics - even those not used for model selection/optimization
 %   [REF: Google Rules of ML, Rule 2: "Before formalizing what your machine learning system will do, track as much as possible in your current system."]
 %   - why: might be useful in future; understand impact of the model (what significantly changes and what not)
-\cite[][Rule \#2]{google-ml-rules}
+%\cite[][Rule \#2]{google-ml-rules}
