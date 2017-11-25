@@ -339,12 +339,12 @@ What metric to choose depends on the purpose of the evaluation,
   to interpreting results of an AB experiment.
 To make sure that chosen metrics are not misleading,
   they should reflect the ultimate goal of the system,
-  which is sometimes also called \emph{mission}.
+  which is sometimes also called the \emph{mission}.
 
 Even the mission itself should reflect some higher-level goals.
 Nevertheless, goals create an infinite hierarchy
-  and a starting point (called \emph{paradigm}) must be chosen from which
-  the lower-level goals are derived.
+  and a starting point (called \emph{paradigm}) must be chosen,
+  from which the lower-level goals are derived.
 An example of such paradigm is
   ``effort to maximize the overall happiness in the population''.
 % TODO: Without going into further philosophical discussions or attempts for precise definitions,
@@ -352,7 +352,7 @@ An example of such paradigm is
 
 At first sight, a reasonable mission of a system for learning programming
   is a long-term increase in algorithmic-problem solving skill in the population.
-However, other factors than skill should be considered as well.
+However, other factors than the skill should be considered as well.
 For example, how much students enjoyed the time in the system,
   how they are satisfied with their accomplishments,
   or if they are motivated for further learning of programming;
@@ -363,7 +363,7 @@ As a solution to this ``multiple objectives dilemma'',
   the mission can be formulated as achieving a balanced increase in all
   of these important factors.
 Such formulation helps to remind developers of the system not not overfocus on one factor
-  in the cost of the others factors.
+  in the cost of the others.
 
 
 \subsection{Long Term Objectives}
@@ -393,6 +393,51 @@ While ``achieving mastery in elementary programming quickly'' can be
 % it's not clear that there must be an objective mastery criterion
 % which should be achieved by all students
 
+Furthermore, a time frame must be specified
+  -- usually a few weeks for AB experiments.
+While short time frames allow for faster decisions and hence more improvements over time,
+there are several reasons for making the time frame longer:
+\begin{itemize}
+  \item to collect enough data for statistical significant results,
+  \item to avoid seasonality effects (such as different user behavior during weekends),
+  \item to allow for more exploration, which improves long-term performance of the system.
+\end{itemize}
+
+There are many other possible long-term metrics, for example:
+\begin{enumerate}
+  \item Daily active users (DAU) -- students who has solved at least 1 task this day.
+  \item Monthly number of active users (30DAU) -- students who have solved at least 10 tasks this month.
+  \item Returning users -- students who have solved some tasks one day and have returned another day.
+  \item Converted users -- students who have finished last level in the system.
+  \item Converted users -- students who have solved at least one task from each level.
+  \item Number of solved tasks.
+  \item Total time spent on successful attempts.
+\end{enumerate}
+
+It is not immediately clear which of them is the best proxy for the system mission.
+Thankfully, it was observed that at the beginning all the metrics which seem to somehow
+reflect the system mission tend to improve simultaneously, no matter which one
+is chosen to be directly optimized \cite[][Rule \#12]{google-ml-rules}.
+To understand how their values are influenced by changes in the learning system,
+it is useful to measure and report all of them from the beginning
+\cite[][Rule \#2]{google-ml-rules}.
+
+It is also recommended to start the system optimization with a metric which is simple
+and ideally directly attributable to individual recommendations,
+instead of indirect metrics suggested above, that measure a complex aggregate
+effect of the system behavior during a longer period \cite[][Rule \#12]{google-ml-rules}.
+The attributable metrics are presented in section \ref{sec:live-evaluation}.
+
+% TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
+% TODO: note on AB experiments: there will be always a difference -> needs to asses statistical significance (is the difference due to changed condition or just because of random noise)
+% -> t-test and similar (but mind their assumptions!) -> p-value + alpha-level -> decision
+% -> add error bars to measured metrics: e.g. 95% confidence interval / standard error / standard deviation / range (+ effect size)
+
+\subsection{Evaluation of Programming Skill}
+
+% TODO: dichotomy between enjoyment and learning metrics - enjoyment is easier to measure (length of interaction), but learning is possibly even more important for the system mission (neither pure enjoyment nor pure learning would work -> principle of balance); measuring enjoyment -> survival analysis; measuring learning -> learning curves
+% TODO: for measuring learning in AB-experiments: (pretests) and postests
+
 The tasks environment in the learning systems usually differs significantly
   from the real-world environment,
   e.g. by using block-based programming language,
@@ -409,57 +454,6 @@ For example, trying to achieve minimum solving times on tasks in the learning sy
   -- it would likely lead to ``overfitting'' students to the particular learning system,
   by giving them all available tasks from the simplest to the most difficult.
 
-Furthermore, a time frame must be specified
-  -- usually a few weeks for AB experiments.
-While short time frames allows for faster decisions and hence more improvements over time,
-there are several reasons for making the time frame longer:
-\begin{itemize}
-  \item to collect enough data for statistical significant results,
-  \item to avoid seasonality effects (such as different user behavior during weekends),
-  \item to allow the system for more exploration, which improves long-term performance of the system.
-\end{itemize}
-
-Instead of a fixed length time frame,
-  it is also possible to formulate the metric as
-  an infinite sum over all future time moments.
-To make sure the infinite sum converges
-  the values in the sum must be carefully weighted with respect to time.
-  % TODO: elaborate
-  % + this also makes it possible to compute the min-max interval at any given time
-
-There are many possible long-term metrics, for example:
-\begin{enumerate}
-  \item Daily active users (DAU) -- students who has solved at least 1 task this day.
-  \item Monthly number of active users (30DAU) -- students who have solved at least 10 tasks this month.
-  \item Returning users -- students who have solved some tasks one day and have returned another day.
-  \item Converted users -- students who have finished last level in the system.
-  \item Converted users -- students who have solved at least one task from each level.
-  \item Number of solved tasks.
-  \item Total time spent on successful attempts.
-  \item Total time spent on tasks marked by students as having just right difficulty. (``flow-minutes'').
-  %\item Sum of exponentially-time-decayed flow-minutes. (TODO: explain)
-\end{enumerate}
-
-It is not immediately clear which of them are better proxies for the system mission.
-Thankfully, it was observed that at the beginning all metrics which seems to somehow
-reflect the system mission tends to improve simultaneously, no matter which one
-is chosen to be directly optimized \cite[][Rule \#12]{google-ml-rules}.
-To understand how their values changes with the changes in the learning system,
-it is useful to measure and report all of them from the beginning
-\cite[][Rule \#2]{google-ml-rules}.
-
-It is also recommended to start the system optimization with a metric which is simple
-and ideally directly attributable to individual recommendations,
-instead of indirect metrics suggested above, that measure a complex aggregate
-effect of the system behavior during a longer period \cite[][Rule \#12]{google-ml-rules}.
-The attributable metrics are presented in section \ref{sec:live-evaluation}.
-
-% TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
-% TODO: note on AB experiments: there will be always a difference -> needs to asses statistical significance (is the difference due to changed condition or just because of random noise)
-% -> t-test and similar (but mind their assumptions!) -> p-value + alpha-level -> decision
-% -> add error bars to measured metrics: e.g. 95% confidence interval / standard error / standard deviation / range (+ effect size)
-% TODO: dichotomy between enjoyment and learning metrics - enjoyment is easier to measure (length of interaction), but learning is possibly even more important for the system mission (neither pure enjoyment nor pure learning would work -> principle of balance); measuring enjoyment -> survival analysis; measuring learning -> learning curves
-% TODO: for measuring learning in AB-experiments: (pretests) and postests
 
 \subsection{User-centered Evaluation}
 
@@ -471,17 +465,17 @@ asking them about the perceived difficulty -- whether the task was ``too
 easy'', ``too difficult'' or `just right'' for them.
 Other tags about tasks can be collected as well, e.g. ``boring'', ``weird'', or ``fun''.
 
-Collecting these tags allows to compute metrics that seem as a close proxies to
+Collecting these tags allows to compute metrics that looks as close proxies to
 the system mission, such as the total time spent in flow.
 The flow has a nice property of combining both enjoyment and learning
 and if it could be measured reliably, it would be a great proxy.
 % TODO: ref to a relevant research about flow
 
 However, a known disadvantage of subjective ratings is the amount of noise
-in them. The are significantly influenced by the current mood and attention of
+in them. They are significantly influenced by the current mood and attention of
 the student.
 In addition, answering these questions may bother students a little bit
-and it also takes some time the students could spent on learning,
+and it also takes some time the students could spend on learning instead,
 (but it is negligible compared to the practicing time).
 
 % TODO: note on other user-centered evaluation strategies:
