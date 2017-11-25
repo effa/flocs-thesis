@@ -321,14 +321,14 @@ To decide if the adaptivity improves the quality of the learning system,
   a suitable metrics must be chosen and evaluated.
 Metrics are also used for optimizing models,
   first for parameters fitting, second for choosing hyperparameters
-  and third for selecting best possible model from a set of possible models.
+  and third for selecting best model from a set of possible models.
 
 %TODO: table/diagram showing goals hierarchy and their usage:
 %1. mission -> guide for long term objectives? (not measurable)
 %2. long term objectives -> AB experiments
-%3. live evaluation
-%4. offline evalution
-%5. etc.
+%3. live evaluation -> spot problems ASAP
+%4. offline evalution -> learn hyperparameters; holdout evaluation
+%5. guide learning -> to optimize model (learn parameters, incl. only updates after new s-t interaction)
 
 \subsection{Mission Statement}
 \label{sec:mission}
@@ -346,7 +346,7 @@ Nevertheless, goals create an infinite hierarchy
   and a starting point (called \emph{paradigm}) must be chosen from which
   the lower-level goals are derived.
 An example of such paradigm is
-  ,,effort to maximize the overall happiness in the population''.
+  ``effort to maximize the overall happiness in the population''.
 % TODO: Without going into further philosophical discussions or attempts for precise definitions,
 %       ... we will just adopt this paradigm for the rest of this thesis.
 
@@ -359,7 +359,7 @@ For example, how much students enjoyed the time in the system,
   all of these may play an important role for the overall happiness in the population.
 In the \emph{Rules of Machine Learning}, Martin Zinkevich
   points out that there is no single best objective \cite[][Rule \#39]{google-ml-rules}.
-As a solution to this ,,multiple objectives dilemma'',
+As a solution to this ``multiple objectives dilemma'',
   the mission can be formulated as achieving a balanced increase in all
   of these important factors.
 Such formulation helps to remind developers of the system not not overfocus on one factor
@@ -380,18 +380,34 @@ Therefore, various proxy metrics are used,
 
 To elaborate on the mission from section \ref{sec:mission},
   a long term objective could be
-  ,,maximizing the number of students
+  ``maximizing the number of students
   who mastered elementary programming quickly while having fun''.
 To make this metric usable,
-  terms ,,mastering elementary programming'', ,,quickly'', and ,,having fun''
+  terms ``mastering elementary programming'', ``quickly'', and ``having fun''
   must be defined in a measurable way.
-While ,,achieving mastery in elementary programming quickly'' can be
+While ``achieving mastery in elementary programming quickly'' can be
   formulated as an objective criterion
-  (e.g. ,,the student solved at least 5 tasks for each concept, each in less than 5 minutes''),
-  ,,having fun'' requires the system to ask students about their subjective feelings.
+  (e.g. ``the student solved at least 5 tasks for each concept, each in less than 5 minutes''),
+  ``having fun'' requires the system to ask students about their subjective feelings.
 % TODO: note that looking at the mission statement above,
 % it's not clear that there must be an objective mastery criterion
 % which should be achieved by all students
+
+The tasks environment in the learning systems usually differs significantly
+  from the real-world environment,
+  e.g. by using block-based programming language,
+  or by other aspects mentioned in section \ref{sec:strategies-for-easier-learning}.
+Ultimately, what matters is the performance of students in the real world,
+  outside the simplified learning environment%
+\footnote{%
+  This issue is also mentioned by Werntrop and Wilensky %
+  in \cite{challenges-of-blocks-based-environments}, %
+  in the context of proper evaluation of block-base programming environments.}.
+This aspect should be considered when choosing a proper long-term objective.
+For example, trying to achieve minimum solving times on tasks in the learning system
+  might be a misleading objective
+  -- it would likely lead to ``overfitting'' students to the particular learning system,
+  by giving them all available tasks from the simplest to the most difficult.
 
 Furthermore, a time frame must be specified
   -- usually a few weeks for AB experiments.
@@ -403,7 +419,7 @@ there are several reasons for making the time frame longer:
   \item to allow the system for more exploration, which improves long-term performance of the system.
 \end{itemize}
 
-Instead of a fixed length time frame
+Instead of a fixed length time frame,
   it is also possible to formulate the metric as
   an infinite sum over all future time moments.
 To make sure the infinite sum converges
@@ -413,18 +429,29 @@ To make sure the infinite sum converges
 
 
 % TODO Some other examples:
-% TODO (consider): add "Maximizing XY" to all metrics below
-%\begin{enumerate}
-%  \item Sum of exponentially-time-decayed flow-minutes. (TODO: explain)
-%  \item TBA
-%\end{enumerate}
+Some other examples of possible long-term metrics
+(that might be useful to report, but necessarily a good choice to optimize):
+\begin{enumerate}
+  \item Daily active users (DAU) -- students who has solved at least 1 task this day.
+  \item Monthly number of active users (30DAU) -- student who have solved at least 10 tasks this month.
+  \item Returning users -- students who have solved some tasks one day and have returned another day.
+  \item Converted users -- students who have finished last level in the system.
+  \item Converted users -- students who have solved at least one task from each level.
+  \item Number of solved tasks.
+  \item Total time spent on successful attempts.
+  \item Total time spent on tasks marked by students as having just right difficulty. (``flow-minutes'').
+  %\item Sum of exponentially-time-decayed flow-minutes. (TODO: explain)
+\end{enumerate}
 
-%In the case of flow-minutes, one way is to ask students for the perceived flow.
-%Alternatively, the metric can be proxied further to obtain a one
-%  which is more easily measured,
-%  e.g. number of minutes spent by solving task which end with successfully solved task.
+
+% TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
+% TODO: note on AB experiments: there will be always a difference -> needs to asses statistical significance (is the difference due to changed condition or just because of random noise)
+% -> t-test and similar (but mind their assumptions!) -> p-value + alpha-level -> decision
+% -> add error bars to measured metrics: e.g. 95% confidence interval / standard eror / standard deviation / range (+ effect size)
+
 
 \subsection{Live Evaluation}
+\label{sec:live-evaluation}
 
 In some learning systems, a new version of a model is deployed every day
   with parameters learned from the recent data.
@@ -433,8 +460,10 @@ The behavior of the new model must be carefully monitored
   without waiting several weeks to evaluate an AB experiment.
 For this purpose, metrics that can be linked immediately
   to the recommender actions are needed.
-These metrics are called ,,online attributable metrics''  % TODO: find used terminology
-and this type of evaluation ,,live evaluation''.
+(This is the difference from the long-term objectives, that can measure
+aggregate effect of the system behavior during some period.)
+These metrics are called ``online attributable metrics''  % TODO: find used terminology
+and this type of evaluation ``live evaluation''.
 
 These metrics are often formulated as a question concerning a single recommendation.
 To transform them into a number, either sum or average of these individual errors is computed.
@@ -445,10 +474,11 @@ Reflecting the long-term objectives from section \ref{sec:long-term-objectives},
 \begin{itemize}
   \item Was the recommended task chosen by the student?
   \item \ldots and did the student solved the task?
-  \item \ldots and in a reasonable time (e.g. 1-15 minutes)?
-  \item \ldots and did not the student marked it as ,,too easy'' or ,,too difficult''?
+  \item \ldots in a reasonable time (e.g. 1-15 minutes)?
+  \item \ldots and did not the student marked it as ``too easy'' or ``too difficult''?
 \end{itemize}
 
+% TODO: relationship to metrics defined in section \ref{sec:metrics-for-recommendation}
 
 % TODO: note on online models (and relation to RL), these needs continuous online evaluation
 
@@ -468,7 +498,7 @@ The advantages of offline experiments compared to online evaluation include
 Of course, the offline evaluation is limited,
   because there are not all the historical data needed
   for proper evaluation.
-For example, when evaluating a new recommendation algorithm
+For example, when evaluating a new recommendation algorithm,
   the data on how the student would respond to a particular recommendation
   are often not available.
 % TODO: mention another limitation - the population is changing
@@ -480,25 +510,69 @@ It can be also used for model selection,
   including hyperparameters search.
 Finally, offline learning algorithms typically also use
   a metric to guide them
-  (these are discussed in section \label{sec:metrics-to-guide-learning}).
+  (these are discussed in section \ref{sec:metrics-to-guide-learning}).
+
 
 \subsection{Cross Validation}
 
-\emph{TODO}
+Trained models must be evaluated on data unseen during training.
+Straightforward approach is to split collected data into two parts,
+  first used for training (\emph{training set})
+  and second for evaluation (\emph{test set}).
+To use data more efficiently, the train-test split can be repeated
+  $k$ times, taking different $1/k$ portion of the data for testing every time,
+  and computing averaged performance.
+The described method is called \emph{cross validation}.
 
+While random train-test split over all training examples works often
+  best in many machine learning domains,
+  one must be careful when dealing with data from learning systems.
+A completely random split would lead to predicting past performance
+  of student from the model trained on their future performance,
+  which could result in over-optimistic results.
+The recommended splitting technique is ``user-stratified'',
+  in which we randomly split students,
+  and create training set from all events of one group of students,
+  and first $n$ events of all students in the second group.
+The test set than contains $(n+1)$-th events from the students
+  in the second group.
+The evaluation can be repeated for all possible $n$'s and averaged.
+This is simple and fast for online models
+  (that can be trained iteratively by one training event),
+  but it is more involved and often too slow for offline models,
+  in which case some simplifications must be used,
+  such as predicting not only one, but multiple events
+  for each student in the second group during a single split.
 
-\subsection{Evaluating Student Model}
+% TODO: make it clear that even for online models, we are still discussing offline evaluation
+% TODO: discuss compromises for evaluation of offline models (or point out to a relevant paper)
 
-Student models (described in \ref{sec:student-modeling})
-  are important subcomponent of techniques for adaptive learning,
+If the model contains hyperparameters to select,
+  it is important to use yet another non-overlapping portion
+  of data for hyperparameters search,
+  which used neither for training, nor for final evaluation.
+This third portion of data is sometimes called \emph{validation set}
+  (though the terminology for this is not unified).
+Cross validation can be generalized to account for this 3-parts split
+  and the resulting method is called \emph{nested cross validation}.
+
+% TODO: figures to illustrate all the described methods and splits
+
+\subsection{Student Model Evaluation}
+\label{sec:student-model-evaluation}
+
+A student model (described in \ref{sec:student-modeling})
+  is an important component for adaptive learning techniques
   such as recommendation algorithms.
 Therefore it is reasonable to believe that optimizing the quality
   of used student models should result in better recommendations
   and transitively in improving the long-term objectives.
-However, this relationship is not as simple
-  and improvements in the predictive power are not worth
-  if the online experiments show that they actually
-  decreased the long-term objectives.
+Although better predictions usually helps,
+  the relationship between their quality and the long term objectives
+  is not always straightforward.
+Improvements in the predictive power are not worth,
+  if the online experiments show that it  would actually
+  lead to decrease of the long-term objectives.
 
 The next two sections present metrics for two most common
   types of student models according to their output:
@@ -529,7 +603,7 @@ $$
 RMSE(t, \hat{t}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (t_i - \hat{t}_i)^2}
 $$
 
-Note that the solving times are should be first log-transformed;
+Note that the solving times should be first log-transformed;
   otherwise a single outlier could make the error extremely high.
 % TODO: provide more details/ref to an earlier section about taking logs
 % TODO: also note that these type of metrics will be always susceptible to
@@ -547,9 +621,10 @@ Note that the solving times are should be first log-transformed;
 
 
 \subsection{Metrics for Success Predictions}
+\label{sec:metrics-for-success-predictions}
 
 Some student models predicts a probability that
-  a given student will solve a given task.
+  a given student would solve a given task.
 % TODO: statistics terminology - alternative distribution
 In this case, each the true labels are not any real number,
   but just zeros and ones.
@@ -583,34 +658,138 @@ However, these metrics do not distinguish between small and large errors of the 
 These error metrics depends on a particular threshold chosen
   for binarization of predicted probabilities.
 There are metrics avoiding this problem byt using only ranking of predictions.
-The most common one is AUC -- ,,Area Under Curve'',
+The most common one is AUC -- ``Area Under Curve'',
   which is the probability that if one failure and one success are selected by random,
   the predictor would assign a higher probability to the success event than to the failure.
 
-There are a few limitation of AUC.
+There are a few limitations of AUC.
 First, it considers all thresholds, but only a range of them is usually relevant.
 Second, by only considering the ordering of predictions,
   if all predictions are multiplied by a constant, AUC remains unchanged.
 Third, if the predicted classes are strongly unbalanced, AUC of nearly 1
   can be achieved by a simple baseline predicting the majority class.
 Generally, AUC is a reasonable choice for intrinsically classification problems,
-  but not for student modeling \cite{pelanek-evaluation-student-models}.
+  but not necessarily for student modeling \cite{pelanek-evaluation-student-models}.
 
 % TODO: precise definition of AUC using ROC curve
 % TODO: check if the intuitive explanation of AUC is correct
 % TODO: how to deal with the limitations: global objectives (ranges of thresholds), AUC-PR for unbalanced problems
 
+\subsection{Offline Evaluation of Recommendations}
+
+% TODO: consider moving before metrics for predictions?
+
+Offline evaluation of recommendation algorithms is considerably more difficult
+  than evaluation of student models.
+The reason is missing data --
+  if the evaluated algorithm recommends a task $t$ to student $s$
+  in a specific point of his learning process (e.g. after first 2 solved tasks)
+  but the student $s$ attempted different task at that point,
+  there is no easy way to tell if the recommendation is good or not.
+
+The extremeness of data sparsity makes offline evaluation so challenging,
+  that most learning systems completely skip this type of evaluation,
+  applying offline evaluation only to student models
+  (section \ref{sec:student-model-evaluation})
+  and checking quality of recommendation algorithms on live traffic
+  (section \ref{sec:live-evaluation}).
+
+Nevertheless, realizing that the offline evaluation serves just as another proxy metric,
+  it may be still useful to perform at least some limited offline evaluation
+  before putting the recommender to the wild of real world.
+There are some possible approaches:
+\begin{itemize}
+  \item For each recommendation event in the collected data,
+      look if the recommended event is among one of top $N$ (e.g. 10) tasks
+      recommended by the evaluated recommender
+      and compare it with the observation whether this particular recommendation
+      was good (e.g. whether the student attempted and solved this recommended task).
+      (These comparisons can be turned into several different metrics,
+       which are described in section \ref{sec:metrics-for-recommendation}).
+      % TODO: point to a section with confusion matrix, precision, recall etc.
+  \item Instead of looking on the past recommendations,
+      events when students themselves selected a task from a list of all tasks can be used.
+      (It is also possible to combine both recommendation and self-selection events
+       as a single dataset.)
+  \item Prepare a small manually labeled dataset describing good and bad recommendations for given combination of features, possibly by extending collected data on recommendation.
+  \item Measure agreement in recommendations between a new recommender and one which is already used and was evaluated on live traffic.
+\end{itemize}
+
+% TODO: note on data bias in most of these approaches
+
+
+\subsection{Metrics for Recommendations}
+\label{sec:metrics-for-recommendation}
+
+There are multiple metrics that can be used for both online and offline
+evaluation of recommendations, which requires different type of data.
+
+For a series of student-task interactions paired with a recommendation list of
+fixed length $N$, a \emph{confusion matrix} can be constructed by comparing
+whether the interaction was good for the student or not and
+whether the task was within top $N$ recommended tasks.
+Having the confusion matrix allows to compute various metrics such as
+accuracy, precision, or recall. % TODO: or sensitivity/specificity/... + define
+
+Depending on the user interface, fixed $N$ might or might not make sense.
+If not, it is possible to use more sophisticated metrics without a fixed $N$,
+such as AUC (described in section \ref{sec:metrics-for-success-predictions}),
+or MAP (Mean Average Precision).
+% TODO: MAP = AUC-PR?
+% TODO: or DCG?
+
+In some cases, for example when comparing two recommendation algorithms,
+complete lists of ordered tasks are available.
+In this case, other \emph{ranking metrics},
+  such as Spearman's rank correlation coefficient,
+  or Kendall's rank correlation coefficient,
+  can be also used.
+% TODO:  Discounted cumulative gain, average precision, lift index, ...
+
+%# Beyond simple accuracy
+All these metrics focus on how accurate the recommendations are,
+but there are other properties of recommendation algorithms,
+which may influence its usefulness for students,
+such as robustness or diversity.
+% TODO: note: but they are more difficult to express/measure,
+% so they are used much less in practice
+
+For example, if the system shows several recommended tasks,
+but these are all nearly identical, there is no added value
+for the student from the possibility to choose from them.
+Similarly, if the student has just solved a task
+without any problem, the next recommended tasks should
+differ considerably not to be boring for the student.
+To measure similarity between tasks, their content features
+constructed from their statement and solution are compared
+using some distance metric.
+% TODO: ref to our current item-similarity research
+
 
 \subsection{Metrics to Guide Learning}
 \label{sec:metrics-to-guide-learning}
 
-\emph{TODO}
+Learning algorithms often incorporates a metric they attempt to optimize.
+In this context, the metric is often called \emph{loss function}.
+For example,
+  Ordinary Least Squares (used for linear regression models) minimizes RMSE.
+Some learning algorithms, such as gradient descent,
+  allow to minimize arbitrary metric
+  for which it is easy to compute partial derivatives with respect to model parameters.
+Loss functions can be viewed as another proxies for long-term objectives.
+Therefore, in the case of choice, it is beneficial to choose a loss function
+  that matches the long-term objectives more closely.
 
-% aaah! both online and offline - how does it fit to the hierarchy?
-% examples
-% - LL to guide logistic regression
-% - (RMSE for linear model predicting solving times),
+As a common example, some loss functions allow to specify weights for each training example.
+If it is derived from the long-term goals that predicting one class correctly
+  is more important than predicting the other class correctly
+  (e.g. if it is more important to predict correctly failure than success),
+  larger weights should be assigned to the examples with the more important class.
 
+Note that these metrics are not limited to the offline environment. Specifically, if the
+model only process each student-task interaction once (\emph{online models}), than the
+model parameters can be updated based on the value of the error metric
+(or its gradient in the case of gradient descent) in the live environment.
 
 \subsection{Simulation Experiments}
 
@@ -664,123 +843,29 @@ In practice, simulations can also take advantage of collected data
 % terminology:
   % - metric = function from the space of models to real numbers (note that it's different from the mathematical "metric" which assigns a number to a pair of objects and must satisfy some properties) (also needs to specify the desired direction to be useful..)
   % - objective = a metric which is optimized by an algorithm (often: we monitor multiple metrics, but only optize a single metric by a single algorithm; reasons for not opitmizing a metric: difficult/infeasible to optize, or we are not sure if this is actually what we want to optimize)
-
-
-%TODO: data we need -- this is simple: we can collect the objective solving times and compare
-%with predictions (there is some noise, because of students taking breaks, cheating, etc., but should be ok)
-
-% methodology: Train-Test split of collected data
-% -> train on train-set -> predict for test-set -> compare
-% - K-fold cross-validation - on students ok ("user stratified"), but:
-% - make sure to predict future from the past
-% - REF: details in Radek's paper on student models
-
-
-
-% sometimes, these metrics are directly used as an objective during parameters fitting
-% (examples: OLS minimizing MSE, logistic regression minimizing log-likelihood ?)
-
-
-\subsection{Metrics for Recommendation}
-
-\emph{TODO}
-
-% good predictions are important, but at the end we care about the performance on some other task,
-% for example recommendation -> need to measure performance of recommendation
-% + don't apply changes improving predictions if they degrade performance on recommendation
-
-%TODO: what data to use? much less clear than  for predictions
-% - manual labelling? (what task should be recommended to this student) -> very demanding (and probably error-prone)
-% - historical - collected data: con: only for the task we actually recommended (for this we can say, if the student has clicked on the recommendation and solved the task in a reasonable time)
-% - process: train-test split (with past-future consideration)
-%   -> train recommender on the train-set -> compare to the actual actions
-%   (e.g. did the student selected/solved the task we recommended to them)
-%   - drawback: student usually select the task which was recomended to them,
-%     that doesn't mean it was good and that they would choose it themselves
-%   ( -> can limit our data only to cases where the student decided themself x just another data bias?)
-
-%TODO: mention standard metrics and evaluation methodologies in RC (for recommended tasks)
 %
-%The tasks environment in learning systems often differ significantly
-%  from the real-world environment,
-%  e.g by using blocks instead of text
-%  and other aspects mentioned in section \ref{sec:strategies-for-easier-learning}.
-%This makes evaluation harder, because while the collected data on which we
-%  evaluate the system comes from the system itself,
-%  ultimately students leave this simplified environment
-%  and the performance outside the learning system is the important criterion.
 
-% This issue is mentioned in \cite{challenges-of-blocks-based-environments},
-% by Werntrop and Wilensky
-% in the context of proper evaluation of block-base programming environments.
 
-% TODO: this relates to next subsection on ultimate goal vs. proxy metrics
 % TODO: also consider short discussion on high-level vs. low-level goals
 % (also known as mission/purpose/vision vs goals, or goals vs means
 % and discussion on goals vs metrics
 
 
-% mention ranking metrics, such as topK
-% - why: frist places are important, the last are not (because only the items on first places get recommended)
-% - ranking metrics: Spearman correlation coefficient, half-life utitily, liftindex, discounted cumulative gain, average precision (sounds similar to AUC-PR...?)
 
-
-% important properties x but harder to measure than simple accuracy:
-% e.g: confidence, diversity, utility, robustness
-% explain why: e.g. diversity - if we show multiple recommended tasks, they should be diverse, otherise we could have shown just one (+ diverse from the previous task ... in case the student solved the last task withou a problem) --> our current item-similarity research
-
-
-% - for binary/binarized predictions: accuracy, precision (precision@n), recall, F1 (harmonic mean of precision and recall), confusion matrix
 
 
 \subsection{Feedback Loops}
 
 \emph{TODO}
 
+% describe: recommenders -> influence collected data
 % big issue in recommendation systems in general
 % TBA: give an examle (including the resulting problem)
 %   - we only collect data on what we recommend -> bias
 % REF: Google Rules of ML 36
 
 
-%\subsection{Ultimate and Proxy Metrics}
-%
-%\emph{TODO}
 
-%TODO: explain possible metrics derivation: -- with specific example of learning programming
-%1. from the ultimate goal (vision, mission, purpose, ultimate objective) -- but make it precise to make it evaluable (if had all the data we need)
-%2. proxing 1 to make it measurable in the long term (AB experiment)
-%3. proxing 2 to make it measurable in the short term (live evaluation)
-%4. proxing 3 to make it work with offline data (to learn hyperparameters + for holdout evaluation)
-%5. proxing 4 to make it differentiable function (to guide learning, ie. for updates after new s-t interaction)
-
-% Long-term live evaluation (for AB experiments - or just as reporting metrics)
-% - can be indirect as popposed to the immediate-evalution, ie. measuring aggregate effect of
-%   all recommendations during the period
-% - number of students who solved at least 10 tasks from the final level
-%   (or at least one from each level)
-% - total number of credits earned? (not well-defined unit)
-% - daily/monthly number of students /  number of students solving at least one task
-%   (terminology DAU = 1 day active users, 30DAU)
-% - daily number of solved tasks (-> would lead to recommendation of short tasks)
-% - total time spent on our site by all students (-> but we want them to practice not just be on our site)
-% - total time spent by solving tasks (-> but we want them to learn quickly?)
-% - total time spent in flow (requires measuring/proxying flow)
-% - direct: number/ratio of times the recommendation button was clicked
-%   + and followed by a succesfully solved task
-%   + and not marked as too-easy/difficult/boring/weird
-% - proportion of returning students (?)
-
-
-% Online experiemnts -> AB testing
-% -> randomized control trial
-% -> diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
-% - needs a metric for comparison
-% - there will be always a differnce -> needs to asses statistical significance
-% (is the difference due to changed condition or just because of random noise)
-% -> t-test and similar (but mind their assumpations!) -> p-value + alpha-level -> decision
-% -> add error bars to measured metrics: e.g. 95% confidence interval / standard eror / standard deviation / range
-% (+ effect size)
 
 
 % Multiple objectives dilemma (the one we will directly optimize):
