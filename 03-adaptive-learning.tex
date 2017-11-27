@@ -318,9 +318,9 @@ The system can be more strict and show only a single recommended task,
 
 
 To decide if the adaptivity improves the quality of the learning system,
-  a suitable metrics must be chosen and evaluated.
+  suitable metrics must be chosen and evaluated.
 Metrics are also used for optimizing models,
-  first for parameters fitting, second for choosing hyperparameters
+  first for parameters fitting, second for choosing hyperparameters,
   and third for selecting best model from a set of possible models.
 
 %TODO: table/diagram showing goals hierarchy and their usage:
@@ -362,20 +362,20 @@ In the \emph{Rules of Machine Learning}, Martin Zinkevich
 As a solution to this ``multiple objectives dilemma'',
   the mission can be formulated as achieving a balanced increase in all
   of these important factors.
-Such formulation helps to remind developers of the system not not overfocus on one factor
-  in the cost of the others.
+Such formulation reminds developers of the system not to overfocus on one factor
+  at the cost of the others.
 
 
 \subsection{Long Term Objectives}
 \label{sec:long-term-objectives}
 
 The huge disadvantage of the mission statements
-  is the fact that they are not measurable.
+  is that they are not measurable.
 To make informed decisions,
   such as which of the two recommendation algorithms to prefer,
   measurable metrics are needed.
-Therefore, various proxy metrics are used,
-  which should be precisely formulated and measurable,
+Therefore, various proxy metrics are used.
+These proxy metrics should be precisely formulated and measurable,
   but at the same time they should be related as much as possible to the system mission.
 
 To elaborate on the mission from section \ref{sec:mission},
@@ -393,8 +393,7 @@ While ``achieving mastery in elementary programming quickly'' can be
 % it's not clear that there must be an objective mastery criterion
 % which should be achieved by all students
 
-Furthermore, a time frame must be specified
-  -- usually a few weeks for AB experiments.
+Furthermore, a time frame must be specified, for example last 30 days.
 While short time frames allow for faster decisions and hence more improvements over time,
 there are several reasons for making the time frame longer:
 \begin{itemize}
@@ -405,16 +404,16 @@ there are several reasons for making the time frame longer:
 
 There are many other possible long-term metrics, for example:
 \begin{enumerate}
-  \item Daily active users (DAU) -- students who has solved at least 1 task this day.
+  \item Daily active users (DAU) -- students who have solved at least 1 task this day.
   \item Monthly number of active users (30DAU) -- students who have solved at least 10 tasks this month.
-  \item Returning users -- students who have solved some tasks one day and have returned another day.
+  \item Returning users -- students who have solved at least one task one day and have returned and solved another task another day.
   \item Converted users -- students who have finished last level in the system.
   \item Converted users -- students who have solved at least one task from each level.
   \item Number of solved tasks.
   \item Total time spent on successful attempts.
 \end{enumerate}
 
-It is not immediately clear which of them is the best proxy for the system mission.
+It is not immediately clear which of these metrics is the best proxy for the system mission.
 Thankfully, it was observed that at the beginning all the metrics which seem to somehow
 reflect the system mission tend to improve simultaneously, no matter which one
 is chosen to be directly optimized \cite[][Rule \#12]{google-ml-rules}.
@@ -422,10 +421,10 @@ To understand how their values are influenced by changes in the learning system,
 it is useful to measure and report all of them from the beginning
 \cite[][Rule \#2]{google-ml-rules}.
 
-It is also recommended to start the system optimization with a metric which is simple
-and ideally directly attributable to individual recommendations,
-instead of indirect metrics suggested above, that measure a complex aggregate
-effect of the system behavior during a longer period \cite[][Rule \#12]{google-ml-rules}.
+All of these suggested metrics measure a complex aggreage effect of the system
+behavior duing some period.
+However, it is recommended to start the system optimization with a metric which is simple
+and directly attributable to individual recommendations \cite[][Rule \#12]{google-ml-rules}.
 The attributable metrics are presented in section \ref{sec:live-evaluation}.
 
 % TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
@@ -460,15 +459,15 @@ For example, trying to achieve minimum solving times on tasks in the learning sy
 In addition to quantitative (objective) metrics (such as whether the
 recommended task was clicked and solved), the system can also explicitly ask
 students to provide quantitative (subjective) feedback.
-For example, after the student solves the task, the system can show them a dialog
-asking them about the perceived difficulty -- whether the task was ``too
-easy'', ``too difficult'' or `just right'' for them.
+For example, after the student solves the task, the system can show a dialog
+asking about the perceived difficulty -- whether the task was ``too
+easy'', ``too difficult'' or `just right''.
 Other tags about tasks can be collected as well, e.g. ``boring'', ``weird'', or ``fun''.
 
 Collecting these tags allows to compute metrics that looks as close proxies to
 the system mission, such as the total time spent in flow.
-The flow has a nice property of combining both enjoyment and learning
-and if it could be measured reliably, it would be a great proxy.
+As it combines both enjoyment and learning,
+flow would be a great proxy if it could be measured reliably.
 % TODO: ref to a relevant research about flow
 
 However, a known disadvantage of subjective ratings is the amount of noise
@@ -526,11 +525,11 @@ The advantages of offline experiments compared to online evaluation include
   reusing the same data to evaluating different models,
   and avoiding potential negative impact on students if the evaluated model is poor.
 
-Of course, the offline evaluation is limited,
+Of course, offline evaluation is limited,
   because there are not all the historical data needed
   for proper evaluation.
 For example, when evaluating a new recommendation algorithm,
-  the data on how the student would respond to a particular recommendation
+  the data about a student responding to a particular recommendation
   are often not available.
 Another disadvantage of offline evaluation compared to live evaluation
   is that the data used for evaluation does not come from the completely
@@ -540,7 +539,7 @@ Another disadvantage of offline evaluation compared to live evaluation
 
 Offline evaluation is typically used as a check before pushing
   the model online to avoid problems as soon as possible.
-It can be also used for model selection,
+It can also be used for model selection,
   including hyperparameters search.
 Finally, offline learning algorithms typically also use
   a metric to guide them
@@ -568,13 +567,14 @@ The recommended splitting technique is ``user-stratified'',
   in which we randomly split students,
   and create training set from all events of one group of students,
   and first $n$ events of all students in the second group.
-The test set than contains $(n+1)$-th events from the students
+The test set then contains $(n+1)$-th events from the students
   in the second group.
 The evaluation can be repeated for all possible $n$'s and averaged.
 This is simple and fast for online models
   (that can be trained iteratively by one training event),
-  but it is more involved and often too slow for offline models,
-  in which case some simplifications must be used,
+  but it is more involved and often too slow for offline models.
+To make the evaluation reasonably fast,
+  some simplifications can be used,
   such as predicting not only one, but multiple events
   for each student in the second group during a single split.
 
@@ -601,12 +601,12 @@ A student model (described in \ref{sec:student-modeling})
 Therefore it is reasonable to believe that optimizing the quality
   of used student models should result in better recommendations
   and transitively in improving the long-term objectives.
-Although better predictions usually helps,
+Although better predictions usually help,
   the relationship between their quality and the long term objectives
   is not always straightforward.
-Improvements in the predictive power are not worth,
-  if the online experiments show that it  would actually
-  lead to decrease of the long-term objectives.
+If the online experiments show that the more accurate predictions would actually
+  lead to decrease of the long-term objectives,
+  then these improvements in the predictive power should not by applied.
 
 The next two sections present metrics for two most common
   types of student models according to their output:
@@ -657,7 +657,7 @@ Note that the solving times should be first log-transformed;
 \subsection{Metrics for Success Predictions}
 \label{sec:metrics-for-success-predictions}
 
-Some student models predicts a probability that
+Some student models predict a probability that
   a given student would solve a given task.
 % TODO: statistics terminology - alternative distribution
 In this case, each the true labels are not any real number,
@@ -691,8 +691,8 @@ However, these metrics do not distinguish between small and large errors of the 
 
 These error metrics depends on a particular threshold chosen
   for binarization of predicted probabilities.
-There are metrics avoiding this problem byt using only ranking of predictions.
-The most common one is AUC -- ``Area Under Curve'',
+There are metrics avoiding this problem by using only ranking of predictions.
+The most common one is AUC, ``Area Under Curve'',
   which is the probability that if one failure and one success are selected by random,
   the predictor would assign a higher probability to the success event than to the failure.
 
@@ -722,11 +722,11 @@ The reason is missing data --
   there is no easy way to tell if the recommendation is good or not.
 
 The extremeness of data sparsity makes offline evaluation so challenging,
-  that most learning systems completely skip this type of evaluation,
-  applying offline evaluation only to student models
-  (section \ref{sec:student-model-evaluation})
-  and checking quality of recommendation algorithms on live traffic
-  (section \ref{sec:live-evaluation}).
+that most learning systems completely skip this type of evaluation,
+apply offline evaluation only to student models
+(section \ref{sec:student-model-evaluation})
+and check quality of recommendation algorithms on live traffic
+(section \ref{sec:live-evaluation}).
 
 Nevertheless, realizing that the offline evaluation serves just as another proxy metric,
   it may be still useful to perform at least some limited offline evaluation
@@ -741,11 +741,13 @@ There are some possible approaches:
       (These comparisons can be turned into several different metrics,
        which are described in section \ref{sec:metrics-for-recommendation}).
       % TODO: point to a section with confusion matrix, precision, recall etc.
-  \item Instead of looking on the past recommendations,
+  \item Instead of looking at the past recommendations,
       events when students themselves selected a task from a list of all tasks can be used.
       (It is also possible to combine both recommendation and self-selection events
        as a single dataset.)
-  \item Prepare a small manually labeled dataset describing good and bad recommendations for given combination of features, possibly by extending collected data on recommendation.
+  \item Prepare a small manually labeled dataset describing appropriate and
+    inappropriate recommendations for given combination of features, possibly
+    by extending collected data on recommendation.
   \item Measure agreement in recommendations between a new recommender and one which is already used and was evaluated on live traffic (recommended by \cite[][Rule \#24]{google-ml-rules}).
 \end{itemize}
 
@@ -756,12 +758,14 @@ There are some possible approaches:
 \label{sec:metrics-for-recommendation}
 
 There are multiple metrics that can be used for both online and offline
-evaluation of recommendations, which requires different type of data.
+evaluation of recommendations.
+These metrics can be divided into several categories
+according to what data they need.
 
 For a series of student-task interactions paired with a recommendation list of
 fixed length $N$, a \emph{confusion matrix} can be constructed by comparing
-whether the interaction was good for the student or not and
-whether the task was within top $N$ recommended tasks.
+whether the interaction was beneficial for the student or not,
+and whether the task was within top $N$ recommended tasks.
 Having the confusion matrix allows to compute various metrics such as
 accuracy, precision, or recall. % TODO: or sensitivity/specificity/... + define
 
@@ -781,7 +785,7 @@ In this case, other \emph{ranking metrics},
 % TODO:  Discounted cumulative gain, average precision, lift index, ...
 
 %# Beyond simple accuracy
-All these metrics focus on how accurate the recommendations are,
+All these metrics focus on accuracy of the recommendations,
 but there are other properties of recommendation algorithms,
 which may influence its usefulness for students,
 such as robustness or diversity.
@@ -803,14 +807,14 @@ using some distance metric.
 \subsection{Metrics to Guide Learning}
 \label{sec:metrics-to-guide-learning}
 
-Learning algorithms often incorporates a metric they attempt to optimize.
+Learning algorithms often incorporate a metric they attempt to optimize.
 In this context, the metric is often called \emph{loss function}.
 For example,
   Ordinary Least Squares (used for linear regression models) minimizes RMSE.
 Some learning algorithms, such as gradient descent,
   allow to minimize arbitrary metric
   for which it is easy to compute partial derivatives with respect to model parameters.
-Loss functions can be viewed as another proxies for long-term objectives.
+Loss functions can be viewed as just further proxies for long-term objectives.
 Therefore, in the case of choice, it is beneficial to choose a loss function
   that matches the long-term objectives more closely.
 
@@ -834,16 +838,16 @@ Simulated experiments provide a third alternative,
 
 Not needing collected data makes simulations widely and easily applicable.
 On the other hand, researchers must be careful when interpreting
-  the results of a simulation, as the simulation results are noting more than
+  the results of a simulation, as the simulation results are nothing more than
   just consequences of used assumptions.
 Nevertheless, simulation are perfect for models debugging,
   for example to find fatal errors in the implementation.
-Furthermore, \emph{sensitivity analysis} is a technique to find
+Furthermore, \emph{sensitivity analysis} is a technique for finding
   which parameters of the model are important and should be learned,
   and which can be safely set manually without frequent retraining.
 
 In practice, simulations can also take advantage of collected data
-  if they are available; to estimate some of the model parameters
+  if they are available -- to estimate some of the model parameters
   or to evaluate how much the model predictions agree with
   what was observed in the reality.
 
