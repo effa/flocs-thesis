@@ -1,0 +1,14 @@
+%%
+% Page-wide centered image with caption.
+%
+% #1: image ID
+% #2: caption
+\newcommand{\imgW}[2] {
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{img/#1}
+  \end{center}
+  \caption{#2}
+  \label{fig:#1}
+\end{figure}
+}

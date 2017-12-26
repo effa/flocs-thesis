@@ -1,20 +1,145 @@
 \chapter{Design of RoboMission}
 \label{chap:design-of-robomission}
 
-TBA: intro about Robomission
+\begin{itemize}
+\item what = app for efficient learning of elementary programming for children
+\item entertaining problems of optimal difficulty
+\item max \emph{flow} $\rightarrow$ max efficiency
+\item linearized description: design (this chapter), implementation (nexth chapter); in reality: many iterations
+\end{itemize}
+
+
+\imgW{robomission-task1}{Task Environment of the RoboMission.}
+
+
+\section{Goals}
+\label{sec:robomission.goals}
+
+\begin{itemize}
+\item TBA, with respect to objectives section in previous chapter, but be more specific
+\end{itemize}
+
+
+
+
+\section{Use Cases}
+\label{sec:robomission.use-cases}
+
+\begin{itemize}
+\item single learner mode is the only one already supported
+\item Hour of Code  - single hour,  mainly as a motivation and promotion
+\item primary school mode (RoboBlocks) -> needs: teacher mode and guide
+\item secondary school mode (RoboCode)
+\item KSI -- 0th problem set - needs Python
+\item IB111 -- 0th/1st motivational lesson - needs Python and to be better than turtle
+\item MjUNI workshop
+\item ? competitions such as Purkiada (physical version already in InterSoB 2017)
+%\item education exhibit at VIDA  Science Center
+\item -> functional requirements
+\end{itemize}
+
+
+
 
 \section{Game World}
 \label{sec:robomission.game-world}
 
-TBA
+\begin{itemize}
+\item original version - robot-in-maze, issues:
+  \begin{itemize}
+  \item not flexible and did not allow for a lot of diverse easy tasks,
+  \item which is crucial for adaptive learning system
+  \item unnecessarily long programs for simple ideas (non-elegant programs) (TBA: show comparision)
+  \item non-elegant tasks
+  \item ugly worlds
+  \item not very original and entertaining for kids
+  \end{itemize}
+\item principle: game itself must be fun to play with (ref: Book of Lenses)
+\item new game: rocket in space - different theme, mechanics, graphics
+\item world elements: grid with colors (color clouds), final line, asteroids and meteoroids, diamonds, wormholes (TODO: explain why), spaceship
+\item spaceship actions (left, fly, right, shoot) and sensors (color, position), limited energy
+\item explain (and demonstrate) the usefulness of contnuous flight ahead (shorter programs, eliminate the common turning left-right confusion), but also disadvantages: (1) more difficult to use space effiently, this was partially solved by the wormholes hack, another potential solution: more spaceships), (2) it is not what users expect the first time they see the world and left/right action
+\end{itemize}
+
 
 \section{Tasks}
 \label{sec:robomission.tasks}
 
-TBA
+\begin{itemize}
+\item space world as described above, single program (blocky/roboCode), length limit
+\item goal: reach the final row and collect all diamonds on the way
+\item blocks: depends on the level, actions, sensing, repeat, while, if, if-else
+\end{itemize}
+
+\imgW{prototype-pits}{Lesson from the first prototype: world must contain elements that the program cannot check to enable diverse tasks. As we had a natural sensor to check walls, we needed to add pits that could not be checked by any sensor.}
+
+
+\imgW{robomission-task2}{Task with asteroids.}
+\imgW{robomission-task3}{Task with colors and wormholes.}
+
+
+\section{Task Editor}
+\label{sec:robomission.system}
+
+\begin{itemize}
+\item it's much easier to create new tasks then in first prototype
+\end{itemize}
+
+
+\imgW{task-editor}{Task editor allows to create new tasks.}
+\imgW{task-editor-vim}{Task editor allows to to write solutions in Python-based RoboCode and edit space world in Vim mode.}
 
 
 \section{Learning System}
 \label{sec:robomission.system}
 
-TBA
+\begin{itemize}
+\item components: home, task environment, task completion dialog and recommendations, statistics (tasks overview), (feedback form), (login) (task editor)
+\item intuitive and simple user interface crucial (aiming at children, they need to focus on learning programming, it would be bad to waste their mental power on understanding a complex interface)
+\item mini-instructions (ref to the Google research on ignoring instructions, show how it was solved in Blockly Games; ref figure)
+\item mini-explations (difference to instructions: after the fact) (ref figure) (they also serve as a convenient mean to game resetting)
+\item motivation: intrinsic (fun challenging game + optimal difficulty) and simple external motivation scheme: credits and levels
+\item levels -- currently 9, how many block available (usually one new concept in each level)
+\end{itemize}
+
+
+\imgW{robomission-mini-instruction}{When a student encounters a new programming concept or programming element, the system displays a short instruction.}
+\imgW{robomission-mini-explanation}{The system shows an explanation why the exection was unsuccessful.}
+\imgW{robomission-levels-credits}{Students earn credits after each solved task.}
+\imgW{robomission-tasks-overview}{Overview of all tasks. There is currently 9 levels, each containing about 8 tasks.}
+
+\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
+
+
+\section{Monitoring}
+\label{sec:robomission.monitoring}
+
+\begin{itemize}
+\item crucial component for iterative improvement (see Rule of the Loop section below)
+\end{itemize}
+
+
+\section{Non-functional Requirements}
+\label{sec:robomission.nonfunctional-requirements}
+
+\begin{itemize}
+\item TBA
+\end{itemize}
+
+
+
+\section{Rule of the Loop}
+\label{sec:robomission.rule-of-the-loop}
+
+\begin{itemize}
+\item the design interleaved with the implementation -> final design is completely different than the original one
+\item ref: rule of the loop (ref: in game desing: Book of Lenses, for ML: Google Rules of ML, for WS development: SCRUM; our project includes all these 3 elements)
+\item first prototype: 2016, one year of development, thrown away; for testing our initial ideas and find what works and what not; 50 tasks with a robot in maze
+  \begin{itemize}
+  \item problems with the robot in the maze: not fun (boring, not inovative, repetitiveness), did not allow for a plenty of diverse easy tasks (which is necessary for adaptive systems), required a lot of blocks even for simple programs (compared to the SpaceGame)
+  \item problems with the codebase (maintainability, extensibility - why?)
+  \item and the good things? (SPA, explored/verified useful technologies, such as Blockly and Django)
+  \end{itemize}
+\end{itemize}
+
+\imgW{prototype-task-environment}{First prototype of the system, with a classic robot-in-maze game.}
