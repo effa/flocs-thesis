@@ -1,14 +1,15 @@
-%%
+%--------------------------------------------------------------------
 % Page-wide centered image with caption.
-%
-% #1: image ID
-% #2: caption
-\newcommand{\imgW}[2] {
+%--------------------------------------------------------------------
+% #1: proportion of textwidth to use [optional, default: 1]
+% #2: image ID
+% #3: caption
+\newcommand{\imgW}[3][1] {
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=\textwidth]{img/#1}
+    \includegraphics[width=#1\textwidth]{img/#2}
   \end{center}
-  \caption{#2}
-  \label{fig:#1}
+  \caption{#3}
+  \label{fig:#2}
 \end{figure}
 }

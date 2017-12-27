@@ -60,6 +60,33 @@ TBA: thanks, TBA: mention RH and MU projects
 \usepackage{amsfonts}
 %% Graphics
 \usepackage{tikz}
+%% Colors
+\usepackage{xcolor}
+\definecolor{theme-red}{rgb}{0.62,0.01,0.05}
+\definecolor{dark-red}{rgb}{0.6,0.15,0.15}
+\definecolor{dark-green}{rgb}{0.15,0.4,0.15}
+\definecolor{medium-blue}{rgb}{0,0,0.5}
+\definecolor{light-gray}{rgb}{0.93,0.93,0.93}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+%% Source code highlighting
+\usepackage{listings}
+\lstset{
+  backgroundcolor=\color{light-gray},
+  frame=lines,
+  rulecolor=\color{black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  basicstyle=\ttfamily,
+  showspaces=false,
+  showstringspaces=false,
+  escapeinside={<*}{*>},
+  belowskip=0.2em,
+  %identifierstyle=\color{black},
+  %keywordstyle=\color{blue},
+  %stringstyle=\color{teal},
+  commentstyle=\itshape}
+%% Subcaption package for subfigure environment.
+\usepackage{subcaption}
 %% URLs.
 \usepackage{url}
 \usepackage{hyperref}

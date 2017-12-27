@@ -20,6 +20,31 @@
 \end{itemize}
 
 
+\section{Expected System Behavior}
+\label{sec:robomission.behavior}
+
+Student: (anybody who can at least read? targeting at?)
+\begin{itemize}
+\item All presented tasks are fun, challenging, pleasant to look at, they "call to be solved".
+\item Student is able to solve any task recommended by the system (within 15 minutes).
+\item Student is able to solve the first few tasks quickly (within 2 minutes).
+\item Student is not bored by neither too easy task requiring many command (i.e. taking more than 1 minute to build the solution), nor by the sequence of either too easy or too similar tasks.
+\item Skilled student should progress throught first few level quickly (within 10 minutes) and get to the more challenging tasks containing both types of loops, conditionals etc.
+\item Each new concept (e.g. block) is explained in the task where it appears for the first time (for given student) (and not earlier).
+\item Student understands all elements in the game world, available blocks and in the task environment.
+\item TBA: motivation and feel of progress
+\item TBA: statistics for student
+\end{itemize}
+
+Admin/Researcher:
+\begin{itemize}
+\item Admin can immediately see how much is the system used and how the system behaves with respect to the short-term ("live-evaluation") metrics (...)
+\item Admin receives feedback from provided by users, and error reports on unhandled exceptions.
+\item Admin can see metrics on individual tasks (to quickly detect issues with a task).
+\item Researcher: TBA - provided data (exports), exploration aspect of recommendation
+\end{itemize}
+
+
 
 
 \section{Use Cases}
@@ -55,11 +80,24 @@
   \item not very original and entertaining for kids
   \end{itemize}
 \item principle: game itself must be fun to play with (ref: Book of Lenses)
+\item requirements (on the topic/theme/world):
+  \begin{itemize}
+  \item entertaining for childern
+  \item allowing to create plenty of diverse (and entertaining) tasks, inluding very simple ones
+  \item programs should be not too verbose
+  \item not limiting adaptability (e.g. story requring a fixed sequence of tasks would be a problem)
+  \item (not limiting another topics later)
+  \end{itemize}
 \item new game: rocket in space - different theme, mechanics, graphics
-\item world elements: grid with colors (color clouds), final line, asteroids and meteoroids, diamonds, wormholes (TODO: explain why), spaceship
+\item world elements: grid with colored fields (color clouds) and objects: asteroids and meteoroids, diamonds, wormholes (TODO: explain why), final line, spaceship
 \item spaceship actions (left, fly, right, shoot) and sensors (color, position), limited energy
-\item explain (and demonstrate) the usefulness of contnuous flight ahead (shorter programs, eliminate the common turning left-right confusion), but also disadvantages: (1) more difficult to use space effiently, this was partially solved by the wormholes hack, another potential solution: more spaceships), (2) it is not what users expect the first time they see the world and left/right action
+\item explain (and demonstrate) the usefulness of continuous flight ahead (shorter programs, eliminate the common turning left-right confusion), but also disadvantages: (1) more difficult to use space effiently, this was partially solved by the wormholes hack, another potential solution: more spaceships), (2) it is not what users expect the first time they see the world and left/right action
 \end{itemize}
+
+
+% TODO: use different spaceworld than in Imlementation chapter.
+\imgW[0.4]{spaceworld}{Example of Space World.}
+
 
 
 \section{Tasks}
@@ -75,7 +113,6 @@
 
 
 \imgW{robomission-task2}{Task with asteroids.}
-\imgW{robomission-task3}{Task with colors and wormholes.}
 
 
 \section{Task Editor}
@@ -100,6 +137,7 @@
 \item mini-explations (difference to instructions: after the fact) (ref figure) (they also serve as a convenient mean to game resetting)
 \item motivation: intrinsic (fun challenging game + optimal difficulty) and simple external motivation scheme: credits and levels
 \item levels -- currently 9, how many block available (usually one new concept in each level)
+\item recommendation -- simple filtering (only consider unsolved tasks on the level $\leq$ student level), simple weighting based on difference between student and task levels (exponential decay), rulette wheel selection
 \end{itemize}
 
 
@@ -116,6 +154,8 @@
 
 \begin{itemize}
 \item crucial component for iterative improvement (see Rule of the Loop section below)
+\item components: see dashboard; GA, metrics, feedback, error reports
+\item TBA: screenshots of dashboard
 \end{itemize}
 
 
@@ -123,7 +163,9 @@
 \label{sec:robomission.nonfunctional-requirements}
 
 \begin{itemize}
-\item TBA
+\item easy to understand code, pleasure to read and write (extend)
+\item easy to refactor and add new things (new tasks, levels, recommendation strategies etc.)
+\item robust, efficient, interpretable behavior
 \end{itemize}
 
 
