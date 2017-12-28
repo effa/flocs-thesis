@@ -2,22 +2,16 @@
 \label{chap:design-of-robomission}
 
 \begin{itemize}
-\item what = app for efficient learning of elementary programming for children
-\item entertaining problems of optimal difficulty
-\item max \emph{flow} $\rightarrow$ max efficiency
+\item RoboMission = app for efficient and fun learning of elementary programming for children (= mission)
+\item how: entertaining problems of optimal difficulty $\rightarrow$ max \emph{flow} $\rightarrow$ max fun, learning efficiency, happiness
+\item "robot in grid world" and Blockly blocks
+\item theme: spaceship in space, collecting diamonds
+\item covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
 \item linearized description: design (this chapter), implementation (nexth chapter); in reality: many iterations
 \end{itemize}
 
 
-\imgW{robomission-task1}{Task Environment of the RoboMission.}
-
-
-\section{Goals}
-\label{sec:robomission.goals}
-
-\begin{itemize}
-\item TBA, with respect to objectives section in previous chapter, but be more specific
-\end{itemize}
+\imgW{robomission-task1}{Example of a task in the RoboMission app.}
 
 
 \section{Expected System Behavior}
@@ -51,16 +45,22 @@ Admin/Researcher:
 \label{sec:robomission.use-cases}
 
 \begin{itemize}
-\item single learner mode is the only one already supported
-\item Hour of Code  - single hour,  mainly as a motivation and promotion
-\item primary school mode (RoboBlocks) -> needs: teacher mode and guide
-\item secondary school mode (RoboCode)
-\item KSI -- 0th problem set - needs Python
-\item IB111 -- 0th/1st motivational lesson - needs Python and to be better than turtle
-\item MjUNI workshop
-\item ? competitions such as Purkiada (physical version already in InterSoB 2017)
+\item "Hour of Code" mode
+  \begin{itemize}
+  \item single hour
+  \item mainly as a motivation to programming
+  \item using RoboBlocks
+  \item directly at elemenatry and high schools, or at home
+  \item plus: MjUNI workshop
+  \item shorter promotianal version for DODs (?) ("10 minutes of code")
+  \item (should be strictly time-limited; certificate at the end)
+  \end{itemize}
+\item "foundations mode" individual learning of elementary programming (individual at home or in a classroom, from several days to several weeks, depending on the prior skill); natural continuation of the first "Hour of Code" (next levels, with RoboBlocks)
+\item "university mode" -- levels with RoboCode/Python, at home / secondary schools, KSI (0th problem set), IB111 (0th/1st motivational lesson - needs Python and to be better than turtle)
+\item "competition/texting mode" -- competitions such as Purkiada, Pevnost FI, KSI (advanced problem sets), (physical version already in InterSoB 2017); testing mode for RH interns
+\item nice thing is that all these modes can be naturally implemented just as distinct levels, going from the easy tasks using RoboBlocks, through the RoboCode/Python, to the difficult tasks prepared for individual competitions
 %\item education exhibit at VIDA  Science Center
-\item -> functional requirements
+\item TBA: -> functional requirements (...)
 \end{itemize}
 
 
@@ -82,7 +82,7 @@ Admin/Researcher:
 \item principle: game itself must be fun to play with (ref: Book of Lenses)
 \item requirements (on the topic/theme/world):
   \begin{itemize}
-  \item entertaining for childern
+  \item entertaining for children
   \item allowing to create plenty of diverse (and entertaining) tasks, inluding very simple ones
   \item programs should be not too verbose
   \item not limiting adaptability (e.g. story requring a fixed sequence of tasks would be a problem)
@@ -156,6 +156,21 @@ Admin/Researcher:
 \item crucial component for iterative improvement (see Rule of the Loop section below)
 \item components: see dashboard; GA, metrics, feedback, error reports
 \item TBA: screenshots of dashboard
+\item collect metrics related to long-term objectives (as described in \ref{sec:long-term-objectives})
+  \begin{itemize}
+  \item "daily active students" = number of users who solved at least 1 task this day
+  \item "solving hours" = total time spent on successful attempts
+  \item "success ratio" = proportion of successful attempts
+  \item number of solved tasks
+  \item (TBA: update if it changed)
+  \end{itemize}
+\item also collect metrics about each task (in order to e.g. detect problematic ones)
+  \begin{itemize}
+  \item solved count
+  \item median time
+  \item success ratio
+  \end{itemize}
+\item all these metrics are computed every night and shown in the monitoring dashboard
 \end{itemize}
 
 

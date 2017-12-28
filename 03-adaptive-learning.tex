@@ -422,7 +422,7 @@ it is useful to measure and report all of them from the beginning
 \cite[][Rule \#2]{google-ml-rules}.
 
 All of these suggested metrics measure a complex aggreage effect of the system
-behavior duing some period.
+behavior during some period.
 However, it is recommended to start the system optimization with a metric which is simple
 and directly attributable to individual recommendations \cite[][Rule \#12]{google-ml-rules}.
 The attributable metrics are presented in section \ref{sec:live-evaluation}.
@@ -700,8 +700,9 @@ There are a few limitations of AUC.
 First, it considers all thresholds, but only a range of them is usually relevant.
 Second, by only considering the ordering of predictions,
   if all predictions are multiplied by a constant, AUC remains unchanged.
-Third, if the predicted classes are strongly unbalanced, AUC of nearly 1
-  can be achieved by a simple baseline predicting the majority class.
+Third, if the predicted classes are strongly imbalanced,
+  high AUC can be achieved by simple classifiers
+  even if they perform poorly on the minority class.
 Generally, AUC is a reasonable choice for intrinsically classification problems,
   but not necessarily for student modeling \cite{pelanek-evaluation-student-models}.
 
