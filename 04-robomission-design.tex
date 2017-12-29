@@ -7,42 +7,58 @@
 \item "robot in grid world" and Blockly blocks
 \item theme: spaceship in space, collecting diamonds
 \item covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
-\item linearized description: design (this chapter), implementation (nexth chapter); in reality: many iterations
+\item linearized description: design (this chapter), implementation (next chapter); in reality: many iterations
 \end{itemize}
 
 
 \imgW{robomission-task1}{Example of a task in the RoboMission app.}
 
 
-\section{Expected System Behavior}
+\section{System Behavior}
 \label{sec:robomission.behavior}
 
-Student: (anybody who can at least read? targeting at?)
+Wide range of task difficulty, together with the adaptive behavior,
+should make the systems useful for anybody who wants to learn
+elementary programming.
+However, this long-term goal requires many iterations,
+as well as a lot of data.
+Currently, the system primarily targets at children between 8-15 years.
+
+\subsection{Main Use Case}
+\label{sec:robomission.use-case}
+
 \begin{itemize}
-\item All presented tasks are fun, challenging, pleasant to look at, they "call to be solved".
-\item Student is able to solve any task recommended by the system (within 15 minutes).
+\item Student visits the home page of the project, reads the "promotional slides" and tries the game with manual controls. On the last slide, they click on the recommended task from the 1st level.
+(REF: img)
+\item Student creates the program using Blockly blocks and can run the program as many times as needed. (REF: img) Program execution is visualized. Student can change the speed of the execution.
+\item After each unsuccessful execution, a short message explaining why the task was not solved is shown (e.g. "The spaceship must reach the final row.") (REF: img)
 \item Student is able to solve the first few tasks quickly (within 2 minutes).
-\item Student is not bored by neither too easy task requiring many command (i.e. taking more than 1 minute to build the solution), nor by the sequence of either too easy or too similar tasks.
-\item Skilled student should progress throught first few level quickly (within 10 minutes) and get to the more challenging tasks containing both types of loops, conditionals etc.
-\item Each new concept (e.g. block) is explained in the task where it appears for the first time (for given student) (and not earlier).
-\item Student understands all elements in the game world, available blocks and in the task environment.
-\item TBA: motivation and feel of progress
-\item TBA: statistics for student
+\item After solving each task, student is shown a visualization of obtaining points (called credits) (REF: printscreen). After a few solved tasks, student progresses to next level.
+\item After each solved task, student is shown a dialog with one recommended task, and also a link to the page with overview of all tasks (REF: img).
+\item Student is able to solve any task recommended by the system (within 15 minutes).
+\item Each new concept (e.g. block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
+\item Students with some prior programming skill should progress through first few levels quickly (within 10 minutes) and get to the more challenging tasks containing both types of loops, conditionals etc.
+\item Student is not bored by neither too easy task requiring many commands (i.e. taking more than 1 minute to build the streightforward solution), nor by the sequence of either too easy or too similar tasks.
+\item Student can sign up (or log in without registration through their social accounts) at any moment to save their progress. Even without singing up, the system can associate the student with its progress using session cookie (but also provides a button to clear the history).
+\item Student can provide a feedback or report a bug easily (and the feedback is send to admins by an email).
 \end{itemize}
+(TBA: add diagram with images for all these steps linked by arrows showing transitions)
 
-Admin/Researcher:
-\begin{itemize}
-\item Admin can immediately see how much is the system used and how the system behaves with respect to the short-term ("live-evaluation") metrics (...)
-\item Admin receives feedback from provided by users, and error reports on unhandled exceptions.
-\item Admin can see metrics on individual tasks (to quickly detect issues with a task).
-\item Researcher: TBA - provided data (exports), exploration aspect of recommendation
-\end{itemize}
+% TODO: consider some of the following notes
+% - Design of tasks for the system is described in section \ref{sec:robomission.tasks}.
+% - Adaptive aspect of the behavior is described in section \ref{sec:robomission.adaptability}.
+%\item intuitive and simple user interface crucial (aiming at children, they need to focus on learning programming, it would be bad to waste their mental power on understanding a complex interface)
+%\item mini-instructions (ref to the Google research on ignoring instructions, show how it was solved in Blockly Games; ref figure)
+%\item mini-explations (difference from instructions: after the fact) (ref figure) (they also serve as a convenient mean to game resetting)
+%\item motivation: intrinsic (fun challenging game + optimal difficulty) and simple external motivation scheme: credits and levels
 
 
-
-
-\section{Use Cases}
+\subsection{Four Modes of Usage}
 \label{sec:robomission.use-cases}
+
+In addition to the main use case described in the previous section,
+which assumes a new student without any context (e.g. a classroom),
+the system can be potentially used in other (or more specific) ways.
 
 \begin{itemize}
 \item "Hour of Code" mode
@@ -55,18 +71,29 @@ Admin/Researcher:
   \item shorter promotianal version for DODs (?) ("10 minutes of code")
   \item (should be strictly time-limited; certificate at the end)
   \end{itemize}
-\item "foundations mode" individual learning of elementary programming (individual at home or in a classroom, from several days to several weeks, depending on the prior skill); natural continuation of the first "Hour of Code" (next levels, with RoboBlocks)
-\item "university mode" -- levels with RoboCode/Python, at home / secondary schools, KSI (0th problem set), IB111 (0th/1st motivational lesson - needs Python and to be better than turtle)
-\item "competition/texting mode" -- competitions such as Purkiada, Pevnost FI, KSI (advanced problem sets), (physical version already in InterSoB 2017); testing mode for RH interns
-\item nice thing is that all these modes can be naturally implemented just as distinct levels, going from the easy tasks using RoboBlocks, through the RoboCode/Python, to the difficult tasks prepared for individual competitions
-%\item education exhibit at VIDA  Science Center
-\item TBA: -> functional requirements (...)
+\item "Foundations mode" individual learning of elementary programming (individual at home or in a classroom, from several days to several weeks, depending on the prior skill); natural continuation of the first "Hour of Code" (next levels, with RoboBlocks)
+\item "University mode" -- levels with RoboCode/Python, at home / secondary schools, KSI (0th problem set), IB111 (0th/1st motivational lesson - needs Python and to be better than turtle)
+\item "Competition mode" -- competitions such as Purkiada, Pevnost FI, KSI (advanced problem sets), new FIBot (physical version already in InterSoB 2017); this also includes testing mode for RH interns
 \end{itemize}
 
+All these modes can be naturally implemented as distinct levels,
+going from the easy tasks using RoboBlocks for "Hour of Code",
+gradually transitioning to the RoboCode during learning the "Foundations",
+using full-fledged Python for "University mode"
+and offering both blocks and Python for the individual competitions.
+Levels from the past compettions can be made public for all students.
 
 
+\section{Tasks}
+\label{sec:robomission.tasks}
 
-\section{Game World}
+Tasks are the most important part of the system,
+because nearly all the time in the system students spend solving the tasks.
+Therefore they need to be fun, entertaining and calling to be solved.
+(TODO: ref to the other requirements mentioned in the prev. chapters)
+(TODO: also mention how we underestimated the importance of the entertaining tasks in the first prototype)
+
+\subsection{Game World}
 \label{sec:robomission.game-world}
 
 \begin{itemize}
@@ -92,21 +119,24 @@ Admin/Researcher:
 \item world elements: grid with colored fields (color clouds) and objects: asteroids and meteoroids, diamonds, wormholes (TODO: explain why), final line, spaceship
 \item spaceship actions (left, fly, right, shoot) and sensors (color, position), limited energy
 \item explain (and demonstrate) the usefulness of continuous flight ahead (shorter programs, eliminate the common turning left-right confusion), but also disadvantages: (1) more difficult to use space effiently, this was partially solved by the wormholes hack, another potential solution: more spaceships), (2) it is not what users expect the first time they see the world and left/right action
+\item REF to formal grammar for the space world in the next chapter
 \end{itemize}
 
 
 % TODO: use different spaceworld than in Imlementation chapter.
 \imgW[0.4]{spaceworld}{Example of Space World.}
 
+\subsection{Programs}
+\label{sec:robomission.programs}
 
-
-\section{Tasks}
-\label{sec:robomission.tasks}
+Given an instace of a spaceworld as described in the previous section (input),
+the goal is to create a program for the spaceship such that
+it reaches the final row and collects all diamonds on the way.
 
 \begin{itemize}
-\item space world as described above, single program (blocky/roboCode), length limit
-\item goal: reach the final row and collect all diamonds on the way
-\item blocks: depends on the level, actions, sensing, repeat, while, if, if-else
+\item length limit, (energy limit)
+\item Blockly blocks (+ potentially RoboCode based on Python, ref to grammar in next chapter)
+\item blocks: depends on the level, actions (...), sensing (...), repeat, while, if, if-else
 \end{itemize}
 
 \imgW{prototype-pits}{Lesson from the first prototype: world must contain elements that the program cannot check to enable diverse tasks. As we had a natural sensor to check walls, we needed to add pits that could not be checked by any sensor.}
@@ -115,29 +145,27 @@ Admin/Researcher:
 \imgW{robomission-task2}{Task with asteroids.}
 
 
-\section{Task Editor}
-\label{sec:robomission.system}
+\subsection{Task Editor}
+\label{sec:robomission.task-editor}
 
-\begin{itemize}
-\item it's much easier to create new tasks then in first prototype
-\end{itemize}
+A part of the system is the task editor (REF: image)
+that enables to easily create new tasks.
+(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
+(TODO: mention that the task editor is part of the public site, so anybody can create a task, provide a link and ref to details about task format in the next chapter)
 
 
 \imgW{task-editor}{Task editor allows to create new tasks.}
 \imgW{task-editor-vim}{Task editor allows to to write solutions in Python-based RoboCode and edit space world in Vim mode.}
 
 
-\section{Learning System}
-\label{sec:robomission.system}
+\section{Adaptability}
+\label{sec:robomission.adaptability}
 
 \begin{itemize}
-\item components: home, task environment, task completion dialog and recommendations, statistics (tasks overview), (feedback form), (login) (task editor)
-\item intuitive and simple user interface crucial (aiming at children, they need to focus on learning programming, it would be bad to waste their mental power on understanding a complex interface)
-\item mini-instructions (ref to the Google research on ignoring instructions, show how it was solved in Blockly Games; ref figure)
-\item mini-explations (difference to instructions: after the fact) (ref figure) (they also serve as a convenient mean to game resetting)
-\item motivation: intrinsic (fun challenging game + optimal difficulty) and simple external motivation scheme: credits and levels
-\item levels -- currently 9, how many block available (usually one new concept in each level)
+\item levels -- currently 9 - divided based on how many block available (usually one new concept in each level)
 \item recommendation -- simple filtering (only consider unsolved tasks on the level $\leq$ student level), simple weighting based on difference between student and task levels (exponential decay), rulette wheel selection
+\item TODO: describe current recommendation strategy
+\item plus: mini-instructions
 \end{itemize}
 
 
@@ -149,40 +177,64 @@ Admin/Researcher:
 \imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
 
 
-\section{Monitoring}
+\section{Monitoring and Analysis}
 \label{sec:robomission.monitoring}
 
 \begin{itemize}
-\item crucial component for iterative improvement (see Rule of the Loop section below)
+\item crucial component for iterative improvement (REF: Rule of the Loop principle)
 \item components: see dashboard; GA, metrics, feedback, error reports
+\item metrics (next subsection) -- all these metrics are computed every night and shown in the monitoring dashboard
 \item TBA: screenshots of dashboard
-\item collect metrics related to long-term objectives (as described in \ref{sec:long-term-objectives})
-  \begin{itemize}
-  \item "daily active students" = number of users who solved at least 1 task this day
-  \item "solving hours" = total time spent on successful attempts
-  \item "success ratio" = proportion of successful attempts
-  \item number of solved tasks
-  \item (TBA: update if it changed)
-  \end{itemize}
-\item also collect metrics about each task (in order to e.g. detect problematic ones)
-  \begin{itemize}
-  \item solved count
-  \item median time
-  \item success ratio
-  \end{itemize}
-\item all these metrics are computed every night and shown in the monitoring dashboard
+\end{itemize}
+
+\subsection{Admin Requirements}
+\begin{itemize}
+\item Admin can immediately see how much is the system used and how the system behaves with respect to the short-term ("live-evaluation") metrics (...)
+\item Admin receives feedback from provided by users, and error reports on unhandled exceptions.
+\item Admin can see metrics on individual tasks (to quickly detect issues with a task).
 \end{itemize}
 
 
-\section{Non-functional Requirements}
-\label{sec:robomission.nonfunctional-requirements}
+\subsection{Metrics}
+\label{sec:robomission.metrics}
+
+The system collects metrics related to long-term objectives (as described in \ref{sec:long-term-objectives}):
 
 \begin{itemize}
-\item easy to understand code, pleasure to read and write (extend)
-\item easy to refactor and add new things (new tasks, levels, recommendation strategies etc.)
-\item robust, efficient, interpretable behavior
+\item "daily active students" = number of users who solved at least 1 task this day
+\item "solving hours" = total time spent on successful attempts
+\item "success ratio" = proportion of successful attempts
+\item number of solved tasks
+\item (TBA: update if it changed)
 \end{itemize}
 
+
+The system also collects metrics about each task (in order to e.g. detect problematic ones)
+\begin{itemize}
+\item solved count
+\item median time
+\item success ratio
+\end{itemize}
+
+
+\subsection{Researcher Requirements}
+\begin{itemize}
+\item TBA - provided data (exports), exploration aspect of recommendation
+\end{itemize}
+
+
+
+
+
+% TODO: consider if to include non-functional requirements or not
+%\section{Non-functional Requirements}
+%\label{sec:robomission.nonfunctional-requirements}
+%
+%\begin{itemize}
+%\item easy to understand code, pleasure to read and write (extend)
+%\item easy to refactor and add new things (new tasks, levels, recommendation strategies etc.)
+%\item robust, efficient, interpretable behavior
+%\end{itemize}
 
 
 \section{Rule of the Loop}
