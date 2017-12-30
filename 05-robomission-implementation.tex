@@ -1,7 +1,9 @@
 \chapter{Implementation of RoboMission}
 \label{chap:implementation-of-robomission}
 
-TBA
+The first part of this chapter describes general aspects of the implementation,
+such as used technologies and overall architecture of frontend and backend.
+The second part presents a few selected details that are specific to the created system.
 
 \section{System Architecture}
 
@@ -12,6 +14,7 @@ TBA
 \item (analysis and monitoring; attempt to achieve harmony between CLI and browser apps (dashboards, jupyter notebooks))
 \item cron -> scheduled jobs
 \item development: git, GH (README, docs, issues, project board?), unit tests
+\item server: nginx, gunicorn, git, virtualenv, PostgreSQL, cron -> scheduled jobs
 \end{itemize}
 
 \section{Frontend}
@@ -38,6 +41,7 @@ TBA
 \item models (...), serializers, views, services/use cases/core
 \item data export
 \item monitoring app, metrics computation
+\item generators (e.g. metric computation)
 \end{itemize}
 
 \section{Clean Core}
@@ -52,19 +56,11 @@ TBA
 \end{itemize}
 
 
-\section{Server}
+\section{Monitoring and Analysis}
 
 \begin{itemize}
-\item nginx, gunicorn, git, virtualenv
-\item PostgreSQL
-\item cron -> scheduled jobs
-\end{itemize}
-
-
-\section{Analysis}
-
-\begin{itemize}
-\item (consider) better place for this section
+\item monitoring dashboard etc. (! don't duplicate corresponding section in Design chapter)
+\item data export
 \item pandas, (numpy, matplotlib, sklearn, seaborn)
 \end{itemize}
 
@@ -79,7 +75,7 @@ TBA
   and solution in RoboCode (ref section below)
 \end{itemize}
 
-Example of complete task source (for rendered task see figure \ref{fig:robomission-task1}.)
+Example of complete task source (for rendered task see figure \ref{fig:robomission-task1}. TBA: show rendered task and its source side by side)
 
 \begin{lstlisting}
 # turning-left
