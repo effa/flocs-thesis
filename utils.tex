@@ -13,3 +13,20 @@
   \label{fig:#2}
 \end{figure}
 }
+
+%--------------------------------------------------------------------
+% Definition of JavaScript listing
+% Source: https://tex.stackexchange.com/questions/89574/language-option-supported-in-listings
+% Usage: \begin{lstlisting}[language=ES6] ...
+%--------------------------------------------------------------------
+\lstdefinelanguage{ES6}{
+  keywords={%
+    typeof, new, true, false, try, catch, function, return, null, %
+    catch, switch, var, let, const, if, in, while, do, else, case, break, yield},
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]"
+}

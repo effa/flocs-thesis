@@ -7,35 +7,177 @@ The second part presents a few selected details that are specific to the created
 
 \section{System Architecture}
 
-\begin{itemize}
-\item FE, BE (+ clean core) -- REST API
-\item environment and dependencies: virtualenv; pip, npm
-\item make + django-admin tools
-\item (analysis and monitoring; attempt to achieve harmony between CLI and browser apps (dashboards, jupyter notebooks))
-\item cron -> scheduled jobs
-\item development: git, GH (README, docs, issues, project board?), unit tests
-\item server: nginx, gunicorn, git, virtualenv, PostgreSQL, cron -> scheduled jobs
-\end{itemize}
+The application uses a standard client-server architecture,
+with a fat frontend client communicating with server backend via REST API.
+In addtion to the fronend app and backend service,
+there are two other parts of the system:
+scheduled jobs, which run periodically every night (e.g. metrics computation),
+and tools for offline analysis of collected data
+(jupyter notebook templates and helper functions).  % TODO: specify "helper functions"
+% TODO: ref/cite human-in-the-loop principle
+% TODO: other potential parts (future):
+% - tasks/content management tools (CLI+browser)
+% - simulations (CLI+browser)
+
+% TODO: consider to include FE and BE sections below as subsections of this section
+
+TODO: diagram of overall architecture (client-server, communication)
+
+\section{Used Technologies}
+
+Table \ref{tbl:technologies} shows overview of the tehcnologies used
+in the project at the beginning of 2018.
+Note that they are gradually evolving, either to meet new requirements,
+or simply to replace old technologies with newer ones.
+This is especially true for frontend, where the tools and best practices
+are evolving rapidly.
+When this project started in 2015,
+we used several at that time popular technologies
+(AngularJS, Bootstrap, bower, grunt)
+which became obsolete during next 2 years,
+so we replaced them by newer ones.
+Many technologies were introduced naturally as the projects grew,
+e.g. Django Rest Framework for REST API,
+or redux-saga for cleaner handling of asynchronous side-effects
+(instead of the originally used redux-thunk).
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{l l l}
+\toprule
+Area & Technology & Main Reason  \\
+\midrule
+Version control & git, GitHub & easy to use \\
+Custom commands & make + django, npm & easy to use \\
+Project management & GitHub (issues, project board) & easy to use \\
+% Monitoring & Google Analytics & widely-used \\
+\hline
+\textbf{Backend} & Python 3 & concise, high-level \\
+Dependencies & pip & easy to use \\
+Environment & virtualenv[wrapper] & easy to use \\
+Unit tests & pytest & concise, readable \\
+Web framework & Django & feature-complete, well-documented \\
+REST API & Django Rest Framework & feature-complete, well-documented \\
+Database & PostgreSQL & widely used \\
+Web server & Nginx + Gunicorn & widely used \\
+Scheduled jobs & cron (+ django-crontab) & standard tool \\
+Data Export & Django Rest Pandas & tranformations before export \\
+\hline
+\textbf{Frontend} & ES6 & concise and readable code \\
+Dependencies & npm & easy to use \\
+Bundling & webpack & feature-complete, widely used \\
+Compling & babel & feature-complete, widely used \\
+State & redux  & predictable behavior, testability \\
+Side effects & redux-sagas  & readability, testability \\
+Views & React & declarativness, reausability \\
+Design (UI) & Material-UI & looks good \\
+HTTP client & axios & based on promises \\
+Code Blocks & Blockly & well-tested \\
+Parsing & PEG JS & declarative rules \\  %(Parsing expression grammar) \\
+Interpretation & JS-interpreter & stepping, custom hooks \\
+Localization & react-intl & single place for all messages \\
+\hline
+\textbf{Analysis} & jupyter, pandas, sklearn & interactivity, high-levelness \\
+Plotting & matplotlib, seaborn & powerful; results look good \\
+%Machine learning & sklearn & powerful \\
+%\hline
+%\textbf{Analysis} & Python 3 & high-level, widely used \\
+%Documents & jupyter notebook & interactivity \\
+%DataFrames & pandas & feature-complete, well-documented \\
+%Plotting & matplotlib, seaborn & powerful, looks good \\
+%Machine learning & sklearn & powerful \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{%
+  Overview of main technologies used in the project. %
+  The \emph{Reason} briefly explains why we have chosen the particular technoglogy
+  (not why we have covered the area at all).}
+\label{tbl:technologies}
+\end{table}
 
 \section{Frontend}
 
+The frontend is a single page application with redux-architecture,
+which means that there is a single state (model) storing all application data,
+all the only way the state can be changed is by dispatching actions.
+Each part of state then defines its reducer,
+which is a pure function that takes previous state, action, and returns a new state.
+
+TODO: redux-architecture diagram (specifically for our app)
+
+TODO: show how the flow of events is easier to reason about in React+Redux (than in Angular)
+
+\subsection{React Components}
+
 \begin{itemize}
-\item first prototype: Angular + Bootstrap
-\item now: ES6, React, Redux, Material Design
-\item infrastructure: webpack (create-react-app)
-\item TBA: explain each of these used technologies (briefly)
-\item localization (react-intl)
-\item asynchronous actions (sagas, possibly show a small snippet (e.g. googleAnalyticsSaga to ilustrate the concept, or even comparision of another approaches to asynchronicity)
-\item why the change: more flexible and understandable, easier development and bug fixing; TBA: show how the code is more readable with ES6, how the flow of events is easier to reason about in React+Redux (than in Angular) and how Material Design is more user-friendly than Bootstrap
-\item parsing task source, space world, robo code (PEG grammars)
-\item Blockly
-\item JS-interpreter
+\item mostly declarative - simple mental model: rebuilding from scratch every time anything change -> less error prone
+\item reusability -> use of single component on many places in different contexts,
+  or even outside the app (use space-world for ai-search-workshop)
+\item example from our codebase (code, image)
+\end{itemize}
+
+\subsection{Asynchronous Side Effects}
+
+Frontend applications are usually full of asynchronous side effects
+(e.g. fetching data from server, wating for user actions).
+Many ways to handle them were proposed, the most basic one are callbacks --
+asychronous function takes a function called callback as a parameter
+and calls it once the asynchronous action is resolved.
+
+(TODO: mention/explain promises -- advantage: very explicit; clean error
+handling; show example for data fetching)
+
+However, both callbacks and promises become awkward for expressing complex
+asynchronous flows, such as visualizing code execution,
+leading to unreadable ``callback hell''. % TODO: ref for callback hell
+Sagas provide alternative way of handling asynchronous effects using generators.
+Instead of performing asynchronous effects directly, sagas yields
+descriptions of such effects.
+As an example, there is a saga responsible for processing
+submitted feedback.
+Note that while the code contains many asynchronous effects,
+it can be read nearly as easy as standard linear synchronous code.
+
+% TODO: insert comments in the code
+% TODO: mention other advantage of sagas - great testability
+% TODO: also mention new async-await concept
+
+\begin{lstlisting}[language=ES6]
+// Generator for single submit-feedback request
+function* submitFeedback(action) {
+  const { text, email } = action.payload;
+  // Asynchronous request to get a value from state
+  const url = yield select(getFeedbackUrl);
+  try {
+    // Asynchronous request to post data to server
+    yield call(api.sendFeedback, url, text, email);
+    // Asynchronous request to dispatch a new action
+    yield put(actions.submitFeedback.success());
+  }
+  catch (error) {
+    const { fieldErrors } = error;
+    yield put(
+      actions.submitFeedback.failure(fieldErrors));
+  }
+}
+\end{lstlisting}
+
+
+% TODO: add code samples for each concept (react component + image, reducer, saga)
+% TODO(optional): awesome ES6 (example from our code)
+% TODO(Material Design): example of our component + code
+
+\begin{itemize}
+\item TODO: (below) parsing task source, space world, robo code (PEG grammars)
+\item TODO: Blockly
+\item TODO: interpretation: saga + JS-interpreter
 \end{itemize}
 
 \section{Backend}
 
 \begin{itemize}
-\item Python 3.5, virtualevn, pip
 \item Django, Django Rest Framework, (+ many small libraries, such as Django Rest Pandas)
 \item django apps (python packages): learn, monitoring
 \item models (...), serializers, views, services/use cases/core
@@ -60,6 +202,8 @@ The second part presents a few selected details that are specific to the created
 
 \begin{itemize}
 \item monitoring dashboard etc. (! don't duplicate corresponding section in Design chapter)
+\item Google Analytics, Feedback, Error reports
+\item scheduled jobs -> compute metrics, export collected data
 \item data export
 \item pandas, (numpy, matplotlib, sklearn, seaborn)
 \end{itemize}
