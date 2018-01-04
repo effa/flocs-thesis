@@ -190,10 +190,30 @@ function* submitFeedback(action) {
 
 \section{Tasks Description}
 
-Each task is described by a single markdown file
-containing name (as headline), category, setting and solution.
+Each task is described by a single file in a restricted markdown format,
+containing name, category, setting and solution.
+The high-level grammar for task description looks like this:
+
+\begin{lstlisting}
+# <name>
+[- option: value]*
+
+## Setting
+```
+<SpaceWorld>
+```
+[- option: value]*
+
+## Solution
+```
+<RoboCode>
+```
+\end{lstlisting}
+
+Currently, there is one mandatory top-level option (task category)
+adn two optional setting options (length, energy).
 (TBA: ref to example below; ref to 2 subparts - SpaceWorld grammar, RoboCode grammar)
-Markdown files are then parsed and loaded into DB by a single command.
+% [consider] Markdown files are then parsed and loaded into DB by a single command.
 
 Task sources in markdown have several advantages:
 it is human readable,
@@ -234,12 +254,16 @@ fly()
 \end{lstlisting}
 
 
-\section{SpaceWorld Grammar}
+\subsection{SpaceWorld Grammar}
 
-\begin{itemize}
-\item TBA
-\item together with RoboCode allows for a task sources in human-readable and editable markdown (TODO: insert example of space world and also of full task source with rendered game preview), and convenient online task editor
-\end{itemize}
+Each SpaceWorld is described by a simple human-readable string. (TBA: ref to example below)
+Each line describes one row of the grid
+and is split by pipes (``|'') into fields.
+Each field starts with a lower-cased letter denoting color of the field
+(b -- blue, r -- red, k -- black, etc.),
+followed by an optional upper-case letter denoting an object
+(A -- asteroid, M -- meteoroid, W -- wormhole, S -- spaceship, etc.).
+For example ``bA'' is a blue field with an asterorid.
 
 
 \begin{figure}[h]
@@ -271,19 +295,95 @@ fly()
 
 \section{RoboCode}
 
+RoboCode is a language based on Python that is used in task sources for solutions.
+It is also meant to be used in more advanced levels as the transitional phase
+from block-based to text-based programming.
+The requirements for the language are:
+being easy for beginners
+and well-readable without its previouws knowledge,
+conciseness (short, but readable programs),
+matching Blockly blocks as closely as possible
+(for easy transiton from Blockly),
+matching Python as closely as possible
+(for easy transition to Python).
+
+\subsection{RoboCode Grammar}
+
+% TODO[consider] note on mixing lexer+parser+some semantic analysis
+% (which is partially convenient, partially confusing)
+
+There are for commands for performing actions:
+\begin{lstlisting}
+fly()
+left()
+right()
+shoot()
+\end{lstlisting}
+Each action is combined with moving one row forward.
+The movement takes place after the action, with the exception of left and right turning actions, where the movement and the action happen simultaneously,
+i.e. the spaceship flies diagonally to the left or to the right.
+
+Loops and conditional statements are same as in the Python,
+with the notable exception of the repeat loop,
+which was simplified to be easier to the form matching a corresponding
+Blockly block, which is easier to comprehend by beginners:
+% TODO: ass robocode highlighting
+\begin{lstlisting}
+repeat 4:
+    fly()
+\end{lstlisting}
+
+Tests insided while-loops and if-statements are limited to the following form
+(again, in order to match the respective Blockly blocks):
+\begin{lstlisting}
+position() [==|!=|>|<|>=|<=] [1..6]
+color() [==|!=] ['r'|'g'|'b'|'y'|'k']
+<test> [and|or] <test>
+\end{lstlisting}
+The letters in the color-test have the same meaning as in the space world description,
+for example ``r'' is red, etc.
+
+
+\subsection{RoboAST}
+
 \begin{itemize}
-\item new programming language (RoboCode)
-\item transformations (ast <-> RoboCode, MiniRoboCode, Blockly, JS)
+\item note about PEG grammar (+ issued with indentation)
 \item common roboAST representation serves as a mediator between different languages
       that we need to support (Blockly for kids, RoboCode for writing,
       MiniRoboCode for logging, JS for running)
 \item (allows for some cool magic such as immediate bidirecitional translating between blockly and RoboCode)
+\item transformations (ast <-> RoboCode, MiniRoboCode, Blockly, JS)
 \item describe RoboCode PEG grammar and roboAST, iclude same example rules and parse trees
-\item describe miniRoboCode format
-\item describe RoboBlockly
-\item describe RoboCodeJS
-\item describe JS interpreter of RoboCodeJS
+\item TODO: explain/ref PEG grammar
 \end{itemize}
+
+
+\subsection{MiniRoboCode}
+
+\begin{itemize}
+\item describe miniRoboCode format - why and what
+\end{itemize}
+
+\subsection{RoboBlockly}
+
+\begin{itemize}
+\item describe RoboBlockly + images
+\end{itemize}
+
+
+\subsection{RoboJS}
+
+\begin{itemize}
+\item describe RoboCodeJS + why
+\end{itemize}
+
+\subsection{Interpretation}
+
+\begin{itemize}
+\item describe JS interpreter
+\item Blockly -> RoboAST -> RoboJS + hooks -> interpreter
+\end{itemize}
+
 
 Example RoboCode, solution of the "Red Shooting" task (currently in figure: \ref{fig:spaceworld-source}), TBA: also include MiniRoboCode, JS, Blockly and AST for complete example.
 
