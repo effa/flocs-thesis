@@ -180,14 +180,25 @@ that enables to easily create new tasks.
 \section{Monitoring and Analysis}
 \label{sec:robomission.monitoring}
 
-\begin{itemize}
-\item crucial component for iterative improvement (REF: Rule of the Loop principle)
-\item components: see dashboard; GA, metrics, feedback, error reports
-\item metrics (next subsection) -- all these metrics are computed every night and shown in the monitoring dashboard
-\item TBA: screenshots of dashboard
-\end{itemize}
+Even with careful testing, there will always be some errors in the deployed systems.
+For example, there might be a task that is much easier than expected,
+due to missing limit or some other mistake in its setting.
+In addition to the errors in data,  % TODO: fix parallelism
+the adpative behavior of the system is extremelly difficult to test as well.
+As discused in section \ref{sec:metrics-and-evaluation} is only a proxy for our true objectives
+and can be sometimes misleading.
+As a result, it is not even more practical, but even neccessary to deploy system
+that is imperfect, and then find and fix the problems that arise.
+To spot the problems as soon as possible,
+monitoring is a crucial component,
+that facilites iterative improvement of the system.
+% TODO: ref to iterative improvement section / rule of the loop principle
 
 \subsection{Admin Requirements}
+\label{sec:admin-requirements}
+
+Similarly to regular users, administrators also have requirements on the systems:
+
 \begin{itemize}
 \item Admin can immediately see how much is the system used and how the system behaves with respect to the short-term ("live-evaluation") metrics (...)
 \item Admin receives feedback from provided by users, and error reports on unhandled exceptions.
@@ -195,33 +206,74 @@ that enables to easily create new tasks.
 \end{itemize}
 
 
+\subsection{Monitoring Components}
+
+To fulfill the requiremetns from section \ref{sec:admin-requirements},
+the system includes the following components:
+
+\begin{itemize}
+\item \textbf{Google Analytics} --
+  shows distribution of users with respect to time and space.
+  In addition to page visits,
+  it can also process specific events sent from the frontend,
+  such as clicking on the execution button,
+  and divide them into groups, e.g. by task or group for AB experiment.
+  (figure \ref{fig:google-analytics})
+\item \textbf{Monitoring Dashboard} (see figure \ref{fig:monitoring-dashboard})
+      which shows values of metrics for last month.
+      (Computed metrics are described in section \label{sec:robomission.metrics}.)
+\item \textbf{User Feedback} --
+  a modal form that can be opened by a user on any page
+  to send us a message that something is not working as expected.
+  Each user feedback is send to the administrators by an email.
+\item \textbf{Error Reports} --
+  if an unhandled top-level error occur on the server,
+  it is not only logged, but also send to the administrators.
+\item \textbf{Data Exports} --
+  All collected data are every week exported as a zip bundle containing
+  CSV files prepared for convenient offline analysis.
+\item \textbf{Investigaion Notebook} --
+  a template of jupyter notebook with a command that generates exports
+  and serves them directly as pandas data frames
+  (see figure \ref{fig:investigation-notebook}).
+\item \textbf{Logs} --
+  all requests, performed actions, unhandled errors and submitted feedback are logged
+  to files on the server for manual inspection.
+\end{itemize}
+
+
+\imgW[0.7]{google-analytics}{Preview from Google Analytics (breakdown for "execution" event).}
+
+% TODO: latest dashboard, ideally with readable values
+\imgW[0.6]{monitoring-dashboard}{Metrics visualized in the monitoring dashobard.}
+
+% TODO: update investigation notebook (fix error in last cell, current data;
+% should show something interesting, or at least some descriptive analylis)
+\imgW[0.7]{investigation-notebook}{Template of jupyter notebook for investigation of live data.}
+
+
 \subsection{Metrics}
 \label{sec:robomission.metrics}
 
-The system collects metrics related to long-term objectives (as described in \ref{sec:long-term-objectives}):
+% TODO: include live metrics if there are any
+Every night, the system recomputes metrics related to the long-term objectives
+(as described in \ref{sec:long-term-objectives}):
 
 \begin{itemize}
-\item "daily active students" = number of users who solved at least 1 task this day
-\item "solving hours" = total time spent on successful attempts
-\item "success ratio" = proportion of successful attempts
-\item number of solved tasks
-\item (TBA: update if it changed)
+\item "daily active students" = number of users who solved at least 1 task this day,
+\item "solving hours" = total time spent on successful attempts,
+\item "success ratio" = proportion of successful attempts,
+\item number of solved tasks.
+%\item (TBA: update if it changed)
 \end{itemize}
 
 
-The system also collects metrics about each task (in order to e.g. detect problematic ones)
+The system also computes metrics about each task (in order to e.g. detect problematic ones):
 \begin{itemize}
-\item solved count
-\item median time
-\item success ratio
+\item solved count,
+\item median time,
+\item success ratio.
 \end{itemize}
-
-
-\subsection{Researcher Requirements}
-\begin{itemize}
-\item TBA - provided data (exports), exploration aspect of recommendation
-\end{itemize}
-
 
 
 

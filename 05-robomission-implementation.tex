@@ -122,8 +122,9 @@ TODO: show how the flow of events is easier to reason about in React+Redux (than
 
 Frontend applications are usually full of asynchronous side effects
 (e.g. fetching data from server, wating for user actions).
-Many ways to handle them were proposed, the most basic one are callbacks --
-asychronous function takes a function called callback as a parameter
+Many ways to handle them were proposed.
+The most basic one are callbacks --
+asychronous function takes a function (``callback'') as a parameter
 and calls it once the asynchronous action is resolved.
 
 (TODO: mention/explain promises -- advantage: very explicit; clean error
@@ -132,8 +133,8 @@ handling; show example for data fetching)
 However, both callbacks and promises become awkward for expressing complex
 asynchronous flows, such as visualizing code execution,
 leading to unreadable ``callback hell''. % TODO: ref for callback hell
-Sagas provide alternative way of handling asynchronous effects using generators.
-Instead of performing asynchronous effects directly, sagas yields
+Sagas provide an alternative way of handling asynchronous effects using generators.
+Instead of performing asynchronous effects directly, sagas yield
 descriptions of such effects.
 As an example, there is a saga responsible for processing
 submitted feedback.
@@ -184,17 +185,6 @@ function* submitFeedback(action) {
 \item data export
 \item monitoring app, metrics computation
 \item generators (e.g. metric computation)
-\end{itemize}
-
-\section{Clean Core}
-
-\begin{itemize}
-\item TBA: describe the idea, ref relevant book/papers
-\item pros/cons
-\item Django - possibilities:
-\item first attempt -- state, actions, pure reducers -> new state -> diffing; efficiency problems
-\item another possible approaches: DB facade ("state", "world", mutable) passed to the services;
-  deffered computation (using Django's Q/F values); coroutines to communicate between top-level IO layer and the clean core
 \end{itemize}
 
 
