@@ -188,26 +188,26 @@ function* submitFeedback(action) {
 \end{itemize}
 
 
-\section{Monitoring and Analysis}
-
-\begin{itemize}
-\item monitoring dashboard etc. (! don't duplicate corresponding section in Design chapter)
-\item Google Analytics, Feedback, Error reports
-\item scheduled jobs -> compute metrics, export collected data
-\item data export
-\item pandas, (numpy, matplotlib, sklearn, seaborn)
-\end{itemize}
-
-
 \section{Tasks Description}
 
-\begin{itemize}
-\item in markdown (why)
-\item online task editor
-\item internal represenation (DB model and its serializers for FE and for CSV exports)
-\item PEG grammars for whole task source, Space World (ref section below),
-  and solution in RoboCode (ref section below)
-\end{itemize}
+Each task is described by a single markdown file
+containing name (as headline), category, setting and solution.
+(TBA: ref to example below; ref to 2 subparts - SpaceWorld grammar, RoboCode grammar)
+Markdown files are then parsed and loaded into DB by a single command.
+
+Task sources in markdown have several advantages:
+it is human readable,
+each change is version-controlled,
+and the task can be edited easily in any text editor.
+However, it is more convenient to use online task editor (REF to task editor fig),
+unless it is a really minor modification, or unless one wants to change multiple tasks at once.
+
+% [consider]
+% - Localized task names are not part of the task source,
+% because all localized messages live on the same place in a single file on FE.
+% - PEG grammar for parsing
+% - internal represenation (DB model and its serializers for FE and for CSV exports)
+
 
 Example of complete task source (for rendered task see figure \ref{fig:robomission-task1}. TBA: show rendered task and its source side by side)
 
