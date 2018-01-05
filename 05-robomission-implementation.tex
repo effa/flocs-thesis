@@ -298,21 +298,21 @@ For example ``bA'' is a blue field with an asterorid.
 RoboCode is a language based on Python that is used in task sources for solutions.
 It is also meant to be used in more advanced levels as the transitional phase
 from block-based to text-based programming.
-The requirements for the language are:
-being easy for beginners
-and well-readable without its previouws knowledge,
-conciseness (short, but readable programs),
-matching Blockly blocks as closely as possible
-(for easy transiton from Blockly),
-matching Python as closely as possible
-(for easy transition to Python).
+The requirements for the language are following:
+\begin{itemize}
+\item easy for beginners, understandable without previous knowledge,
+\item conciseness (short, but readable programs),
+\item matching Blockly blocks closely (for easy transition from Blockly),
+\item matching Python closely (for easy transition to Python).
+\end{itemize}
 
-\subsection{RoboCode Grammar}
+\subsection{Syntax and Semantic}
+\label{sec:syntax-semantic}
 
 % TODO[consider] note on mixing lexer+parser+some semantic analysis
 % (which is partially convenient, partially confusing)
 
-There are for commands for performing actions:
+There are four commands for performing actions:
 \begin{lstlisting}
 fly()
 left()
@@ -322,41 +322,132 @@ shoot()
 Each action is combined with moving one row forward.
 The movement takes place after the action, with the exception of left and right turning actions, where the movement and the action happen simultaneously,
 i.e. the spaceship flies diagonally to the left or to the right.
+% TODO: Rephrase. Is confusing, because the general statement ("movement takes
+% place after the action") is only relevant for shoot(), and all the other
+% commands are special cases.
 
 Loops and conditional statements are same as in the Python,
 with the notable exception of the repeat loop,
-which was simplified to be easier to the form matching a corresponding
-Blockly block, which is easier to comprehend by beginners:
+which was simplified to the form matching a corresponding
+Blockly block, which is easier to understand by beginners:
 % TODO: ass robocode highlighting
 \begin{lstlisting}
 repeat 4:
     fly()
 \end{lstlisting}
 
-Tests insided while-loops and if-statements are limited to the following form
-(again, in order to match the respective Blockly blocks):
+Tests inside while-loops and if-statements are limited to the following forms
+(again in order to match the respective Blockly blocks):
 \begin{lstlisting}
 position() [==|!=|>|<|>=|<=] [1..6]
 color() [==|!=] ['r'|'g'|'b'|'y'|'k']
 <test> [and|or] <test>
 \end{lstlisting}
 The letters in the color-test have the same meaning as in the space world description,
-for example ``r'' is red, etc.
+('r' for red, 'g' for green, etc.)
 
 
 \subsection{RoboAST}
 
-\begin{itemize}
-\item note about PEG grammar (+ issued with indentation)
-\item common roboAST representation serves as a mediator between different languages
-      that we need to support (Blockly for kids, RoboCode for writing,
-      MiniRoboCode for logging, JS for running)
-\item (allows for some cool magic such as immediate bidirecitional translating between blockly and RoboCode)
-\item transformations (ast <-> RoboCode, MiniRoboCode, Blockly, JS)
-\item describe RoboCode PEG grammar and roboAST, iclude same example rules and parse trees
-\item TODO: explain/ref PEG grammar
-\end{itemize}
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{l l l}
+\toprule
+Name & Form & Usage  \\
+\midrule
+RoboCode     & textual (Python-like) & sample solutions in task sources  \\
+MiniRoboCode & compact string & logging, storing in DB, analysis  \\
+RoboBlocks   & Blockly blocks & code editor for students  \\
+RoboJS       & textual (JavaScript) & interpretation in browser  \\
+RoboAST      & json (AST) & common intermediate representation \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Different code representaions used within the system.}
+\label{tbl:code-representation}
+\end{table}
 
+While Python-like RoboCode is convenient for writing sample solutions,
+more comact form would be useful for logging, storing in DB and analysis.
+Furthermore, we want a visual blocks presentation of the code for students.
+Last but not least, a JavaScript equivalent of the code is needed for
+interpreting the code in the browser.
+(Table \ref{tbl:code-representation} shows overview of all representations.)
+
+To avoid implementing separate transformations between each pair of these
+presentations, we introduced a common intermediate representation,
+\emph{RoboAST}, which is a simple Abstract Syntaxt Tree in json.
+(REF: figure with example)
+For each supported presenation it is enough to implement
+its parser returning RoboAST object, and
+its generator from RoboAST (REF: diagram).
+With one parser and one generator for each presentation,
+it is possible to transform presentation A
+into presentaion B by parsing A into RoboAST and
+then generating B from this RoboAST.
+This mechanism also allows for switching between RoboCode and RoboBlocks
+anytime during writing a solution in the task editor.
+% TODO: mention the disadvantage - not able to use functionality provided by Blockly (code generators)
+
+TODO: fig: example of RoboAst + corresponding RoboCode, MiniRoboCode, RoboJS, RoboBlocks
+
+TODO: diagram of all transformations (ast <-> RoboCode, MiniRoboCode, Blockly, JS)
+
+\subsection{Parsing expression grammar}
+
+For parsing RoboCode into RoboAST, we use a \emph{parsing expression grammar}
+(PEG) (REF: PEG grammar).
+% TODO: verify the following statement
+PEG grammars are basically context-free grammmars with ordered rules
+and lookahead expressions (TODO: example).
+The specific implementation we used (REF) allows for specifying how should each
+parsed subexpression be transformed into a subtree of the final AST
+The specyfication can be an arbitrary JavaScript code returning the subtree.
+% TODO: check grammar
+For illustration, there are some examples of RoboCode parsing rules:
+
+\begin{lstlisting}
+CompoundStatement
+  = IfStatement
+  / WhileStatement
+  / RepeatStatement
+
+WhileStatement
+  = "while" __ t:Test ":" b:Body
+    { return { head: "while", test: t, body: b } }
+
+Test
+  = CompoundTest
+  / SimpleTest
+\end{lstlisting}
+
+The main advantage is that it does not require any lexer and the resulting grammar
+is still simple and readable.
+The PEG grammar for RoboCode (as described in section \ref{sec:syntax-semantic})
+has about 100 lines of code.
+However, some preprocessing of the RoboCode is needed, because
+PEG is context-free grammar,
+while RoboCode is context-sensitive language
+-- the context is created by indentation.
+In addition, we also want to store line numbers alongside the statements
+(useful for meta-interpreting:
+showing executed line,
+linking errors to the point in source code).
+Therefore, the preprocessing step transform the code in the following context-free form,
+where each line of code is prepended corresponding line number,
+and ``>'' and ``<'' characters denote adding and removing an indentation level, respectively:
+
+\begin{lstlisting}
+1| fly()
+2| while color() == 'b':
+>
+3| left()
+4| right()
+<
+5| fly()
+\end{lstlisting}
+
+TODO: fig: robocode with corresponding parse tree
 
 \subsection{MiniRoboCode}
 
