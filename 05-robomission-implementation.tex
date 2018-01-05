@@ -254,43 +254,59 @@ fly()
 \end{lstlisting}
 
 
-\subsection{SpaceWorld Grammar}
+\subsection{SpaceWorld}
 
-Each SpaceWorld is described by a simple human-readable string. (TBA: ref to example below)
+Each SpaceWorld is described by a simple human-readable string.
+See figure \ref{spaceworld-in-editor} for an example and descripton.
+Set of valid SpaceWorld descriptions can be described by the
+following context-free grammar:
+
+\begin{lstlisting}
+SpaceWorld -> Row+
+Row -> '|'(Field'|')+ EOL  // EOL = new line
+Field -> Background Object*
+Background -> 'r' | 'g' | 'b' | 'y' | 'k'
+Object -> 'S' | 'A' | 'M' | 'D' | 'W'
+\end{lstlisting}
+
+
+%\begin{figure}[h]
+%\begin{center}
+%\begin{subfigure}{.4\textwidth}
+%\centering
+%\includegraphics[width=.9\textwidth]{img/spaceworld}
+%\end{subfigure}
+%\begin{subfigure}{.36\textwidth}
+%\centering
+%{\lstset{numbers=none}
+%\begin{lstlisting}
+%|b |b |b |b |b |b |
+%|kA|kA|kA|kA|kA|kM|
+%|k |k |kW|k |k |k |
+%|k |y |k |k |k |r |
+%|kM|kM|kA|k |y |k |
+%|k |k |kA|k |k |k |
+%|k |r |kA|y |k |k |
+%|y |k |kA|k |k |k |
+%|kS|k |k |kW|k |k |
+%\end{lstlisting}}
+%\end{subfigure}
+%\end{center}
+%\caption{Example of Space World with its source code. TODO: Describe letters; consider replacing code listing with a screenshot from task editor with code highlighting}
+%\label{fig:spaceworld-source}
+%\end{figure}
+
+
+\imgW[0.9]{spaceworld-in-editor}%
+{Example SpaceWorld with its source code.
 Each line describes one row of the grid
 and is split by pipes (``|'') into fields.
 Each field starts with a lower-cased letter denoting color of the field
 (b -- blue, r -- red, k -- black, etc.),
 followed by an optional upper-case letter denoting an object
 (A -- asteroid, M -- meteoroid, W -- wormhole, S -- spaceship, etc.).
-For example ``bA'' is a blue field with an asterorid.
+For example ``rD'' is a red field with a diamond.}
 
-
-\begin{figure}[h]
-\begin{center}
-\begin{subfigure}{.4\textwidth}
-\centering
-\includegraphics[width=.9\textwidth]{img/spaceworld}
-\end{subfigure}
-\begin{subfigure}{.36\textwidth}
-\centering
-{\lstset{numbers=none}
-\begin{lstlisting}
-|b |b |b |b |b |b |
-|kA|kA|kA|kA|kA|kM|
-|k |k |kW|k |k |k |
-|k |y |k |k |k |r |
-|kM|kM|kA|k |y |k |
-|k |k |kA|k |k |k |
-|k |r |kA|y |k |k |
-|y |k |kA|k |k |k |
-|kS|k |k |kW|k |k |
-\end{lstlisting}}
-\end{subfigure}
-\end{center}
-\caption{Example of Space World with its source code. TODO: Describe letters; consider replacing code listing with a screenshot from task editor with code highlighting}
-\label{fig:spaceworld-source}
-\end{figure}
 
 
 \section{RoboCode}
@@ -476,7 +492,7 @@ TODO: fig: robocode with corresponding parse tree
 \end{itemize}
 
 
-Example RoboCode, solution of the "Red Shooting" task (currently in figure: \ref{fig:spaceworld-source}), TBA: also include MiniRoboCode, JS, Blockly and AST for complete example.
+Example RoboCode, solution of the "Red Shooting" task (REF/ADD: spaceworld image, spaceworld.png), TBA: also include MiniRoboCode, JS, Blockly and AST for complete example.
 
 \begin{lstlisting}
 while color() != 'b':
