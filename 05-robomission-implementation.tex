@@ -257,7 +257,7 @@ fly()
 \subsection{SpaceWorld}
 
 Each SpaceWorld is described by a simple human-readable string.
-See figure \ref{spaceworld-in-editor} for an example and descripton.
+See figure \ref{fig:spaceworld-in-editor} for an example and descripton.
 Set of valid SpaceWorld descriptions can be described by the
 following context-free grammar:
 
@@ -467,9 +467,65 @@ TODO: fig: robocode with corresponding parse tree
 
 \subsection{MiniRoboCode}
 
-\begin{itemize}
-\item describe miniRoboCode format - why and what
-\end{itemize}
+MiniRoboCode is a condensed form of the RoboCode
+which replaces indentation with curly brackets,
+key words and functions by their first letters,
+and removes any other white whitespaces
+in order to fit programs into a single short string.
+The mapping from the RoboCode can be described by the following rules:
+\begin{lstlisting}
+repeat --> R
+while --> W
+if --> I
+else --> /
+fly() --> f
+left() --> l
+right() --> r
+shoot() --> s
+position() --> x
+color == 'y' --> y
+color != 'y' --> !y
+\end{lstlisting}
+
+Figure \ref{fig:minirobocode-transformations} shows
+two examples of complete transformations.
+% TODO: use the fancy arrow-split component from my bachelor thesis
+\begin{figure}[h]
+\begin{center}
+\begin{subfigure}{.49\textwidth}
+{\lstset{numbers=none}
+\begin{lstlisting}
+fly()
+while color() == 'b':
+    left()
+    right()
+fly()
+-------------------
+fWb{lr}f
+\end{lstlisting}}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+{\lstset{numbers=none}
+\begin{lstlisting}
+repeat 6:
+    if position() > 1:
+        shoot()
+    else:
+        right()
+-------------------
+R6{Ix>1{s}/{r}}
+\end{lstlisting}}
+\end{subfigure}
+\end{center}
+\caption{Examples of transformations of RoboCode to MiniRoboCode.}
+\label{fig:minirobocode-transformations}
+\end{figure}
+
+MiniRoboCode is useful not only for logging and storing programs in DB,
+but also for many analyses,
+because it is easy to process them by counting letters or matching simple regular expressions
+and because they are short enough to be used as labels in plots.
+
 
 \subsection{RoboBlockly}
 
