@@ -122,13 +122,13 @@ TODO: show how the flow of events is easier to reason about in React+Redux (than
 
 Frontend applications are usually full of asynchronous side effects
 (e.g. fetching data from server, wating for user actions).
-Many ways to handle them were proposed.
-The most basic one are callbacks --
-asychronous function takes a function (``callback'') as a parameter
-and calls it once the asynchronous action is resolved.
-
-(TODO: mention/explain promises -- advantage: very explicit; clean error
-handling; show example for data fetching)
+Many ways to handle them were proposed,
+such as callbacks (REF) or promises (REF).
+%The most basic one are callbacks --
+%asychronous function takes a function (``callback'') as a parameter
+%and calls it once the asynchronous action is resolved.
+%(TODO: mention/explain promises -- advantage: very explicit; clean error
+%handling; show example for data fetching)
 
 However, both callbacks and promises become awkward for expressing complex
 asynchronous flows, such as visualizing code execution,
@@ -146,7 +146,7 @@ it can be read nearly as easy as standard linear synchronous code.
 % TODO: also mention new async-await concept
 
 \begin{lstlisting}[language=ES6]
-// Generator for single submit-feedback request
+// Generator for a single submit-feedback request
 function* submitFeedback(action) {
   const { text, email } = action.payload;
   // Asynchronous request to get a value from state
@@ -393,10 +393,10 @@ interpreting the code in the browser.
 To avoid implementing separate transformations between each pair of these
 presentations, we introduced a common intermediate representation,
 \emph{RoboAST}, which is a simple Abstract Syntaxt Tree in json.
-(REF: figure with example)
+(See example of a RoboAST in figure \ref{fig:robocode-transformations-example}.)
 For each supported presenation it is enough to implement
 its parser returning RoboAST object, and
-its generator from RoboAST (REF: diagram).
+its generator from RoboAST (figure \ref{fig:robocode-transformations}).
 With one parser and one generator for each presentation,
 it is possible to transform presentation A
 into presentaion B by parsing A into RoboAST and
@@ -405,9 +405,10 @@ This mechanism also allows for switching between RoboCode and RoboBlocks
 anytime during writing a solution in the task editor.
 % TODO: mention the disadvantage - not able to use functionality provided by Blockly (code generators)
 
-TODO: fig: example of RoboAst + corresponding RoboCode, MiniRoboCode, RoboJS, RoboBlocks
+\imgW[0.8]{robocode-transformations}{Transformations between RoboAST and four possible code presentations -- RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
 
-TODO: diagram of all transformations (ast <-> RoboCode, MiniRoboCode, Blockly, JS)
+\imgW{robocode-transformations-example}{Example of a RoboAST with corresponding RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
+
 
 \subsection{Parsing expression grammar}
 
