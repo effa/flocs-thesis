@@ -119,6 +119,7 @@ TODO: show how the flow of events is easier to reason about in React+Redux (than
 \end{itemize}
 
 \subsection{Asynchronous Side Effects}
+\label{sec:robomission-asynchronous-side-effects}
 
 Frontend applications are usually full of asynchronous side effects
 (e.g. fetching data from server, wating for user actions).
@@ -363,6 +364,20 @@ The letters in the color-test have the same meaning as in the space world descri
 ('r' for red, 'g' for green, etc.)
 
 
+\begin{figure}[h]
+\begin{lstlisting}
+while color() != 'b':
+    if position() == 1:
+        right()
+    if position() >= 4:
+        shoot()
+    fly()
+\end{lstlisting}
+\caption{Example of a complete RoboCode program}
+\label{fig:robocode-example}
+\end{figure}
+
+
 \subsection{RoboAST}
 
 \begin{table}[h]
@@ -478,7 +493,6 @@ The mapping from the RoboCode can be described by the rules
 shown in figure \ref{fig:minirobocode-transformation-rules}.
 
 \begin{figure}[h]
-\begin{center}
 \begin{subfigure}{.49\textwidth}
 {\lstset{numbers=none}
 \begin{lstlisting}
@@ -501,8 +515,6 @@ color == 'y' --> y
 color != 'y' --> !y
 \end{lstlisting}}
 \end{subfigure}
-\end{center}
-\vspace*{-5mm}
 \caption{Transformation rules from RoboCode to MiniRoboCode. (In reality, the transformations goes through RoboAST.)}
 \label{fig:minirobocode-transformation-rules}
 \end{figure}
@@ -511,7 +523,6 @@ Figure \ref{fig:minirobocode-transformations} shows
 two examples of complete transformations.
 % TODO: use the fancy arrow-split component from my bachelor thesis
 \begin{figure}[h]
-\begin{center}
 \begin{subfigure}{.49\textwidth}
 {\lstset{numbers=none}
 \begin{lstlisting}
@@ -536,8 +547,6 @@ repeat 6:
 R6{Ix>1{s}/{r}}
 \end{lstlisting}}
 \end{subfigure}
-\end{center}
-\vspace*{-5mm}
 \caption{Examples of transformations of RoboCode to MiniRoboCode.}
 \label{fig:minirobocode-transformations}
 \end{figure}
@@ -610,26 +619,47 @@ within the localization framework used in our project.
 % TODO: Fix the image so that both images are of the exectly same size and sharpness.
 
 \subsection{RoboJS}
+\label{sec:robomission-robojs}
 
-\begin{itemize}
-\item describe RoboCodeJS + why
-\end{itemize}
+For the interpretation of the student code we need yet another representation,
+which is a JavaScipt that can be fed into the JS-interpreter.
+(see section \ref{sec:robomission-interpretation} for the details of the interpretation).
+The generated JavaScript assumes to be executed within the context providing hooks
+for actions (fly, left, right, shoot), sensor functions (color, position), and for meta-interpreting (highlightBlock function).
+An example of a generated RoboJS is shown figure \ref{fig:robocode-transformations-example}.
+
+Note that we have not implemented a parser from RoboJS to RoboAST,
+simply because we do not need this tranformation;
+otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
+
+
 
 \subsection{Interpretation}
+\label{sec:robomission-interpretation}
 
-\begin{itemize}
-\item describe JS interpreter
-\item Blockly -> RoboAST -> RoboJS + hooks -> interpreter
-\end{itemize}
+Instead of implementing our own interpreter of RoboCode,
+we first transform the code through RoboAST into RoboJS
+(described in section \ref{sec:robomission-robojs})
+and then use JS-interpeter (REF) to run the code.
+We could use any other interpreter that would satisfy the following
+conditions:
+\begin{enumerate}
+\item is implemented in JavaScript (in order to run it in the browser),
+\item interprets a language that can be generated easily from the RoboAST
+  (which includes most languages),
+\item allows to define custom asynchronous hooks
+  (needed for actions, sensors, and block highligting),
+\item allows to step the code, or at least to impose a step or time limit
+  (in order to break infinite loops).
+\end{enumerate}
+% TODO(opt): why not to use JS interpreter in browser: safety (sandbox requirement)
+% + probably also not able to step the code or set the time limit, but I haven't verified this
+There is nothing special about using JavaScript as the language being interpreted,
+other that the JS-interpreter satisfies all our requirements
+and is relatively simple to use.
 
-
-Example RoboCode, solution of the "Red Shooting" task (REF/ADD: spaceworld image, spaceworld.png), TBA: also include MiniRoboCode, JS, Blockly and AST for complete example.
-
-\begin{lstlisting}
-while color() != 'b':
-    if color() == 'y':
-        right()
-    if color() == 'r':
-        shoot()
-    fly()
-\end{lstlisting}
+The interpreter itself is a generator that yields actions, sensor requests and
+meta-interpreting effects (block highlighting, checking for interruption).
+The generator is wrapped into a saga
+(see section \ref{sec:robomission-asynchronous-side-effects})
+that handles all these asynchronous effects.
