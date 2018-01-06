@@ -452,19 +452,20 @@ showing executed line,
 linking errors to the point in source code).
 Therefore, the preprocessing step transform the code in the following context-free form,
 where each line of code is prepended corresponding line number,
-and ``>'' and ``<'' characters denote adding and removing an indentation level, respectively:
+and ``>'' and ``<'' characters denote adding and removing an indentation level, respectively.
+For example, the preprocessed code for the program shown in figure
+\ref{fig:robocode-transformations-example} would be:
 
 \begin{lstlisting}
-1| fly()
-2| while color() == 'b':
+1| shoot()
+2| repeat 4:
 >
-3| left()
-4| right()
+3| right()
+4| left()
 <
-5| fly()
 \end{lstlisting}
 
-TODO: fig: robocode with corresponding parse tree
+The figure \ref{fig:robocode-transformations-example} also shows the final RoboAST object.
 
 \subsection{MiniRoboCode}
 
@@ -473,20 +474,38 @@ which replaces indentation with curly brackets,
 key words and functions by their first letters,
 and removes any other white whitespaces
 in order to fit programs into a single short string.
-The mapping from the RoboCode can be described by the following rules:
+The mapping from the RoboCode can be described by the rules
+shown in figure \ref{fig:minirobocode-transformation-rules}.
+
+\begin{figure}[h]
+\begin{center}
+\begin{subfigure}{.49\textwidth}
+{\lstset{numbers=none}
 \begin{lstlisting}
 repeat --> R
 while --> W
 if --> I
 else --> /
+position() --> x
+== --> =
+\end{lstlisting}}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+{\lstset{numbers=none}
+\begin{lstlisting}
 fly() --> f
 left() --> l
 right() --> r
 shoot() --> s
-position() --> x
 color == 'y' --> y
 color != 'y' --> !y
-\end{lstlisting}
+\end{lstlisting}}
+\end{subfigure}
+\end{center}
+\vspace*{-5mm}
+\caption{Transformation rules from RoboCode to MiniRoboCode. (In reality, the transformations goes through RoboAST.)}
+\label{fig:minirobocode-transformation-rules}
+\end{figure}
 
 Figure \ref{fig:minirobocode-transformations} shows
 two examples of complete transformations.
@@ -518,6 +537,7 @@ R6{Ix>1{s}/{r}}
 \end{lstlisting}}
 \end{subfigure}
 \end{center}
+\vspace*{-5mm}
 \caption{Examples of transformations of RoboCode to MiniRoboCode.}
 \label{fig:minirobocode-transformations}
 \end{figure}
@@ -528,12 +548,66 @@ because it is easy to process them by counting letters or matching simple regula
 and because they are short enough to be used as labels in plots.
 
 
-\subsection{RoboBlockly}
+\subsection{RoboBlocks}
 
-\begin{itemize}
-\item describe RoboBlockly + images
-\end{itemize}
+Blockly (REF: blockly) is an implementation of block-based programming
+environment from Google,
+which we use in the code editor for students
+(shown e.g. in figure \ref{fig:robomission-task1}).
+% TODO: ref to section about block-base programming envs and their pros/cons
+% TODO: mention advnatages of using Blockly from Google: well-tested, widely-used
+% (and disadvantage: don't play nicely with modern JS workflow; sometimes needs
+% awful hacks to digging in the source code to achieve a desiered behavior
+Blockly allows to import and export the currently assembled program in
+an XML format, that we call \emph{RoboBlocksXML}.
+(See figure \ref{fig:roboblocks-xml} for an example of the XML.)
+Both transformations between RoboBlocksXML and RoboAST are straightforward.
 
+% TODO(opt): some details about Blocly? (definition of blocks, localization)
+
+\begin{figure}[h]
+\begin{lstlisting}
+<xml xmlns="http://www.w3.org/1999/xhtml">
+ <block type="start">
+  <next>
+   <block type="shoot">
+    <next>
+     <block type="repeat">
+      <field name="count">4</field>
+      <statement name="body">
+       <block type="fly">
+        <field name="direction">right</field>
+        <next>
+         <block type="fly">
+          <field name="direction">left</field>
+         </block>
+        </next>
+       </block>
+      </statement>
+     </block>
+    </next>
+   </block>
+  </next>
+ </block>
+</xml>
+\end{lstlisting}
+  \caption{%
+    RoboBlocksXML for the program shown in figure %
+    \ref{fig:robocode-transformations-example}.}
+\label{fig:roboblocks-xml}
+\end{figure}
+
+As the RoboBlocks are used by children, it is important to use localized labels
+on the blocks.
+Depending on the language domain, we initialize Blockly blocks with the corresponding
+version of localized block labels.
+(See figure \ref{fig:roboblocks-english-czech} for an example of the same
+program in two languages.)
+Blockly supports its own localization mechanism that fits well
+within the localization framework used in our project.
+
+\imgW[0.6]{roboblocks-english-czech}{Same program in English and Czech localizations of RoboBlocks.}
+% TODO: Fix the image so that both images are of the exectly same size and sharpness.
 
 \subsection{RoboJS}
 
