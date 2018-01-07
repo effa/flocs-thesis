@@ -9,19 +9,20 @@ The second part presents a few selected details that are specific to the created
 
 The application uses a standard client-server architecture,
 with a fat frontend client communicating with server backend via REST API.
-In addtion to the fronend app and backend service,
+In addition to the fronend app and backend service,
 there are two other parts of the system:
 scheduled jobs, which run periodically every night (e.g. metrics computation),
 and tools for offline analysis of collected data
 (jupyter notebook templates and helper functions).  % TODO: specify "helper functions"
 % TODO: ref/cite human-in-the-loop principle
+% TODO: consider: list the parts in itemize
 % TODO: other potential parts (future):
 % - tasks/content management tools (CLI+browser)
 % - simulations (CLI+browser)
 
 % TODO: consider to include FE and BE sections below as subsections of this section
 
-TODO: diagram of overall architecture (client-server, communication)
+TODO: diagram of overall architecture (client-server, communication, monitoring, scheduled jobs, offline analysis)
 
 \section{Used Technologies}
 
@@ -105,9 +106,23 @@ all the only way the state can be changed is by dispatching actions.
 Each part of state then defines its reducer,
 which is a pure function that takes previous state, action, and returns a new state.
 
-TODO: redux-architecture diagram (specifically for our app)
 
-TODO: show how the flow of events is easier to reason about in React+Redux (than in Angular)
+\imgW{frontend-dependencies}{%
+  Frontend modules/packages and dependencies between them.}
+% TODO: Give examples of (in description) of what are submodules inside core, utils, reducers, sagas, containers, components.
+% TODO: Note that some dependencies are eliminated via dependency injection in
+  % redux-architecture (+ example!)
+% TODO: Improve diagram, use a standard notation (see slides from Software Engineering)
+% TODO: Explain the difference between component and containers.
+
+TODO: redux-architecture (data+events flow) diagram (specifically for our app) (and show how the flow of events is easier to reason about in React+Redux (than in Angular)).
+
+\begin{itemize}
+\item "unidirectional UI" (as opposed to MVC and similar architectures)
+\item state: immutable, read-only
+\item reducers: state, action -> new state (pure functions)
+\item changing state directly is not possible, the only way is to dispatch action -> dispatcher then takes dispatched actions one by one and reduce them (notifying connected containers about the new state)
+\end{itemize}
 
 \subsection{React Components}
 
@@ -171,21 +186,16 @@ function* submitFeedback(action) {
 % TODO(optional): awesome ES6 (example from our code)
 % TODO(Material Design): example of our component + code
 
-\begin{itemize}
-\item TODO: (below) parsing task source, space world, robo code (PEG grammars)
-\item TODO: Blockly
-\item TODO: interpretation: saga + JS-interpreter
-\end{itemize}
-
 \section{Backend}
 
 \begin{itemize}
-\item Django, Django Rest Framework, (+ many small libraries, such as Django Rest Pandas)
-\item django apps (python packages): learn, monitoring
+\item Django, Django Rest Framework
+\item django apps (python packages): learn, monitoring (potential diagram for planned architecture: users, tasks, learn, adaptability, monitoring, simulations, analysis)
 \item models (...), serializers, views, services/use cases/core
 \item data export
 \item monitoring app, metrics computation
 \item generators (e.g. metric computation)
+\item architecture (of individual apps): viewsets/management, services, serializers, models, core (actions, credits, recommendatin)
 \end{itemize}
 
 
@@ -212,7 +222,7 @@ The high-level grammar for task description looks like this:
 \end{lstlisting}
 
 Currently, there is one mandatory top-level option (task category)
-adn two optional setting options (length, energy).
+and two optional setting options (length, energy).
 (TBA: ref to example below; ref to 2 subparts - SpaceWorld grammar, RoboCode grammar)
 % [consider] Markdown files are then parsed and loaded into DB by a single command.
 
@@ -247,7 +257,7 @@ Example of complete task source (for rendered task see figure \ref{fig:robomissi
 
 ## Solution
 
-```python
+```
 left()
 fly()
 fly()
@@ -264,7 +274,7 @@ following context-free grammar:
 
 \begin{lstlisting}
 SpaceWorld -> Row+
-Row -> '|'(Field'|')+ EOL  // EOL = new line
+Row -> '|'(Field'|')+ EOL  // EOL = End Of Line
 Field -> Background Object*
 Background -> 'r' | 'g' | 'b' | 'y' | 'k'
 Object -> 'S' | 'A' | 'M' | 'D' | 'W'
@@ -458,16 +468,16 @@ is still simple and readable.
 The PEG grammar for RoboCode (as described in section \ref{sec:syntax-semantic})
 has about 100 lines of code.
 However, some preprocessing of the RoboCode is needed, because
-PEG is context-free grammar,
-while RoboCode is context-sensitive language
+PEG is a context-free grammar,
+while RoboCode is a context-sensitive language
 -- the context is created by indentation.
 In addition, we also want to store line numbers alongside the statements
 (useful for meta-interpreting:
 showing executed line,
 linking errors to the point in source code).
-Therefore, the preprocessing step transform the code in the following context-free form,
-where each line of code is prepended corresponding line number,
-and ``>'' and ``<'' characters denote adding and removing an indentation level, respectively.
+Therefore, the preprocessing step transform the code in a context-free form,
+where each line of the code is prepended corresponding line number,
+and adding and removing indentation levels is denoted by ``>'' and ``<'' characters respectively.
 For example, the preprocessed code for the program shown in figure
 \ref{fig:robocode-transformations-example} would be:
 
@@ -553,7 +563,7 @@ R6{Ix>1{s}/{r}}
 
 MiniRoboCode is useful not only for logging and storing programs in DB,
 but also for many analyses,
-because it is easy to process them by counting letters or matching simple regular expressions
+because it is easy to process them by counting letters or matching simple regular expressions,
 and because they are short enough to be used as labels in plots.
 
 
@@ -623,15 +633,43 @@ within the localization framework used in our project.
 
 For the interpretation of the student code we need yet another representation,
 which is a JavaScipt that can be fed into the JS-interpreter.
-(see section \ref{sec:robomission-interpretation} for the details of the interpretation).
-The generated JavaScript assumes to be executed within the context providing hooks
-for actions (fly, left, right, shoot), sensor functions (color, position), and for meta-interpreting (highlightBlock function).
-An example of a generated RoboJS is shown figure \ref{fig:robocode-transformations-example}.
+(See section \ref{sec:robomission-interpretation} for the details of the interpretation).
+Figure \ref{fig:robojs-example} shows an example of a generated RoboJS.
 
-Note that we have not implemented a parser from RoboJS to RoboAST,
+\begin{figure}[h]
+\begin{subfigure}{.36\textwidth}
+\centering\includegraphics[width=.8\textwidth]{img/roboblocks-english}
+\end{subfigure}
+\begin{subfigure}{.62\textwidth}
+{\lstset{numbers=none}
+\begin{lstlisting}
+highlightBlock(1);
+shoot();
+highlightBlock(2);
+for (var i1_=0; i1_<4; i1_++) {
+  highlightBlock(3);
+  right();
+  highlightBlock(4);
+  left();
+}
+\end{lstlisting}}
+\end{subfigure}
+\caption{%
+  Examples of a RoboJS (right) for a given RoboBlocks program (left). %
+  Repeat loops require to generate unique names for iteration variables.
+  Each original command is complemented by \texttt{highlightBlock(blockId)},
+  so that the meta-interpreter knows which block to highlight.}
+\label{fig:robojs-example}
+\end{figure}
+
+The generated JavaScript assumes to be executed within the context providing hooks
+for actions (\texttt{fly}, \texttt{left}, \texttt{right}, \texttt{shoot}),
+sensor functions (\texttt{color}, \texttt{position}),
+and for meta-interpreting (\texttt{highlightBlock}).
+
+We have not implemented a parser from RoboJS to RoboAST,
 simply because we do not need this tranformation;
 otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
-
 
 
 \subsection{Interpretation}
@@ -644,7 +682,7 @@ and then use JS-interpeter (REF) to run the code.
 We could use any other interpreter that would satisfy the following
 conditions:
 \begin{enumerate}
-\item is implemented in JavaScript (in order to run it in the browser),
+\item is implemented in JavaScript (in order to run in the browser),
 \item interprets a language that can be generated easily from the RoboAST
   (which includes most languages),
 \item allows to define custom asynchronous hooks
