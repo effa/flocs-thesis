@@ -14,6 +14,20 @@
 \end{figure}
 }
 
+
+% Image with caption endign with a footnote.
+% TODO: Make sure that footnote is on the same page as the figure.
+\newcommand{\imgWithFootnote}[4][1] {
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=#1\textwidth]{img/#2}
+  \end{center}
+  \caption[#2]{#3\protect\footnotemark}
+  \label{fig:#2}
+\end{figure}
+\footnotetext{#4}
+}
+
 %--------------------------------------------------------------------
 % Definition of JavaScript listing
 % Source: https://tex.stackexchange.com/questions/89574/language-option-supported-in-listings
