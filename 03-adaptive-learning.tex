@@ -30,12 +30,13 @@ By giving the student a suitable task
 
 In addition to choosing the most suitable task for given student,
   artificial intelligence has also other possible uses in learning systems,
-  for example automatic hints generation \cite{generating-hints}
-  or skills visualization (TBA: ref).
+  for example automatic hints generation \cite{generating-hints},
+  cheating detection (REF),
+  or skills visualization (REF).
 Furthermore, artificial intelligence techniques can be used
   to analyze collected data offline.
 Such analyses can reveal problematic tasks,
-  or suggest how to group tasks into categories (TBA: ref).
+  or suggest how to group tasks into problem sets (TBA: ref).
 
 Adaptive learning systems have been already successful in some domains.
 For instance, Map Outlines%
@@ -57,12 +58,28 @@ In addition to geography, similar adaptive web applications
   \footnote{Available at \url{https://umimecesky.cz} (in Czech only).},
   were developed by the research group in recent years.
 
-Section \ref{sec:student-modeling} presents how to model students
-  in the context of learning programming.
+Sections \ref{sec:domain-modeling} and \ref{sec:student-modeling} present how
+to model the domain and students of the introductory programming.
 Sections \ref{sec:task-recommendation} and \ref{sec:mastery-learning}
-  then describe how to use these models to make a learning system adaptive.
+then describe two different uses of these models to make a learning system
+personalized, namely adaptive task recommendation, and mastery learning.
 Finally, section \ref{sec:metrics-and-evaluation} discusses how to evaluate
-  different models or even whole learning systems.
+different models or even whole learning systems.
+
+\section{Domain Modeling}
+\label{sec:domain-modeling}
+
+\begin{itemize}
+\item TODO: definition of domain model: (?) model of tasks and relatinships between them
+\item TODO: what is domain model for? (A: used in student models?,
+  visualization in UI, e.g. grouping tasks into problem sets?)
+\item TODO: Q-matrix (tasks x concepts)
+\item TODO: DAG of tasks (KSI) (nodes = tasks, edges = prerequisities)
+\item TODO: DAG of concepts \cite{its-programming}
+\item TODO: general chunk model - DAG with concepts as well as tasks and problem set (nodes = chunk, edge: "inclusion" (? is it same as sort of "soft prerequisity" or are these 2 separate types of edges)
+\item TODO: Umime Programovat: tree of concepts + problem sets (each PS maps to a (single?) concept), items? (?)
+\item TODO: flat vs. nested concepts (vs. no concept)
+\end{itemize}
 
 
 \section{Student Modeling}
@@ -74,6 +91,22 @@ For the system to be adaptive, models of
 The purpose of these models is to predict the probability that a given student
   would solve a given task
   and also the time the student would need to complete the task.
+
+
+TODO: what is a student model formally?
+prediction fn (student, task, domain, context) -> performance,
+together with update rule (reducer fn): interaction -> student,
+where interaction is 5-tuple (student, task, domain, context, performance)
+
+TODO: Student models vs. Domain models: (?) student models use domain as a
+structure, assigning some parameters (e.g. skills estiame, uncertainty, or even
+the full distribution of the estimate) to (some) "knowledge components" in the structure
+- student models must by dynamic ("online") (i.e. parameters computed on the fly),
+domain models can be possibly static (i.e. task and concept parameters can be computed offline),
+exemple (from \cite{its-programming}): domain model is DAG of concepts together with a
+Bayesian network over this DAG, ie. assignment of conditional probabilities to the edges;
+student model: assignment from each concept to the knowledge (known / unknown / not-sure) -> knowlege for any concept can be then inferred using the Bayesian network
+(? the Bayesian network is in this case same for all students, but does it make it part of the domain?)
 
 
 \subsection{Data}
@@ -308,6 +341,43 @@ The system can be more strict and show only a single recommended task,
 
 \emph{TODO:\\describe mastery learning + usage of student models%
 (to show the progress and to determine that the student already achieved the mastery)}
+
+- what it is: practice of a topil until covered concepts are mastered, only then move to the next topic
+
+- what is needed: online algorithm for deciding mastery given a stream of s-t interactions
+
+- how: basic version: compute a simple summary statistic such as average
+success or number of correct answers in a row and compare with a threshold;
+instead of a simple summary statistic, a student model (section
+\ref{sec:student-modeling}) can be used (e.g. predicting probability of success
+or a fuzzy skill of given concept)
+(DQ: it seems to me, that a simple summary statistic is just an extreme case of
+a student model; or is there a fundamental difference? E.g. making or not
+making an assumptions about learning, as (implicitly) suggested in \cite{alg.mastery}?
+Or being able to predict some sort of performance of the student, e.g. probability of
+success?)
+(REF same examples using student models, see \cite{alg.mastery} for relevant
+papers to read)
+
+- examples of systems using mastery learning (ref to the previous chapter)
+
+- important: which data to use for decision (specifically: it is important to
+incorporate solving times); concerning the technique, EMA (exponential moving
+average) is sufficient; modeling students does not result in a significant
+improvement \cite{alg.mastery}
+
+- usage of response time:
+1) discretization, but binarization is too coarse
+-> notion of partial credit, e.g. 1 for fast solution, 0.5 for slow solution,
+0 if failed to solve;
+2) continuous mapping from respone time to the 0-1 range
+(e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery})
+
+
+- choosing the right threshold (balance between overpractice and underpractice;
+(application dependent));
+- ? using effort-score graphs \cite{alg.mastery}
+- ? require the maximum time to achieve the mastery for genius
 
 % "fixed outcome, varied time" (vs. classical education: fixed time, varied outcome)
 
