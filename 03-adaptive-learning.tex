@@ -15,6 +15,11 @@ Such system would create an optimal learning experience for each student
   by providing them with problems of difficulty matching their skill,
   so that the student stays challenged and interested in solving them.
 
+TODO: terminology note: Intelligent tutoring systems (ITS)
+  (REF e.g. Hyacinth S. Nwana. Intelligent tutoring systems: an overview)
+  (? is ITS = adaptive learning system, or is AL too specific term - just
+  one of more possible strategies?)
+
 In the existing systems (\ref{sec:existing-systems}),
   the sequence of tasks is the same for everybody.
 As a result, the progress is necessarily too slow for some students,
@@ -58,6 +63,12 @@ In addition to geography, similar adaptive web applications
   \footnote{Available at \url{https://umimecesky.cz} (in Czech only).},
   were developed by the research group in recent years.
 
+TODO:
+- mention other famous ITS (Duolingo);
+- specifically name ITS' related to programming - refs to the previous
+chapter (Umime programovat, Tutor)
+
+
 Sections \ref{sec:domain-modeling} and \ref{sec:student-modeling} present how
 to model the domain and students of the introductory programming.
 Sections \ref{sec:task-recommendation} and \ref{sec:mastery-learning}
@@ -66,19 +77,65 @@ personalized, namely adaptive task recommendation, and mastery learning.
 Finally, section \ref{sec:metrics-and-evaluation} discusses how to evaluate
 different models or even whole learning systems.
 
+\subsection{Terminology}
+
+TODO: move to a most suitable place
+
+\begin{itemize}
+\item \emph{Student} (learner) -- TODO.
+\item \emph{Task} (item, problem)
+  -- a problem presented to the student to solve.
+  Consists of setting, sample solution (and has a \emph{difficulty}).
+  (REF figure with an example from previous chapter)
+\item \emph{concept} (knowledge component, chunk)
+  -- knowlege (ability) such as loops or conditionals,
+  (together with tasks for practicing this ability?,
+   maybe: chunk = concept + tasks)
+\item \emph{Task Set} (problem set)
+  -- a group of tasks for practicing a concept (chunk?).
+  (TODO: remove this term if not used)
+\item \emph{Skill}
+  -- how well a chunk is mastered by a student.
+\item \emph{Task Session}
+  -- a noninterrupted attempt of a student to solve a task.
+  (attributes: success, time, program snapshots)
+\end{itemize}
+
+TODO: figure illustating all these terms
+
+\subsection{Components}
+
+TODO: high-level description of components + REF sections below
+REF: source of the division,
+e.g. Design Recommendations for Intelligent Tutoring Systems: Volume 1-Learner Modeling
+
+\begin{itemize}
+\item \emph{Domain model} -- concepts, tasks and relationships between them.
+\item \emph{Student model} -- skills of concepts. (and how they are estimated?)
+\item \emph{Tutoring model} (instructional policy?) --
+  given a domain and a student, selects or recommends the student what to
+    do next (e.g. task recommendation).
+\item \emph{User interface} -- the part of the system the student directly
+  interact with. Presentation of a task, overview of all tasks, skills presentation, ...
+\end{itemize}
+
+
+
 \section{Domain Modeling}
 \label{sec:domain-modeling}
 
 \begin{itemize}
-\item TODO: definition of domain model: (?) model of tasks and relatinships between them
-\item TODO: what is domain model for? (A: used in student models?,
-  visualization in UI, e.g. grouping tasks into problem sets?)
+\item TODO: definition of domain model: (?) model of tasks and relationships between them
+\item TODO: what is domain model for? (1) used in student models,
+  (2) visualization in UI, e.g. grouping tasks into problem sets?)
+\item hierarchical model (hierarchy of concepts + tasks as leaves) (e.g. in MatMat)
 \item TODO: Q-matrix (tasks x concepts)
 \item TODO: DAG of tasks (KSI) (nodes = tasks, edges = prerequisities)
-\item TODO: DAG of concepts \cite{its-programming}
+\item TODO: DAG of concepts -> Bayesian network \cite{its-programming}; another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
 \item TODO: general chunk model - DAG with concepts as well as tasks and problem set (nodes = chunk, edge: "inclusion" (? is it same as sort of "soft prerequisity" or are these 2 separate types of edges)
 \item TODO: Umime Programovat: tree of concepts + problem sets (each PS maps to a (single?) concept), items? (?)
 \item TODO: flat vs. nested concepts (vs. no concept)
+\item TODO: explore \cite{rihak-phd}
 \end{itemize}
 
 
@@ -94,16 +151,18 @@ The purpose of these models is to predict the probability that a given student
 
 
 TODO: what is a student model formally?
-prediction fn (student, task, domain, context) -> performance,
+prediction fn (student, task, domain, context, hyperparameters?) -> performance,
 together with update rule (reducer fn): interaction -> student,
 where interaction is 5-tuple (student, task, domain, context, performance)
+(NOTE: not only for prediction for a performance on a task, also for
+visualization skills in UI, providing feedback for teacher, etc.)
 
 TODO: Student models vs. Domain models: (?) student models use domain as a
-structure, assigning some parameters (e.g. skills estiame, uncertainty, or even
+structure, assigning some parameters (e.g. skills estimate, uncertainty, or even
 the full distribution of the estimate) to (some) "knowledge components" in the structure
 - student models must by dynamic ("online") (i.e. parameters computed on the fly),
 domain models can be possibly static (i.e. task and concept parameters can be computed offline),
-exemple (from \cite{its-programming}): domain model is DAG of concepts together with a
+example (from \cite{its-programming}): domain model is DAG of concepts together with a
 Bayesian network over this DAG, ie. assignment of conditional probabilities to the edges;
 student model: assignment from each concept to the knowledge (known / unknown / not-sure) -> knowlege for any concept can be then inferred using the Bayesian network
 (? the Bayesian network is in this case same for all students, but does it make it part of the domain?)
@@ -311,6 +370,12 @@ No principled techniques for task recommendation have been developed yet;
 however, several heuristic approaches have been used
   and proved to work well (TBA: ref).
 
+TODO: clarify terminology:
+- instructional policy (not defined!) vs. tutoring model;
+- outer and inner loop (figure?) (outer loop: choosing chunk, choosing a
+  task within a chunk, inner loop: helping a student to solve the task,
+  giving hints, providing feedback).
+
 Task recommendation is not a necessary requirement
   for the system to be adaptive.
 Student models can be utilized by other means to achieve personalized behavior,
@@ -342,7 +407,7 @@ The system can be more strict and show only a single recommended task,
 \emph{TODO:\\describe mastery learning + usage of student models%
 (to show the progress and to determine that the student already achieved the mastery)}
 
-- what it is: practice of a topil until covered concepts are mastered, only then move to the next topic
+- what it is: practice of a topic until covered concepts are mastered, only then move to the next topic
 
 - what is needed: online algorithm for deciding mastery given a stream of s-t interactions
 
