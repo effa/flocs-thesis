@@ -125,17 +125,59 @@ e.g. Design Recommendations for Intelligent Tutoring Systems: Volume 1-Learner M
 \label{sec:domain-modeling}
 
 \begin{itemize}
-\item TODO: definition of domain model: (?) model of tasks and relationships between them
-\item TODO: what is domain model for? (1) used in student models,
-  (2) visualization in UI, e.g. grouping tasks into problem sets?)
+\item TODO: definition of domain model: (?) set of concept, tasks and relationships between them
+\item TODO: what is domain model for?
+  (1) used in student models (gives a structure for skills and relationships between them),
+  (2) used in tutoring models (e.g. mastery learning - recommednint tasks containing a selected concept until the concept is mastered)
+  (3) used in UI, e.g. grouping tasks into problem sets?)
+\item decisions: which concepts, how granular, what are the relationships between them, which tasks belong to which concepts?
+\item TODO: flat vs. nested concepts (vs. no concept)
+\item TODO: explore \cite{rihak-phd}
+\end{itemize}
+
+
+Overview of possibilities
+(some of them covered in more detail in the following subsections):
+\begin{itemize}
+\item baseline: no concepts / single concept
+\item flat concepts (no relationships between concepts), each task belonging to exactly 1 concept (1:n relationship), i.e. tasks form a disjoint clusters (cluster = concept)
+\item Q-matrix (tasks x concepts): still flat concepts, but m:n relationship between tasks and concepts
+\item (hierarchical clusters)
 \item hierarchical model (hierarchy of concepts + tasks as leaves) (e.g. in MatMat)
-\item TODO: Q-matrix (tasks x concepts)
 \item TODO: DAG of tasks (KSI) (nodes = tasks, edges = prerequisities)
 \item TODO: DAG of concepts -> Bayesian network \cite{its-programming}; another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
 \item TODO: general chunk model - DAG with concepts as well as tasks and problem set (nodes = chunk, edge: "inclusion" (? is it same as sort of "soft prerequisity" or are these 2 separate types of edges)
 \item TODO: Umime Programovat: tree of concepts + problem sets (each PS maps to a (single?) concept), items? (?)
-\item TODO: flat vs. nested concepts (vs. no concept)
-\item TODO: explore \cite{rihak-phd}
+\end{itemize}
+
+
+\subsection{Flat Clusters}
+
+\begin{itemize}
+\item tasks form a disjoint clusters (cluster = concept)
+\item each task in exactly one concept
+\item construction: manually vs. automatically
+\item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering) operating on task-features or task-task similarity matrix (REF to our paper about similarity of programming problems)
+\end{itemize}
+
+
+\subsection{Q-matrix}
+
+\begin{itemize}
+\item matrix tasks x concepts
+\item one task -> multiple concepts
+\item hard: 0 and 1s, soft: continuous values (how much is given concept important for given task)
+\item possible interpreation: OR vs AND - whether the student needs to know single/all concepts to solve the task (in reality sth in between, closer to AND?) (terminology: DINO/NINO, DINA/NINA); (? not sure if this is still the domain, or already the student model)
+\item constructing Q-matrix: manually vs. automatically (latent concepts)
+\item human-in-the-loop approach: does existing Q-matrix (possibly created by expert) match collected performance data? what to change for better fit? (small "safe" improvements)
+\end{itemize}
+
+
+\subsection{Task Similarities}
+
+\begin{itemize}
+\item TODO: the most relevant results and REF our paper
+\item when using performance data, incorporating 2nd level of similarity (...) helps \cite{rihak-phd}
 \end{itemize}
 
 
