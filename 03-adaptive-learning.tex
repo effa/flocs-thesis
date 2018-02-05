@@ -115,10 +115,24 @@ e.g. Design Recommendations for Intelligent Tutoring Systems: Volume 1-Learner M
 \item \emph{Tutoring model} (instructional policy?) --
   given a domain and a student, selects or recommends the student what to
     do next (e.g. task recommendation).
+\item \emph{Online analysis/experiment/evaluation/hyperparams training layer} (not in the referred article!) -- monitoring, AB experiments, online hyperparams tuning
 \item \emph{User interface} -- the part of the system the student directly
   interact with. Presentation of a task, overview of all tasks, skills presentation, ...
+  (? can be useful to separate UI model - needed for AB experiments over the UI and the actual UI)
+\item \emph{Offline analysis/evaluation/training} (Human in the loop) (not in the referred article!)
 \end{itemize}
 
+TODO: diagram of the components (+ used data):
+- domain model <- all historical data;
+- student model <- student historical data, domain model
+- tutoring model <- domain model, student model
+- experiment layer (online analysis) <- all 3 models (possibly collections if it compares multiple ones) (possibly also UI model)
+- UI <- results from all models (but usually not the actual models) (structure from the domain model for overivew of tasks, skills and mastery from the student model, recommendation from the tutoring model), these models can be selected by the experiment layer
+- ? forward pass (system->student) vs. backpropagation through the models (student->system -> online parameters update)
+- ? models vs. real entities (student model vs. student, UI model vs. UI)
+
+
+NOTE: online vs offline models: for domain and tutoring, offline models are ok, for student, online models are necessity
 
 
 \section{Domain Modeling}
@@ -144,10 +158,13 @@ Overview of possibilities
 \item Q-matrix (tasks x concepts): still flat concepts, but m:n relationship between tasks and concepts
 \item (hierarchical clusters)
 \item hierarchical model (hierarchy of concepts + tasks as leaves) (e.g. in MatMat)
+    (special cases: single level = "concept model"; no levels - single concept)
+    (tree vs. DAG, tree -> each  item belongs to single concept + all its parents - not enough for programming domain)
+\item "knowledge space theory" (REF: Spaces for the assessment of knowledge.) - prerequisites between concepts -> DAG of concepts -> Bayesian network \cite{its-programming}; another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
 \item TODO: DAG of tasks (KSI) (nodes = tasks, edges = prerequisities)
-\item TODO: DAG of concepts -> Bayesian network \cite{its-programming}; another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
 \item TODO: general chunk model - DAG with concepts as well as tasks and problem set (nodes = chunk, edge: "inclusion" (? is it same as sort of "soft prerequisity" or are these 2 separate types of edges)
 \item TODO: Umime Programovat: tree of concepts + problem sets (each PS maps to a (single?) concept), items? (?)
+\item TODO: network model (see thran-thesis): only tasks plus relationships between them = similarities
 \end{itemize}
 
 
@@ -191,13 +208,21 @@ The purpose of these models is to predict the probability that a given student
   would solve a given task
   and also the time the student would need to complete the task.
 
+NOTE: hidden variables (hidden state) (knowledge and skills, possibly also affect, motivation)
+vs. observable variables (correctness, solving time, time series of program snapshots)
+
+
+NOTE - usage: by UI for showing feedback for the student, for tutoring model for detecting mastery and content (task/problem-set) recommendation, for online evaluation (insight for developers), offline evaluation (insigth by researchers and domain experts - teachers of elementary programmin)
+
 
 TODO: what is a student model formally?
-prediction fn (student, task, domain, context, hyperparameters?) -> performance,
+prediction fn (student, task, domain, context, hyperparameters?) -> response of the student to the task in the context (for us, the response is mainly performance measured e.g. by solving time, but it can also include change in motivation etc.),
 together with update rule (reducer fn): interaction -> student,
 where interaction is 5-tuple (student, task, domain, context, performance)
 (NOTE: not only for prediction for a performance on a task, also for
-visualization skills in UI, providing feedback for teacher, etc.)
+visualization skills in UI, providing feedback for teacher, etc.);
+OR "offline student model": (domain model, complete history of the learner) -> prediction about the future behavior (vs. "online student model" with the update rule, more useful in our setting)
+
 
 TODO: Student models vs. Domain models: (?) student models use domain as a
 structure, assigning some parameters (e.g. skills estimate, uncertainty, or even
@@ -208,6 +233,13 @@ example (from \cite{its-programming}): domain model is DAG of concepts together 
 Bayesian network over this DAG, ie. assignment of conditional probabilities to the edges;
 student model: assignment from each concept to the knowledge (known / unknown / not-sure) -> knowlege for any concept can be then inferred using the Bayesian network
 (? the Bayesian network is in this case same for all students, but does it make it part of the domain?)
+
+
+NOTE: categorization:
+1. according to the underlaying domain model (-> single/multiskill, skills relationships etc.)
+2. single point estimate / full distribution / sth. in between (e.g. mean and deviation=uncertainty)
+3. online vs. offline (we need online)
+4. according to the assumption about learning/not learning (we need to model learning)
 
 
 \subsection{Data}
@@ -256,6 +288,8 @@ The simplest version of item \emph{item response theory} (IRT)
   \cite{irt-visual-guide}
   models each student by a one-dimension skill $s$,
   and each task by a one-dimension difficulty $d$.
+(NOTE: this special version is also known as one-parameter logistic model -- 1PL, or as Rasch model, ?, REF)
+
 IRT assumes that the probability of a student with skill $s$
   successfully solving a task with difficulty $d$
   is given by the following function:
@@ -281,6 +315,8 @@ IRT assumes that the probability of a student with skill $s$
   \label{fig:logistic-model}
 \end{figure}
 
+NOTE: additional parameters: discrimination (how much is the performance sensitive to the skill), pseudo-guessing (the minimum probability of success, useful mainly for multple-choice questions, probably not very useful for use)
+
 This basic model was originally developed for a simple knowledge testing
   and therefore it assumes a single constant skill.
 However, programming skill is multidimensional;
@@ -288,6 +324,12 @@ However, programming skill is multidimensional;
   while another student can master loops and struggle with functions.
 Furthermore, these skills should be ideally changing significantly during
   the interaction with the system, because students are learning.
+
+NOTE: multidimension extension: x = skill vector * discrimination vector - task bias
+(this is basically what we tried in the first prototype, with fixed discrimination vector,
+although we formulated it in the online "ELO" variant)
+(REF?:The difficulty of test items that measure more than one ability.,
+Using multidimensional item response theory to understand what items and tests are measuring.)
 
 Another drawback of the IRT is that it only uses
   the binary data about successes and failures.
@@ -316,6 +358,16 @@ The model parameters (skills and difficulties) can can be estimated from the dat
 % by observed solving solving times distribution and it is also intuitively
   % plausible - multiplicative nature of solving times.
 
+NOTE: Main problem - without learning; in principle can recompute parameters after
+each interaction, but that is not feasible in online learning systems; remedy: PFA (student-related parameters can be computed online,), Elo models (both student and task-related parameters can are computed online)
+
+
+NOTE: PFA - as IRT but with learning? (logistic fn, set of skills for each concept, initial skills, constant incread after a correct answer; total skill = sum of skills of concepts contained in the task, squashed byt the logistic fn)
+
+NOTE: PFAE - combines Elo with PFA (make the PFA online for both student and task parameters)
+(basic version: no domain, repeated answers to single item -> prior knowledge + current knowledge,
+not sure how much relevant for us)
+
 
 
 \subsection{Elo}
@@ -342,7 +394,29 @@ The main advantage of using the Elo model is its simplicity, flexibility,
   good performance and intrinsic online nature, which allows for immediate
   updates of parameters as students are interacting with the system.
 
-% TODO: include other models, PFA, BKT etc.
+
+NOTE: Elo variant based on network model: each time a task is solved, update skill for all tasks according to the similarity to the one solved (this can be propably also done on the level of concpets, if we have a similarity network between concepts)
+
+NOTE: Elo variant for concept model ("simple hierarchical model" from thran-thesis),
+as basic Elo but the total skill is the sum of the global skill and concept skill
+(updating both the same way)
+
+NOTE: Elo variant for hieararchical model:
+- predictions: total skill = sum all ancestors skills
+- update: all ancestors sequentialy (from the top-most), elo-like update
+
+\subsection{Bayesian Knowledge Tracing (BKT)}
+\label{sec:bkt}
+
+- special type of Bayesian network: for each skill, two hidden states (known/mastered) or not,
+  observed: performance
+- assumes: learning (in contrast to basic IRT)
+- assumes: on each opportunity to use the skill (e.g. solving a task with the corresponding concept), there is constant probability of learning that skill
+- TODO: add the standard diagram of BKT (possibly for some relevant extension, such as multiple skills?)
+- many extensiosns (...), TODO: describe an extensions relevant for us:
+1. hiearchical model of skills (as used in the current domain model)
+2. DAG of concepts, DAG of tasks with imposed Bayesian network
+- TODO: parameters estimation (both the "domain parameters" and "student parameters")
 
 
 \subsection{Concepts}
