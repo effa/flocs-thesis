@@ -242,6 +242,15 @@ NOTE: categorization:
 4. according to the assumption about learning/not learning (we need to model learning)
 
 
+NOTE: modelling time vs. correctness/success
+- time: log time (REF)
+- corretness:
+  - pure solved/not-solved (to coarse and no useful data - most students solve most tasks and if not, it is often because of reasons other than skill, e.g they need to finish the practice)
+  - continuous partial credit - use response time (or even more detaild information about the task session) to map the performance to a correctness scale from 0 to 1 (see thran-thesis, p.106 for overview of tried mappings, e.g. expTime, thresholdTime, etc., but note that in MatMat they need to combine the time and corretness and this mapping is only done for correct answers),
+  - discretized partial credit - (binary classification or 3 or 4 categories, e.g "poor", "good", "excellent" corresponding roughly to the 3-level flow classification: too difficult, just right, too easy)
+
+NOTE: incorporating labor intensity of the item (e.g. into IRT, see thran-thesis, p.101)
+
 \subsection{Data}
 \label{sec:student-modeling.data}
 
@@ -361,6 +370,13 @@ The model parameters (skills and difficulties) can can be estimated from the dat
 NOTE: Main problem - without learning; in principle can recompute parameters after
 each interaction, but that is not feasible in online learning systems; remedy: PFA (student-related parameters can be computed online,), Elo models (both student and task-related parameters can are computed online)
 
+NOTE: modeling response times (nice summary in thran-thesis)
+- log-time from normaln distribution with mean d - a * theta (and variance c),
+  ie. assumption is exponential relationship between the solving time and the skill?
+  (this statement is not clear, because it depend on what you denote as skill,
+  e.g. if you say that skill is exp(theta), than the relationship is linear...)
+- incorporating multidimensionnal skills (flat concepts model): d, a vectors; update skill of each concpet contained in the task
+
 
 NOTE: PFA - as IRT but with learning? (logistic fn, set of skills for each concept, initial skills, constant incread after a correct answer; total skill = sum of skills of concepts contained in the task, squashed byt the logistic fn)
 
@@ -418,6 +434,7 @@ NOTE: Elo variant for hieararchical model:
 2. DAG of concepts, DAG of tasks with imposed Bayesian network
 - TODO: parameters estimation (both the "domain parameters" and "student parameters")
 
+TODO: BKT with time: Leveraging first response time into the knowledge tracing model.
 
 \subsection{Concepts}
 
@@ -523,9 +540,9 @@ The system can be more strict and show only a single recommended task,
 \emph{TODO:\\describe mastery learning + usage of student models%
 (to show the progress and to determine that the student already achieved the mastery)}
 
-- what it is: practice of a topic until covered concepts are mastered, only then move to the next topic
+- what it is: type of instructional policy (tutoring model); practice of a topic until covered concepts are mastered, only then move to the next topic
 
-- what is needed: online algorithm for deciding mastery given a stream of s-t interactions
+- what is needed: online algorithm for deciding mastery given a stream of s-t interactions ("mastery criterion")
 
 - how: basic version: compute a simple summary statistic such as average
 success or number of correct answers in a row and compare with a threshold;
