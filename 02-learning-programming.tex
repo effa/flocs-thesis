@@ -18,6 +18,7 @@ These systems can be categorized by several criteria:
 \item content (covered concepts): loops, conditions, variables, etc.
 \item programming language (block-based vs textual),
 \item type of tasks (e.g. robot in maze, turtle graphics),
+\item (?) playing:learning ratio (term: "game-based learning")
 \item (intelligent behavovior -- discussed in next chapter),
 \item price: free, or paid.
 \end{itemize}
@@ -224,6 +225,12 @@ This restriction is usually overcome by
   using recursion instead of loops,
   and replacing nested sequences of commands by a new function.
 
+TODO: the block-based editors are a special case of "structred editors",
+idea: editor only allows edits that transform the code from one syntactically correct
+program to another (basically working on AST level, edit = transforms to another AST)
+(compared to: classical text editors, where the edit can be arbitraty, making the code
+not syntactically correct).
+
 // TBA: comparision figure; e.g. Robotanist - fixed grid, Blockly games - nested blocks
 
 
@@ -241,7 +248,10 @@ While the results of these experiments suggest that block-based interfaces
   they do not provide strong convincing evidence for that,
   because the programming interfaces used in most of the experiments differ in more aspects
   than in just in using blocks instead of text
-  \cite{comparing-textual-and-block-interfaces}.
+  \cite{comparing-blocks-text-price2015}.
+
+TODO: REF 5-week high-school experiment, block-based vs. text-based:
+- \cite{comparing-blocks-text-weintrop2017}
 
 \subsection{Transition Strategy}
 \label{sec:transition-strategy}
@@ -258,6 +268,11 @@ Instead of making compromises,
 In the last level,
   the text on blocks matches the generated JavaScript completely
   \cite{blockly-10-things}.
+
+TODO:
+- note: "blending block-based and text-based programming approaches (e.g., Pencil Code
+(Bau 2015), Tiled Grace (Homer and Noble 2014), and Greenfoot’s Frame-based editor (Kölling et al.
+2015)"
 
 
 \subsection{Visual Output}

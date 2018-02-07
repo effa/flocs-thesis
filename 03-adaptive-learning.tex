@@ -712,7 +712,7 @@ The tasks environment in the learning systems usually differs significantly
 Ultimately, what matters is the performance of students in the real world,
   outside the simplified learning environment%
 \footnote{%
-  This issue is also mentioned by Werntrop and Wilensky %
+  This issue is also mentioned by Weintrop and Wilensky %
   in \cite{challenges-of-blocks-based-environments}, %
   in the context of proper evaluation of block-base programming environments.}.
 This aspect should be considered when choosing a proper long-term objective.
@@ -721,12 +721,17 @@ For example, trying to achieve minimum solving times on tasks in the learning sy
   -- it would likely lead to ``overfitting'' students to the particular learning system,
   by giving them all available tasks from the simplest to the most difficult.
 
+TODO: REF 5-week high-school experiment, block-based vs. text-based:
+- \cite{comparing-blocks-text-weintrop2017}
+(important feature for such comparision is to have a two learning environments,
+that only differ in the text/block version of the editor, everything else being same).
+
 
 \subsection{User-centered Evaluation}
 
 In addition to quantitative (objective) metrics (such as whether the
 recommended task was clicked and solved), the system can also explicitly ask
-students to provide quantitative (subjective) feedback.
+students to provide qualitative (subjective) feedback.
 For example, after the student solves the task, the system can show a dialog
 asking about the perceived difficulty -- whether the task was ``too
 easy'', ``too difficult'' or `just right''.
@@ -745,9 +750,17 @@ In addition, answering these questions may bother students a little bit
 and it also takes some time the students could spend on learning instead,
 (but it is negligible compared to the practicing time).
 
-% TODO: note on other user-centered evaluation strategies:
-% questionaires, free feedback (via feedback button), user-testing, focus groups
+TODO: quantitative vs. qualitative and online vs. field studies are othogonal,
+all combinations possible: e.g. in the field study \cite{comparing-blocks-text-weintrop2017},
+they measured both quantiative data (performance) and qualitative (attitude);
+the same can be done in the online learning system.
 
+TODO: note on other user-centered evaluation strategies:
+questionaires, free feedback (via feedback button), user-testing (single student / class), focus groups, semi-structured interviews with sutdents.
+
+TODO: example of a 5-week experiment in schools (field study):
+\cite{comparing-blocks-text-weintrop2017}
+- investigated qualities: confidence, enjoyment, perceived difficulty, interest in future opportunities to learn CS, authenticity of the environment - "is it similar to what real programmers do?", efficiency of the environment ("made me a better programmer?")
 
 
 \subsection{Live Evaluation}
@@ -813,6 +826,12 @@ Finally, offline learning algorithms typically also use
   a metric to guide them
   (these are discussed in section \ref{sec:metrics-to-guide-learning}).
 
+
+TODO: comparing to other (e.g. currently used) model (e.g. correlation between predictions, delta between recommendations):
+1. for a prototype (idea) of new model: if the correlations are high, there is probably no significant gain in exploring this model (compared to using the current one);
+2. for same model with retrained parameters for newly collected data - if the delta is too big, we should be suspicious and investigate.
+
+TODO: evaluating parameters stability (see thran-thesis) - as above just with the same model (comparing the same model trained on different samples from the collected data)
 
 \subsection{Cross Validation}
 
@@ -1119,6 +1138,12 @@ In practice, simulations can also take advantage of collected data
   if they are available -- to estimate some of the model parameters
   or to evaluate how much the model predictions agree with
   what was observed in the reality.
+
+
+TODO:
+- view on the simulation experiments as the 3rd way between deduction (mathematical models) and induction (statistics, machine learning)
+- REF examples (e.g. in thran-thesis)
+- they can also provide best-case performance, suggest how much data (at least) is needed to achieve stability/good performance
 
 
 
