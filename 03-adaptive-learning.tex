@@ -208,6 +208,10 @@ The purpose of these models is to predict the probability that a given student
   would solve a given task
   and also the time the student would need to complete the task.
 
+NOTE:
+- restricted task/model (our focus): skill modelling
+(broader models can also include affect (e.g. frustration, boredom), motivation, etc)
+
 NOTE: hidden variables (hidden state) (knowledge and skills, possibly also affect, motivation)
 vs. observable variables (correctness, solving time, time series of program snapshots)
 
@@ -250,6 +254,16 @@ NOTE: modelling time vs. correctness/success
   - discretized partial credit - (binary classification or 3 or 4 categories, e.g "poor", "good", "excellent" corresponding roughly to the 3-level flow classification: too difficult, just right, too easy)
 
 NOTE: incorporating labor intensity of the item (e.g. into IRT, see thran-thesis, p.101)
+
+
+TODO: \cite{student-models-review-2012}:
+- cognitive tutors - skills as rules,
+  mastered skill: rule correctly applied (multiple-times),
+  allows for modeling misconceptions ("MISconcepts") (incorrect rules)
+    -> useful for automatic hint generation ("just-in-time feedback"),
+  example: the Lisp Tutor
+- (and contstraint based modeling - skills as predicates)
+- (doesn't require long-term student model, can be just for the current topic)
 
 \subsection{Data}
 \label{sec:student-modeling.data}
@@ -580,6 +594,18 @@ improvement \cite{alg.mastery}
 % "fixed outcome, varied time" (vs. classical education: fixed time, varied outcome)
 
 % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
+
+\section{Automatic Feedback}
+
+TODO: terminology:
+  scaffolding (broader term, not necesarily just-in-time or automatic),
+  "just-in-time feedback" (\cite{student-models-review-2012})
+
+TODO: maybe just mention in the intro
+
+TODO: automatic hints /explanations / instructions / worked-out example selection/generation,
+  (or suggestion to try easier task)
+
 
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
