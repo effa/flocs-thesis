@@ -106,20 +106,23 @@ TODO: figure illustating all these terms
 \subsection{Components}
 
 TODO: high-level description of components + REF sections below
-REF: source of the division,
-e.g. Design Recommendations for Intelligent Tutoring Systems: Volume 1-Learner Modeling
+REF: source of the division, e.g. \cite{its-learner-models}
 
 \begin{itemize}
-\item \emph{Domain model} -- concepts, tasks and relationships between them.
-\item \emph{Student model} -- skills of concepts. (and how they are estimated?)
-\item \emph{Tutoring model} (instructional policy?) --
-  given a domain and a student, selects or recommends the student what to
-    do next (e.g. task recommendation).
-\item \emph{Online analysis/experiment/evaluation/hyperparams training layer} (not in the referred article!) -- monitoring, AB experiments, online hyperparams tuning
-\item \emph{User interface} -- the part of the system the student directly
-  interact with. Presentation of a task, overview of all tasks, skills presentation, ...
-  (? can be useful to separate UI model - needed for AB experiments over the UI and the actual UI)
-\item \emph{Offline analysis/evaluation/training} (Human in the loop) (not in the referred article!)
+\item \emph{Domain model} -- concepts, tasks and relationships between them
+    (possibly also misconceptions, rules for solving the tasks).
+\item \emph{Student model} (learner model, user model) -- performance on tasks, skills of concepts.
+\item \emph{Tutor model} (instructional policy, instructional strategy, pedagogical module) --
+  decides what given student in given domain should do next (e.g. task recommendation).
+\item \emph{User interface model} (tutor-student interface) -- how the domain, student and tutor models should be presented to the student (e.g. task solving environment, overview of all tasks and concepts, achieved skills, recommended task).
+\item \emph{Sensor model} - collecting data from the interactions with the system
+  (includes monitorin?).
+\end{itemize}
+
+I think there are two more components of ITS:
+\begin{itemize}
+\item \emph{Online analysis/experiment/evaluation/hyperparams training layer/module} -- AB experiments, online hyperparams tuning.
+\item \emph{Offline analysis/evaluation/training} (Human in the loop).
 \end{itemize}
 
 TODO: diagram of the components (+ used data):
@@ -133,6 +136,9 @@ TODO: diagram of the components (+ used data):
 
 
 NOTE: online vs offline models: for domain and tutoring, offline models are ok, for student, online models are necessity
+
+
+\imgW{its-components}{Components of ITS with their input and output}
 
 
 \section{Domain Modeling}
@@ -163,7 +169,7 @@ Overview of possibilities
 \item "knowledge space theory" (REF: Spaces for the assessment of knowledge.)
   - prerequisites between tasks -> DAG of tasks (KSI) (nodes = tasks, edges = prerequisities),
     can be extended to concepts -> DAG of concepts -> Bayesian network \cite{its-programming}; another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
-    - generally: AND/OR graph, special case is when all nodes are AND or OR
+    - generally: AND/OR graph, special case is when all nodes are AND
     (than it is called "Partial Order Knowledge Structure" model)
 \item TODO: general chunk model - DAG with concepts as well as tasks and problem set (nodes = chunk, edge: "inclusion" (? is it same as sort of "soft prerequisity" or are these 2 separate types of edges)
 \item TODO: Umime Programovat: tree of concepts + problem sets (each PS maps to a (single?) concept), items? (?)
@@ -246,6 +252,8 @@ student model: assignment from each concept to the knowledge (known / unknown / 
 - terminology:
   - concepts and tasks lives in the domain model and they can have corresponding
   concept skills and task performances in the student model
+- view form \cite{its-learner-models}: domain model - state space, student model - state within the state spce
+- domain model: offline (usually), student model: online (necessarily)
 
 
 
@@ -287,6 +295,8 @@ TODO: \cite{student-models-review-2012}:
   - this is known as (\emph{transfer model} or) \emph{knowledge tracing}
   (and I think that it is the same thing which we call "prior knowledge estimation")
   (but in our context, \emph{skill tracing} would be better name)
+
+REF: comprehensive overview: \cite{its-learner-models}
 
 \subsection{Data}
 \label{sec:student-modeling.data}
@@ -594,7 +604,7 @@ Having DAG of concepts then allows to model students using Bayes networks
 % TODO: simple diagram: DAG of concepts example
 
 
-\section{Tutoring Models}
+\section{Tutor Models}
 
 (ordered from the most outer to the most inner loop)
 - content sequencing (curriculum sequencing) (\cite{its-programming}) (which topic to do next?)
@@ -607,6 +617,9 @@ Having DAG of concepts then allows to model students using Bayes networks
 - "problem solving / solution analysis / solving process tutors",
   (e.g. cognitive tutors, constraint based models)
   (which step to do next towards solving the task? -> which hint to show?)
+
+- hierarchical tutor: using different student models for different loops
+  (inner, outer curriculum)
 
 \section{Task Recommendation}
 \label{sec:task-recommendation}
@@ -625,10 +638,13 @@ however, several heuristic approaches have been used
   and proved to work well (TBA: ref).
 
 TODO: clarify terminology:
-- instructional policy (not defined!) vs. tutoring model;
-- outer and inner loop (figure?) (outer loop: choosing chunk, choosing a
-  task within a chunk, inner loop: helping a student to solve the task,
-  giving hints, providing feedback).
+- instructional policy (not defined!) vs. tutoring model (same?);
+- outer and inner loop (figure?)
+  (outer loop: "problem selection loop",
+  choosing chunk, choosing a task within a chunk, inner loop: helping a student
+  to solve the task, giving hints, providing feedback).
+  (\cite{its-learner-models}: inner = problem step, outer = problem selection,
+  curriculum loop = which chunk)
 
 Task recommendation is not a necessary requirement
   for the system to be adaptive.
