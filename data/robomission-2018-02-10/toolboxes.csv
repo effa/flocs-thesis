@@ -1,0 +1,10 @@
+id,name,blocks
+1,fly,['fly']
+2,shoot,"['fly', 'shoot']"
+3,repeat,"['fly', 'shoot', 'repeat']"
+4,while,"['fly', 'shoot', 'while', 'color']"
+5,loops,"['fly', 'shoot', 'repeat', 'while', 'color']"
+6,loops+if,"['fly', 'shoot', 'repeat', 'while', 'color', 'if']"
+7,loops+if+position,"['fly', 'shoot', 'repeat', 'while', 'color', 'position', 'if']"
+8,loops+if+else,"['fly', 'shoot', 'repeat', 'while', 'color', 'position', 'if', 'if-else']"
+9,complete,"['fly', 'shoot', 'repeat', 'while', 'color', 'position', 'if', 'if-else']"
