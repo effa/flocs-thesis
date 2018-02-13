@@ -90,7 +90,7 @@ TODO: move to a most suitable place
 \item \emph{concept} (knowledge component, chunk)
   -- knowlege (ability) such as loops or conditionals,
   (together with tasks for practicing this ability?,
-   maybe: chunk = concept + tasks)
+   maybe: chunk = concept togehter with tasks to learn that concept)
 \item \emph{Task Set} (problem set)
   -- a group of tasks for practicing a concept (chunk?).
   (TODO: remove this term if not used)
@@ -102,6 +102,25 @@ TODO: move to a most suitable place
 \end{itemize}
 
 TODO: figure illustating all these terms
+
+TODO: type of chunks: tasks, problem sets (missions, phases), programming concepts,
+  syntax concpets (blocks), game concepts, (misconceptions), mastery,
+  (NOTE: KLI framework also describes the differences between these different types
+  of chunks, which they call knowledge components; + also granularity levels)
+
+KLI framework (Koedinger 2012), KCs with examples for programming:
+- variable-variable (principle):
+  - very coarse: programming
+  - coarse: loops
+  - medium: while loops
+  - fine: programs with single while-not-end loop
+- variable-constant (category):
+  - coarse: game elements and mechanics?
+  - medium: asteroid?, winning rule?
+  - fine: ?
+- constant-constant (fact):
+  (names of game elements / names of parts of the environemnt / names of programming blocks),
+  (behavior of game elements, e.g. what happend when you hit the asteroid)
 
 \subsection{Components}
 
@@ -155,6 +174,17 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item TODO: explore \cite{rihak-phd}
 \end{itemize}
 
+TODO: \cite{pelanek-learner-modeling}: data + procedures
+- data: KC structure + item parameters
+- offline procedures: KC structure search -> structure, parameter fitting -> item parameters
+- online procedures: (update equation - not necessarily online), prediction equation
+
+Structure possibilities \cite{student-models-review-2012}:
+- disjoint chunks (1:n chunks:tasks)
+- overlapping chunks (m:n chunks:tasks) (Q-matrix)
+- relationships between chunks:
+  - hieararchy (generalization/specialization (or inclusion) relationship)
+  - prerequisites (and/or)
 
 Overview of possibilities
 (some of them covered in more detail in the following subsections):
@@ -179,6 +209,16 @@ Overview of possibilities
 
 NOTE: not only base skills, but also integration skills are important:
 \cite{learner-models-integration-skills}
+
+NOTE: having multiple-skills per item -> "credit assignement problem"
+(which concept caused the poor performance)
+(detail in \cite{pelanek-learner-modeling})
+  - compensatory (additive) model
+  - conjunctive (product) model
+  - log-reg
+  - weakest skill
+  - DINA etc.
+-> what makes most sense in our domain?
 
 
 \subsection{Flat Clusters}
@@ -222,6 +262,11 @@ The purpose of these models is to predict the probability that a given student
   and also the time the student would need to complete the task.
 
 NOTE:
+- comprehensive overview exists: \cite{its-learner-models, pelanek-learner-modeling}
+- my goal here: how to choose and adapt the most common learner models for the domain
+  of introductory programming
+
+NOTE:
 - restricted task/model (our focus): skill modelling
 (broader models can also include affect (e.g. frustration, boredom), motivation, etc)
 
@@ -243,6 +288,10 @@ where interaction is 5-tuple (student, task, domain, context, performance)
 visualization skills in UI, providing feedback for teacher, etc.);
 OR "offline student model": (domain model, complete history of the learner) -> prediction about the future behavior (vs. "online student model" with the update rule, more useful in our setting)
 
+TODO: view from \cite{pelanek-learner-modeling}: data + procedures
+- data: hyper parameters, population parameters, student skills
+- offline procedures: parameter fitting -> metaparameters, population parameters
+- online procedures: update equation, prediction equation
 
 TODO: Student models vs. Domain models: (?) student models use domain as a
 structure, assigning some parameters (e.g. skills estimate, uncertainty, or even
@@ -267,6 +316,10 @@ NOTE: categorization:
 3. online vs. offline (we need online)
 4. according to the assumption about learning/not learning (we need to model learning)
 5. (granularity? prediciting performance on concepts/tasks or even individual actions/ruleshigh-level skill tracing vs. fine-grained
+6.,7. complexity; assumptions about learning \cite{pelanek-learner-modeling}
+8. skill as discrete (BKT) or continuous (logistic models)
+
+
 
 
 NOTE: modelling time vs. correctness/success
@@ -287,6 +340,7 @@ NOTE: matrix-factorization approaches (e.g. Thai-Nghe et al. (2011))
 
 
 TODO: \cite{student-models-review-2012}:
+(for inner loop: cognitive tutors and constraint based models)
 - cognitive tutors - skills as rules,
   mastered skill: rule correctly applied (multiple-times),
   allows for modeling misconceptions ("MISconcepts") (incorrect rules)
@@ -300,7 +354,8 @@ TODO: \cite{student-models-review-2012}:
   (and I think that it is the same thing which we call "prior knowledge estimation")
   (but in our context, \emph{skill tracing} would be better name)
 
-REF: comprehensive overview: \cite{its-learner-models}
+Our focus is on the outer-loop as the inner-loop is better suited for people (instructors)
+(REF: Essa, 2016: A possible future for next generation adaptive learning systems.)
 
 \subsection{Data}
 \label{sec:student-modeling.data}
@@ -439,7 +494,8 @@ NOTE: modeling response times (nice summary in thran-thesis)
 - incorporating multidimensionnal skills (flat concepts model): d, a vectors; update skill of each concpet contained in the task
 
 
-NOTE: PFA - as IRT but with learning? (logistic fn, set of skills for each concept, initial skills, constant incread after a correct answer; total skill = sum of skills of concepts contained in the task, squashed byt the logistic fn)
+NOTE: PFA - logistic model with learning (logistic fn, set of skills for each concept, initial skills, constant incread after a correct answer; total skill = sum of skills of concepts contained in the task, squashed byt the logistic fn)
+REF: Pavlik 2009: Performance factors analysis—a new alternative to knowledge tracing.
 
 NOTE: PFAE - combines Elo with PFA (make the PFA online for both student and task parameters)
 (basic version: no domain, repeated answers to single item -> prior knowledge + current knowledge,
@@ -522,6 +578,9 @@ Cons:
 
 TODO: Xu, Y., Mostow J.: Using logistic regression to trace multiple subskills in a dynamic Bayes Net.
 
+TODO: Wang et al. 2013: Dynamic item response theory models
+(combining BN with logistic models)
+
 \subsubsection{AND-OR Bayesian Network}
 
 TODO:
@@ -546,7 +605,7 @@ TODO:
 - BKT = special type of DBN (even HMM at least in the basic form, for single skill):
   for each skill, two hidden states (known/mastered) or not,
   observed: variable: performance
-- assumes: learning (in contrast to basic IRT)
+- assumes: learning (in contrast to basic IRT), discrete knowledge state (eithter known or not known)
 - assumes: on each opportunity to use the skill (e.g. solving a task with the corresponding concept), there is constant probability of learning that skill
 - TODO: add the standard diagram of BKT (possibly for some relevant extension, such as multiple skills?)
 - many extensiosns (...), TODO: describe an extensions relevant for us:
@@ -644,9 +703,10 @@ however, several heuristic approaches have been used
 TODO: clarify terminology:
 - instructional policy (not defined!) vs. tutoring model (same?);
 - outer and inner loop (figure?)
-  (outer loop: "problem selection loop",
-  choosing chunk, choosing a task within a chunk, inner loop: helping a student
-  to solve the task, giving hints, providing feedback).
+  (outer loop: "problem selection loop", "macroadaptivity",
+  choosing chunk, choosing a task within a chunk,
+  inner loop: "microadaptivity", "problem solving and solution analysis tutors"
+  - helping a student to solve the task, giving hints, providing feedback).
   (\cite{its-learner-models}: inner = problem step, outer = problem selection,
   curriculum loop = which chunk)
 
@@ -1064,6 +1124,13 @@ The next two sections present metrics for two most common
   predicted solving times and predicted success.
 % TODO (consider): generalize: any real values (e.g. times)
 %                  vs probabilities (success, too-difficult)
+
+
+TODO: Student models are used for different purposes
+(e.g. inner loop, outer loop (task recommendation) human-in-the-loop (insight),
+open learner visualization, )
+evalution should reflect the intended purpose
+(see \cite{pelanek-learner-modeling}).
 
 \subsection{Metrics for Time Predictions}
 \label{sec:metrics-for-time-predictions}
