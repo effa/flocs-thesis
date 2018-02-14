@@ -1050,6 +1050,10 @@ TODO: evaluating parameters stability (see thran-thesis) - as above just with th
 
 \subsection{Cross Validation}
 
+TODO: consider removing this section and only point to a relevant description
+of CV in the context of student models evaluation, e.g. in \cite{pelanek-learner-modeling}
+(our main scenario/methodology: "online evaluation with generalization to new learners")
+
 Trained models must be evaluated on data unseen during training.
 Straightforward approach is to split collected data into two parts,
   first used for training (\emph{training set})
@@ -1131,6 +1135,15 @@ TODO: Student models are used for different purposes
 open learner visualization, )
 evalution should reflect the intended purpose
 (see \cite{pelanek-learner-modeling}).
+
+NOTE: overview of metrics for student models comparison, e.g. in \cite{pelanek-evaluation-student-models}
+
+TODO: reliability and resolution of predictions (also in \cite{pelanek-evaluation-student-models})
+
+TODO: reliability/stability of parameters
+
+TODO: "plausibility of parameters" \cite{learner-models-integration-skills}
+
 
 \subsection{Metrics for Time Predictions}
 \label{sec:metrics-for-time-predictions}
@@ -1381,10 +1394,13 @@ TODO:
 
 
 
-\subsection{Feedback Loops}
+\subsection{Data Collection}
 
-\emph{TODO}
+TODO: overview of issues e.g. in \cite{pelanek-learner-modeling}
 
+TODO: attrition bias (type of selection bias, can be caused by self-selection)
+
+TODO: Feedback Loops
 % TODO: describe the bias: recommenders -> influence collected data ->
 % evaluation on the data influenced by them; (big issue in recommendation
 % systems in general)
