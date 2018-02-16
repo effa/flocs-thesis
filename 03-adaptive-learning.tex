@@ -141,7 +141,8 @@ REF: source of the division, e.g. \cite{its-learner-models}
 I think there are two more components of ITS:
 \begin{itemize}
 \item \emph{Online analysis/experiment/evaluation/hyperparams training layer/module} -- AB experiments, online hyperparams tuning.
-\item \emph{Offline analysis/evaluation/training} (Human in the loop).
+\item \emph{Offline analysis/evaluation/training} (Human in the loop - but part
+  of the online analysis includes human-in-the-loop as well).
 \end{itemize}
 
 TODO: diagram of the components (+ used data):
@@ -164,90 +165,153 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \label{sec:domain-modeling}
 
 \begin{itemize}
-\item TODO: definition of domain model: (?) set of concept, tasks and relationships between them
-\item TODO: what is domain model for?
-  (1) used in student models (gives a structure for skills and relationships between them),
-  (2) used in tutoring models (e.g. mastery learning - recommednint tasks containing a selected concept until the concept is mastered)
-  (3) used in UI, e.g. grouping tasks into problem sets?)
-\item decisions: which concepts, how granular, what are the relationships between them, which tasks belong to which concepts?
-\item TODO: flat vs. nested concepts (vs. no concept)
-\item TODO: explore \cite{rihak-phd}
-\end{itemize}
-
-TODO: \cite{pelanek-learner-modeling}: data + procedures
-- data: KC structure + item parameters
-- offline procedures: KC structure search -> structure, parameter fitting -> item parameters
-- online procedures: (update equation - not necessarily online), prediction equation
-
-Structure possibilities \cite{student-models-review-2012}:
-- disjoint chunks (1:n chunks:tasks)
-- overlapping chunks (m:n chunks:tasks) (Q-matrix)
-- relationships between chunks:
-  - hieararchy (generalization/specialization (or inclusion) relationship)
-  - prerequisites (and/or)
-
-Overview of possibilities
-(some of them covered in more detail in the following subsections):
-\begin{itemize}
-\item baseline: no concepts / single concept
-\item flat concepts (no relationships between concepts), each task belonging to exactly 1 concept (1:n relationship), i.e. tasks form a disjoint clusters (cluster = concept)
-\item Q-matrix (tasks x concepts): still flat concepts, but m:n relationship between tasks and concepts
-\item (hierarchical clusters)
-\item hierarchical model (hierarchy of concepts + tasks as leaves) (e.g. in MatMat)
-    (special cases: single level = "concept model"; no levels - single concept)
-    (tree vs. DAG, tree -> each  item belongs to single concept + all its parents - not enough for programming domain)
-\item "knowledge space theory" (REF: Spaces for the assessment of knowledge.)
-  - prerequisites between tasks -> DAG of tasks (KSI) (nodes = tasks, edges = prerequisities),
-    can be extended to concepts -> DAG of concepts -> Bayesian network \cite{its-programming}; another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
-    - generally: AND/OR graph, special case is when all nodes are AND
-    (than it is called "Partial Order Knowledge Structure" model)
-\item TODO: general chunk model - DAG with concepts as well as tasks and problem set (nodes = chunk, edge: "inclusion" (? is it same as sort of "soft prerequisity" or are these 2 separate types of edges)
-\item TODO: Umime Programovat: tree of concepts + problem sets (each PS maps to a (single?) concept), items? (?)
-\item TODO: network model (see thran-thesis): only tasks plus relationships between them = similarities
-\item skill-integration nodes (BN with 4 types of nodes: observations, base skills, integration skills and cognitive load node) \cite{learner-models-integration-skills}
-\end{itemize}
-
-NOTE: not only base skills, but also integration skills are important:
-\cite{learner-models-integration-skills}
-
-NOTE: having multiple-skills per item -> "credit assignement problem"
-(which concept caused the poor performance)
-(detail in \cite{pelanek-learner-modeling})
-  - compensatory (additive) model
-  - conjunctive (product) model
-  - log-reg
-  - weakest skill
-  - DINA etc.
--> what makes most sense in our domain?
-
-
-\subsection{Flat Clusters}
-
-\begin{itemize}
-\item tasks form a disjoint clusters (cluster = concept)
-\item each task in exactly one concept
-\item construction: manually vs. automatically
-\item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering) operating on task-features or task-task similarity matrix (REF to our paper about similarity of programming problems)
+\item Domain model is a collection of educational content, covered concepts
+  and relationships between them. (TODO: improve the definition, REF to examples)
+\item Usage:
+\begin{enumerate}
+\item In student models: provides structure for student skills and describes relationships between them, which can be used to predict a performance of student with given skills on given task.
+\item In tutor models, e.g in mastery learning, we can select a task from a practiced concept until the concept is mastered (so we need to know which tasks contain each concept).
+\item In user interface, e.g. grouping tasks into problem sets.
+\item In online/offline analysis (human-in-the-loop) for actionable insight
+    (e.g. we can find that a task behaves very differently than all others in
+    the same problem set, so we will explore the task and find a bug in its setting,
+    such as a missing limit, which makes the task much easier then expected).
+\end{enumerate}
+\item Appropriate model depends on the usage (no single best domain model).
 \end{itemize}
 
 
-\subsection{Q-matrix}
+\subsection{Chunks}  % consider: "Chunks and Relationships", "General Chunk Model"
 
 \begin{itemize}
-\item matrix tasks x concepts
-\item one task -> multiple concepts
-\item hard: 0 and 1s, soft: continuous values (how much is given concept important for given task)
-\item possible interpreation: OR vs AND - whether the student needs to know single/all concepts to solve the task (in reality sth in between, closer to AND?) (terminology: DINO/NINO, DINA/NINA); (? not sure if this is still the domain, or already the student model)
-\item constructing Q-matrix: manually vs. automatically (latent concepts)
-\item human-in-the-loop approach: does existing Q-matrix (possibly created by expert) match collected performance data? what to change for better fit? (small "safe" improvements)
+\item Chunks = all entities in the domain:
+\begin{itemize}
+\item tasks,
+\item other educational content (text, videos, interactive visualizations),
+\item problem sets (group of tasks usually presented in the user interface),
+\item concepts (TODO: describe briefly, e.g. loops),
+\item misconceptions (TODO: describe briefly, e.g. "if-statement is a loop").
+\end{itemize}
+\item Furthermore, relationships between chunks can be me modeled:
+\begin{itemize}
+\item inclusion (e.g. problem set contains tasks, tasks contain concepts (Q: direction?))
+\item generalization (e.g. programming is more general concept than loops),
+\item prerequisiites (e.g. single loops are prerequisity for nested loops).
+\end{itemize}
+\item All of these relationships be either hard (binary) or soft (continuous).
+\item Modeling decisions: which type of chunks, (which parameters of chunks),
+  which relationships, how to set/compute the values (e.g. structure between
+    chunks, values of similarities between tasks).
+\end{itemize}
+
+\subsection{Tasks}
+
+\begin{itemize}
+\item aka problems, items
+\item name, setting, solution
+\end{itemize}
+
+\subsection{Concepts}
+
+\begin{itemize}
+\item TODO: define/REF
+\item aka knowledge components
+\item granularity: while-loop < loops < programming
+\item modeling decisions: which concepts, how granular, what are the
+  relationships between them, which tasks belong to which concepts?
+\end{itemize}
+
+\subsubsection{\textbf{Concept-free Models}}
+\begin{itemize}
+\item all task are assumed to cover a single indivisible concept
+\item oven without concepts, the models can have
+  rich structure (e.g. prerequisities between tasks)
+  and many parameters (e.g. similarities between tasks)
+\item TODO: diagram
+\item REF: usage (most of the existing systems)
+\end{itemize}
+
+\subsubsection{\textbf{Disjoint Concepts}}
+\begin{itemize}
+\item task:concepts 1:m (each task in execatly 1 concept)
+\item concepts are flat clusters of taks
+\item construction: manually vs. automatically (REF: \cite{rihak-phd}, spec.page)
+\item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
+  operating on task-features or task-task similarity matrix
+  (REF: our paper about similarity of programming problems)
+\item TODO: diagram
+\item REF: usage (? ProSo - single concept per problem type, e.g. all tasks in Robotanist are single concept)
 \end{itemize}
 
 
-\subsection{Task Similarities}
+\subsubsection{\textbf{Overlapping Concepts}}
+\begin{itemize}
+\item task:concepts m:n (i.e. each task can contain to multiple concepts)
+\item represenation: bipartite graph between tasks and concepts
+\item another representation: matrix tasks x concepts -> 1 if contained, 0 if not = "Q-matrix"
+\item values: binary (hard containment) / continuous (soft containment --
+  how much is given concept important for given task; concepts are fuzzy sets of tasks)
+\item constructing Q-matrix: manually vs. automatically
+  (disadvantage of automatic approach is that it requires quite lot of data and
+    that the discovered concepts are not-interpretable) (TODO: REF)
+\item human-in-the-loop approach: does existing Q-matrix (possibly created by
+  expert) match collected performance data? what to change for better fit?
+    (small "safe" improvements)
+\item tradeoff between plausibility and complexity:
+  having multiple concepts per tasks introduces "credit assignement problem"
+  = "Which concept is responsible for poor performance?"
+  (details in \cite{pelanek-learner-modeling} + TODO: spec. page)
+%\item TODO: which interpretation makes best sense in our domain?
+%  (compensatory (additive) model, conjunctive (product) model, log-reg,
+%    weakest skill, DINA etc.)
+\item TODO: diagram
+
+\end{itemize}
+
+
+
+
+\subsection{Hierachical models}
 
 \begin{itemize}
-\item TODO: the most relevant results and REF our paper
-\item when using performance data, incorporating 2nd level of similarity (...) helps \cite{rihak-phd}
+\item generalization relationship between concepts
+\item TODO: diagram
+\item REF usage: MatMat (math domain)
+\end{itemize}
+
+
+\subsection{Problem Sets}
+
+\begin{itemize}
+\item aka Task Sets (and we call them "missions" and "mission phases" in RoboMission)
+\item usually corresponds to concepts,
+\item single concept can be practiced by multiple problem sets
+\item usually presented in the UI (so it can be viewed as a part of the UI model instead)
+\item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
+\end{itemize}
+
+
+\subsection{Prerequisities}
+
+\begin{itemize}
+\item another relationship between chunks
+\item semantics: specify chunks that have to mastered prior to mastering given chunk
+\item between concepts / between tasks / both
+\item and / or / both
+\item TODO: diagram
+\item REF usage: KSI (existing systems)
+\end{itemize}
+
+
+\subsection{Similarities}
+
+\begin{itemize}
+\item association relationship between chunks (usually symetric)
+\item between tasks / concepts / cross (ie. all chunks)
+\item TODO: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
+\item TODO: diagram (heatmap of similariities between tasks / concepts
+\item REF: to our research on item similarity in introductory programming
+  (TODO: mention the most relevant results from the paper)
 \end{itemize}
 
 
@@ -506,7 +570,7 @@ not sure how much relevant for us)
 \subsection{Elo}
 \label{sec:elo}
 
-The Elo model \cite{alg.elo}
+The Elo model \cite{alg.elo, irt-elo-math}
   extends the logistic model presented in section \ref{sec:irt}
   to capture changing knowledge.
 Inspired by the rating of chess players \cite{elo-rating},
