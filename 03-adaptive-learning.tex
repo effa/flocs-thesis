@@ -165,8 +165,10 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \label{sec:domain-modeling}
 
 \begin{itemize}
-\item Domain model is a collection of educational content, covered concepts
-  and relationships between them. (TODO: improve the definition, REF to examples)
+\item Domain model is a collection of educational content, covered concepts,
+  relationships between them, and an algorithm to learn
+  parameters of the model from data.
+  (TODO: improve the definition, REF to examples)
 \item Usage:
 \begin{enumerate}
 \item In student models: provides structure for student skills and describes relationships between them, which can be used to predict a performance of student with given skills on given task.
@@ -181,7 +183,7 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \end{itemize}
 
 
-\subsection{Chunks}  % consider: "Chunks and Relationships", "General Chunk Model"
+\subsection{Data}  % consider: "Chunks", "Chunks and Relationships", "General Chunk Model"
 
 \begin{itemize}
 \item Chunks = all entities in the domain:
@@ -192,6 +194,13 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item concepts (TODO: describe briefly, e.g. loops),
 \item misconceptions (TODO: describe briefly, e.g. "if-statement is a loop").
 \end{itemize}
+\item In addition to content attributes (e.g. setting, description),
+    parameters can be associated with chunks, for example:
+\begin{itemize}
+\item median time,
+\item difficulty (?),
+\item mastery threshold.
+\end{itemize}
 \item Furthermore, relationships between chunks can be me modeled:
 \begin{itemize}
 \item inclusion (e.g. problem set contains tasks, tasks contain concepts (Q: direction?))
@@ -201,8 +210,24 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item All of these relationships be either hard (binary) or soft (continuous).
 \item Modeling decisions: which type of chunks, (which parameters of chunks),
   which relationships, how to set/compute the values (e.g. structure between
-    chunks, values of similarities between tasks).
+  chunks, values of similarities between tasks).
 \end{itemize}
+
+\subsection{Learning}
+
+\begin{itemize}
+\item all but the simplest domain models contain some parameters,
+  which can be either set manually or learned from collected data
+\item domain model = data (chunks, parameters, relationships) + the learning algorithm(s)
+  (REF: overview of components in \cite{pelanek-learner-modeling})
+\item what we can learn: parameters (usual), structure = relationships and
+  chunks (less usual, because it requires more data)
+\item can be offline (once enough data is collected, parameters are quite stable)
+\item need to deal with new tasks (set their parameters by an expert or a content-based heuristic)
+\item extension: online update of the parameters (useful if a lot of new tasks
+  are introduced often, which is not our case)
+\end{itemize}
+
 
 \subsection{Tasks}
 
@@ -224,6 +249,7 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \subsubsection{\textbf{Concept-free Models}}
 \begin{itemize}
 \item all task are assumed to cover a single indivisible concept
+\item the simplest domain model = only tasks (no other chunk types) and no relationships
 \item oven without concepts, the models can have
   rich structure (e.g. prerequisities between tasks)
   and many parameters (e.g. similarities between tasks)
@@ -234,7 +260,7 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \subsubsection{\textbf{Disjoint Concepts}}
 \begin{itemize}
 \item task:concepts 1:m (each task in execatly 1 concept)
-\item concepts are flat clusters of taks
+\item aka "concept model", "flat concepts" (concepts are flat clusters of tasks)
 \item construction: manually vs. automatically (REF: \cite{rihak-phd}, spec.page)
 \item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
   operating on task-features or task-task similarity matrix
@@ -274,10 +300,31 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \subsection{Hierachical models}
 
 \begin{itemize}
-\item generalization relationship between concepts
-\item TODO: diagram
+\item in addition to the relationships between tasks and concept,
+  we can also model the relationships between concepts
+\item two commonly modelled relationships are generalization (this section) and
+  prerequisities (next section)
+\item hierarchical model = allow for generalization relationship between concepts
+\item (relationship name: generalization / specialization / inclusion ?)
+\item representation: rooted tree of chunks, inner nodes = concepts, leaves = tasks
+\item extension: DAG instead of tree (TODO: example in diagram)
+\item construction: manually/automatically (hierarchical clustering?)
+\item TODO: 2 diagrams (tree, DAG)
+\item Q: isn't inclusion just a special case of soft prerequisity?
+  (you need to master loops before you master programming (AND-node),
+    you need to master at least one of these tasks to master the loop concept (OR-node))
 \item REF usage: MatMat (math domain)
+\item Experiment showing usefulness of hierarchial model in introductory programming:
+  \cite{learner-models-integration-skills} -- they model domain as BN with 4
+    types of nodes: observations, base concepts, integration concepts (TODO:
+    example), cognitive load node; they show that it's important to have also
+    tasks linked directly to these integration concepts.
 \end{itemize}
+
+
+
+    (tree vs. DAG, tree -> each  item belongs to single concept + all its parents - not enough for programming domain)
+
 
 
 \subsection{Problem Sets}
@@ -288,6 +335,8 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item single concept can be practiced by multiple problem sets
 \item usually presented in the UI (so it can be viewed as a part of the UI model instead)
 \item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
+\item TODO: discuss example of Umime programovat (tree of concepts, problem
+  sets, each PS maps to a (single?) concept; where are items?)
 \end{itemize}
 
 
@@ -295,11 +344,18 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 
 \begin{itemize}
 \item another relationship between chunks
-\item semantics: specify chunks that have to mastered prior to mastering given chunk
+\item semantics: specify chunks that have to mastered prior to mastering given chunk;
+  (TODO: soft version -- leads to Bayesian networks (with special form of CPTs) or not?)
 \item between concepts / between tasks / both
 \item and / or / both
-\item TODO: diagram
-\item REF usage: KSI (existing systems)
+\item representation: AND/OR DAG
+\item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
+\item REF usage:
+  (1) KSI (existing systems) -- and/or prerequisities between tasks;
+  (2) \cite{its-programming} -- soft (continuous) prerequisities (and only?)
+    between concepts interpreted as BN (params computed from historical data);
+  (3) another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
+\item TODO: 2 diagrams (first POKS, second with both AND and OR)
 \end{itemize}
 
 
@@ -308,11 +364,19 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \begin{itemize}
 \item association relationship between chunks (usually symetric)
 \item between tasks / concepts / cross (ie. all chunks)
+\item \emph{network model} only tasks (no other chunk types) and similarities
+  between them (described e.g. in \cite{thran-thesis})
 \item TODO: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
-\item TODO: diagram (heatmap of similariities between tasks / concepts
+\item TODO: diagram (heatmap of similariities between tasks / concepts)
+\item TODO: diagram subset of tasks from RoboMission: graph with edges
+  between the most similar tasks
 \item REF: to our research on item similarity in introductory programming
   (TODO: mention the most relevant results from the paper)
 \end{itemize}
+
+
+
+
 
 
 \section{Student Modeling}
