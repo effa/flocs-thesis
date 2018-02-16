@@ -207,7 +207,7 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item generalization (e.g. programming is more general concept than loops),
 \item prerequisiites (e.g. single loops are prerequisity for nested loops).
 \end{itemize}
-\item All of these relationships be either hard (binary) or soft (continuous).
+\item All of these relationships can be either hard (binary) or soft (continuous).
 \item Modeling decisions: which type of chunks, (which parameters of chunks),
   which relationships, how to set/compute the values (e.g. structure between
   chunks, values of similarities between tasks), (interpretation/semantics?).
@@ -233,7 +233,12 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 
 \begin{itemize}
 \item aka problems, items
-\item name, setting, solution
+\item name, setting, and solution
+\item parameters (features) --
+  computed from setting (e.g. size of the grid),
+  solution (e.g. length of the solution),
+  and performance data (e.g. median time).
+\item TODO: tasks pool visualization (projection) -- add plot
 \end{itemize}
 
 \subsection{Concepts}
@@ -310,9 +315,10 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item extension: DAG instead of tree (TODO: example in diagram)
 \item construction: manually/automatically (hierarchical clustering?)
 \item TODO: 2 diagrams (tree, DAG)
-\item Q: isn't inclusion just a special case of soft prerequisity?
-  (you need to master loops before you master programming (AND-node),
-    you need to master at least one of these tasks to master the loop concept (OR-node))
+\item TODO: discuss relationship between inclusion and prerequisities
+  (Q: isn't inclusion just a special case of soft prerequisity?
+  You need to master loops before you master programming (AND-node),
+  you need to master at least one of these tasks to master the loop concept (OR-node).)
 \item REF usage: MatMat (math domain)
 \item Experiment showing usefulness of hierarchial model in introductory programming:
   \cite{learner-models-integration-skills} -- they model domain as BN with 4
@@ -320,11 +326,6 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
     example), cognitive load node; they show that it's important to have also
     tasks linked directly to these integration concepts.
 \end{itemize}
-
-
-
-    (tree vs. DAG, tree -> each  item belongs to single concept + all its parents - not enough for programming domain)
-
 
 
 \subsection{Problem Sets}
@@ -364,10 +365,10 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \begin{itemize}
 \item association relationship between chunks (usually symetric)
 \item between tasks / concepts / cross (ie. all chunks)
-\item \emph{network model} only tasks (no other chunk types) and similarities
-  between them (described e.g. in \cite{thran-thesis})
+\item \emph{network model} -- only tasks (no other chunk types) and similarities
+  between them (described e.g. in \cite{rihak-phd})
 \item TODO: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
-\item TODO: diagram (heatmap of similariities between tasks / concepts)
+\item TODO: diagram (heatmap of similarities between tasks / concepts)
 \item TODO: diagram subset of tasks from RoboMission: graph with edges
   between the most similar tasks
 \item REF: to our research on item similarity in introductory programming
