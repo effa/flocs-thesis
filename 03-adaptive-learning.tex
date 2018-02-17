@@ -179,7 +179,11 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
     the same problem set, so we will explore the task and find a bug in its setting,
     such as a missing limit, which makes the task much easier then expected).
 \end{enumerate}
-\item Appropriate model depends on the usage (no single best domain model).
+\item Appropriate model depends on the usage (no single best domain model),
+  so it may be useful to have multiple domain models inside a single system
+  (but the cost of creating and maintaining multiple domain models is a consideration).
+\item Comrehensive overview of domain modeling approaches e.g. in \cite{its-domain-models}
+  (here we focus specifically on the domain of introductory programming).
 \end{itemize}
 
 
@@ -206,12 +210,19 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item inclusion (e.g. problem set contains tasks, tasks contain concepts (Q: direction?))
 \item generalization (e.g. programming is more general concept than loops),
 \item prerequisiites (e.g. single loops are prerequisity for nested loops).
+\item TODO: Q: what is the interpretation of the edges in BN
+  (vaguely it's something like "influence", or "directly depend on";
+   missing edges encodes conditional independence (given the parents))
 \end{itemize}
 \item All of these relationships can be either hard (binary) or soft (continuous).
 \item Modeling decisions: which type of chunks, (which parameters of chunks),
   which relationships, how to set/compute the values (e.g. structure between
   chunks, values of similarities between tasks), (interpretation/semantics?).
 \end{itemize}
+
+TODO: nonbinary relationships? needed for example to express CPTs in unconstrained BN
+
+TODO: ontologies (knowledge representation field), Bayes Nets
 
 \subsection{Learning}
 
@@ -256,7 +267,8 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item all task are assumed to cover a single indivisible concept
 \item the simplest domain model = only tasks (no other chunk types) and no relationships
 \item oven without concepts, the models can have
-  rich structure (e.g. prerequisities between tasks)
+  rich structure (e.g. prerequisities between tasks,
+    see right figure \ref{fig:chunks-prerequisities})
   and many parameters (e.g. similarities between tasks)
 \item TODO: diagram
 \item REF: usage (most of the existing systems)
@@ -264,19 +276,34 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 
 \subsubsection{\textbf{Disjoint Concepts}}
 \begin{itemize}
+\item (motivation) The assumption of a single concept for all tasks is
+  reasonable for many logic puzzles (e.g. sudoku), but not in programming.
+  For example, it is possible to master loops while struggling with functions,
+  and vice versa.
 \item task:concepts 1:m (each task in execatly 1 concept)
 \item aka "concept model", "flat concepts" (concepts are flat clusters of tasks)
-\item construction: manually vs. automatically (REF: \cite{rihak-phd}, spec.page)
+\item Concepts can be either defined manually or detected automatically
+  (REF: \cite{niznan-thesis, rihak-phd}, spec.pages)
 \item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
   operating on task-features or task-task similarity matrix
   (REF: our paper about similarity of programming problems)
-\item TODO: diagram
+\item Manually selected concepts, such as loops and conditional commands,
+  have the advantage of being interpretable,
+  so they can be used for skills visualizations in the user interface
+  to provide students with the information about their learning progress.
+  Furthermore, no data needs to be collected in advance,
+  while the automatic techniques require a lot of data to provide stable results.
+  (TODO: specify "a lot of" + REF).
+\item example in figure \ref{fig:concepts-disjoint-overlapping} (left)
 \item REF: usage (? ProSo - single concept per problem type, e.g. all tasks in Robotanist are single concept)
 \end{itemize}
 
+\imgW{concepts-disjoint-overlapping}{Comparison of disjoint and overlapping concepts.}
 
 \subsubsection{\textbf{Overlapping Concepts}}
 \begin{itemize}
+\item (motivation) Single programming task may require multiple skills
+  at once, e.g. both loops and conditional commands (REF to figure with such task).
 \item task:concepts m:n (i.e. each task can contain to multiple concepts)
 \item represenation: bipartite graph between tasks and concepts
 \item another representation: matrix tasks x concepts -> 1 if contained, 0 if not = "Q-matrix"
@@ -295,10 +322,9 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 %\item TODO: which interpretation makes best sense in our domain?
 %  (compensatory (additive) model, conjunctive (product) model, log-reg,
 %    weakest skill, DINA etc.)
-\item TODO: diagram
+\item example in figure \ref{fig:concepts-disjoint-overlapping} (right)
 
 \end{itemize}
-
 
 
 
@@ -312,14 +338,16 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item hierarchical model = allow for generalization relationship between concepts
 \item (relationship name: generalization / specialization / inclusion ?)
 \item representation: rooted tree of chunks, inner nodes = concepts, leaves = tasks
-\item extension: DAG instead of tree (TODO: example in diagram)
+\item extension: DAG instead of tree
+  (comparision tree vs DAG in figure \ref{fig:concepts-hierarchical})
 \item construction: manually/automatically (hierarchical clustering?)
-\item TODO: 2 diagrams (tree, DAG)
 \item TODO: discuss relationship between inclusion and prerequisities
   (Q: isn't inclusion just a special case of soft prerequisity?
   You need to master loops before you master programming (AND-node),
   you need to master at least one of these tasks to master the loop concept (OR-node).)
 \item REF usage: MatMat (math domain)
+\item tasks in leaves only / in all nodes (different semantics of inner nodes:
+  "composition of independent concepts" vs "integration concepts"
 \item Experiment showing usefulness of hierarchial model in introductory programming:
   \cite{learner-models-integration-skills} -- they model domain as BN with 4
     types of nodes: observations, base concepts, integration concepts (TODO:
@@ -327,6 +355,7 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
     tasks linked directly to these integration concepts.
 \end{itemize}
 
+\imgW{concepts-hierarchical}{Hierarchial concepts -- tree (left), DAG (right).}
 
 \subsection{Problem Sets}
 
@@ -334,6 +363,7 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item aka Task Sets (and we call them "missions" and "mission phases" in RoboMission)
 \item usually corresponds to concepts,
 \item single concept can be practiced by multiple problem sets
+  (e.g. loops in robot on grid and in turtle graphics)
 \item usually presented in the UI (so it can be viewed as a part of the UI model instead)
 \item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
 \item TODO: discuss example of Umime programovat (tree of concepts, problem
@@ -347,17 +377,23 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item another relationship between chunks
 \item semantics: specify chunks that have to mastered prior to mastering given chunk;
   (TODO: soft version -- leads to Bayesian networks (with special form of CPTs) or not?)
+\item For example, nested loops cannot be mastered without mastering simple loops.
 \item between concepts / between tasks / both
-\item and / or / both
-\item representation: AND/OR DAG
+\item and / or / both (example in figure \ref{fig:chunks-prerequisities})
+\item representation: AND/OR directed acyclic graph DAG
 \item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
 \item REF usage:
   (1) KSI (existing systems) -- and/or prerequisities between tasks;
   (2) \cite{its-programming} -- soft (continuous) prerequisities (and only?)
     between concepts interpreted as BN (params computed from historical data);
   (3) another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
-\item TODO: 2 diagrams (first POKS, second with both AND and OR)
 \end{itemize}
+
+
+\imgW{chunks-prerequisites}{%
+  Left: prerequisites between first-order concepts (AND);
+  right: prerequisites between tasks (AND-OR).}
+
 
 
 \subsection{Similarities}
@@ -372,7 +408,8 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 \item TODO: diagram subset of tasks from RoboMission: graph with edges
   between the most similar tasks
 \item REF: to our research on item similarity in introductory programming
-  (TODO: mention the most relevant results from the paper)
+  (TODO: mention the most relevant results from the paper:
+   which data to use -- important, which metric -- less important; recommended transformations)
 \end{itemize}
 
 
@@ -485,6 +522,15 @@ TODO: \cite{student-models-review-2012}:
 
 Our focus is on the outer-loop as the inner-loop is better suited for people (instructors)
 (REF: Essa, 2016: A possible future for next generation adaptive learning systems.)
+
+NOTE on multiple skills:
+Although modeling multiple skills seems useful,
+  there is a trade-off between the complexity of the model (number of skills)
+  and how well (or how fast) the parameters can be estimated.
+More parameters require more data and time for the estimates to converge.
+(and this is especially concern for students, because predictions are needed
+immediately for new students (=no/little data) + students' skills are
+assumed to change (tasks didn't have these problems).
 
 \subsection{Data}
 \label{sec:student-modeling.data}
@@ -671,7 +717,7 @@ NOTE: Elo variant for hieararchical model:
 \label{sec:bkt}
 
 - BN:
-  - underlaying domain model: BN of concepts and tasks:
+  - underlaying domain model: BN (prereq DAG?) of concepts and tasks:
   - hidden nodes = skills of concepts (and misconceptions)
   - observed nodes = performance on tasks
   - edges = conditional probabilities of mastering given skill given that the
@@ -681,6 +727,7 @@ NOTE: Elo variant for hieararchical model:
   - student model adds the oberserved performances and uses the Bayesian inference to
   predict performance of new tasks (? or is there a way to do equivalent online update
   and store the skills, so that no inference is needed (space-time tradeoff)
+  - example: \cite{its-programming}.
 
 - ? possibility to construct the BN from the observables (tasks) only -> makes the estimation
   more feasible as there are less hidden variables (it can be even constructed dynamically
@@ -744,57 +791,6 @@ TODO:
 
 TODO: BKT with time: Leveraging first response time into the knowledge tracing model.
 
-\subsection{Concepts}
-
-% TODO: consider to move this section before the description of individual
-% models
-% TODO: fix and mention used terminology: concept vs. skill
-
-A vast amount of research in the field of adaptive learning
-  restricts its attention to a one-dimensional skill.
-This assumption is reasonable for many logic puzzles (e.g. sudoku);
-however, solving programming tasks requires multiple diverse skills,
-  such as loops, conditional commands, or functions.
-It is possible to master loops while struggling with functions,
-  and vice versa.
-
-As mentioned in sections \ref{sec:irt} and \ref{sec:elo},
-  both the IRT and Elo models can be extended to work with multidimensional skills.
-% TODO: However, the way they compose multiple skills into a single prediction
-% is not completely justified / can differ depending on domain/skills (e.g.
-% adding skills vs taking best/worse)
-Although modeling multiple skills seems useful,
-  there is a trade-off between the complexity of the model (number of skills)
-  and how well (or how fast) the parameters can be estimated.
-More parameters require more data and time for the estimates to converge.
-% TODO: which is especially concern for students; 1. predictions needed
-% immediately for new students (no/little data), 2. students' skills are
-% assumed to change (tasks didn't have these problems)
-
-
-% \subsection{Learning Concepts from Data}
-
-Concepts can be either defined manually or detected automatically
-  \cite{niznan-thesis}.  % TODO: specify chapter/pages
-Manually selected concepts, such as loops and conditional commands,
-  have the advantage of being interpretable,
-  so they can be used for skills visualizations in the user interface
-  to provide students with the information about their learning progress.
-Furthermore, no data needs to be collected in advance,
-  while the automatic techniques require a lot of data to provide stable results.  % TODO: how much?
-
-
-% \subsection{Prerequisites}
-Undoubtedly, there are some relationships between skills;
-  for example, nested loops cannot be mastered without mastering simple loops.
-The hierarchical structure between concepts can be modeled
-  as a directed acyclic graph (DAG),
-  where each vertex is a concept and each edge represents a prerequisite.
-Having DAG of concepts then allows to model students using Bayes networks
-  \cite{its-programming}.
-
-% TODO: simple diagram: DAG of concepts example
-
 
 \section{Tutor Models}
 
@@ -813,7 +809,7 @@ Having DAG of concepts then allows to model students using Bayes networks
 - hierarchical tutor: using different student models for different loops
   (inner, outer curriculum)
 
-\section{Task Recommendation}
+\subsection{Task Recommendation}
 \label{sec:task-recommendation}
 
 Student models are used by an \emph{instructional policy} to recommend
@@ -864,7 +860,7 @@ The system can be more strict and show only a single recommended task,
 
 % TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
 
-\section{Mastery Learning}
+\subsection{Mastery Learning}
 \label{sec:mastery-learning}
 
 \emph{TODO:\\describe mastery learning + usage of student models%
@@ -911,7 +907,7 @@ improvement \cite{alg.mastery}
 
 % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
 
-\section{Adaptive Scaffolding}
+\subsection{Adaptive Scaffolding}
 
 TODO: terminology:
   scaffolding (broader term, not necesarily just-in-time or automatic),
