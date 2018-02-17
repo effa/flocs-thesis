@@ -268,7 +268,7 @@ TODO: ontologies (knowledge representation field), Bayes Nets
 \item the simplest domain model = only tasks (no other chunk types) and no relationships
 \item oven without concepts, the models can have
   rich structure (e.g. prerequisities between tasks,
-    see right figure \ref{fig:chunks-prerequisities})
+    see right figure \ref{fig:chunks-prerequisites})
   and many parameters (e.g. similarities between tasks)
 \item TODO: diagram
 \item REF: usage (most of the existing systems)
@@ -379,7 +379,7 @@ TODO: ontologies (knowledge representation field), Bayes Nets
   (TODO: soft version -- leads to Bayesian networks (with special form of CPTs) or not?)
 \item For example, nested loops cannot be mastered without mastering simple loops.
 \item between concepts / between tasks / both
-\item and / or / both (example in figure \ref{fig:chunks-prerequisities})
+\item and / or / both (example in figure \ref{fig:chunks-prerequisites})
 \item representation: AND/OR directed acyclic graph DAG
 \item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
 \item REF usage:
@@ -404,15 +404,24 @@ TODO: ontologies (knowledge representation field), Bayes Nets
 \item \emph{network model} -- only tasks (no other chunk types) and similarities
   between them (described e.g. in \cite{rihak-phd})
 \item TODO: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
-\item TODO: diagram (heatmap of similarities between tasks / concepts)
-\item TODO: diagram subset of tasks from RoboMission: graph with edges
-  between the most similar tasks
+\item Example: similarity matrix (heatmap, clustermap) between tasks
+  (and corresponding similarity graph) in figure \ref{fig:similarities-tasks}.
 \item REF: to our research on item similarity in introductory programming
   (TODO: mention the most relevant results from the paper:
    which data to use -- important, which metric -- less important; recommended transformations)
 \end{itemize}
 
-
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics[width=0.48\textwidth]{img/similarities-tasks}
+  \includegraphics[width=0.48\textwidth]{img/similarities-graph}
+\end{center}
+\caption{%
+  Left: Similarity matrix between tasks (TODO: how computed);
+  right: Similarity graph with edges between tasks with high similarity.
+  TODO: make it readable}
+\label{fig:similarities-tasks}
+\end{figure}
 
 
 
