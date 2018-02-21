@@ -1,0 +1,364 @@
+NOTE: hidden variables (hidden state) (knowledge and skills, possibly also affect, motivation)
+vs. observable variables (correctness, solving time, time series of program snapshots)
+
+NOTE: different models for different tutors,
+here we will focus on models that can be used for mastery learning and task recommendation.
+
+TODO: what is a student model formally?
+prediction fn (student, task, domain, context, hyperparameters?) -> response of the student to the task in the context (for us, the response is mainly performance measured e.g. by solving time, but it can also include change in motivation etc.),
+together with update rule (reducer fn): interaction -> student,
+where interaction is 5-tuple (student, task, domain, context, performance)
+(NOTE: not only for prediction for a performance on a task, also for
+visualization skills in UI, providing feedback for teacher, etc.);
+OR "offline student model": (domain model, complete history of the learner) -> prediction about the future behavior (vs. "online student model" with the update rule, more useful in our setting)
+- performance: continuous (our convention 0-1) + discretization -> binary
+success vs. failure (often used in other domains where the failure is
+straightforward e.g. a multiple-choice questions), for use 3 categories (poor/good/great)
+(too difficult / just right / too easy) seems often more useful (we want to recommend tasks
+that are in the middle category)
+(from the "success" view, this discretization is a multivalue logic with 3 values)
+
+TODO: view from \cite{pelanek-learner-modeling}: data + procedures
+- data: hyper parameters, population parameters, student skills
+- offline procedures: parameter fitting -> metaparameters, population parameters
+- online procedures: update equation, prediction equation
+
+TODO: Student models vs. Domain models: (?) student models use domain as a
+structure, assigning some parameters (e.g. skills estimate, uncertainty, or even
+the full distribution of the estimate) to (some) "knowledge components" in the structure
+- student models must by dynamic ("online") (i.e. parameters computed on the fly),
+domain models can be possibly static (i.e. task and concept parameters can be computed offline),
+example (from \cite{its-programming}): domain model is DAG of concepts together with a
+Bayesian network over this DAG, ie. assignment of conditional probabilities to the edges;
+student model: assignment from each concept to the knowledge (known / unknown / not-sure) -> knowlege for any concept can be then inferred using the Bayesian network
+(? the Bayesian network is in this case same for all students, but does it make it part of the domain?)
+- terminology:
+  - concepts and tasks lives in the domain model and they can have corresponding
+  concept skills and task performances in the student model
+- view from \cite{its-learner-models}: domain model - state space, student model - state within the state spce
+- domain model: offline (often), student model: online (necessarily)
+
+
+
+NOTE: categorization:
+1. according to the underlaying domain model (-> single/multiskill, skills relationships etc.)
+2. single point estimate / full distribution / sth. in between (e.g. mean and deviation=uncertainty)
+3. online vs. offline (we need online)
+4. according to the assumption about learning/not learning (we need to model learning)
+5. (granularity? prediciting performance on concepts/tasks or even individual actions/ruleshigh-level skill tracing vs. fine-grained
+6.,7. complexity; assumptions about learning \cite{pelanek-learner-modeling}
+8. skill as discrete (BKT) or continuous (logistic models)
+
+
+
+
+NOTE: modelling time vs. correctness/success
+- time: log time (REF)
+- corretness:
+  - pure solved/not-solved (to coarse and no useful data - most students solve most tasks and if not, it is often because of reasons other than skill, e.g they need to finish the practice)
+  - continuous partial credit - use response time (or even more detailed information about the task session) to map the performance to a correctness scale from 0 to 1 (see thran-thesis, p.106 for overview of tried mappings, e.g. expTime, thresholdTime, etc., but note that in MatMat they need to combine the time and corretness and this mapping is only done for correct answers),
+  - discretized partial credit - (binary classification or 3 or 4 categories, e.g "poor", "good", "excellent" corresponding roughly to the 3-level flow classification: too difficult, just right, too easy)
+
+NOTE: incorporating labor intensity of the item (e.g. into IRT, see thran-thesis, p.101)
+
+
+NOTE: models without hidden states, e.g. based only and directly on observed performances
+  (see knowledge space theory; relevant underlying domain model is AND/OR graph between
+  tasks; using Markov chain for predicting student state)
+
+NOTE: matrix-factorization approaches (e.g. Thai-Nghe et al. (2011))
+
+
+TODO: \cite{student-models-review-2012}:
+(for inner loop: cognitive tutors and constraint based models)
+- cognitive tutors - skills as rules,
+  mastered skill: rule correctly applied (multiple-times),
+  allows for modeling misconceptions ("MISconcepts") (incorrect rules)
+    -> useful for automatic hint generation ("just-in-time feedback"),
+  example: the Lisp Tutor
+- (and contstraint based modeling - skills as predicates)
+- doesn't require long-term student model, can be just for the current topic;
+  however, the transfer of skill estimates between topics can help,
+  because 1 skill is often required in multiple topic
+  - this is known as (\emph{transfer model} or) \emph{knowledge tracing}
+  (and I think that it is the same thing which we call "prior knowledge estimation")
+  (but in our context, \emph{skill tracing} would be better name)
+
+Our focus is on the outer-loop as the inner-loop is better suited for people (instructors)
+(REF: Essa, 2016: A possible future for next generation adaptive learning systems.)
+
+NOTE on multiple skills:
+Although modeling multiple skills seems useful,
+  there is a trade-off between the complexity of the model (number of skills)
+  and how well (or how fast) the parameters can be estimated.
+More parameters require more data and time for the estimates to converge.
+(and this is especially concern for students, because predictions are needed
+immediately for new students (=no/little data) + students' skills are
+assumed to change (tasks didn't have these problems).
++ NOTE on credit assignment problem:
+- interesting idea is not to update the skills directly after a failure on a single task,
+ but first diagnose the issue - give the student tasks with only a subset of concepts,
+ to find the problematic concept for which the skill should be decreased
+\cite{assistment-trasfer-models}
+
+
+\subsection{Data}
+\label{sec:student-modeling.data}
+
+To learn model parameters, such as difficulty of individual tasks, some data is needed.
+What data and how much data is needed differs across models.
+Some data about tasks are independent of students;
+therefore, they can be obtained in advance,
+which can be useful for initial task difficulties estimates.
+Three types of task data are distinguished:
+
+\begin{itemize}
+  \item task statement (including name and world description),
+  \item sample solution (or multiple solutions),
+  \item expert labels (e.g. covered concepts).
+\end{itemize}
+
+Task statements are always available,
+  because they are needed to present tasks to students.
+However, obtaining sample solutions and expert labels
+  incurs additional costs for a new system.
+% TODO: Note that quite often, systems needs sample solutions and some labels
+%       for the presentation purposes anyway.
+Moreover, they can be noisy and imperfect.
+For example, an annotator can forget to include some labels
+  or even make a mistake in the sample solution.
+
+Once the task is deployed in the running system,
+  rich data can be collected from each interaction between a student and a task:
+\begin{itemize}
+  \item whether the task was eventually solved,
+  \item solving time,
+  \item number of clicks, number of code executions,
+  \item program snapshots (e.g. after each code change),
+  \item rating or labels provided by the student (e.g. perceived difficulty).
+\end{itemize}
+
+% TODO: also consider to include hints in the list
+% TODO: mention different granularity levels for taking program snapshots (+cite)
+
+\subsection{Item Response Theory}
+\label{sec:irt}
+
+The simplest version of item \emph{item response theory} (IRT)
+  \cite{irt-visual-guide}
+  models each student by a one-dimension skill $s$,
+  and each task by a one-dimension difficulty $d$.
+(NOTE: this special version is also known as one-parameter logistic model -- 1PL, or as Rasch model, ?, REF)
+
+IRT assumes that the probability of a student with skill $s$
+  successfully solving a task with difficulty $d$
+  is given by the following function:
+  \begin{equation}\label{eq:logistic}
+  P(s, d) = \frac{1}{1 + e^{-(s - d)}}
+  \end{equation}
+
+% TODO: mention 2-parameter model (explain discrimination parameter)
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[domain=-2:4, smooth, samples=20, scale=1]
+  \draw [thick, ->] (-2,0) -- (4,0) node [below right] {$s$};
+  \draw [thick, ->] (0,0) -- (0,2.5) node [left] {$P(s,d)$};
+  \draw [thick] (-0.1,1) node [left] {$0.5$} -- (0.1,1);
+  \draw [thick] (-0.1,2) node [left] {$1$} -- (0.1,2);
+  \draw [thin, dashed] (0,2) -- (4,2);
+  \draw [thin, dashed] (0,1) -- (1,1) -- (1, 0);
+  \draw [thin, dashed] (-0.57,2) -- (-2,2);
+  \draw [thick] (1,0.1) -- (1,-0.1) node [below] {$d$};
+  \draw [very thick] plot (\x, {2 / (1 + exp(1 - \x))});
+  \end{tikzpicture}
+  \caption{One-parameter Unidimensional Logistic Model}
+  \label{fig:logistic-model}
+\end{figure}
+
+NOTE: additional parameters: discrimination (how much is the performance sensitive to the skill), pseudo-guessing (the minimum probability of success, useful mainly for multple-choice questions, probably not very useful for us)
+
+This basic model was originally developed for a simple knowledge testing
+  and therefore it assumes a single constant skill.
+However, programming skill is multidimensional;
+  for example, one student can be proficient with functions and struggle with loops,
+  while another student can master loops and struggle with functions.
+Furthermore, these skills should be ideally changing significantly during
+  the interaction with the system, because students are learning.
+
+NOTE: multidimension extension: x = skill vector * discrimination vector - task bias
+(this is basically what we tried in the first prototype, with fixed discrimination vector,
+although we formulated it in the online "ELO" variant)
+(REF?:The difficulty of test items that measure more than one ability.,
+Using multidimensional item response theory to understand what items and tests are measuring.)
+
+Another drawback of the IRT is that it only uses
+  the binary data about successes and failures.
+As nearly all interactions in programming learning systems end with a solved task,
+  it would be more useful to work with solving times,
+  which can provide more information about students' skills.
+
+Item response theory can be extended to overcome these limitations.
+\emph{Problem Response Theory} (PRT)
+\cite{alg.problem-response-theory, pelanek-student-modeling-times}
+% TODO: only cite the more relevant paper (or extend this section and cite both
+% on relevant places)
+predicts problem solving times instead of probability of success,
+assuming an exponential relationship between a problem solving skill
+and the time to solve a problem.
+PRT can be formulated to use multidimensional skills.
+The model parameters (skills and difficulties) can can be estimated from the data
+  using one of the \emph{maximum likelihood estimation} algorithms.
+  % TODO: cite paper describing the parameters estimation (or MLE?)
+% (for IRT, it's \cite{irt-theory-and-practice}, but PRT would be better)
+
+- underlying domain model:
+  - single concept / flat concepts -> classical IRT
+  - Q-matrix -> multidimensional version (see thran-thesis)
+  - hierachical structure of concepts ? (see Millán and Pérez-de-la-Cruz (2002))
+
+% TODO: find and provide the details about the learning extension of PRT
+% (isn't it already the elo?)
+
+% TODO: Add note that the assumption of exponential relationship is justified
+% by observed solving solving times distribution and it is also intuitively
+  % plausible - multiplicative nature of solving times.
+
+NOTE: Main problem - without learning; in principle can recompute parameters after
+each interaction, but that is not feasible in online learning systems; remedy: PFA (student-related parameters can be computed online,), Elo models (both student and task-related parameters can are computed online)
+
+NOTE: IRT is a speical case of Naive Bayes, which is itself a special case of BN model:
+  - Naive Bayes = all task performances are independent given the hidden latent skill
+  - furthermore, the conditional probabilities P(performance on task t | skill
+  theta) cannot be arbitratry, they must have a logistic distribution
+
+NOTE: modeling response times (nice summary in thran-thesis)
+- log-time from normaln distribution with mean d - a * theta (and variance c),
+  ie. assumption is exponential relationship between the solving time and the skill?
+  (this statement is not clear, because it depend on what you denote as skill,
+  e.g. if you say that skill is exp(theta), than the relationship is linear...)
+- incorporating multidimensionnal skills (flat concepts model): d, a vectors; update skill of each concpet contained in the task
+
+
+NOTE: PFA - logistic model with learning (logistic fn, set of skills for each concept, initial skills, constant incread after a correct answer; total skill = sum of skills of concepts contained in the task, squashed byt the logistic fn)
+REF: Pavlik 2009: Performance factors analysis—a new alternative to knowledge tracing.
+
+NOTE: PFAE - combines Elo with PFA (make the PFA online for both student and task parameters)
+(basic version: no domain, repeated answers to single item -> prior knowledge + current knowledge,
+not sure how much relevant for us)
+
+
+
+\subsection{Elo}
+\label{sec:elo}
+
+The Elo model \cite{alg.elo, irt-elo-math}
+  extends the logistic model presented in section \ref{sec:irt}
+  to capture changing knowledge.
+Inspired by the rating of chess players \cite{elo-rating},
+  the model interprets each attempt  to solve a task
+  as a ``match'' between the student and the task.
+After this match ends, skill and difficulty estimates are revised.
+
+If the student solves the task faster than expected by the model,
+  their skill is increased and the difficulty estimate of the solved task is decreased.
+On the contrary, if the student fails to solve the task or if takes them too long,
+  their skill is decreased and the difficulty estimate of this task is increased.
+
+% TODO: formulas (for time-variant of elo)
+% TODO: mention differnet updates for tasks (exponentially decayed) and
+% students (their skill is assumed to change and not converge)
+
+The main advantage of using the Elo model is its simplicity, flexibility,
+  good performance and intrinsic online nature, which allows for immediate
+  updates of parameters as students are interacting with the system.
+
+
+NOTE: Elo variant based on network model: each time a task is solved, update skill for all tasks according to the similarity to the one solved (this can be propably also done on the level of concpets, if we have a similarity network between concepts)
+
+NOTE: Elo variant for concept model ("simple hierarchical model" from thran-thesis),
+as basic Elo but the total skill is the sum of the global skill and concept skill
+(updating both the same way)
+
+NOTE: Elo variant for hieararchical model:
+- predictions: total skill = sum all ancestors skills
+- update: all ancestors sequentialy (from the top-most), elo-like update
+
+\subsection{Bayesian Knowledge Tracing (BKT) / Bayesian Networks}
+\label{sec:bkt}
+
+- BN:
+  - underlaying domain model: BN (prereq DAG?) of concepts and tasks:
+  - hidden nodes = skills of concepts (and misconceptions)
+  - observed nodes = performance on tasks
+  - edges = conditional probabilities of mastering given skill given that the
+  parent skill is mastered; or that a task will be solved with given level of performance
+  (skills are usually modeled as continous number, so this conditional probability requires
+  either discretization or using/assuming? normal distribution for the skill estimate)
+  - student model adds the oberserved performances and uses the Bayesian inference to
+  predict performance of new tasks (? or is there a way to do equivalent online update
+  and store the skills, so that no inference is needed (space-time tradeoff)
+  - example: \cite{its-programming}.
+
+- ? possibility to construct the BN from the observables (tasks) only -> makes the estimation
+  more feasible as there are less hidden variables (it can be even constructed dynamically
+  in each situation only from already solved tasks, so that all variables are either
+  observed or query, no hidden ones)
+
+- TODO: figure: note that BN encodes conditional independencies between concepts,
+  so e.g. there must be "horizontal edges" between phases of a mission,
+  because a phases are not independent given a mission skill;
+  (the figure should include not only problem set chunks, but also an example
+  of a cross-concept, e.g. loops, and possibly game concept, e.g. wormholes)
+
+Pros:
+- rich model
+- intuitive graphical representation
+- mathematical derivation for the inference
+
+Cons:
+- requries to set the domain structure by the expert (there are some mothods for finding the structure, but that requires a lot of data)
+- requires a lot of data to reliably estimate the conditional probabilities
+- ? exact inference probably not possible (big network + continous distributions),
+  so it requires approximate inference (? sampling techniques)
+  vs. online tracking of skills (online update)
+
+TODO: Xu, Y., Mostow J.: Using logistic regression to trace multiple subskills in a dynamic Bayes Net. (LR-DBN) \cite{bn-logreg}
+
+TODO: Wang et al. 2013: Dynamic item response theory models
+(combining BN with logistic models)
+
+\subsubsection{AND-OR Bayesian Network}
+
+TODO:
+- based on \cite{student-models-review-2012} (section 5.1.2)
+- move relevant part to domain models section and ref it
+- what it is: assumption on the conditional probabilities to make the inference feasible?
+- two type of nodes: Leaky-OR, Noisy-AND:
+  - OR: single mastered parent concept is enough to master the child chunk (task/concept)
+  - AND: all parents need to be mastered to master the child chunk
+  (? orientation of edges in this context is not clear to me: in our hierearchy,
+  I think it make sense to have parents depend on children, e.g. mission on
+  phases (AND), phases on tasks (OR))
+- ? at least in the basic formulation, having multiple parents for the OR node doesn't help
+  at all, same for having all but 1 parents of AND node mastered, that seems too limiting...
+- related terms: NIDA/DINA, NIDO/DINO models
+
+
+\subsubsection{BKT}
+
+- Dynamic Bayesian Network - Bayesian network with time (each variable also
+  depend on itself in previous timestep (genearization of HMM)
+- BKT = special type of DBN (even HMM at least in the basic form, for single skill):
+  for each skill, two hidden states (known/mastered) or not,
+  observed: variable: performance
+- assumes: learning (in contrast to basic IRT), discrete knowledge state (eithter known or not known)
+- assumes: on each opportunity to use the skill (e.g. solving a task with the corresponding concept), there is constant probability of learning that skill
+- TODO: add the standard diagram of BKT (possibly for some relevant extension, such as multiple skills?)
+- many extensiosns (...), TODO: describe an extensions relevant for us:
+1. hiearchical model of skills (as used in the current domain model)
+2. DAG of concepts, DAG of tasks with imposed Bayesian network
+- TODO: parameters estimation (both the "domain parameters" and "student parameters")
+
+TODO: BKT with time: Leveraging first response time into the knowledge tracing model.
+
+
