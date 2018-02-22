@@ -561,30 +561,37 @@ Learning:
 \label{sec:student-modeling}
 
 \begin{itemize}
-\item What it is:
+\item Student model represents/captures
   state of the student (e.g. her skills)
   estimated from her past performance
-  used to predict her future performance
+  used to predict her future performance. (simplified)
 
 \item Usage:
   \begin{itemize}
-  \item In tutor models: detecting mastery (skill is high enough),
-    task/PS recommendation (predicted performance is neither too low, nor too high,
-    suggesting that the task is of optimal difficulty).
-  \item In UI: showing feedback for the student.
-  \item For online evaluation (insight for developers) (TODO: example).
-  \item For offline evaluation (insigth by researchers and programming teachers).
+  \item In tutor models: (e.g.)
+    recommending task of the optimal difficulty for given student,
+    detecting mastery (skill of given concepts is above a threshold),
+    showing hints when a student is digressing from the path towards a solution.
+  \item In UI: showing feedback for the student
+        (visualization of her skills -- "open learner model").
+  \item For online evaluation -- insight for developers (TODO: example).
+  \item For offline evaluation -- insigth by researchers and programming teachers
   (TODO: example).
   \end{itemize}
-
-\item comprehensive overviews of student modeling in general:
+\item No single best student model -- depends on its usage, and also on the
+  type and amount of data we have.
+\item Comprehensive overviews of student modeling:
   \cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}
-  (in this section we describe only the ones most relevant for the domain
-    of introductory programming)
-
-\item We restrict our focus to modeling skills of the student.
-  However, broade student models may also include affect (e.g. frustration,
+  In this section, we describe only the models most relevant for the domain
+  of introductory programming.
+  We further restrict our focus to modeling skills of the student.
+  Broader student models may also include affect (e.g. frustration,
   boredom), motivation, and metacognition (knowledge about their knowledge) (REF).
+  We also restrict our attention to the models that describes a state of student
+  between two task sessions (REF: KLI framework?), as these can be used for task
+  reccomendation and mastery detection.
+  Other models exist that describes state of the student solving a particular
+  task (REF: rule-based models, constraint based models).
 \end{itemize}
 
 \subsection{Performance}
@@ -593,18 +600,27 @@ Learning:
 \item Observed data from a task session:
   solved/not, solving time, number of code executions, number of edits,
   or even the individual edits.
-\item We first compress these data into a discrete
-  performance measure $p_{ij} \in \{-1, 0, 1\}$, where
+\item We first compress these \emph{observational data} into a discrete
+  \emph{performance measure} $p_{ij} \in \{-1, 0, 1\}$, where
   -1 = poor performance, 0 = good performance, 1 = excellent performance
   (corresponding to the too difficult / just right / too easy "flow levels").
-\item There is a loss of information during the compression,
-  but it helps to avoid combinatoric explosion (considering each type of model
-  with multiple different types of input data or their combination).
+\item Example of performance compression/extraction:
+  based on solving time thresholds
+  (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
+  (+ possibly REF other examples)
+\item Ordinal scale from definition;
+  ??  It is convenient to treat it as an interval variable,
+  but then it should be verified on data that the chosen compressed performance
+  behaves accordingly. (TODO: explain / REF to a paper or relevant analysis in
+  thesis)
+\item While the compression causes a loss of information,
+  it also reduces noise present in the raw data.
+  Most importantly, it helps to avoid a combinatoric explosion of
+  considering each type of model with multiple different types of input data or
+  their combination.
   Having a unified simple performance input makes the models simpler and
   easier to interpret.
-\item ?? Furthermore, there is a lot of noise in the raw data, which is largely
-  reduced by the compression step.
-\item Alternative performance valued domains:
+\item Alternative performance values domains:
   \begin{itemize}
   \item binary correctness -- e.g. for multiple-choice questions (REF example),
   \item log-time -- e.g. for logic puzzles;
@@ -627,17 +643,41 @@ Learning:
 \subsection{Skills}
 
 \begin{itemize}
-\item (?) definition:
-  $\theta_{cj} \in [-1, 1]$ expresses how much student $j$ knows concept $c$
-  (-1 not at all, 1 fully known, 0 ? initial student / ready to learn)
+\item ?? definition:
+  $\theta_{cj} \in [0, 1]$ expresses how much student $j$ knows concept $c$
+  (0 not at all, 1 mastered).
+  (?? TODO: Consider using $[-1, 1]$ with 0 calibrated either to the "ready-to-learn"
+  concept (flow point), or to the initial student.)
 \item Note: terms "skills" are often used interchangebly with "concepts" in
   the literature; in this thesis we strictly distinguish between "concepts"
   (independent of any student) and "skills" (associated with a student-concept
   pair).
+\item Each student model thus depends ("overlays") a domain model, which
+  defines a set of concepts for which to associate skills
+  and describes how these concepts interact among themselves and how they
+  relate to each task.
 \end{itemize}
 
 
+\subsection{Data Structures and Algorithms}
 
+Data:
+\begin{itemize}
+\item underalying domain (e.g. disjunctive concepts),
+\item skills (for each student-??concept pair),
+\item population parameters, e.g. initial skills, learning rate.
+\end{itemize}
+
+Algorihtms:
+\begin{itemize}
+\item \emph{offline learning} to find the population parameters,
+\item \emph{online update} of student skills based on an observed task session,
+\item \emph{prediction} of performance for given student-task.
+  (?? also prediction of skill for student-concept,
+  if the data are more complex, e.g. hierarchical model?),
+\item TODO: \emph{insisht} (visualization learning curves, ...).
+\item TODO: figure showing interaction between the data and algorithms.
+\end{itemize}
 
 
 

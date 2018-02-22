@@ -1,9 +1,6 @@
 NOTE: hidden variables (hidden state) (knowledge and skills, possibly also affect, motivation)
 vs. observable variables (correctness, solving time, time series of program snapshots)
 
-NOTE: different models for different tutors,
-here we will focus on models that can be used for mastery learning and task recommendation.
-
 TODO: what is a student model formally?
 prediction fn (student, task, domain, context, hyperparameters?) -> response of the student to the task in the context (for us, the response is mainly performance measured e.g. by solving time, but it can also include change in motivation etc.),
 together with update rule (reducer fn): interaction -> student,
