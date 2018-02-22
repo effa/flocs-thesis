@@ -1,24 +1,6 @@
 NOTE: hidden variables (hidden state) (knowledge and skills, possibly also affect, motivation)
 vs. observable variables (correctness, solving time, time series of program snapshots)
 
-TODO: what is a student model formally?
-prediction fn (student, task, domain, context, hyperparameters?) -> response of the student to the task in the context (for us, the response is mainly performance measured e.g. by solving time, but it can also include change in motivation etc.),
-together with update rule (reducer fn): interaction -> student,
-where interaction is 5-tuple (student, task, domain, context, performance)
-(NOTE: not only for prediction for a performance on a task, also for
-visualization skills in UI, providing feedback for teacher, etc.);
-OR "offline student model": (domain model, complete history of the learner) -> prediction about the future behavior (vs. "online student model" with the update rule, more useful in our setting)
-- performance: continuous (our convention 0-1) + discretization -> binary
-success vs. failure (often used in other domains where the failure is
-straightforward e.g. a multiple-choice questions), for use 3 categories (poor/good/great)
-(too difficult / just right / too easy) seems often more useful (we want to recommend tasks
-that are in the middle category)
-(from the "success" view, this discretization is a multivalue logic with 3 values)
-
-TODO: view from \cite{pelanek-learner-modeling}: data + procedures
-- data: hyper parameters, population parameters, student skills
-- offline procedures: parameter fitting -> metaparameters, population parameters
-- online procedures: update equation, prediction equation
 
 TODO: Student models vs. Domain models: (?) student models use domain as a
 structure, assigning some parameters (e.g. skills estimate, uncertainty, or even

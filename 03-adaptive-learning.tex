@@ -572,8 +572,8 @@ Learning:
     recommending task of the optimal difficulty for given student,
     detecting mastery (skill of given concepts is above a threshold),
     showing hints when a student is digressing from the path towards a solution.
-  \item In UI: showing feedback for the student
-        (visualization of her skills -- "open learner model").
+  \item In UI: showing feedback for the students and teachers
+        (visualization of skills -- "open learner model").
   \item For online evaluation -- insight for developers (TODO: example).
   \item For offline evaluation -- insigth by researchers and programming teachers
   (TODO: example).
@@ -582,16 +582,21 @@ Learning:
   type and amount of data we have.
 \item Comprehensive overviews of student modeling:
   \cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}
-  In this section, we describe only the models most relevant for the domain
-  of introductory programming.
-  We further restrict our focus to modeling skills of the student.
+  In this section, we restrcit our attention to the models relevant for the
+  domain of introductory programming, that have the following properties:
+  \begin{itemize}
+  \item They model only skills of the student.
   Broader student models may also include affect (e.g. frustration,
   boredom), motivation, and metacognition (knowledge about their knowledge) (REF).
-  We also restrict our attention to the models that describes a state of student
-  between two task sessions (REF: KLI framework?), as these can be used for task
-  reccomendation and mastery detection.
-  Other models exist that describes state of the student solving a particular
-  task (REF: rule-based models, constraint based models).
+  \item They can model multiple skills, specifically with a conjunctive concepts
+  as the underalying domain model. (REF section).
+  \item They model the state of the student between two task sessions
+  (REF: KLI framework?), as these can be used for task reccomendation and
+  mastery detection.  Other models exist that describes state of the student
+  solving a particular task (REF: rule-based models, constraint based models),
+  \item They are \emph{online}, i.e. parameters can be updated gradually after
+  each task session).
+  \end{itemize}
 \end{itemize}
 
 \subsection{Performance}
@@ -604,6 +609,11 @@ Learning:
   \emph{performance measure} $p_{ij} \in \{-1, 0, 1\}$, where
   -1 = poor performance, 0 = good performance, 1 = excellent performance
   (corresponding to the too difficult / just right / too easy "flow levels").
+\item ?? consider using $[0, 1]$ range to be in line with the multivalued logics
+  (performance as a measure of success) (disadvantage: possible confusion with
+  the probabilistic interpreation, which doesn't make much sense -- unless we
+  assume a very specific shape of the probablistic distribution, we need to
+  specify 2 numbers to get the probablity table)
 \item Example of performance compression/extraction:
   based on solving time thresholds
   (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
@@ -661,24 +671,66 @@ Learning:
 
 \subsection{Data Structures and Algorithms}
 
-Data:
+We specify the model by its data and procedures
+(as in \cite{pelanek-learner-modeling}).
+We further distinguish between the historical data that are transformed into
+the model data (by an online update function after each task session).
+
+\subsubsection{Historical Data}
 \begin{itemize}
-\item underalying domain (e.g. disjunctive concepts),
-\item skills (for each student-??concept pair),
-\item population parameters, e.g. initial skills, learning rate.
+\item list of task sessions
+\item task session is $(t, i, j, c, p^{t}_{ij})$ with
+  timestamp $t$ , task $i$, student $j$, (context $c$),
+  observed performance $p^{t}_{ij}$.
 \end{itemize}
 
-Algorihtms:
+\subsubsection{Model Data}
 \begin{itemize}
-\item \emph{offline learning} to find the population parameters,
-\item \emph{online update} of student skills based on an observed task session,
-\item \emph{prediction} of performance for given student-task.
+\item underalying domain (e.g. disjunctive concepts),
+\item population parameters, e.g. initial skills, learning rate,
+\item skills for each student-??concept pair.
+\end{itemize}
+
+\subsubsection{Algorihtms}
+\begin{itemize}
+\item \emph{learning} population parameters (can be offline),
+  (?? can we make population parameters part of the domain to have a single
+  group of "offline-learned" parameters = domain = everything independent
+  of a specific student)
+\item \emph{update} of student skills based on an observed task session
+  (online learning),
+\item \emph{prediction} of performance for given student and task.
   (?? also prediction of skill for student-concept,
   if the data are more complex, e.g. hierarchical model?),
-\item TODO: \emph{insisht} (visualization learning curves, ...).
+\item \emph{visualization} of a group of learners, e.g. learning curves
+  (?? broader -- insight: also clustering of students, ...)
 \item TODO: figure showing interaction between the data and algorithms.
 \end{itemize}
 
+\subsubsection{Learning population parameters}
+\begin{itemize}
+\item input: domain $D$, history: collected task sessions
+\item output: population parameters $P$: initial skills, learning rate, ...
+\item TODO: replace text be a figure
+\end{itemize}
+
+\subsubsection{Online skill update}
+\begin{itemize}
+\item input: domain $D$, (population parameters $P$),
+  student state before the task session $\theta^{t}_{j}$,
+  new task session $(t, i, j, p^{t}_{ij})$
+\item output: student state (skills) after the task session $\theta^{t+1}_{j}$
+\item TODO: replace text be a figure
+\end{itemize}
+
+\subsubsection{Performance prediction}
+\begin{itemize}
+\item input: domain $D$, (?? population parameters $P$),
+  student state $\theta^{t}_{j}$, task $i$, (context)
+\item output: predicted response of the student to the task,
+  e.g. performance $\hat{p}^t_{ij}$
+\item TODO: replace text be a figure
+\end{itemize}
 
 
 
