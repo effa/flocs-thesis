@@ -2,35 +2,6 @@ NOTE: hidden variables (hidden state) (knowledge and skills, possibly also affec
 vs. observable variables (correctness, solving time, time series of program snapshots)
 
 
-TODO: Student models vs. Domain models: (?) student models use domain as a
-structure, assigning some parameters (e.g. skills estimate, uncertainty, or even
-the full distribution of the estimate) to (some) "knowledge components" in the structure
-- student models must by dynamic ("online") (i.e. parameters computed on the fly),
-domain models can be possibly static (i.e. task and concept parameters can be computed offline),
-example (from \cite{its-programming}): domain model is DAG of concepts together with a
-Bayesian network over this DAG, ie. assignment of conditional probabilities to the edges;
-student model: assignment from each concept to the knowledge (known / unknown / not-sure) -> knowlege for any concept can be then inferred using the Bayesian network
-(? the Bayesian network is in this case same for all students, but does it make it part of the domain?)
-- terminology:
-  - concepts and tasks lives in the domain model and they can have corresponding
-  concept skills and task performances in the student model
-- view from \cite{its-learner-models}: domain model - state space, student model - state within the state spce
-- domain model: offline (often), student model: online (necessarily)
-
-
-
-NOTE: categorization:
-1. according to the underlaying domain model (-> single/multiskill, skills relationships etc.)
-2. single point estimate / full distribution / sth. in between (e.g. mean and deviation=uncertainty)
-3. online vs. offline (we need online)
-4. according to the assumption about learning/not learning (we need to model learning)
-5. (granularity? prediciting performance on concepts/tasks or even individual actions/ruleshigh-level skill tracing vs. fine-grained
-6.,7. complexity; assumptions about learning \cite{pelanek-learner-modeling}
-8. skill as discrete (BKT) or continuous (logistic models)
-
-
-
-
 NOTE: modelling time vs. correctness/success
 - time: log time (REF)
 - corretness:

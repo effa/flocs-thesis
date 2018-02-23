@@ -399,7 +399,7 @@ Learning:
   (TODO: fix: performance is undefined at this point...)
 % TODO: consider precise formulation for all other models as well,
 % see \cite[chapter 3]{its-domain-models}.
-% Note: We can also look on the interpreation from the other side: once the task
+% Note: We can also look on the interpretation from the other side: once the task
 % is failed, which skill(s) is/are to blame and how much (ie. how to decrease our estimates
 % if we predicted a success).
 \item TODO: is there an interpretation makes best sense in our domain?
@@ -466,13 +466,13 @@ Learning:
 \item another relationship between chunks (between concepts / between tasks / both)
 \item semantics: specify chunks that have to mastered prior to tacking given chunk;
 \item For example, nested loops cannot be mastered without mastering simple loops.
-\item multiple edges -- multiple interpreations: e.g.:
+\item multiple edges -- multiple interpretations: e.g.:
   AND (all prerequistes must be met),
   OR (at least one prerequisity must be met),
   (TODO?: noisy and, noisy or),
   ? additive (compensatory) prerequisites
   (analogous to the multiple concept skills to task performance mapping).
-\item Generally, the interpreation can be any function from skills/performance
+\item Generally, the interpretation can be any function from skills/performance
   associated with prerequisites to a (binary) decision whether the prerequisites are met
   (when working with probabilities, this leads to Bayesian networks?)
 \item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
@@ -578,26 +578,113 @@ Learning:
   \item For offline evaluation -- insigth by researchers and programming teachers
   (TODO: example).
   \end{itemize}
-\item No single best student model -- depends on its usage, and also on the
-  type and amount of data we have.
-\item Comprehensive overviews of student modeling:
-  \cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}
-  In this section, we restrcit our attention to the models relevant for the
-  domain of introductory programming, that have the following properties:
-  \begin{itemize}
-  \item They model only skills of the student.
-  Broader student models may also include affect (e.g. frustration,
-  boredom), motivation, and metacognition (knowledge about their knowledge) (REF).
-  \item They can model multiple skills, specifically with a conjunctive concepts
-  as the underalying domain model. (REF section).
-  \item They model the state of the student between two task sessions
-  (REF: KLI framework?), as these can be used for task reccomendation and
-  mastery detection.  Other models exist that describes state of the student
-  solving a particular task (REF: rule-based models, constraint based models),
-  \item They are \emph{online}, i.e. parameters can be updated gradually after
-  each task session).
-  \end{itemize}
 \end{itemize}
+
+
+\subsection{Domain vs. Student}
+
+TODO: These are just internal notes. After incorporate clarifying comments
+to relevant places, consider removing this section.
+
+\begin{itemize}
+\item The line between "domain" and "student" is fuzzy.
+  It differs a lot in different papers; some even don't distinguish a separated
+  domain model. (REF examples)
+\item We have decided to take the following approach:
+  The sole responsibility of student model is to track skills of a \emph{single}
+  student. Thus, the domain model includes also population-specific parameters,
+  such as initial skills, learning rate, chunk difficulties,
+  precise (numeric) relationships between skills (prerequisites, mastery).
+\item TODO: The above notes about population parameters to the domain section.
+\item We could define a separate \emph{population model}, which would be useful
+ if ?? we would like to model more populations and/or
+ estimate the population parameters online
+ (?? REF: slepe mapy - prior knowledge + difficulties estimation)
+\item Note that even which chunks exist what are the relationships between them
+  may depend on the population (if the population is diverse), so there is
+  really no clear division on what should be a part of
+  "population independent domain model" and "population model"
+  (because it inherently depends on the population using the system,
+  so we can decide only for the current population and provided we have collected
+  enought data to analyze how large the differnces between subpopulations are
+  and if it has significant impact on the application the model is used for).
+\item ?? While being non-standard, we found this division to best match separation
+  of concerns and thus be suitable for both explaining (as in this text)
+  and impelementation (as in the developed system).
+\item Domain vs Student:
+  initial skills x current skills,
+  concepts x skills,
+  (tasks x performance),
+  difficulties x skills,
+  common for all students x for each student,
+  offline x online.
+\item Domain = state space, student = point in that space space
+  (\cite{its-learner-models}).
+\item example (from \cite{its-programming}):
+  domain model is DAG of concepts together with a Bayesian network over this DAG
+  (i.e. assignment of conditional probabilities to the edges),
+  student model is (for each student) assignment from each concept to the
+  knowledge (known / unknown / not-sure) -> knowlege for any concept can be
+  then inferred using the Bayesian network.
+\end{itemize}
+
+
+\subsection{Classification of Student Models}
+
+\begin{itemize}
+\item \emph{Modeled components.}
+The most explored area is skill modeling, but broader student models may also
+include affect (e.g. frustration, boredom), motivation, and metacognition
+(knowledge about their knowledge) (REF).
+\item ?? input/output (TODO: consider moving here the performance
+domains/represenations discussed in next section)
+\item \emph{Underlying domain model.}
+The simplest models assume either a single concept common for all tasks,
+or each task as separete concept (REF: slepe-mapy). In programming,
+we need to model multiple skills per task.
+(REF to overlapping concepts section)
+\item \emph{Granularity of skills.}
+Some models track the state of the student when solving a particular task
+(REF: rule-based models, constraint based models), while others
+only describe the state of the student between two task sessions
+(??REF: KLI framework) or even only between finished problem sets.
+\item \emph{Discrete vs. continuous skills.}
+Discrete = either known or not known (can have multiple levels, e.g.
+unknown -> known -> fluent) (e.g. BKT); continuous (e.g. logistic models).
+\cite{pelanek-learner-modeling}
+\item \emph{Representation of skills.}
+Instead of modeling full probability distribution of current skill, some models
+only track a single point estimate,
+?? or they assume a specific shape of the distribution that can be described by
+a few numbers (e.g. mean and standard deviation for normal distribution).
+\item \emph{Online vs. offline.}
+In online models, parameters can be updated gradually after each task session
+( i.e. ?? algrothm for learnining model parameters is online, REF: online algorithms).
+\item \emph{Learning vs. testing.}
+Models used in (??) adaptive testing (REF), assume that no learning happens
+during the interaction with the system. They can be reduced to models with
+learning by reestimating skills from the full student history after each task
+session, but this leads to offline models.
+?? Note that the models that contain learning often include additional assumption
+about how the learning happens (REF/example).
+\item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
+The more complex model, the more precisely it can capture the reality, but only
+if there is enough data to train the model; otherwise we are in danger of
+overfitting. (TODO: REF to the bias-variance tradeoff).
+More complex models might be also more difficult to implement, debug and interpret.
+\end{itemize}
+
+
+No single best student model -- depends on the domain, intended usage, and also
+on the type and amount of data we have.
+In the rest of this section, we restrict our attention to the models relevant
+for the domain of introductory programming and the type of the system we
+are building. Specifically, we focus on models that
+model only skills of concepts and predict performance on tasks,
+allow for multiple skills per task,
+assume learning and can be updated online.
+Comprehensive overviews of student modeling:
+\cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}
 
 \subsection{Performance}
 
@@ -610,11 +697,11 @@ Learning:
   -1 = poor performance, 0 = good performance, 1 = excellent performance
   (corresponding to the too difficult / just right / too easy "flow levels").
 \item ?? consider using $[0, 1]$ range to be in line with the multivalued logics
-  (performance as a measure of success) (disadvantage: possible confusion with
-  the probabilistic interpreation, which doesn't make much sense -- unless we
-  assume a very specific shape of the probablistic distribution, we need to
-  specify 2 numbers to get the probablity table)
-\item Example of performance compression/extraction:
+  (performance as a measure of success) (disadvantage: suggest it has interval
+  scale + possible confusion with the probabilistic interpretation, which
+  doesn't make much sense -- unless we assume a very specific shape of the
+  probablistic distribution, we need to specify 2 numbers to get the probablity
+  table) \item Example of performance compression/extraction:
   based on solving time thresholds
   (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
   (+ possibly REF other examples)
@@ -630,14 +717,15 @@ Learning:
   their combination.
   Having a unified simple performance input makes the models simpler and
   easier to interpret.
-\item Alternative performance values domains:
+\item Alternative performance values domains/representations:
   \begin{itemize}
   \item binary correctness -- e.g. for multiple-choice questions (REF example),
   \item log-time -- e.g. for logic puzzles;
         most people can solve most puzzles given enough time, so the time
         is what distingueish the skill (REF proso),
-  \item continuous value combining time and correctnes -- e.g. math problems,
-      correctness is the main criterion, but fluency is also important (REF matmat)
+  \item continuous value combining time and correctness -- e.g. math problems,
+      where correctness is the main criterion, but fluency is also important
+      (REF matmat)
   \end{itemize}
 \item In introductory programming: most students solve most tasks given enough
   time, so correntess is out of question. We could still map task session data
@@ -653,19 +741,25 @@ Learning:
 \subsection{Skills}
 
 \begin{itemize}
+\item (domain vs. student: tasks -- performance, concepts -- skills)
 \item ?? definition:
   $\theta_{cj} \in [0, 1]$ expresses how much student $j$ knows concept $c$
   (0 not at all, 1 mastered).
   (?? TODO: Consider using $[-1, 1]$ with 0 calibrated either to the "ready-to-learn"
   concept (flow point), or to the initial student.)
+\item Possibly: not only a single point estimage, but also uncertainty,
+  or even full distribution of the estimated skill.
 \item Note: terms "skills" are often used interchangebly with "concepts" in
   the literature; in this thesis we strictly distinguish between "concepts"
   (independent of any student) and "skills" (associated with a student-concept
   pair).
 \item Each student model thus depends ("overlays") a domain model, which
   defines a set of concepts for which to associate skills
-  and describes how these concepts interact among themselves and how they
+  and describes how these skills interact among themselves and how they
   relate to each task.
+\item Student models use domain as a structure,
+  assigning skills (and possibly other parameters, such as uncertainty)
+  to the chunks in taht structure.
 \end{itemize}
 
 
@@ -711,7 +805,7 @@ the model data (by an online update function after each task session).
 \begin{itemize}
 \item input: domain $D$, history: collected task sessions
 \item output: population parameters $P$: initial skills, learning rate, ...
-\item TODO: replace text be a figure
+\item TODO: replace text by a figure
 \end{itemize}
 
 \subsubsection{Online skill update}
@@ -736,6 +830,12 @@ the model data (by an online update function after each task session).
 
 
 
+\subsection{Evaluation}
+
+\begin{itemize}
+\item move there the relevant part from the Evaluation section
+\item (wrt to the intended usage)
+\end{itemize}
 
 
 
