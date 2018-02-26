@@ -195,6 +195,12 @@ NOTE: online vs offline models: for domain and tutoring, offline models are ok, 
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
 \begin{itemize}
+\item Input data (vs. model data) -- content + collected (historical) data.
+\item Content:
+  task statement (including name and world description),
+  sample solution, labels (e.g. covered concepts), problem sets.
+\item Historical: observations (REF to discussion on performance in student models section).
+\item Model data: chunks and relationships between them.
 \item Chunks = all entities in the domain:
 \begin{itemize}
 \item tasks,
@@ -595,6 +601,8 @@ to relevant places, consider removing this section.
   student. Thus, the domain model includes also population-specific parameters,
   such as initial skills, learning rate, chunk difficulties,
   precise (numeric) relationships between skills (prerequisites, mastery).
+\item ?? Some of these parameters are learned within the domain model
+  and then used as fixed parameters in the student model.
 \item TODO: The above notes about population parameters to the domain section.
 \item We could define a separate \emph{population model}, which would be useful
  if ?? we would like to model more populations and/or
@@ -636,8 +644,6 @@ to relevant places, consider removing this section.
 The most explored area is skill modeling, but broader student models may also
 include affect (e.g. frustration, boredom), motivation, and metacognition
 (knowledge about their knowledge) (REF).
-\item ?? input/output (TODO: consider moving here the performance
-domains/represenations discussed in next section)
 \item \emph{Underlying domain model.}
 The simplest models assume either a single concept common for all tasks,
 or each task as separete concept (REF: slepe-mapy). In programming,
@@ -657,6 +663,12 @@ Instead of modeling full probability distribution of current skill, some models
 only track a single point estimate,
 ?? or they assume a specific shape of the distribution that can be described by
 a few numbers (e.g. mean and standard deviation for normal distribution).
+\item \emph{Representation of performance}:
+  binary correctness (solved or failed),
+  performance categories (e.g. poor, good, excellent),
+  log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
+  or a continuous score combining time and correctness
+  (see \cite[p.106]{rihak-phd} for some possible mappings).
 \item \emph{Online vs. offline.}
 In online models, parameters can be updated gradually after each task session
 ( i.e. ?? algrothm for learnining model parameters is online, REF: online algorithms).
@@ -668,12 +680,16 @@ session, but this leads to offline models.
 ?? Note that the models that contain learning often include additional assumption
 about how the learning happens (REF/example).
 \item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
-The more complex model, the more precisely it can capture the reality, but only
+The more skills and relationships between them the model includes,
+the more precisely it can capture the reality, but only
 if there is enough data to train the model; otherwise we are in danger of
 overfitting. (TODO: REF to the bias-variance tradeoff).
-More complex models might be also more difficult to implement, debug and interpret.
+The number of parameters that are specific for students must be low in order to
+estimate them quickly after just a few interactions of the student with the system.
+(+ they are assumed to change, no older observations loose their value)
+%More complex models might be also more difficult to implement, debug and interpret.
+%   (?? this is a different kind of complexity; the first is size of hypothesis space)
 \end{itemize}
-
 
 No single best student model -- depends on the domain, intended usage, and also
 on the type and amount of data we have.
@@ -683,6 +699,7 @@ are building. Specifically, we focus on models that
 model only skills of concepts and predict performance on tasks,
 allow for multiple skills per task,
 assume learning and can be updated online.
+
 Comprehensive overviews of student modeling:
 \cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}
 
@@ -691,17 +708,29 @@ Comprehensive overviews of student modeling:
 \begin{itemize}
 \item Observed data from a task session:
   solved/not, solving time, number of code executions, number of edits,
-  or even the individual edits.
-\item We first compress these \emph{observational data} into a discrete
-  \emph{performance measure} $p_{ij} \in \{-1, 0, 1\}$, where
-  -1 = poor performance, 0 = good performance, 1 = excellent performance
-  (corresponding to the too difficult / just right / too easy "flow levels").
+  or even the individual edits (program snapshot), hints taken,
+  rating or labels provided by the student (e.g. perceived difficulty).
+\item TODO: mention different granularity levels for taking program snapshots (+REF)
+\item We first compress these \emph{observational data} into a
+  single number representation of \emph{performance}.
+\item Performance representation in introductory programming:
+  most students solve most tasks given enough time, so correctness is out of
+  question. We could still map task session data into a binary performance (1
+  = good, 0 = poor), but that would not allow to distinguish between students
+  for whom are the tasks just right and those for whom are too easy.
+  Therefore we have chosen the three-valued domain:
+  $p_{ij} \in \{-1, 0, 1\}$, where -1 = poor performance, 0 = good performance,
+  1 = excellent performance; matching the predictions that we care about:
+  whether a given task is for given student too difficult, just right, or too easy.
 \item ?? consider using $[0, 1]$ range to be in line with the multivalued logics
   (performance as a measure of success) (disadvantage: suggest it has interval
   scale + possible confusion with the probabilistic interpretation, which
   doesn't make much sense -- unless we assume a very specific shape of the
   probablistic distribution, we need to specify 2 numbers to get the probablity
-  table) \item Example of performance compression/extraction:
+  table)
+\item Another option would be to model log-times (used e.g. in Tutor - REF)
+  (?? or continuous partial credit).
+\item Example of performance compression/extraction:
   based on solving time thresholds
   (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
   (+ possibly REF other examples)
@@ -717,23 +746,6 @@ Comprehensive overviews of student modeling:
   their combination.
   Having a unified simple performance input makes the models simpler and
   easier to interpret.
-\item Alternative performance values domains/representations:
-  \begin{itemize}
-  \item binary correctness -- e.g. for multiple-choice questions (REF example),
-  \item log-time -- e.g. for logic puzzles;
-        most people can solve most puzzles given enough time, so the time
-        is what distingueish the skill (REF proso),
-  \item continuous value combining time and correctness -- e.g. math problems,
-      where correctness is the main criterion, but fluency is also important
-      (REF matmat)
-  \end{itemize}
-\item In introductory programming: most students solve most tasks given enough
-  time, so correntess is out of question. We could still map task session data
-  into a binary performance (1 = good, 0 = poor), but that would not allow
-  to distingues between students for whom are the tasks just right and those
-  for whom are too easy. Therefore we have chosen the three-valued domain,
-  matching the predictions that we care about: whether a given task is for
-  given student too difficult, just right, or too easy.
 \item Notation: true performance $p_{ij}$ vs. predicted performance $\hat{p}_{ij}$
 \end{itemize}
 
@@ -827,6 +839,168 @@ the model data (by an online update function after each task session).
 \end{itemize}
 
 
+\subsection{Elo Models}
+\label{sec:elo}
+
+The Elo model \cite{alg.elo, irt-elo-math}
+  extends the logistic model (REF, ?? IRT: \cite{irt-visual-guide})
+  to capture changing knowledge.
+Inspired by the rating of chess players \cite{elo-rating},
+  the model interprets each attempt  to solve a task
+  as a ``match'' between the student and the task.
+After this match ends, skill and difficulty estimates are revised.
+Depedning on whether the student solves the task better or worse than expected
+  by the model, her skill is increased or decreased.
+The size of the change is proportional to the prediction error -- difference
+  between the predicted and the actual performance ($p_{ij} - \hat{p}_{ij}$) (``surprise'').
+
+\begin{itemize}
+\item learning rate -- not decreasing, becouse the skill is assumed to change over time
+  (``nonstationary variable'')
+\item note: possibility to also update task difficulties online (with
+  decreasing learning rate, because the difficulties are assumed to converge)
+\item The main advantage of using the Elo model is its simplicity, flexibility (TODO: elaborate),
+  good prediction performance (REF) and intrinsic online nature, which allows for immediate
+  updates of parameters as students are interacting with the system.
+\item TODO: ?? relationship to PFA, PFAE
+\item The performance predicton and udpate depends on the underlaying domain model.
+  In the following sections, we discuss some of the possibilities.
+\end{itemize}
+
+\subsubsection{Single Skill Elo}
+
+\begin{itemize}
+\item underlying model: concept-free (REF)
+\item TODO: formulas (?? predicting what -- continuous partial score?)
+\item TODO: figure
+\item TODO: relationship to EMA
+\end{itemize}
+
+TODO: formulate it within the 3-value performance (or change the performance to be between 0-1)
+Elo models assume  that the probability of a student with skill $s$
+?? successfully solving a task with difficulty $d$
+is given by the following function:
+\begin{equation}\label{eq:logistic}
+P(s, d) = \frac{1}{1 + e^{-(s - d)}}
+\end{equation}
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[domain=-2:4, smooth, samples=20, scale=1]
+  \draw [thick, ->] (-2,0) -- (4,0) node [below right] {$s$};
+  \draw [thick, ->] (0,0) -- (0,2.5) node [left] {$P(s,d)$};
+  \draw [thick] (-0.1,1) node [left] {$0.5$} -- (0.1,1);
+  \draw [thick] (-0.1,2) node [left] {$1$} -- (0.1,2);
+  \draw [thin, dashed] (0,2) -- (4,2);
+  \draw [thin, dashed] (0,1) -- (1,1) -- (1, 0);
+  \draw [thin, dashed] (-0.57,2) -- (-2,2);
+  \draw [thick] (1,0.1) -- (1,-0.1) node [below] {$d$};
+  \draw [very thick] plot (\x, {2 / (1 + exp(1 - \x))});
+  \end{tikzpicture}
+  \caption{One-parameter Unidimensional Logistic Model}
+  \label{fig:logistic-model}
+\end{figure}
+
+
+\subsubsection{Multiple Skills Elo}
+
+\begin{itemize}
+\item underlying model: Disjoint Concepts / Overlapping Concepts (REF)
+\item Disjoint Skills: as basic Elo but the total skill is the sum of the
+global skill and concept skill (updating both the same way) (\cite{rihak-phd}, TODO: page).
+\item TODO: Overlapping Skills: ?? (derivation from chosen error measure -> formulas)
+\item alternative solution to the ``credit assignment problem'':
+  not to update the skills directly after a failure on a single task,
+  but first diagnose the issue - give the student tasks with only a subset of concepts,
+  to find the problematic concept for which the skill should be decreased
+  \cite{assistment-trasfer-models}
+\end{itemize}
+
+\subsubsection{Hierarchical Elo}
+
+\begin{itemize}
+\item underlying model: hierarchical model (REF)
+\item REF: \cite{rihak-phd} -- assuming disjoint concepts
+\item predictions: total skill = sum all ancestors skills
+\item update: all ancestors sequentialy (from the top-most), elo-like update
+\item TODO: formulas
+\end{itemize}
+
+
+\subsubsection{Network Elo}
+
+\begin{itemize}
+\item underlying model: network model (REF)
+\item REF: \cite{rihak-phd}
+\item each time a task is solved, update skill for all tasks according to the
+similarity to the one solved (this can be propably also done on the level of
+concepts, if we have a similarity network between concepts)
+\item TODO: formulas
+\end{itemize}
+
+
+
+\subsection{Dynamic Bayesian Networks}
+
+\begin{itemize}
+\item underlying domain model: chunks DAG (REF)
+  (?? prereqisities or also other relationships?);
+\item hidden nodes = skills associated with concepts
+\item observed nodes = performance on tasks
+\item edges = encode dependenices (REF: BN definitional):
+\item dynamic = BN with time -- each variable also depends on itslef in previous timestamp
+  (before the last observation) (generalization of HMM)
+\item (?? in domain): for each node have a mapping from skills/performance of children
+  to skill/performance of parents (probability distribution)
+\item ?? direction of edges (TODO: figure)
+\item ?? approaches to model the distribution
+  (discretization, assuming normal distribution for skill estimate)
+\item ?? TODO: relationship between BN and Elo
+  (Wang et al. 2013: Dynamic item response theory models: combining BN with logistic models)
+\item ?? TODO: online update of skills after a performance?
+  (to avoid repeated time-consuming skill inference)
+\item TODO: formula for performance prediction ("inference in DBN")
+\item example: \cite{its-programming}
+\item ?? exact inference in general DBN not feasible (big network + continous distributions),
+  -> ?? approximate inference (? sampling techniques),
+  restrictions on the distributions and/or unerlying DAG,
+  online tracking of skills (online update).
+\item TODO: multiple skills: REF: Xu, Y., Mostow J.: Using logistic regression to trace multiple subskills in a dynamic Bayes Net. (LR-DBN) \cite{bn-logreg} (one-level hierarchy?)
+\end{itemize}
+
+
+\subsubsection{Bayesian Knowledge Tracing}
+\label{sec:bkt}
+
+\begin{itemize}
+\item special case of DBN, assuming single or disjoint concepts (REF: relevant domain section)
+\item (for single skill, it is even a special case of HMM)
+\item for each skill, two hidden states (known/mastered) or not, observed: performance
+\item assumes: learning (in contrast to basic IRT)
+\item assumes: discrete knowledge state (eithter known or not known) (?! not compatible?)
+\item assumes: on each opportunity to use the skill (e.g. solving a task with
+  the corresponding concept), there is a constant probability of learning that skill
+\item TODO: formulas for prediction and update; figure / or just REF
+\item TODO: relevant extension: BKT with hiearchical model of skills
+\end{itemize}
+
+
+\subsubsection{AND-OR Bayesian Network}
+
+\begin{itemize}
+\item REF \cite{student-models-review-2012} (section 5.1.2)
+\item REF the relevant underlaying domain mode
+\item special case of DBN with assumptions on the conditional probabilities -- 2 node types:
+\item OR: single mastered skill parent skill is enough to master the child skill
+  (?? achieve = known = master = 1, but what about continuous skills?)
+\item AND: all parent skills need to be mastered to master the child chunk
+\item TODO: leaky-OR, noisy-AND; NIDA/DINA, NIDO/DINO models
+\item ?? extensions to continuous skills?
+\item ?? orientation of the edges (and the type of nodes in RoboMission)
+\item TODO: formulas, figure / or just REF
+\item TODO: consider to move to the domain model
+\item TODO: discuss the relevance for our domain
+\end{itemize}
 
 
 
@@ -842,7 +1016,7 @@ the model data (by an online update function after each task session).
 
 \section{Tutor Modeling}
 
-(ordered from the most outer to the most inner loop)
+What (ordered from the most outer to the most inner loop)
 - content sequencing (curriculum sequencing) (\cite{its-programming}) (which topic to do next?)
   (this is relevant for the systems with a lot of content, not our case -> not our focus)
   (focus on prerequisities so that from evidence about one skill, say nested loops, can
@@ -857,6 +1031,10 @@ the model data (by an online update function after each task session).
 - "problem solving / solution analysis / solving process tutors",
   (e.g. cognitive tutors, constraint based models)
   (which step to do next towards solving the task? -> which hint to show?)
+
+
+- Our focus is on the outer-loop as the inner-loop is better suited for people (instructors)
+(REF: Essa, 2016: A possible future for next generation adaptive learning systems.)
 
 - hierarchical tutor: using different student models for different loops
   (inner, outer curriculum)
