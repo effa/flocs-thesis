@@ -710,7 +710,13 @@ Comprehensive overviews of student modeling:
   solved/not, solving time, number of code executions, number of edits,
   or even the individual edits (program snapshot), hints taken,
   rating or labels provided by the student (e.g. perceived difficulty).
-\item TODO: mention different granularity levels for taking program snapshots (+REF)
+\item TODO: mention different granularity/frequency levels for taking program
+  snapshots: edits (AST changes), executions
+  (REF: Educational Data Mining and Learning Analytics in Programming:
+  Literature Review and Case Studies -- they differentiate more levels:
+  and instead of "AST changes" they specify 2 levels ("key strokes" and
+  "line-level edits"), but only the two are relevant for us (and most online,
+  block-base programming environmant).
 \item We first compress these \emph{observational data} into a
   single number representation of \emph{performance}.
 \item Performance representation in introductory programming:
@@ -839,7 +845,7 @@ the model data (by an online update function after each task session).
 \end{itemize}
 
 
-\subsection{Elo Models}
+\subsection{Elo Models}  % TODO: Consider "Logistic models"
 \label{sec:elo}
 
 The Elo model \cite{alg.elo, irt-elo-math}
@@ -1016,18 +1022,55 @@ concepts, if we have a similarity network between concepts)
 
 \section{Tutor Modeling}
 
-What (ordered from the most outer to the most inner loop)
-- content sequencing (curriculum sequencing) (\cite{its-programming}) (which topic to do next?)
-  (this is relevant for the systems with a lot of content, not our case -> not our focus)
-  (focus on prerequisities so that from evidence about one skill, say nested loops, can
-  infer that many other skills are mastered, e.g. sequences, single loops, conditions)
-  (term: "learning path")
-- often, tutor models use a domain and a student model as an input, but not always
-  (model-free approaches exists, e.g. a classifier for task recommendation that uses
-  the complete student history, or mastery learning with "3-correct-in-a-row" ...
-  though both of these cases can be viewed just as an extreme cases of student models)
-- mastery learning (Umime programovat) (continue with the current topic or progress to the next?)
-- task recommendation (Tutor) (which task to solve next?)
+\begin{itemize}
+\item TODO: define
+\item aka instructional policy/strategy
+\item Includes several tasks, common classification:
+  within a single task (\emph{inner loop}),
+  between task sessions (\emph{outer loop}),
+  but both can be further decomposed hierarchically
+  (e.g. in outer loop: choosing a problem set to practice vs. choosing a task
+  within that problem set).
+  % TODO: add example for inner loop (note: not common)
+\item What (ordered from the most outer to the most inner loop):
+\begin{itemize}
+\item \emph{Curriculum sequencing} (Content sequencing?)
+  What topic to learn next? (What problem set to practice next?)
+  Relevant for systems for a lot of diverse content with prerequisity structure.
+  (e.g. in \cite{its-programming}).  % \emph{learning path}
+\item \emph{Mastery learning}
+  Continue to practice the current topic or progress to another one?
+  (e.g. in Umime Programovat)
+% TODO: unify/clarify topic = problem set?
+\item \emph{Task recommendation}
+  Which task to tackle next (possibly from a given problem set)?
+ (e.g.: Tutor)
+\item \emph{Adaptive scaffolding} (??) --
+  Should we provide the student with a help to solve the current task
+  (instruction, hint, worked out example, explatanation)?
+  (or even a suggestion to give up and try an easier task).
+\end{itemize}
+\item Often, tutor models use a domain and a student model as an input,
+  but not always
+  (model-free approaches exists, e.g. a classifier for task recommendation that
+  uses the complete student history, or mastery learning with
+  "3-correct-in-a-row" ...  though both of these cases can be viewed just as
+  trivial special cases of student models) (REF).
+\end{itemize}
+
+
+Planning vs. single-action:
+Currently, focus on single decision based on currently learned models
+without a look-ahead planning.  % vs. in RL, Robotics, and CSP communities
+Example to illustrate, how the planning could help in task recommendation:
+2 unsolved tasks left in current PS, neither of them is enough to master the topic,
+the more difficult is slightly better fit to the skill; still it is better to
+start with the easier one.
+Example of planning for curriculum sequencing: generating a sequence of tasks
+\emph{learning path}) towards the requested topic \cite{its-programming}.
+
+
+
 - "problem solving / solution analysis / solving process tutors",
   (e.g. cognitive tutors, constraint based models)
   (which step to do next towards solving the task? -> which hint to show?)
