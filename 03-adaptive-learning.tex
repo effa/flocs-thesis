@@ -1140,18 +1140,35 @@ manually via "precedes/follows" relations between PS (UmimeX)
 \subsection{Mastery Learning}
 \label{sec:mastery-learning}
 
-\emph{TODO:\\describe mastery learning + usage of student models%
-(to show the progress and to determine that the student already achieved the mastery)}
+\begin{itemize}
+\item Mastery learning means practicing of a topic (?PS) until covered concepts
+  are mastered, and only then moving to the next topic.
+  % "fixed outcome, varied time"
+  % (vs. classical education: fixed time, varied outcome)
+\item Problem: input: domain, student (skills), output: decision: mastered/not.
+\item Solution: online algorithm called \emph{mastery criterion}.
+\item Reduction to chosing a suitable student model \ref{sec:student-modeling}
+  and a threshold $T$;
+  update the student model after each interaction,
+  and declare mastery when the skill
+  %(probability of success or a fuzzy skill of given concept)
+  on the practiced topic exceeds the threshold
+  ($\theta > T$).
+\item Usage of student model:
+  (1) to determine if the student already achieved mastery,
+  (2) to show progress to the student (progressbar).
+  % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
+\item If the problem set is coherent, then the used student model can be very
+  simple, assuming a single skill and same difficulties accross tasks in the PS.
+  An example of such simple model is EMA
+  (REF EMA section in student modeling, REF paper supporting this proposition).
+\item Another simple, but popular approach: N-correct-in-a-row, but that assumes
+  a binary performance (we could use something like N-with-at-least-good-performance).
+\item ?? Knowledge transfer -- how to use information about what the student
+  already solved to improve the mastery learning?
+\end{itemize}
 
-- what it is: type of instructional policy (tutoring model); practice of a topic until covered concepts are mastered, only then move to the next topic
 
-- what is needed: online algorithm for deciding mastery given a stream of s-t interactions ("mastery criterion")
-
-- how: basic version: compute a simple summary statistic such as average
-success or number of correct answers in a row and compare with a threshold;
-instead of a simple summary statistic, a student model (section
-\ref{sec:student-modeling}) can be used (e.g. predicting probability of success
-or a fuzzy skill of given concept)
 (DQ: it seems to me, that a simple summary statistic is just an extreme case of
 a student model; or is there a fundamental difference? E.g. making or not
 making an assumptions about learning, as (implicitly) suggested in \cite{alg.mastery}?
@@ -1180,17 +1197,41 @@ improvement \cite{alg.mastery}
 - ? using effort-score graphs \cite{alg.mastery}
 - ? require the maximum time to achieve the mastery for genius
 
-% "fixed outcome, varied time" (vs. classical education: fixed time, varied outcome)
-
-% TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
-
-\subsection{Task Recommendation}
+\subsection{Task Recommendation}  % ?? "task selection"
 \label{sec:task-recommendation}
 
 \begin{itemize}
 \item Problem: given domain, student, and a problem set, choose an optimal
   task from the problem set to assign to the student now.
 \item Problem set: chosen by the student or curriculum sequencing tutor.
+
+\item Types of recommenders according to outputs:
+\begin{itemize}
+\item \emph{task selection}: single recommended task,
+\item \emph{filtering}: group of task to recommend/forbid,
+\item ?? \emph{scoring}: score for each task according to how much it is
+recommended,
+\item ?? \emph{ranking}: ordering of tasks (all or just the most recommended),
+\end{itemize}
+
+\item \emph{Soft vs. hard recommendations}. (?? Move (partially) to UI model?)
+Recommendations can be either \emph{hard}, i.e. enforced by the system
+or \emph{soft}, i.e. they are presented as suggestions, but the the choice
+is left on the student.
+% Only a single task can be chosen as hard recommendation.
+Even just showing predictions to the student (e.g. in the form of predicted
+solving times or showing difficulty predictions such as
+``too easy'', ``too difficult'', and ''ready to attempt'')
+can be already perceived as a very mild form of recommendation.
+For example, suggestions in the form of traffic-light colors
+  are used in the system described in \cite{its-programming}.
+Soft recommendations can be further achieved either by
+  ordering tasks according to how much they are recommended,
+  or only showing a subset of suitable tasks.
+The system can be more strict and show only a single recommended task,
+  (as in HackerRank -- REF to figure) (or 2 tasks: Tutor),
+  or even enforce the recommendation by immediately progressing student to
+  the next task without asking and giving them a chance to select a different task.
 
 \item Hard and soft constraints (filters and criteria).
 \item Typically hard constraints: (?? filters)
@@ -1215,9 +1256,10 @@ improvement \cite{alg.mastery}
 \item (?? Soft prerequisities)
 \item Exploration (value of information).
 \end{itemize}
+
 \item ?? Approaches: \emph{heuristic} vs. \emph{optimized} (wrt. a metric)
   (?? learning -- online/offline).
-\item Techniques:
+\item Techniques (for single task recommendation):
 \begin{itemize}
 \item \emph{Uniform random selection}. Maximizes the exploration.
   Works well if the problem set is coherent (approximately same difficulty etc.)
@@ -1241,34 +1283,12 @@ improvement \cite{alg.mastery}
   to balance exploration and exploitation.
 \item ?? Principled approaches: MDP, weighted/fuzzy CSP
 \end{itemize}
+\item TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
+
+
+
 
 \end{itemize}
-
-
-Task recommendation is not a necessary requirement
-  for the system to be adaptive.
-Student models can be utilized by other means to achieve personalized behavior,
-  e.g. in mastery learning (section \ref{sec:mastery-learning}).
-The system can also just provide students with predicted solving times
-  and let them to choose the next task they want to solve.
-
-Showing predictions can be already perceived as a very mild form of recommendation.
-Indeed, recommendations can range from \emph{soft} to \emph{hard}.
-Soft recommendations can be achieved either by
-  ordering tasks according to suitability,
-  filtering and only showing a subset of tasks,
-  or showing suggestion such as
-  ``too easy'', ``too difficult'' and ''ready to attempt'' next to each task.
-For example, suggestions in the form of traffic-light colors
-  are used in the system described in \cite{its-programming}.
-The system can be more strict and show only a single recommended task,
-  or even enforce the recommendation by immediately progressing student to
-  the next task without asking and giving them a chance to select a different task.
-
-\bigskip
-\emph{TODO:\\details about techniques (heuristics, methods) for selecting single best task}
-
-% TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
 
 
 \subsection{Adaptive Scaffolding}
@@ -1306,7 +1326,9 @@ or reference to self \cite[chapter 9]{its-domain-models})
 - personalized overview of tasks with a current recommendation (= visualization
 of domain and tutor model)
 - showing task recommendation (= visualization of tutor model),
+  (see soft-vs-hard recommendations section)
   progress towards mastery (= tutor+student model)
+  (progressbar)
 
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
