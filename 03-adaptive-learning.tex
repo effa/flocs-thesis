@@ -1023,123 +1023,119 @@ concepts, if we have a similarity network between concepts)
 \section{Tutor Modeling}
 
 \begin{itemize}
-\item TODO: define
-\item aka instructional policy/strategy
-\item Includes several tasks, common classification:
-  within a single task (\emph{inner loop}),
-  between task sessions (\emph{outer loop}),
-  but both can be further decomposed hierarchically
+\item \emph{Tutor models} (aka \emph{instructional policy}, \emph{instructional
+  strategy} are used to help the student with learning.
+  They support the teacher by making some decisions instead of her
+  (such as assigning different task to each student)
+  % enabling her to concentrate on the tasks for which the people are better
+  % then computers (typically inner-loop interactions, see below)
+  or even substitute the teacher completely when not available
+  (e.g. for home studying).
+\item Includes several tasks (problems); common classification:
+  within a single task session
+  (\emph{inner loop}, \emph{microadaptivity}, \emph{problem solving tutors}),
+  %\emph{solving process tutors}),
+  or between task sessions
+  (\emph{outer loop}, \emph{macroadaptivity}, \emph{problem selection tutors})
+  \cite{its-learner-models}.
+  Both loops can be further decomposed hierarchically
   (e.g. in outer loop: choosing a problem set to practice vs. choosing a task
   within that problem set).
   % TODO: add example for inner loop (note: not common)
-\item What (ordered from the most outer to the most inner loop):
+  % View from \cite{its-learner-models}: inner = problem step,
+  % outer = problem selection, curriculum loop = which PS).
+\item Tutor tasks (control problems):
 \begin{itemize}
-\item \emph{Curriculum sequencing} (Content sequencing?)
+\item \emph{Curriculum sequencing}. (?? Content sequencing)
   What topic to learn next? (What problem set to practice next?)
-  Relevant for systems for a lot of diverse content with prerequisity structure.
+  Relevant for systems with a lot of diverse content with prerequisity structure.
   (e.g. in \cite{its-programming}).  % \emph{learning path}
-\item \emph{Mastery learning}
+  (Alson known as \emph{curriculum loop} \cite{its-learner-models}.)
+\item \emph{Mastery learning}.
   Continue to practice the current topic or progress to another one?
   (e.g. in Umime Programovat)
 % TODO: unify/clarify topic = problem set?
-\item \emph{Task recommendation}
+\item \emph{Task recommendation}.
   Which task to tackle next (possibly from a given problem set)?
  (e.g.: Tutor)
-\item \emph{Adaptive scaffolding} (??) --
+\item \emph{Adaptive scaffolding} (??).
   Should we provide the student with a help to solve the current task
-  (instruction, hint, worked out example, explatanation)?
+  (e.g., show an instruction, a hint, a worked out example, or an explatanation)?
   (or even a suggestion to give up and try an easier task).
+  (Example: cognitive tutors - REF.)
 \end{itemize}
-\item Often, tutor models use a domain and a student model as an input,
-  but not always
-  (model-free approaches exists, e.g. a classifier for task recommendation that
-  uses the complete student history, or mastery learning with
-  "3-correct-in-a-row" ...  though both of these cases can be viewed just as
-  trivial special cases of student models) (REF).
-\end{itemize}
+\item TODO: figure: curriculum-outer-inner loops + corresponding tutor tasks
 
+\item Our focus is on the outer-loop.
+  The inner-loop is better suited for people (instructors)
+  (REF: Essa, 2016: A possible future for next generation adaptive learning
+  systems.)
 
-Planning vs. single-action:
-Currently, focus on single decision based on currently learned models
+\item \emph{Model-based vs. model-free} (??).  % TODO: check terminology
+  Often, tutor models use a domain and a student model as an input, but some
+  tutors use either the full history of the student, or, on the other end of
+  the spectrum, just a simple summary statistic (such as number of solved
+  consecutive tasks with good performance) However, both of these cases can be
+  viewed just as trivial special cases of student models) (REF).
+
+\item \emph{Hierarchical tutor} may use different student and domain models
+  for different tasks (outer loop vs. inner loop).
+
+\item \emph{Reflexive vs. planning tutors}.
+Current research and systems focus on single decision based on learned models
 without a look-ahead planning.  % vs. in RL, Robotics, and CSP communities
-Example to illustrate, how the planning could help in task recommendation:
+Example to illustrate how the planning could help in task recommendation:
 2 unsolved tasks left in current PS, neither of them is enough to master the topic,
 the more difficult is slightly better fit to the skill; still it is better to
 start with the easier one.
 Example of planning for curriculum sequencing: generating a sequence of tasks
-\emph{learning path}) towards the requested topic \cite{its-programming}.
+(\emph{learning path}) towards a requested topic \cite{its-programming}.
+
+\item Output is either a single action to perform,
+  (deterministic strategy/policy)
+  or preferences on actions (stochastic strategy/policy).
+  (Action selection for distributions: max / randomly-by-weights +
+  exploration.)
+  Availabele actions depend on the tutor task;
+  e.g. which hint to show, which task to recommend, etc.
+\item Possible representations of the tutor:
+\begin{itemize}
+\item \emph{Rules.}
+  Mapping from conditions about states to actions, possibly with preferences.
+  Each rule $R_i$ is a triple $(c_i, a_i, p_i)$
+  consisting of a binary condition $c_i: S \rightarrow \{0, 1\}$,
+  action $a_i \in A$, and preference $p_i \in \mathbb{R}$.
+  If several rules apply, then either the one with the highest preference is used,
+  or their (aggregated) preferences are used as weights for randomized selection.
+  (REF)
+  (Extension: ??soft/fuzzy rules: $c_i: S\rightarrow [0, 1]$)
+% (?? names: rule-base tutors, production rules, expert systems) (REF).
+\item \emph{Action-value function.}  % terminology borrowed from RL
+  $Q: S \times A \rightarrow \mathbb{R}$.
+  Function from pair of (student, action) to a score
+  (prefererence -- REF to evalution section).
+  For a finite amount of states, the mapping can be stored as a table,
+  otherwise is approximated, e.g. through linear regression -- a weighted sum
+  of some features that depend on the given student and action.
+  (Rules can be transformed to action-value fn by aggregating preferences of
+  all rules that trigger for current state. TODO: formula)
+  (REF example)
+\item \emph{Policy.}  % terminology borrowed from RL
+  $\pi: S \rightarrow A$.
+  Mapping from student directly to an action or distribution on actions
+  (REF example)
+  (Action-value fn can be streightforwardly transformed to a
+  deterministic/stochastic policy.)
+\item TODO ?? Other options.
+\end{itemize}
+\end{itemize}
 
 
+\subsection{Curriculum sequencing}
 
-- "problem solving / solution analysis / solving process tutors",
-  (e.g. cognitive tutors, constraint based models)
-  (which step to do next towards solving the task? -> which hint to show?)
+TBA; similar to task recommendation (...), focus on prerequsities + coherence;
+manually via "precedes/follows" relations between PS (UmimeX)
 
-
-- Our focus is on the outer-loop as the inner-loop is better suited for people (instructors)
-(REF: Essa, 2016: A possible future for next generation adaptive learning systems.)
-
-- hierarchical tutor: using different student models for different loops
-  (inner, outer curriculum)
-
-- TODO: expert systems -- production rules with preferences
-  (for inner loop: given the current state, whate step to do next to solve the task
-  (may also work with misconceptions to suggest a remedy step);
-  for outer loop: given the current state of the student, what task to solve next)
-  (can be also viewed as state->actions mapping)
-  -> ? can optimize preferences via reinforcement learning (or buckshort heuristic),
-  or even find new rules using population-based heuristic search such as genetic algorthms
-
-\subsection{Task Recommendation}
-\label{sec:task-recommendation}
-
-Student models are used by an \emph{instructional policy} to recommend
-  the most suitable task for a student.
-In spite of having all the predictions about success probabilities
-  and time estimates available,
-  task recommendation is not an easy task.
-First, it is not clear what difficulty level is optimal.  % TODO: example (75 % of success etc.)
-Second, it may vary for different students, domains or types of problems.
-Furthermore, optimal difficulty is not the only criterion to be considered.
-For instance, diversity of tasks is important to keep students interested.
-No principled techniques for task recommendation have been developed yet;
-however, several heuristic approaches have been used
-  and proved to work well (TBA: ref).
-
-TODO: clarify terminology:
-- instructional policy (not defined!) vs. tutoring model (same?);
-- outer and inner loop (figure?)
-  (outer loop: "problem selection loop", "macroadaptivity",
-  choosing chunk, choosing a task within a chunk,
-  inner loop: "microadaptivity", "problem solving and solution analysis tutors"
-  - helping a student to solve the task, giving hints, providing feedback).
-  (\cite{its-learner-models}: inner = problem step, outer = problem selection,
-  curriculum loop = which chunk)
-
-Task recommendation is not a necessary requirement
-  for the system to be adaptive.
-Student models can be utilized by other means to achieve personalized behavior,
-  e.g. in mastery learning (section \ref{sec:mastery-learning}).
-The system can also just provide students with predicted solving times
-  and let them to choose the next task they want to solve.
-
-Showing predictions can be already perceived as a very mild form of recommendation.
-Indeed, recommendations can range from \emph{soft} to \emph{hard}.
-Soft recommendations can be achieved either by
-  ordering tasks according to suitability,
-  filtering and only showing a subset of tasks,
-  or showing suggestion such as
-  ``too easy'', ``too difficult'' and ''ready to attempt'' next to each task.
-For example, suggestions in the form of traffic-light colors
-  are used in the system described in \cite{its-programming}.
-The system can be more strict and show only a single recommended task,
-  or even enforce the recommendation by immediately progressing student to
-  the next task without asking and giving them a chance to select a different task.
-
-\bigskip
-\emph{TODO:\\details about techniques (heuristics, methods) for selecting single best task}
-
-% TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
 
 \subsection{Mastery Learning}
 \label{sec:mastery-learning}
@@ -1188,6 +1184,93 @@ improvement \cite{alg.mastery}
 
 % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
 
+\subsection{Task Recommendation}
+\label{sec:task-recommendation}
+
+\begin{itemize}
+\item Problem: given domain, student, and a problem set, choose an optimal
+  task from the problem set to assign to the student now.
+\item Problem set: chosen by the student or curriculum sequencing tutor.
+
+\item Hard and soft constraints (filters and criteria).
+\item Typically hard constraints: (?? filters)
+\begin{itemize}
+\item Only choose tasks from given problem set.
+\item Avoid already solved tasks.
+\item Avoid the task which was just given up by the student.
+\item (Follow the prerequisities specified in the domain.)
+  (More relevant for curriculum sequencing.)
+\end{itemize}
+\item It is enough to simply apply all filters, unless a sequence of tasks is
+  considered instead of just one. (?? In that case, the techniques from the area
+  of CSP could be used -- REF.)
+\item Typically soft constraints/criteria:
+\begin{itemize}
+\item Optimal difficulty (matching the student skills).
+\item Balance diversity and coherence.
+  Avoid too similar task as the previous one(s),
+  especially if the student solved the task easily.
+  On the other hand, do not make too "big jumps" (e.g. different toolbox or
+  story in each task).
+\item (?? Soft prerequisities)
+\item Exploration (value of information).
+\end{itemize}
+\item ?? Approaches: \emph{heuristic} vs. \emph{optimized} (wrt. a metric)
+  (?? learning -- online/offline).
+\item Techniques:
+\begin{itemize}
+\item \emph{Uniform random selection}. Maximizes the exploration.
+  Works well if the problem set is coherent (approximately same difficulty etc.)
+  (REF usage: Umime Programovat)
+\item Typical example of action-value function for task recommendation is
+  a \emph{weighted sum of errors on the soft constraints}.
+  Both error functions and their weights are ?usually chosen manually
+  (REF usage -- MatMat?).
+  In principle, the weights could be learned to optimize a desired metric, but the
+  learning process is more difficult than for student models,
+  because it is less clear if the decison/prediction was correct.
+  (TODO: elaborate or REF to evaluation).
+  (Task selection: minimizing the sum of errors / randomly-weighted)
+  (Alternative combination of errors: maximum, product/sum-logs).
+\item Instead of manually picking the error functions, we can directly learn
+  them (e.g. via multilayer perceptron) %, or genetic algorithms, ...?
+  ?? not used (or is there an example to REF?)
+\item ?? Policy learning? -- e.g. a decison tree mapping student to a task
+  (?? used anywhere?).
+\item \emph{$\epsilon$-greedy strategy}: combination of random selection choose randomly $\epsilon$
+  to balance exploration and exploitation.
+\item ?? Principled approaches: MDP, weighted/fuzzy CSP
+\end{itemize}
+
+\end{itemize}
+
+
+Task recommendation is not a necessary requirement
+  for the system to be adaptive.
+Student models can be utilized by other means to achieve personalized behavior,
+  e.g. in mastery learning (section \ref{sec:mastery-learning}).
+The system can also just provide students with predicted solving times
+  and let them to choose the next task they want to solve.
+
+Showing predictions can be already perceived as a very mild form of recommendation.
+Indeed, recommendations can range from \emph{soft} to \emph{hard}.
+Soft recommendations can be achieved either by
+  ordering tasks according to suitability,
+  filtering and only showing a subset of tasks,
+  or showing suggestion such as
+  ``too easy'', ``too difficult'' and ''ready to attempt'' next to each task.
+For example, suggestions in the form of traffic-light colors
+  are used in the system described in \cite{its-programming}.
+The system can be more strict and show only a single recommended task,
+  or even enforce the recommendation by immediately progressing student to
+  the next task without asking and giving them a chance to select a different task.
+
+\bigskip
+\emph{TODO:\\details about techniques (heuristics, methods) for selecting single best task}
+
+% TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
+
+
 \subsection{Adaptive Scaffolding}
 
 TODO: terminology:
@@ -1198,6 +1281,15 @@ TODO: maybe just mention in the intro
 
 TODO: automatic hints /explanations / instructions / worked-out example selection/generation,
   (or suggestion to try easier task)
+
+
+TODO: rule-based (expert systems, production rules), with preferences:
+%(domain model should provide "ideal student model":
+%given the current state, what step to do next to solve the task,
+%student model can also include misconceptions (to suggest a remedy step))
+-> ? can optimize preferences via reinforcement learning (or buckshort heuristic),
+  or even find new rules using population-based heuristic search such as genetic algorthms
+
 
 
 \section{User Interface}
