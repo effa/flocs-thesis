@@ -665,10 +665,14 @@ only track a single point estimate,
 a few numbers (e.g. mean and standard deviation for normal distribution).
 \item \emph{Representation of performance}:
   binary correctness (solved or failed),
-  performance categories (e.g. poor, good, excellent),
+  discrete performance levels (e.g. poor, good, excellent),
+  continuous performance (\emph{partial credit} (REF)) $p_{ij} \in [0, 1]$,
   log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
   or a continuous score combining time and correctness
   (see \cite[p.106]{rihak-phd} for some possible mappings).
+\item ?? \emph{Predictive vs. descriptive}.
+Predictive models can predict the performance of the student on a given task,
+while descritive models only describe the past performance of the student.
 \item \emph{Online vs. offline.}
 In online models, parameters can be updated gradually after each task session
 ( i.e. ?? algrothm for learnining model parameters is online, REF: online algorithms).
@@ -677,8 +681,9 @@ Models used in (??) adaptive testing (REF), assume that no learning happens
 during the interaction with the system. They can be reduced to models with
 learning by reestimating skills from the full student history after each task
 session, but this leads to offline models.
-?? Note that the models that contain learning often include additional assumption
-about how the learning happens (REF/example).
+Some models that contain learning include additional assumptions
+about how the learning happens. For example, BKT (REF section)
+assumes a discrete transtion from unknown state to the known state.
 \item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
 The more skills and relationships between them the model includes,
 the more precisely it can capture the reality, but only
@@ -719,32 +724,38 @@ Comprehensive overviews of student modeling:
   block-base programming environmant).
 \item We first compress these \emph{observational data} into a
   single number representation of \emph{performance}.
+\item The chosen representation/computation may play important role for the usage
+  of the student model, e.g. in \cite{alg.mastery} they achieved better results
+  in mastery learning by incorporating solving times into the performance instead
+  of using just binary correctness (?? domains: math, czech).
 \item Performance representation in introductory programming:
   most students solve most tasks given enough time, so correctness is out of
   question. We could still map task session data into a binary performance (1
   = good, 0 = poor), but that would not allow to distinguish between students
   for whom are the tasks just right and those for whom are too easy.
-  Therefore we have chosen the three-valued domain:
-  $p_{ij} \in \{-1, 0, 1\}$, where -1 = poor performance, 0 = good performance,
-  1 = excellent performance; matching the predictions that we care about:
-  whether a given task is for given student too difficult, just right, or too easy.
-\item ?? consider using $[0, 1]$ range to be in line with the multivalued logics
-  (performance as a measure of success) (disadvantage: suggest it has interval
-  scale + possible confusion with the probabilistic interpretation, which
-  doesn't make much sense -- unless we assume a very specific shape of the
-  probablistic distribution, we need to specify 2 numbers to get the probablity
-  table)
-\item Another option would be to model log-times (used e.g. in Tutor - REF)
-  (?? or continuous partial credit).
-\item Example of performance compression/extraction:
-  based on solving time thresholds
-  (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
-  (+ possibly REF other examples)
+\item Three-level domain $p_{ij} \in \{0, 0.5, 1\}$ (poor, good, excellent performance)
+  could already contain sufficient information for many applications
+  (should be verified by future research)
+  and mathces the predictions whether a given task is for given student too
+  difficult, just right, or too easy.
 \item Ordinal scale from definition;
   ??  It is convenient to treat it as an interval variable,
   but then it should be verified on data that the chosen compressed performance
   behaves accordingly. (TODO: explain / REF to a paper or relevant analysis in
   thesis)
+\item ?? range $[0, 1]$ vs. -1, 0, 1; (disadvantage of 0-1: suggest it has interval
+  scale + possible confusion with the probabilistic interpretation, which
+  doesn't make much sense -- unless we assume a very specific shape of the
+  probablistic distribution, we need to specify 2 numbers to get the probablity
+  table)
+\item Example of performance compression/extraction:
+  based on solving time thresholds
+  (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
+  (+ possibly REF other examples)
+  (??TODO: figure -- with multiple possible representations).
+\item Another option would be to model log-times (used e.g. in Tutor - REF),
+  or continuous partial credit by mapping solving times to the 0-1 range
+  (e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery}).
 \item While the compression causes a loss of information,
   it also reduces noise present in the raw data.
   Most importantly, it helps to avoid a combinatoric explosion of
@@ -1131,10 +1142,45 @@ Example of planning for curriculum sequencing: generating a sequence of tasks
 \end{itemize}
 
 
-\subsection{Curriculum sequencing}
+\subsection{Curriculum Sequencing}
 
-TBA; similar to task recommendation (...), focus on prerequsities + coherence;
-manually via "precedes/follows" relations between PS (UmimeX)
+\begin{itemize}
+\item Problems of curriculum sequencing:
+\begin{itemize}
+\item \emph{Problem set selection}: domain, student $\rightarrow$ single problem set.
+\item \emph{Problem sets filtering / ranking / scoring}:
+  recommend multiple PS, possibly ordered, possibly with assigned scores (how
+  much they are recommended).
+\item \emph{Generating learning path}: given a student and requested problem set (or a concept),
+  return a (minimal) sequence of problem sets that leads to the acquiring the
+  requested knowledge \cite{its-programming}.
+\end{itemize}
+
+\item Similar to task recommendation (REF section). Differences:
+  much fewer problem sets than tasks,
+  focus on prerequsities,
+  often there even exists a reasonable total ordering of problem sets
+  (consider units in a textbook).
+\item Advantages of PS selection + task selection from a PS over direct task selection from all tasks in the system:
+  (1) this decomposition makes the problem much simpler (both subproblems can be solved reasonably well even by simple heuristics);
+  (2) focus and coherence of tasks -- students know what they are learning and does not need to adjust to very different setting every time (e.g. toolbox is not changing chaotically).
+
+\item In a system for learning introductory programming with only a few problem sets,
+  it is reasonably to assume that the student would like to "solve" (achieve mastery in)
+  all problem sets. % Especially, if the UI shows which PS are solved and which not.
+\item In such case, having a total ordering on all problem sets (according to their
+  ``global difficulty'') and always recommending the first unsolved problem set
+  is a reasonable approach.
+\item If the structure is not ordinal, than we can still manually specify a
+partial ordering describing which PS follow after another PS (used e.g. in UmimeX)
+% ?? usually: "follow" = reversed-OR-prerequisity,
+explicitly describing a recommendation fot the next PS after the current one is solved.
+\item Yet another option is to specify prerequisties and recommend only PS whose
+  prerequisites are satisfied.
+\item The structure between PS in domains can be discovered/verified/improved using
+  offline analysis of collected data, or online experiments comparing multiple options.
+\end{itemize}
+
 
 
 \subsection{Mastery Learning}
@@ -1158,44 +1204,40 @@ manually via "precedes/follows" relations between PS (UmimeX)
   (1) to determine if the student already achieved mastery,
   (2) to show progress to the student (progressbar).
   % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
-\item If the problem set is coherent, then the used student model can be very
-  simple, assuming a single skill and same difficulties accross tasks in the PS.
-  An example of such simple model is EMA
-  (REF EMA section in student modeling, REF paper supporting this proposition).
-\item Another simple, but popular approach: N-correct-in-a-row, but that assumes
-  a binary performance (we could use something like N-with-at-least-good-performance).
-\item ?? Knowledge transfer -- how to use information about what the student
-  already solved to improve the mastery learning?
+\item Simple approaches -- using \emph{summary statistics}, i.e.
+  single-concept single-difficulty descriptive student models:  % TODO: make sure the terms are defined
+\begin{itemize}
+\item EMA (REF EMA section in student modeling) (used in UmimeP, REF-existing-systems),
+\item NCC (``N consecutive correct''), but that assumes binary performance
+  (we could use something like N-with-at-least-good-performance).
+  (used in KA/2018, REF-existing-systems).
+\end{itemize}
+\item If the problem set is coherent (tasks in PS have approximately same difficulty
+  and cover the same concepts), than simple EMA works well \cite{alg.mastery}.
+\item More important than chosen type of model is its input data;
+  e.g. if the solving time is included in the performance (REF to performance section)
+  \cite{alg.mastery}. % in the cited paper: they improved "quality" of MS by including
+  % solving times over just binary correctness, ?? in both Math and Czech?
+\item Disadvantage: no knowledge transfer (using the student history to improve
+  mastery learning). Solution: using a sophisticated student model -- either completely,
+  or just for initial setting of parameters of the simple model
+  (e.g. inital score and/or learning rate and/or threshold for EMA).
+\item TODO: REF some research/systems examples using sophisticated student models
+  for mastery learning (hub: bibliography in \cite{alg.mastery}).
+\item Parameters:
+\begin{itemize}
+\item threshold + parameters of chosen student models
+\item Balance between overpractice and underpractice. (The righ value is application dependent.)
+\item Manually: ?? using effort-score graphs \cite{alg.mastery} TODO: (elaborate)
+\item Heuristically (1-step learning): e.g. require specific maximum time (e.g. 1 minute)
+  to achieve mastery for genius.
+\item Joint vs. 2-phase optimization
+  (2-phase: for predictive models: first optimize the student model for its
+  predictive accuracy, then optimize the threshold given fixed student model).
+\item ?? ML wrt. to the long-short term metrics
+\end{itemize}
 \end{itemize}
 
-
-(DQ: it seems to me, that a simple summary statistic is just an extreme case of
-a student model; or is there a fundamental difference? E.g. making or not
-making an assumptions about learning, as (implicitly) suggested in \cite{alg.mastery}?
-Or being able to predict some sort of performance of the student, e.g. probability of
-success?)
-(REF same examples using student models, see \cite{alg.mastery} for relevant
-papers to read)
-
-- examples of systems using mastery learning (ref to the previous chapter)
-
-- important: which data to use for decision (specifically: it is important to
-incorporate solving times); concerning the technique, EMA (exponential moving
-average) is sufficient; modeling students does not result in a significant
-improvement \cite{alg.mastery}
-
-- usage of response time:
-1) discretization, but binarization is too coarse
--> notion of partial credit, e.g. 1 for fast solution, 0.5 for slow solution,
-0 if failed to solve;
-2) continuous mapping from respone time to the 0-1 range
-(e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery})
-
-
-- choosing the right threshold (balance between overpractice and underpractice;
-(application dependent));
-- ? using effort-score graphs \cite{alg.mastery}
-- ? require the maximum time to achieve the mastery for genius
 
 \subsection{Task Recommendation}  % ?? "task selection"
 \label{sec:task-recommendation}
@@ -1284,31 +1326,90 @@ The system can be more strict and show only a single recommended task,
 \item ?? Principled approaches: MDP, weighted/fuzzy CSP
 \end{itemize}
 \item TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
-
-
-
-
 \end{itemize}
 
 
 \subsection{Adaptive Scaffolding}
 
-TODO: terminology:
-  scaffolding (broader term, not necesarily just-in-time or automatic),
-  "just-in-time feedback" (\cite{student-models-review-2012})
+\begin{itemize}
+\item (inner loop)
+\item ?? \emph{scaffoling} = helping student to solve a task
+  (why: to make them to solve tasks slightly behind ther current knowledge to extend it).
+\item ?? \emph{adaptive scaffolding} -- (vaguely) helping student during solving a task
+  using automatic techniques to either generate possible hints in advance,
+  or to decide when and which hint to show.
 
-TODO: maybe just mention in the intro
+\item Possible \emph{hints} (types of scaffolding):
+\begin{itemize}
+\item TODO: refine terminology.
+\item \emph{pre-explanations} --
+  how something works, e.g. semantics of repeat-block,
+  % Note: currently called "mini-instructions" in the system
+\item \emph{post-explanations} --
+  why something happened (REF example print-screen, e.g. that the task was not
+  solved becouse the spaceship has not reached the final line),
+\item \emph{worked-out examples} --
+  special type of explanations, "inductive explanations",
+  short programs/snippets to illustrate a concept.
+\item \emph{instructions}: what to do right now
+  (e.g. ``Drag and drop this block into the workspace.''),
+\item \emph{interruption suggestion} --
+  (special type of instruction),
+  suggestion to give up and try an easier task.
+\item TODO: ref examples and relevant research for all of these.
+\end{itemize}
 
-TODO: automatic hints /explanations / instructions / worked-out example selection/generation,
-  (or suggestion to try easier task)
+\item All of the can be to some extent used manually (i.e defining exact point in time
+  and exact hints that will be shown to the student).
+\item Extension points for adaptivity:
+\begin{itemize}
+\item \emph{hints generation} from collected history (REF),
+\item \emph{just-in-time hint selection} (REF+page: \cite{student-models-review-2012})
+  % note: they mention a broader category of "just-in-time feedback")
+  -- algorithm that decides whether to show a hint and which one
+  (using either a heuristic, such as passed time, or and inner-loop student model that capture
+  possible misconceptions of the student).
+\item \emph{hint personalization} -- modifying the text of hint based on the information
+  about the student
+  (simple example: using name of the student or their favourite characters in the text).
+  (REF: there was a paper about how these simple things help for interest of the students)
+\end{itemize}
+\item TODO: Examples + REFs (e.g lisp-tutor)
+
+\item Just-in-time hint selection -- how:
+\begin{itemize}
+\item \emph{Detecting incorrect steps.}
+  Requires "ideal student model" = given the current state, what step to do
+  next to solve the task.
+  If diverting, show the student an instruction that forces him to get back on
+  the right path leading to a solution.
+  REF: lisp tutor.
+\item \emph{Detecting misconceptions.}
+  Requires an inner-loop student model that includes misconceptions (TODO: example)
+  and showing a relevant hint to ?eliminate each misconcpetion as soon as detected.
+\item \emph{Rule-based approach.}
+  More generally, the tutor can include arbitrary conditions on current student state,
+  mapping them to hints (and possibly preferences).
+  The preferences can be then optimized e.g. using ?? buckshort heuristic (REF) (or RL, see below).
+  % ?? Even new completely rules can be learned automatically, using
+  % population-based heuristic search such as genetic algorthms (REF). --
+  % probably not enough/useful data and you don't want to do that online...
+\item \emph{Reinforcement learning.}
+  Optimizing policy for an (unknown) MDP, in which
+  state = student model for given task (inner loop),
+  actions = possible hints (or none),
+  time steps: e.g. after each edit or code execution,
+  reward: e.g. +1 if solves the task (+ discount to prefer shorter paths).
+  -> ?? RL techniques (enough data? used or not?)
+\end{itemize}
+\end{itemize}
 
 
-TODO: rule-based (expert systems, production rules), with preferences:
-%(domain model should provide "ideal student model":
-%given the current state, what step to do next to solve the task,
-%student model can also include misconceptions (to suggest a remedy step))
--> ? can optimize preferences via reinforcement learning (or buckshort heuristic),
-  or even find new rules using population-based heuristic search such as genetic algorthms
+\subsection{Evaluation}
+
+TBA (from the evaluation section)
+
+
 
 
 
