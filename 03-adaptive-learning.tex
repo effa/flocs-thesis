@@ -1135,9 +1135,9 @@ concepts, if we have a similarity network between concepts)
 
 \begin{itemize}
 \item \emph{Tutor models} (aka \emph{instructional policy}, \emph{instructional
-  strategy} are used to help the student with learning.
+  strategy}) are used to help students with learning.
   They support the teacher by making some decisions instead of her
-  (such as assigning different task to each student)
+  (such as assigning tasks to students)
   % enabling her to concentrate on the tasks for which the people are better
   % then computers (typically inner-loop interactions, see below)
   or even substitute the teacher completely when not available
@@ -1233,7 +1233,7 @@ Example of planning for curriculum sequencing: generating a sequence of tasks
   (REF example)
 \item \emph{Policy.}  % terminology borrowed from RL
   $\pi: S \rightarrow A$.
-  Mapping from student directly to an action or distribution on actions
+  Mapping from student state directly to an action or distribution on actions
   (REF example)
   (Action-value fn can be streightforwardly transformed to a
   deterministic/stochastic policy.)
@@ -1410,6 +1410,7 @@ The system can be more strict and show only a single recommended task,
 \item ?? Approaches: \emph{heuristic} vs. \emph{optimized} (wrt. a metric)
   (?? learning -- online/offline).
 \item Techniques (for single task recommendation):
+  (TODO: disentangle tutor representation vs. learning)
 \begin{itemize}
 \item \emph{Uniform random selection}. Maximizes the exploration.
   Works well if the problem set is coherent (approximately same difficulty etc.)
@@ -1420,8 +1421,8 @@ The system can be more strict and show only a single recommended task,
   (REF usage -- MatMat?).
   In principle, the weights could be learned to optimize a desired metric, but the
   learning process is more difficult than for student models,
-  because it is less clear if the decison/prediction was correct.
-  (TODO: elaborate or REF to evaluation).
+  because it is less clear if the decison/prediction was correct
+  (section \ref{tutors.evaluation}).
   (Task selection: minimizing the sum of errors / randomly-weighted)
   (Alternative combination of errors: maximum, product/sum-logs).
 \item Instead of manually picking the error functions, we can directly learn
@@ -1514,6 +1515,7 @@ The system can be more strict and show only a single recommended task,
 
 
 \subsection{Evaluation}
+\label{tutors.evaluation}
 
 \begin{itemize}
 \item Evaluation should be derived from the long-term objectives (REF).
@@ -1585,7 +1587,7 @@ The system can be more strict and show only a single recommended task,
 \begin{itemize}
 \item The combination can be view as just a more complicated task selection algorithm
   (choosing now from all tasks in the system), so the evaluation approaches described
-  above for any tutor model still applies.
+  above for any tutor model still apply (??).
 \item In addition: \emph{progression analysis} -- measuring composition (and pace)
   (composition = balance between introduction of new concepts and practicing (reinforcing) the already learned concepts) \cite{progression-analysis}
 \item REF to another approaches in later sections (online experiments, simulations)
