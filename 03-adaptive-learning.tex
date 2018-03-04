@@ -579,6 +579,7 @@ Learning:
     detecting mastery (skill of given concepts is above a threshold),
     showing hints when a student is digressing from the path towards a solution.
   \item In UI: showing feedback for the students and teachers
+        \cite{instructor-dashboard-realtime}
         (visualization of skills -- "open learner model").
   \item For online evaluation -- insight for developers (TODO: example).
   \item For offline evaluation -- insigth by researchers and programming teachers
@@ -814,7 +815,7 @@ the model data (by an online update function after each task session).
 \item skills for each student-??concept pair.
 \end{itemize}
 
-\subsubsection{Algorihtms}
+\subsubsection{Algorithms}
 \begin{itemize}
 \item \emph{learning} population parameters (can be offline),
   (?? can we make population parameters part of the domain to have a single
@@ -1019,6 +1020,13 @@ concepts, if we have a similarity network between concepts)
 \item TODO: discuss the relevance for our domain
 \end{itemize}
 
+\subsection{Knowledge Space Models}
+
+\begin{itemize}
+\item TODO: explain KST ("Knowledge Space Theory") + REF
+\item combination of knowledge space and a logistic model
+      (notion of "distance to knowledge boundary") \cite{progression-analysis}
+\end{itemize}
 
 
 \subsection{Evaluation}
@@ -1550,7 +1558,18 @@ The system can be more strict and show only a single recommended task,
   % TODO: other ranking metrics (average precision, lift index)?
 \end{itemize}
 
+\item Hierarchical tutor evaluation (e.g. combined effect of a particular combination
+  of a PS selection algorithm, mastery decision algorithm and task selection algorithm):
+\begin{itemize}
+\item The combination can be view as just a more complicated task selection algorithm
+  (choosing now from all tasks in the system), so the evaluation approaches described
+  above for any tutor model still applies.
+\item In addition: \emph{progression analysis} -- measuring composition (and pace)
+  (composition = balance between introduction of new concepts and practicing (reinforcing) the already learned concepts) \cite{progression-analysis}
 \item REF to another approaches in later sections (online experiments, simulations)
+\item REF to evaluation section: how to evaluate combined effect of all tutor
+  models and other components in the adaptive system
+\end{itemize}
 
 \item %# Beyond simple accuracy
 So far mentioned metrics focus on accuracy of the recommendations,
@@ -1583,6 +1602,10 @@ of domain and tutor model)
   (see soft-vs-hard recommendations section)
   progress towards mastery (= tutor+student model)
   (progressbar)
+- (real-time) dashboards for instructors to support good decisions,
+  such as how to pair students or which student to help \cite{instructor-dashboard-realtime}
+  (the cited paper includes an evalution using a combination of historical and simulated data;
+  and domain-specific metrics such as \emph{Help Index} and \emph{Peer Tutor Impact}).
 
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
@@ -1953,6 +1976,10 @@ TODO:
 - REF examples (e.g. in thran-thesis)
 - they can also provide best-case performance, suggest how much data (at least) is needed to achieve stability/good performance
 
+
+Examples:
+- \cite{instructor-dashboard-realtime}:
+ simulating instructors interacting with a dashboard (to evaluate how the dashboard is useful)
 
 
 \subsection{Data Collection}
