@@ -671,6 +671,9 @@ a few numbers (e.g. mean and standard deviation for normal distribution).
   log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
   or a continuous score combining time and correctness
   (see \cite[p.106]{rihak-phd} for some possible mappings).
+?? \emph{probabilistic models} (vs. deterministic)
+  = predict a probability distribution of performance insteaf of a single point
+  (?? and/or represent skill as probabilist distributions?)
 \item ?? \emph{Predictive vs. descriptive}.
 Predictive models can predict the performance of the student on a given task,
 while descritive models only describe the past performance of the student.
@@ -754,6 +757,10 @@ Comprehensive overviews of student modeling:
   (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
   (+ possibly REF other examples)
   (??TODO: figure -- with multiple possible representations).
+\item The compression algorithm can be much more complex;
+  for example, a trained recurrent neural network reading a series
+  of program snapshots embeddings  % AST transformed to vectors of floats
+  \cite{student-models-deep-learning}.
 \item Another option would be to model log-times (used e.g. in Tutor - REF),
   or continuous partial credit by mapping solving times to the 0-1 range
   (e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery}).
@@ -875,6 +882,8 @@ The size of the change is proportional to the prediction error -- difference
 \begin{itemize}
 \item learning rate -- not decreasing, becouse the skill is assumed to change over time
   (``nonstationary variable'')
+  \cite{student-models-recent-data}
+  % TODO: check the cited paper properly
 \item note: possibility to also update task difficulties online (with
   decreasing learning rate, because the difficulties are assumed to converge)
 \item The main advantage of using the Elo model is its simplicity, flexibility (TODO: elaborate),
@@ -993,6 +1002,7 @@ concepts, if we have a similarity network between concepts)
 \begin{itemize}
 \item special case of DBN, assuming single or disjoint concepts (REF: relevant domain section)
 \item (for single skill, it is even a special case of HMM)
+\item ref: \cite{bkt} % TODO: check the paper
 \item for each skill, two hidden states (known/mastered) or not, observed: performance
 \item assumes: learning (in contrast to basic IRT)
 \item assumes: discrete knowledge state (eithter known or not known) (?! not compatible?)
@@ -1038,15 +1048,16 @@ concepts, if we have a similarity network between concepts)
 \item Example: if the student model is used as a component for task recommendation,
  then we should prefer the student model that leads to the best recommendations.
  (REF: evaluation of task recommendations - later).
-\item However: evaluation of the usage application might be difficult (ex./REF),
+\item However: evaluate the impact of the student model is difficult (ex./REF),
   -> proxies, such as predictive accuracy.
   (with the hope that it would lead to the improvement in the application).
-%\item Although better predictions usually help,
-%  the relationship between their quality and the long term objectives (REF)
-%  is not always straightforward.
-%  If online experiments show that the more accurate predictions would actually
-%  lead to decrease of the long-term objectives,
-%  then these improvements in the predictive power should not by applied.
+\item Although better predictions may have a positive impact on the application,
+  it is not guaranteed (see simulations in \cite{evaluation-leopard}),
+  so it is important not to blindly maximize the predictive accuracy
+  and use several evaluation approaches.
+  %If online experiments show that the more accurate predictions would actually
+  %lead to decrease of the long-term objectives,
+  %then these improvements in the predictive power should not by applied.
 
 \item Quality measures:
 \begin{itemize}
@@ -1060,10 +1071,12 @@ concepts, if we have a similarity network between concepts)
   TODO: describe, REF.
 \item \emph{Plausability of parameters.}
   TODO: describe, \cite{learner-models-integration-skills}
+\item Evaluation wrt. usage -> REF tutor models and system evaluation sections.
 \item TODO: \emph{Other?}
   TODO: describe, REF.
 \item TODO+REF: overview of metrics for student models comparison e.g. in
   \cite{pelanek-evaluation-student-models}
+
 \end{itemize}
 
 \item Metrics for predictive accuracy:
@@ -1275,9 +1288,11 @@ explicitly describing a recommendation fot the next PS after the current one is 
 
 \begin{itemize}
 \item Mastery learning means practicing of a topic (?PS) until covered concepts
-  are mastered, and only then moving to the next topic.
+  are mastered, and only then moving to the next topic. (REF)
   % "fixed outcome, varied time"
   % (vs. classical education: fixed time, varied outcome)
+\item Study on how the mastery learning helps (or rather how the violations of mastery learning
+  lead to worse results): \cite{mastery-learning-scale}.
 \item Problem: input: domain, student (skills), output: decision: mastered/not.
 \item Solution: online algorithm called \emph{mastery criterion}.
 \item Reduction to chosing a suitable student model \ref{sec:student-modeling}
@@ -1298,11 +1313,14 @@ explicitly describing a recommendation fot the next PS after the current one is 
 \item NCC (``N consecutive correct''), but that assumes binary performance
   (we could use something like N-with-at-least-good-performance).
   (used in KA/2018, REF-existing-systems).
+  % Probably analyzed in "The use of probabilistic models in the assessment of mastery",
+  % but that is a super-old article.
 \end{itemize}
 \item If the problem set is coherent (tasks in PS have approximately same difficulty
   and cover the same concepts), than simple EMA works well \cite{alg.mastery}.
 \item More important than chosen type of model is its input data;
-  e.g. if the solving time is included in the performance (REF to performance section)
+  e.g. if the solving time is included in the performance (REF to performance section),
+  and value of the threshold
   \cite{alg.mastery}. % in the cited paper: they improved "quality" of MS by including
   % solving times over just binary correctness, ?? in both Math and Czech?
 \item Disadvantage: no knowledge transfer (using the student history to improve
@@ -1315,7 +1333,8 @@ explicitly describing a recommendation fot the next PS after the current one is 
 \begin{itemize}
 \item threshold + parameters of chosen student models
 \item Balance between overpractice and underpractice. (The righ value is application dependent.)
-\item TODO: Effort vs. Score plot/metrics \cite{learner-models-integration-skills}
+\item TODO: Effort vs. Score plot/metrics
+  \cite{evaluation-leopard, learner-models-integration-skills}
 \item Manually: ?? using effort-score graphs \cite{alg.mastery} TODO: (elaborate)
 \item Heuristically (1-step learning): e.g. require specific maximum time (e.g. 1 minute)
   to achieve mastery for genius.
@@ -1514,7 +1533,7 @@ The system can be more strict and show only a single recommended task,
   a limited proxy metric and its results must be taken with a grain of salt,
   it may be still useful to perform at least some offline evaluation before
   putting the recommender to the wild of real world.
-\item Online evaluation is more reliable, but also much more costly.
+\item Online evaluation is more reliable, but also much more expensive.
   If we are considering many possible tutor models, it is useful
   to first use an offline evaluation to limit the number of models to evaluate
   online to just a few (in order to avoid confronting users with very poor
@@ -1556,6 +1575,9 @@ The system can be more strict and show only a single recommended task,
   Example of some ranking metrics are Spearman's rank correlation coefficient,
   Kendall's rank correlation coefficient, or ??Discounted cumulative gain (REF).
   % TODO: other ranking metrics (average precision, lift index)?
+\item TODO: note on type of metrics: classification metrics, ranking metrics, ...
+\item TODO: \emph{WHITE} metric (Whole Intelligent Tutoring System Empirical Evaluation)
+  \cite{evaluation-leopard}
 \end{itemize}
 
 \item Hierarchical tutor evaluation (e.g. combined effect of a particular combination
