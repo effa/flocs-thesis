@@ -1022,14 +1022,93 @@ concepts, if we have a similarity network between concepts)
 
 
 \subsection{Evaluation}
+\label{sec:student-model-evaluation}
 
 \begin{itemize}
-\item move there the relevant part from the Evaluation section
-\item (wrt to the intended usage)
+\item Ideally, the student model should be evaluated wrt to its intended usage.
+% ?TODO: elaborate: \cite{pelanek-learner-modeling}
+\item Example: if the student model is used as a component for task recommendation,
+ then we should prefer the student model that leads to the best recommendations.
+ (REF: evaluation of task recommendations - later).
+\item However: evaluation of the usage application might be difficult (ex./REF),
+  -> proxies, such as predictive accuracy.
+  (with the hope that it would lead to the improvement in the application).
+%\item Although better predictions usually help,
+%  the relationship between their quality and the long term objectives (REF)
+%  is not always straightforward.
+%  If online experiments show that the more accurate predictions would actually
+%  lead to decrease of the long-term objectives,
+%  then these improvements in the predictive power should not by applied.
+
+\item Quality measures:
+\begin{itemize}
+\item \emph{Predictive accuracy.}
+  TODO: describe, REF.
+  (REF+page: \cite{pelanek-evaluation-student-models})
+\item \emph{Reliability and resolution of predictions}
+  TODO: describe
+  (REF+page: \cite{pelanek-evaluation-student-models})
+\item ?? \emph{Stability of parameters.}
+  TODO: describe, REF.
+\item \emph{Plausability of parameters.}
+  TODO: describe, \cite{learner-models-integration-skills}
+\item TODO: \emph{Other?}
+  TODO: describe, REF.
+\item TODO+REF: overview of metrics for student models comparison e.g. in
+  \cite{pelanek-evaluation-student-models}
 \end{itemize}
 
-
-
+\item Metrics for predictive accuracy:
+\begin{itemize}
+\item Vector of observed performances $p$ is compared to the vector of predicted performances $\hat{p}$ (usually element-wise, summing the individual errors).
+\item Many metrics. Depends on the performance representation.
+\item For interval variables
+  (e.g. log-times, continuous partial credit, probability of success):
+  default choice is RMSE (Root Mean Squar Error). (REF paper supporting this choice).
+  $$
+  RMSE(p, \hat{p}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (p_i - \hat{p}_i)^2}
+  $$
+\item ?? Advantages:
+  simple,
+  differentiable (can be used for optimization through gradient descent),
+  ??theretical soundness (given some ?reasonable assumptions, minimum RMSE results in
+  best linear estimator, and with an additional assumption of normally distirbuted noise
+  even to maximum likelihood estimator (TODO: elaborate+REF; maybe Bishop, 2006).
+\item Disadvantages:
+  (1) susceptible to outliers (single outlier can make the error arbitrary high),
+  (2) can be misleading if performance is not an interval variable).
+% NOTE: Omitted derivation of RMSE (see version control if needed).
+\item \emph{Qualitative metrics}
+  -- for (at least) nominal variables, such as discretized performance
+  -- compare discretized predictions (with the observed values).
+  For example, \emph{accuracy} is a ratio between correct predictions to all predictions.
+  They allow for setting different risks (weights) on different types of errors.
+  (?TODO: precision, recall etc. for multivalued domain?
+    ?? Figure of confusion metrics for 3 values and derived metrics?)
+  (?TODO: metrics independent on chosen thresholds, such as AUC, AUC-PR?)
+  %?? However, these metrics do not distinguish between small and large errors of the predictions,
+  %   which makes them less appropriate for student modelling.
+%\item ?? These qualitative metrics depend on specific thresholds chosen
+%  for discretization of continuous predictions.
+%  There are metrics avoiding this ?problem by using only ranking of predictions.
+%  The most common one is AUC, ``Area Under Curve'',
+%  which is the probability that if one failure and one success are selected by random,
+%  the predictor would assign a higher probability to the success event than to the failure.
+%  There are a few limitations of AUC.
+%  First, it considers all thresholds, but only a range of them is usually relevant.
+%  Second, by only considering the ordering of predictions,
+%    if all predictions are multiplied by a constant, AUC remains unchanged.
+%  Third, if the predicted classes are strongly imbalanced,
+%    high AUC can be achieved by simple classifiers
+%    even if they perform poorly on the minority class.
+%  Generally, AUC is a reasonable choice for intrinsically classification problems,
+%    but not necessarily for student modeling \cite{pelanek-evaluation-student-models}.
+\item ?? sth for ordinal variables (possibly for discretized performance)?
+\item ??TODO: diagram: comparison of these individual errors, sth like in
+  \cite[p.6]{pelanek-evaluation-student-models}, but for 3-valued performance and
+  metrics mentioned here.
+\end{itemize}
+\end{itemize}
 
 \section{Tutor Modeling}
 
@@ -1228,6 +1307,7 @@ explicitly describing a recommendation fot the next PS after the current one is 
 \begin{itemize}
 \item threshold + parameters of chosen student models
 \item Balance between overpractice and underpractice. (The righ value is application dependent.)
+\item TODO: Effort vs. Score plot/metrics \cite{learner-models-integration-skills}
 \item Manually: ?? using effort-score graphs \cite{alg.mastery} TODO: (elaborate)
 \item Heuristically (1-step learning): e.g. require specific maximum time (e.g. 1 minute)
   to achieve mastery for genius.
@@ -1237,6 +1317,7 @@ explicitly describing a recommendation fot the next PS after the current one is 
 \item ?? ML wrt. to the long-short term metrics
 \end{itemize}
 \end{itemize}
+
 
 
 \subsection{Task Recommendation}  % ?? "task selection"
@@ -1407,9 +1488,81 @@ The system can be more strict and show only a single recommended task,
 
 \subsection{Evaluation}
 
-TBA (from the evaluation section)
+\begin{itemize}
+\item Evaluation should be derived from the long-term objectives (REF).
+\item Online (on-policy) vs. offline (off-policy).
+\item Offline evaluation of tutor models is difficult due to missing data.
+  For example, if an evaluated algorithm recommends a task $t$ to student $s$
+  in a specific point of his learning process (e.g. after first 2 solved tasks)
+  but the student $s$ attempted different task at that point,
+  there is no easy way to tell if the recommendation is good or not.
+\item The extremeness of data sparsity makes offline evaluation so challenging,
+  that many learning systems completely skip this type of evaluation,
+  apply offline evaluation only to student models
+  (section \ref{sec:student-model-evaluation})
+  and check quality of tutor models only on the live traffic
+  (section \ref{sec:live-evaluation}).
+\item Nevertheless, realizing that the offline evaluation serves just as
+  a limited proxy metric and its results must be taken with a grain of salt,
+  it may be still useful to perform at least some offline evaluation before
+  putting the recommender to the wild of real world.
+\item Online evaluation is more reliable, but also much more costly.
+  If we are considering many possible tutor models, it is useful
+  to first use an offline evaluation to limit the number of models to evaluate
+  online to just a few (in order to avoid confronting users with very poor
+  tutor models and to collect more data for each of the evaluated model).
 
+\item ?? Possible unifying views of various types tutor models presented above:
+  (1) recommendation algorithms (recommendation: PS, task, hint).
+  (2) MDP-control problem (RL) (actions: PS, mastery decison, tasks, hints) .
+  (difference is whether we consider each action/recommendation separately or not)
+\item Evalution based on recommendation algorithm view requires to define
+  a single recommendation error measure: e.g. 0 if the student solved
+  the task with good performance, 1 otherwise.
+\item Evaluation based on MDPs requires to define a \emph{reward} of each state
+  (?? the more solved tasks with the higher reward) and a discount factor.
 
+\item Approaches based on recommendation algorithm view:
+\begin{itemize}
+\item Prepare a small manually labeled dataset describing appropriate and
+  inappropriate recommendations for given situations.
+\item ?? Use collected data: for each event, check if the item (e.g. task)
+  would be a good recommendation or not (as defined above)
+  and whether the item is withing top $N$ items recommended by the evaluated
+  algorithm. The resulting \emph{confusion matrix} can be summarized
+  by metrics such as accuracy, precision, and recall. (REF)
+  Depending on the user interface, fixed $N$ might or might not make sense.
+  If not, it is possible to use more sophisticated metrics without a fixed $N$,
+  such as AUC (Area Under Curve), or MAP (Mean Average Precision) (REF).
+  % TODO: or DCG?
+  The disadvantage is that collected data are highly biased (either by the
+  adaptive behavior of the system, or by the self-selection bias)
+  (REF to the section on feedback loops for how to partially deal with this issue).
+\item Measure agreement in recommendations between a new recommender and one
+  which is already used and was evaluated on live traffic (recommended by
+  \cite[][Rule \#24]{google-ml-rules}). Especially for incremental deployment,
+  when the same type of model is used, just with recomputed parameters,
+  the agreement should be high.
+  To compare agreement between two recommendation algorithms, we can use
+  \emph{ranking metrics} that use complete lists of ordered items.
+  Example of some ranking metrics are Spearman's rank correlation coefficient,
+  Kendall's rank correlation coefficient, or ??Discounted cumulative gain (REF).
+  % TODO: other ranking metrics (average precision, lift index)?
+\end{itemize}
+
+\item REF to another approaches in later sections (online experiments, simulations)
+
+\item %# Beyond simple accuracy
+So far mentioned metrics focus on accuracy of the recommendations,
+but there are other useful properties of recommendation algorithms,
+such as robustness or diversity.
+% TODO: note: but they are more difficult to express/measure,
+% so they are used much less in practice
+For example, if the system shows two recommended tasks,
+but they are nearly identical, there is no added value
+for the student from the possibility to choose between them.
+% ?? TODO: describe also robustness, REF to the relevant research
+\end{itemize}
 
 
 
@@ -1746,238 +1899,6 @@ pretrained offline), sometimes it make sense to use the "chunk level"
 (to see how it generalizes to new chunks), "school levels" (new populations of
 students)
 (in sklearn this is called "Group k-fold cross-validation")
-
-\subsection{Student Model Evaluation}
-\label{sec:student-model-evaluation}
-
-A student model (described in \ref{sec:student-modeling})
-  is an important component for adaptive learning techniques
-  such as recommendation algorithms.
-Therefore it is reasonable to believe that optimizing the quality
-  of used student models should result in better recommendations
-  and transitively in improving the long-term objectives.
-Although better predictions usually help,
-  the relationship between their quality and the long term objectives
-  is not always straightforward.
-If the online experiments show that the more accurate predictions would actually
-  lead to decrease of the long-term objectives,
-  then these improvements in the predictive power should not by applied.
-
-The next two sections present metrics for two most common
-  types of student models according to their output:
-  predicted solving times and predicted success.
-% TODO (consider): generalize: any real values (e.g. times)
-%                  vs probabilities (success, too-difficult)
-
-
-TODO: Student models are used for different purposes
-(e.g. inner loop, outer loop (task recommendation) human-in-the-loop (insight),
-open learner visualization, )
-evalution should reflect the intended purpose
-(see \cite{pelanek-learner-modeling}).
-
-NOTE: overview of metrics for student models comparison, e.g. in \cite{pelanek-evaluation-student-models}
-
-TODO: reliability and resolution of predictions (also in \cite{pelanek-evaluation-student-models})
-
-TODO: reliability/stability of parameters
-
-TODO: "plausibility of parameters" \cite{learner-models-integration-skills}
-
-
-\subsection{Metrics for Time Predictions}
-\label{sec:metrics-for-time-predictions}
-
-% TBA: note on data we need (and easily collect in this case)
-To evaluate the quality of solving times predictions,
-  vector of predicted times $\hat{t}$ is compared to
-  the vector of true observed times $t$.
-Usually, individual errors between tuples $(t_i, \hat{t}_i)$ are computed
-  and then averaged.
-While it is possible to take an absolute value of the
-  difference $(t_i - \hat{t}_i)$,
-  which results in Mean Absolute Error (MAE),
-it is more common to taking square of the difference
-  to penalize more one large error than multiple small ones.
-In this case, it is common to take a square root of the final
-  average, to bring the units back to the original ones
-  for better interpretation.
-This metric is called Root Mean Squared Error (RMSE).
-
-$$
-RMSE(t, \hat{t}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (t_i - \hat{t}_i)^2}
-$$
-
-Note that the solving times should be first log-transformed;
-  otherwise a single outlier could make the error extremely high.
-% TODO: provide more details/ref to an earlier section about taking logs
-% TODO: also note that these type of metrics will be always susceptible to
-% outliers anyway
-
-% TODO: Statistic notes why the RMSE makes sense:
-%       - explain that given some assumption
-%       -> results in best linear estimator
-%       - and even MLE (assumption of normally distributed noise),
-%                       -> it's equivalent to RMSE - see Bishop, 2006)
-
-%TODO: The metrics presented in this section
-%  can be also used for evaluation of other real-valued predicted variables,
-%  such as flow (if formalized to take real values.)
-
-
-\subsection{Metrics for Success Predictions}
-\label{sec:metrics-for-success-predictions}
-
-Some student models predict a probability that
-  a given student would solve a given task.
-% TODO: statistics terminology - alternative distribution
-In this case, each the true labels are not any real number,
-  but just zeros and ones.
-This difference is important for the choice of a suitable metric.
-Good overview of possible metrics is presented in \cite{pelanek-evaluation-student-models},
-  which also shows a simple example demonstrating why MAE should not be used
-  as an error measure for binary predictions.
-In addition to RMSE, Log-Likelihood (LL) is sometimes used:
-$$
-LL(s, \hat{s}) = \sum_{i=1}^n s_i\log(\hat{s}_i) + (1-s_i)\log(1-\hat{s}_i)
-$$
-% TODO: include derivation of LL from MLE principle (product -> log -> sum)
-Note that LL differs from RMSE in several aspects.
-First, as opposed RMSE, the higher LL the better,
-second, it is negative,
-and third, it is not averaged, so it decreases with the size of data set.
-
-The RMSE and LL are based on a probabilistic view of errors.
-There is another set of metrics based on the qualitative understanding of errors,
-  which compares the observed success with binarized predictions,
-  instead of real-valued probabilities.
-For example, \emph{accuracy} is a ratio between correct predictions to all predictions.
-However, these metrics do not distinguish between small and large errors of the predictions,
-  which makes them less appropriate for student modelling.
-
-% TODO: details, possibly table of common metrics from the confusion matrix
-% (precision, recall, sensitivity, specificity, ...)
-% TODO: mention: allows for setting different risks (weights) on different types of errors
-% TODO: diagram: comparison of these individual errors, see pelanek-evaluation-student-models, p.6
-
-These error metrics depends on a particular threshold chosen
-  for binarization of predicted probabilities.
-There are metrics avoiding this problem by using only ranking of predictions.
-The most common one is AUC, ``Area Under Curve'',
-  which is the probability that if one failure and one success are selected by random,
-  the predictor would assign a higher probability to the success event than to the failure.
-
-There are a few limitations of AUC.
-First, it considers all thresholds, but only a range of them is usually relevant.
-Second, by only considering the ordering of predictions,
-  if all predictions are multiplied by a constant, AUC remains unchanged.
-Third, if the predicted classes are strongly imbalanced,
-  high AUC can be achieved by simple classifiers
-  even if they perform poorly on the minority class.
-Generally, AUC is a reasonable choice for intrinsically classification problems,
-  but not necessarily for student modeling \cite{pelanek-evaluation-student-models}.
-
-% TODO: precise definition of AUC using ROC curve
-% TODO: check if the intuitive explanation of AUC is correct
-% TODO: how to deal with the limitations: global objectives (ranges of thresholds), AUC-PR for unbalanced problems
-
-\subsection{Offline Evaluation of Recommendations}
-
-% TODO: consider moving before metrics for predictions?
-
-Offline evaluation of recommendation algorithms is considerably more difficult
-  than evaluation of student models.
-The reason is missing data --
-  if the evaluated algorithm recommends a task $t$ to student $s$
-  in a specific point of his learning process (e.g. after first 2 solved tasks)
-  but the student $s$ attempted different task at that point,
-  there is no easy way to tell if the recommendation is good or not.
-
-The extremeness of data sparsity makes offline evaluation so challenging,
-that most learning systems completely skip this type of evaluation,
-apply offline evaluation only to student models
-(section \ref{sec:student-model-evaluation})
-and check quality of recommendation algorithms on live traffic
-(section \ref{sec:live-evaluation}).
-
-Nevertheless, realizing that the offline evaluation serves just as another proxy metric,
-  it may be still useful to perform at least some limited offline evaluation
-  before putting the recommender to the wild of real world.
-There are some possible approaches:
-\begin{itemize}
-  \item For each recommendation event in the collected data,
-      look if the recommended event is among one of top $N$ (e.g. 10) tasks
-      recommended by the evaluated recommender
-      and compare it with the observation whether this particular recommendation
-      was good (e.g. whether the student attempted and solved this recommended task).
-      (These comparisons can be turned into several different metrics,
-       which are described in section \ref{sec:metrics-for-recommendation}).
-      % TODO: point to a section with confusion matrix, precision, recall etc.
-  \item Instead of looking at the past recommendations,
-      events when students themselves selected a task from a list of all tasks can be used.
-      (It is also possible to combine both recommendation and self-selection events
-       as a single dataset.)
-  \item Prepare a small manually labeled dataset describing appropriate and
-    inappropriate recommendations for given combination of features, possibly
-    by extending collected data on recommendation.
-  \item Measure agreement in recommendations between a new recommender and one which is already used and was evaluated on live traffic (recommended by \cite[][Rule \#24]{google-ml-rules}).
-\end{itemize}
-
-% TODO: note on data bias in most of these approaches
-
-\subsection{Evaluation of Mastery Learning}
-
-TODO: Effert vs. Score plot/metrics \cite{learner-models-integration-skills}
-
-\subsection{Metrics for Recommendations}
-\label{sec:metrics-for-recommendation}
-
-There are multiple metrics that can be used for both online and offline
-evaluation of recommendations.
-These metrics can be divided into several categories
-according to what data they need.
-
-For a series of student-task interactions paired with a recommendation list of
-fixed length $N$, a \emph{confusion matrix} can be constructed by comparing
-whether the interaction was beneficial for the student or not,
-and whether the task was within top $N$ recommended tasks.
-Having the confusion matrix allows to compute various metrics such as
-accuracy, precision, or recall. % TODO: or sensitivity/specificity/... + define
-
-Depending on the user interface, fixed $N$ might or might not make sense.
-If not, it is possible to use more sophisticated metrics without a fixed $N$,
-such as AUC (described in section \ref{sec:metrics-for-success-predictions}),
-or MAP (Mean Average Precision).
-% TODO: MAP = AUC-PR?
-% TODO: or DCG?
-
-In some cases, for example when comparing two recommendation algorithms,
-complete lists of ordered tasks are available.
-In this case, other \emph{ranking metrics},
-  such as Spearman's rank correlation coefficient,
-  or Kendall's rank correlation coefficient,
-  can be also used.
-% TODO:  Discounted cumulative gain, average precision, lift index, ...
-
-%# Beyond simple accuracy
-All these metrics focus on accuracy of the recommendations,
-but there are other properties of recommendation algorithms,
-which may influence its usefulness for students,
-such as robustness or diversity.
-% TODO: note: but they are more difficult to express/measure,
-% so they are used much less in practice
-
-For example, if the system shows several recommended tasks,
-but these are all nearly identical, there is no added value
-for the student from the possibility to choose from them.
-Similarly, if the student has just solved a task
-without any problem, the next recommended tasks should
-differ considerably not to be boring for the student.
-To measure similarity between tasks, their content features
-constructed from their statement and solution are compared
-using some distance metric.
-% TODO: ref to our current item-similarity research
-
 
 \subsection{Metrics to Guide Learning}
 \label{sec:metrics-to-guide-learning}
