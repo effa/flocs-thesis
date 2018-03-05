@@ -135,7 +135,7 @@ REF: source of the division, e.g. \cite{its-learner-models}
   decides what given student in given domain should do next (e.g. task recommendation).
 \item \emph{User interface model} (tutor-student interface) -- how the domain, student and tutor models should be presented to the student (e.g. task solving environment, overview of all tasks and concepts, achieved skills, recommended task).
 \item \emph{Sensor model} - collecting data from the interactions with the system
-  (includes monitorin?).
+  (includes monitoring?).
 \end{itemize}
 
 I think there are two more components of ITS:
@@ -447,10 +447,10 @@ Learning:
 
 \imgW{concepts-hierarchical}{Hierarchial concepts -- tree (left), DAG (right).}
 
-\subsection{Task Sets}
+\subsection{Problem Sets}
 
 \begin{itemize}
-\item aka problem sets, topics, units, chapters,
+\item aka task sets, topics, units, chapters,
   (and we call them "missions" and "mission phases" in RoboMission)
 \item ? usually corresponds to concepts (or it is convenient if they do),
 \item can be hierarchical (and the hierarchy should match the hierarchy of
@@ -1182,12 +1182,18 @@ concepts, if we have a similarity network between concepts)
   (REF: Essa, 2016: A possible future for next generation adaptive learning
   systems.)
 
+\item ?? TODO: \emph{ML paradigm}.
+supervised learning (scoring/classification/recommendation algorithms, items =
+PS, tasks, hints), vs. reinforcement learning (actions = PS, tasks, hints)
+\cite{rl-for-tutors-evaluation} (elaborate, REF, other paradigms?)
 \item \emph{Model-based vs. model-free} (??).  % TODO: check terminology
   Often, tutor models use a domain and a student model as an input, but some
   tutors use either the full history of the student, or, on the other end of
   the spectrum, just a simple summary statistic (such as number of solved
   consecutive tasks with good performance) However, both of these cases can be
   viewed just as trivial special cases of student models) (REF).
+  TODO: ?? to be called model-based, \emph{predictive} model is needed?
+  (that's how the terminology is used in RL)
 
 \item \emph{Hierarchical tutor} may use different student and domain models
   for different tasks (outer loop vs. inner loop).
@@ -1207,10 +1213,16 @@ Example of planning for curriculum sequencing: generating a sequence of tasks
   or preferences on actions (stochastic strategy/policy).
   (Action selection for distributions: max / randomly-by-weights +
   exploration.)
-  Availabele actions depend on the tutor task;
+  Available actions depend on the tutor task;
   e.g. which hint to show, which task to recommend, etc.
 \item Possible representations of the tutor:
 \begin{itemize}
+\item ?? \emph{Value function + student model.}  % terminology borrowed from RL
+  Value function $v(s, w): S \times \mathbb{R}^n \rightarrow \mathbb{R}$
+  represents approximated discounted cumulative reward (...).
+  To derive a policy, predictive student model is needed.
+  Example: \cite{rl-for-tutors-evaluation}
+  (model-based policy iteration, inner-loop tutor).
 \item \emph{Rules.}
   Mapping from conditions about states to actions, possibly with preferences.
   Each rule $R_i$ is a triple $(c_i, a_i, p_i)$
@@ -1222,18 +1234,25 @@ Example of planning for curriculum sequencing: generating a sequence of tasks
   (Extension: ??soft/fuzzy rules: $c_i: S\rightarrow [0, 1]$)
 % (?? names: rule-base tutors, production rules, expert systems) (REF).
 \item \emph{Action-value function.}  % terminology borrowed from RL
-  $Q: S \times A \rightarrow \mathbb{R}$.
-  Function from pair of (student, action) to a score
+  Function $q(s, a, w): S \times A \times \mathbb{R}^n \rightarrow \mathbb{R}$,
+  that for given state, action and weights (parameters) returns a score
   (prefererence -- REF to evalution section).
-  For a finite amount of states, the mapping can be stored as a table,
+  For a finite amount of states, the mapping can be stored as a table
+  (i.e. no weights are used)
   otherwise is approximated, e.g. through linear regression -- a weighted sum
   of some features that depend on the given student and action.
   (Rules can be transformed to action-value fn by aggregating preferences of
   all rules that trigger for current state. TODO: formula)
   (REF example)
+\item \emph{All-actions-value function.}
+  Function $q(s, w): S \times \mathbb{R}^n \rightarrow A \times \mathbb{R}$,
+  that computes scores for all actions in a single pass.
+  (?TODO: figure to show the difference between various representations)
 \item \emph{Policy.}  % terminology borrowed from RL
-  $\pi: S \rightarrow A$.
-  Mapping from student state directly to an action or distribution on actions
+  Mapping $\pi(s, w): S \times \mathbb{R}^n\rightarrow A$
+  from student state (and parameters) directly to an action
+  (e.g. decision tree?, first unmastered PS)
+  or distribution on actions. (e.g. uniformly random).
   (REF example)
   (Action-value fn can be streightforwardly transformed to a
   deterministic/stochastic policy.)
@@ -1591,6 +1610,8 @@ The system can be more strict and show only a single recommended task,
 \item In addition: \emph{progression analysis} -- measuring composition (and pace)
   (composition = balance between introduction of new concepts and practicing (reinforcing) the already learned concepts) \cite{progression-analysis}
 \item REF to another approaches in later sections (online experiments, simulations)
+  (check and REF for online experiments of tutor models,
+  hub: \cite[p.2/138]{rl-for-tutors-evaluation})
 \item REF to evaluation section: how to evaluate combined effect of all tutor
   models and other components in the adaptive system
 \end{itemize}
