@@ -1,0 +1,130 @@
+\chapter{Design of Game}
+\label{chap:design-of-game}
+
+\begin{itemize}
+\item terminoglogy: game = task? (or all tasks and missions?)
+\item Tasks are the most important part of a system for learning programming,
+because nearly all the time in the system students spend solving the tasks.
+Therefore they need to be fun, entertaining and calling to be solved.
+(TODO: ref to the other requirements mentioned in the prev. chapters)
+%(TODO: also mention how we underestimated the importance of the entertaining tasks in the first prototype)
+\item requirement for adaptive behavior (for outer loop):
+  a large pool of diverse problems
+\item standard choice: "robot on a grid" and Blockly blocks
+\item theme: spaceship in space, collecting diamonds
+\item covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
+\item motivation: intrinsic (fun challenging game + optimal difficulty)
+  + simple external motivation scheme (progress through levels)
+\item TODO: Description of the game follows a methodology from The Book of Lenses,
+  so give it the credit (REF).
+\end{itemize}
+% TODO?: instructions/explanations
+
+\imgW{robomission-task1}{Example of a task in the RoboMission app.}
+
+
+\section{Game World}  % Space World
+\label{sec:robomission.game-world}
+
+\begin{itemize}
+\item original version - robot-in-maze, issues:
+  \begin{itemize}
+  \item not flexible and did not allow for a lot of diverse easy tasks,
+  \item which is crucial for adaptive learning system
+  \item unnecessarily long programs for simple ideas (non-elegant programs) (TBA: show comparision)
+  \item non-elegant tasks
+  \item ugly worlds
+  \item not very original and entertaining for kids
+  \end{itemize}
+\item principle: game itself must be fun to play with (ref: Book of Lenses)
+\item requirements (on the topic/theme/world):
+  \begin{itemize}
+  \item entertaining for children
+  \item allowing to create plenty of diverse (and entertaining) tasks, inluding very simple ones
+  \item programs should be not too verbose
+  \item not limiting adaptability (e.g. story requring a fixed sequence of tasks would be a problem)
+  \item (not limiting another topics later)
+  \end{itemize}
+\item new game: rocket in space - different theme, mechanics, graphics
+\item world elements: grid with colored fields (color clouds) and objects: asteroids and meteoroids, diamonds, wormholes (TODO: explain why), final line, spaceship
+\item spaceship actions (left, fly, right, shoot) and sensors (color, position), limited energy
+\item movement -- always 1 row forward ("continuous flight ahead") --
+  advantages:
+  (1) mitigates ubiquitous left-right turning confusion;
+  (2) shorter programs (REF example);
+  disadvantages:
+  (1) this behavior is different than what most users initially expect
+  (2) underutilization of fields (only 1 field in each row and only once)
+      (leading to long worlds).
+\item chosen remedy for the 2nd disadvantage: worm holes
+  % (another possibilities: multiple spaceships, long worlds)
+\item TODO: shooting
+\item explosion if: gets outside the track, hits a stone
+\item goal: reach last row (blue line), collect all dimanods
+
+%\item REF to formal grammar for the space world in the next chapter
+\end{itemize}
+
+% TODO: use different spaceworld than in Imlementation chapter.
+\imgW[0.4]{spaceworld}{Example of Space World.}
+
+
+\imgW{prototype-pits}{Lesson from the first prototype: world must contain elements that the program cannot check to enable diverse tasks. As we had a natural sensor to check walls, we needed to add pits that could not be checked by any sensor.}
+
+
+\section{Programs}
+\label{sec:robomission.programs}
+
+\begin{itemize}
+\item Given an instace of a spaceworld as described in the previous section
+(input), the goal is to create a program for the spaceship such that it reaches
+the final row and collects all diamonds on the way.
+\item Form of the program: Blockly blocks (+ potentially RoboCode based on
+Python, ref to grammar in next chapter; ref to Blockly in prev. chapters)
+\item Available blocks: depends on the level;
+  actions (...), sensing (...), repeat, while, if, if-else.
+\item execute current program any time until correct
+\item limits: ``lines'', energy.
+  (TODO: explain what they are and why/when they are needed).
+\item Why line-limit instead of block-limit: too many blocks (consider while
+  loop with a compound condition), so it becomes even difficult to count;
+  while the number of lines is always reasonable.
+  Bonus: the limit can be directly used for text-based programming as well.
+\item TODO: design decision: similar to Python as much as possible: for easy transition
+(see the transitional strategies section in chapter 2), allows for AB experiments
+comparing directly the influence of the text/block environment as done e.g.
+in the field study in \cite{comparing-blocks-text-weintrop2017}.
+\end{itemize}
+
+
+% TODO: Image with program
+\imgW{robomission-task2}{Task with asteroids.}
+
+
+\section{Hints}
+\begin{itemize}
+\item instructions/explanations
+\end{itemize}
+
+\imgW{robomission-mini-instruction}{When a student encounters a new programming concept or programming element, the system displays a short instruction.}
+\imgW{robomission-mini-explanation}{The system shows an explanation why the exection was unsuccessful.}
+\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
+
+
+\section{Missions}
+\begin{itemize}
+\item TODO: missions and phases (mention: aiming for a balance between introduction of new concepts and and practice (reinforcement tasks) as in \cite{progression-analysis})
+\end{itemize}
+
+
+\section{Task Editor}  % game editor?
+\label{sec:robomission.task-editor}
+
+A part of the system is the task editor (REF: image)
+that enables to easily create new tasks.
+(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
+(TODO: mention that the task editor is part of the public site, so anybody can create a task, provide a link and ref to details about task format in the next chapter)
+
+
+\imgW{task-editor}{Task editor allows to create new tasks.}
+\imgW{task-editor-vim}{Task editor allows to to write solutions in Python-based RoboCode and edit space world in Vim mode.}
