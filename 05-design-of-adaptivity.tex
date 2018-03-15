@@ -79,29 +79,47 @@ and offering both blocks and Python for the individual competitions.
 Levels from the past compettions can be made public for all students.
 
 
-
-\section{Adaptability}
-\label{sec:robomission.adaptability}
-
-TODO: mimic the structure from the AL chapter (e.g. as subsections):
-domain model, student model, tutoring policy (task recommendation / mastery decision)
+\section{Domain Model}
 
 \begin{itemize}
-\item levels -- currently 9 - divided based on how many block available (usually one new concept in each level)
-\item recommendation -- simple filtering (only consider unsolved tasks on the level $\leq$ student level), simple weighting based on difference between student and task levels (exponential decay), rulette wheel selection
-\item TODO: describe current recommendation strategy
-\item plus: mini-instructions
+\item tasks divided into hierarchical PS (2 layers): called missions and phases
+\item missions -- ordered, 9?, TODO: example/all?,
+\item phases of a mission -- ordered, about 3?, TODO: example,
+\item tasks within phase -- unordered, interchangeable, about 5?
+\item TODO: link to what presented in earlier chapters
+\item FIG
 \end{itemize}
 
 
-% The folloging 3 images have been moved to the previous chapter.
-%\imgW{robomission-mini-instruction}{When a student encounters a new programming concept or programming element, the system displays a short instruction.}
-%\imgW{robomission-mini-explanation}{The system shows an explanation why the exection was unsuccessful.}
-%\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
+\section{Student Model}
 
+\begin{itemize}
+\item skill for each chunk (PS) (or rather "verified skill"), between 0 and 1
+\item update: phase skill $s^0_f \leftarrow 0$;
+  $s^{t+1}_f \leftarrow \min(1, s^t_f + \max(p, \frac{1}{|F_f|}))$
+  (TODO: explain + notation: f, p, F)
+\item update: mission skill: just average of phase skills (huge simplification...)
+\item TODO: link to what presented in earlier chapters
+\item TODO: discretized performance (elaborate: values, how computed, REF)
+\end{itemize}
+
+
+\section{Tutor Model}
+
+\begin{itemize}
+\item PS selection: first unmastered
+  (first unmastered phase of first numastered mission)
+  (reasoning: students want "green everything", small number of PS)
+\item task selection: random + filter to avoid solved tasks
+  (reasoning: interchangeable tasks; exploration maximization)
+\item mastery decision: student model above + threshold exactly 1 (?)
+\item TODO: link to what presented in earlier chapters
+\end{itemize}
+
+
+% TODO: Move/remove the following figures:
 \imgW{robomission-levels-credits}{Students earn credits after each solved task.}
 \imgW{robomission-tasks-overview}{Overview of all tasks. There is currently 9 levels, each containing about 8 tasks.}
-
 
 
 \section{Monitoring and Analysis}
