@@ -245,13 +245,13 @@ Learning programming is difficult,
   because it requires
   to adopt algorithmic thinking,
   understand program execution,
-  and remember a formal syntax of a programming language,
-  all at the same time.
+  and remember formal syntax of a programming language,
+  all of these at the same time.
 To make learning easier,
   the systems presented in the previous section use diverse strategies,
   including avoiding syntax errors,
   providing visual output
-  and showing helpful hints.
+  and showing hints.
 Various other strategies were tried in the past;
 article \emph{Lowering barriers for Novice Programmers}
   \cite{lowering-barriers}
@@ -261,26 +261,29 @@ article \emph{Lowering barriers for Novice Programmers}
 \subsection{Avoiding Syntax Errors}
 \label{sec:avoiding-syntax-errors}
 
-A common strategy in the current systems for learning programming is to avoid syntax errors
-  by replacing textual programming with a drag-and-drop block-based programming.
+A common strategy in the current systems for learning programming for avoiding
+syntax errors is to replace textual programming with drag-and-drop block-based
+programming.
 There are two basic types of block-based interfaces:
-  either there is a square grid defining the program shape
-  (often one row per function),
+  either a square grid defining the program shape,
+  often one row per function,
+  (figures )
   or the blocks can be nested and assembled freely with no limitation on maximum program length
   (often one vertical stack per function).
-Fixed grid is simpler for understanding and manipulation,
+  (figures )
+Fixed grid is simpler to understand and manipulate,
   but it does not allow for direct nesting,
   which is a fundamental feature of computer programs.
 This restriction is usually overcome by
   combining condition and a command into a single block,
-  using recursion instead of loops,
-  and replacing nested sequences of commands by a new function.
+  by using recursion instead of loops,
+  and by replacing nested sequences of commands by a new function.
 
-TODO: the block-based editors are a special case of "structred editors",
-idea: editor only allows edits that transform the code from one syntactically correct
-program to another (basically working on AST level, edit = transforms to another AST)
-(compared to: classical text editors, where the edit can be arbitraty, making the code
-not syntactically correct).
+%TODO: the block-based editors are a special case of "structred editors",
+%idea: editor only allows edits that transform the code from one syntactically correct
+%program to another (basically working on AST level, edit = transforms to another AST)
+%(compared to: classical text editors, where the edit can be arbitraty, making the code
+%not syntactically correct).
 
 // TBA: comparision figure; e.g. Robotanist - fixed grid, Blockly games - nested blocks
 
