@@ -10,95 +10,165 @@ This chapter describes the current state of the art of teaching programming, bot
 There are many systems for learning programming.
 These systems can be categorized by several criteria:
 
-\begin{itemize}
-\item tangibility: computer systems, or physical toys,
-\item platform: web, destkop, or mobile,
-\item target audience: e.g. children in a class,
-\item prerequisites (assumed prior knowledge),
-\item content (covered concepts): loops, conditions, variables, etc.
-\item programming language (block-based vs textual),
-\item type of tasks (e.g. robot in maze, turtle graphics),
-\item (?) playing:learning ratio (term: "game-based learning")
-\item (intelligent behavovior -- discussed in next chapter),
-\item price: free, or paid.
-\end{itemize}
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{l l l}
+\toprule
+Criterion & Examples \\
+\midrule
+Tangibility & computer applications, physical toys \\
+%Target group & primary school, high school students \\
+  % Target group interacts with prerequisities
+Prerequisities & reading, writing, mathematics \\
+Content & loops, conditions, variables \\
+Form & tasks, videos, texts \\ % worked-out examples,
+Tasks & robot on grid, turtle graphics \\
+% Playing-learning ratio & mostly playing, mostly learning \\
+Programming language & block-based, textual \\
+Adaptivity & task recommendation, mastery learning \\
+%Price & free, paid
+\hline
+\end{tabular}
+\end{center}
+\label{tbl:existing-systems-categorization}
+\end{table}
+
 
 The rest of this section describes the most notable systems.
-Section \ref{sec:strategies-for-easier-learning} then attempts to extrapolate useful strategies for teaching programming.
+Section \ref{sec:strategies-for-easier-learning} then extrapolates useful
+strategies for teaching introductory programming.
 
 
 \subsection{LightBot}
 \label{sec:lightbot}
 LightBot%
 \footnote{Available at \url{http://lightbot.com/}.}
-is a mobile/web application with a fixed sequence of tasks for learning programming
-using block-based programming language.
+(figure \ref{fig:lightbot})
+is a mobile and web application with a fixed sequence of tasks solved by
+a block-based programming language.
 Students create simple programs to control a robot living in a grid world.
 The robot can not only walk and turn left and right, but also jump and turn on lights.
-Having 5 different basic commands is useful for diversity of easy tasks.
+Having five different basic commands is useful for diversity of elementary tasks.
 The system covers sequences of commands, procedures, and simple loops via tail-recursion.
 
-\imgW[0.8]{lightbot}{LightBot.}
+\imgW[0.6]{lightbot}{LightBot.}
 
 
+%\subsection{Robozzle}
+%\label{sec:robozzle}
+%With a robot on a grid and block-based programming, Robozzle%
+%  \footnote{Available at \url{http://www.robozzle.com/}.}
+%  is similar to LightBot;
+%however, it adds a new feature: colored fields.
+%Colors can be used in conditional commands,
+%  which allows for hundreds of diverse tasks,
+%  including difficult tasks with sophisticated recursion.
+%Robozzle also allows users to create their own tasks,
+%  which can be tried and rated by other learners.
+%
+%\imgW[0.8]{robozzle}{Robozzle.}
 
-\subsection{Robozzle}
-\label{sec:robozzle}
-With a robot on a grid and block-based programming, Robozzle%
-  \footnote{Available at \url{http://www.robozzle.com/}.}
-  is similar to LightBot;
-however, it adds a new feature: colored fields.
-Colors can be used in conditional commands,
-  which allows for hundreds of diverse tasks,
-  including difficult tasks with sophisticated recursion.
-Robozzle also allows users to create their own tasks,
-  which can be tried and rated by other learners.
 
-\imgW[0.8]{robozzle}{Robozzle.}
+\subsection{Problem Solving Tutor}
+\label{sec:problem-solving-tutor}
+Problem Solving Tutor%
+\footnote{Available at \url{tutor.fi.muni.cz}.}
+includes a few problem sets for practicing programming,
+such as Interactive Python, Robot Karel, or Robotanist.
+Robotanist (figure \ref{fig:robotanist}) is similar to LightBot
+with an addition of colored fields.
+Colors can be used in conditional commands, which allows for diverse tasks,
+including difficult tasks with sophisticated recursion.  After
+each solved task, Problem Solving Tutor shows a recommendation for two next
+tasks, with predicted solving times.
+Showing predicted time to the user serves as a motivational element -- it poses
+a suitable challenge to overcome oneself
+\cite{pelanek-student-modeling-times}.
+
+\imgW[0.6]{robotanist}{Robotanist in Problem Solving Tutor, Detour task.}
 
 
-\subsection{BlocklyGames}
+\subsection{Blockly Games}
 \label{sec:blockly-games}
 Blockly is a popular block-based programming interface.
-In contrast to the blocks in LightBot and Robozzle,
-Blockly blocks can be assembled in nested control structures.
-
-The main purpose of BlocklyGames%
+In contrast to the blocks in LightBot,
+Blockly blocks can be assembled in nested control structures
+% (figure \ref{fig:robomission-task2}).
+Blockly Games%
 \footnote{Available at \url{https://blockly-games.appspot.com/}.}
-is to provide a demo of possible Blockly usages.
-The webpage consists of several simple games, ordered in increasing difficulty.
-For example, in the first level, students learn how to compose blocks together as a puzzle,
-and in the second level they learn loops and conditions by solving tasks in a maze.
-Final level serves as a transition from block-based programming to textual JavaScript programming.
-Each game consists of 5-10 tasks, again with fixed ordered by increasing difficulty, with no personalization.
-The fixed order enables to use the program from the previous task,
-thus gradually build more and more complex programs,
-resulting in, for example, sophisticated images in turtle graphics.
+% TODO: Replace by figure using nested control structures
+% and move the fre to the end of previous sentence.
+(figure \ref{fig:blockly-instruction})
+demonstrate Blockly usage.
+The webpage consists of several simple games, ordered by increasing difficulty.
+For example, in the first level, students learn how to compose blocks together
+as a puzzle, and in the second level they learn loops and conditions by solving
+tasks in a maze. Final level serves as a transition from block-based
+programming to textual programming in JavaScript.
+Each game consists of 5-10 tasks, again ordered by increasing difficulty. %, with no personalization.
+The fixed order enables to build on the program from the previous task,
+thus gradually create more and more complex programs,
+resulting for example in sophisticated images in turtle graphics
 \cite{blockly-10-things}.
 
-\imgW{blockly-instruction}{Blockly Games -- second level. %
-The screenshot demonstrates a non-ignorable interactive instruction, %
-which require to take a described action before it disappears.}
+\imgW[0.7]{blockly-instruction}%
+  {Blockly Games includes non-ignorable interactive instructions, %
+  which require to take a described action before they disappear.}
 
+\subsection{Hour of Code}
+\label{sec:hoc}
+Hour of Code%
+\footnote{Available at \url{https://hourofcode.com}.}
+(figure \ref{fig:hour-of-code-sw})
+provides many one-hour tutorials, each containing about 15 tasks in fixed order
+and using Blockly-based language.
+These tutorials focus on motivation, using videos where famous people explains
+needed concepts, and themes from popular movies and games.  Tutorials use
+high-level theme-specific blocks, such as ``set droid to a [random] speed``
+and are restricted to only one or two programming concepts,
+e.g. sequences and events.
+Sometimes, the built program is not a direct solution for a robot,
+but rather a game, in which the code specifies actions triggered on events.
+
+\imgW[0.7]{hour-of-code-sw}{Hour of Code, Star Wars tutorial.}
 
 \subsection{Human Resource Machine}
 \label{sec:human-resource-machine}
 Human Resource Machine%
-\footnote{Available at \url{http://tomorrowcorporation.com/humanresourcemachine}.}
-is an example of a paid offline computer game for learning programming using block-based programming interface.
-Although it is presented as a game,
-the player spends nearly all the time solving tasks similar to those in the previously mentioned learning systems.
-The sequence of tasks is non-personalized and nearly linear,
-with only a few short side branches.
-The main difference from the other systems is a slightly different domain:
-it uses more low-level programming commands, such as
-input, output, move-from, move-to, add, or jump.
+\footnote{\url{http://tomorrowcorporation.com/human-resource-machine-hour-of-code-edition}}
+%\footnote{Free Hour of Code edition available at \url{http://tomorrowcorporation.com/human-resource-machine-hour-of-code-edition}.}
+is an example of an offline computer game for learning programming.
+%Although it is presented as a game,
+%the player spends nearly all the time solving tasks similar to those in the previously mentioned learning systems.
+%The sequence of tasks is non-personalized and nearly linear,
+%with only a few short side branches.
+It also uses block-based programming, but in a different domain:
+it offers low-level programming commands, such as
+input, output, move-from, move-to, add, or jump
+(figure \ref{fig:human-resource-machine}).
 % input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
 The game comes with a debugger, giving a possibility to step through the program.
-All elements are explained when they first appear and programming blocks can be explained again simply by dragging the block onto a field with a question mark.
+All elements are explained when they first appear, and programming blocks can
+be explained again simply by dragging the block onto a field with a question
+mark.
 
-\imgWithFootnote[0.8]{human-resource-machine}{Human Resource Machine}%
-{Source: \url{https://tomorrowcorporation.com/humanresourcemachine} (Tommorow Corporation).}
+\imgWithFootnote[0.7]{human-resource-machine}{Human Resource Machine}%
+{Source: \url{https://tomorrowcorporation.com/humanresourcemachine}}
+%{Source: \url{https://tomorrowcorporation.com/humanresourcemachine} (Tommorow Corporation).}
+
+\subsection{Khan Academy}
+\label{sec:khan-academy}
+Khan Academy has a computer programming curriculum%
+\footnote{Available at \url{https://www.khanacademy.org/computing/computer-programming}.}
+that uses textual programming in JavaScript with functions for drawing shapes
+in absolute coordinates (figure \ref{fig:khan-academy}).
+In addition to programming tasks, it contains text and video explanations, and
+projects. Some videos are in the form of interactive \emph{talk-throughs},
+in which the explained code can be fiddled with at any moment to understand
+how it works.
+
+\imgW[0.8]{khan-academy}%
+  {Parting Clouds programming task on Khan Academy.}
 
 
 \subsection{Ozobot}
@@ -112,79 +182,60 @@ programmable by either a Blockly-based interface,
 As it does not require ability to read and write
   Ozobot is suitable for even very young children.
 
+%\imgWithFootnote[0.8]{ozobot-robot}{Ozobot}%
+%{Source: \url{https://www.flickr.com/photos/robpegoraro/19464353039}, Rob Pegoraro.}
 
-\imgWithFootnote[0.8]{ozobot-robot}{Ozobot}%
-{Source: \url{https://www.flickr.com/photos/robpegoraro/19464353039}, Rob Pegoraro.}
-
-% TODO: image of Ozobot!
-\imgW{ozobot}{%
-  Ozobot simulator (available at \url{http://games.ozoblockly.com}) %
-  is a Blockly-like interface for creating programs for Ozobot %
-  (but the simulater requires the ability to read). %
-  It also includes a few prepared tasks.}
+%\imgW{ozobot}{%
+%  Ozobot simulator (available at \url{http://games.ozoblockly.com}) %
+%  is a Blockly-like interface for creating programs for Ozobot %
+%  (but the simulater requires the ability to read). %
+%  It also includes a few prepared tasks.}
 
 
-\subsection{Problem Solving Tutor}
-\label{sec:problem-solving-tutor}
-Problem Solving Tutor%
-\footnote{Available at \url{tutor.fi.muni.cz}.}
-includes a few problem sets for practicing programming,
-such as Interactive Python, Robot Karel, or Robotanist.
-After each solved task, Problem Solving Tutor shows a recommendation for two next tasks,
-with predicted solving time.
-According to the authors, showing predicted time to the user serves as a motivational element
--- it poses a suitable challenge to ``overcome oneself''
-\cite{pelanek-student-modeling-times}.
-
-\imgW{robotanist}{Robotanist is a variation on the Robozzle, %
-offering both easy introductory tasks requiring no previous exposure to programming, %
-as well as extremely difficult tasks on sophisticated use of recursion.}
-
-
-\subsection{Project Euler}
-\label{sec:project-euler}
-The core of Project Euler%
-\footnote{Available at \url{projecteuler.net}.}
-is a list of several hundreds of programming problems with one correct answer.
-The problems can be solved in any language
-and then checked whether the computed answer is correct.
-The project is not meant to teach elementary programming,
-but rather to hone one’s programming skills;
-more complicated tasks even require some knowledge of algorithms and data structures.
-
-\imgW[0.7]{project-euler-progress}{%
-Project Euler provides several means of motivation: %
-levels (based purely on number of solved tasks), badges %
-(e.g. for solving 10 consecutive problems, 50 prime numbered problems, etc.), %
-comparison with user’s friends, %
-statistics page with several leaderboard (e.g. by country), %
-and a special score based on the performance on the most recently published problems.}
+%\subsection{Project Euler}
+%\label{sec:project-euler}
+%The core of Project Euler%
+%\footnote{Available at \url{projecteuler.net}.}
+%is a list of several hundreds of programming problems with one correct answer.
+%The problems can be solved in any language
+%and then checked whether the computed answer is correct.
+%The project is not meant to teach elementary programming,
+%but rather to hone one’s programming skills;
+%more complicated tasks even require some knowledge of algorithms and data structures.
+%
+%\imgW[0.7]{project-euler-progress}{%
+%Project Euler provides several means of motivation: %
+%levels (based purely on number of solved tasks), badges %
+%(e.g. for solving 10 consecutive problems, 50 prime numbered problems, etc.), %
+%comparison with user’s friends, %
+%statistics page with several leaderboard (e.g. by country), %
+%and a special score based on the performance on the most recently published problems.}
 
 
-\subsection{HackerRank}
-\label{sec:hacker-rank}
+%\subsection{HackerRank}
+%\label{sec:hacker-rank}
+%
+%Online programming contests,
+%in which people attempt to solve as many problems as possible
+%in limited time frame of a few hours,
+%became popular in the last years.
+%In addition to organizing such contests regularly,
+%HackerRank%
+%\footnote{Available at \url{https://www.hackerrank.com/}.}
+%also provides many training programming tasks for various topics,
+%from introductory programming to machine learning.
+%% Solutions are evaluated on a server against a prepared set of test cases with time limits.
+%In addition to the classic motivation in the form of points, badges and leaderboards, students are motivated to practice to perform well in the competitions,
+%where they can win some prizes and sometimes even job offers.
+%HackerRank also helps student to decide on a problem to solve by showing its difficulty according to the author of the task (on a 3-star scale),
+%as well as success rate among the past submissions.
+%Furthermore, after solving a task,
+%a specific recommendation the next task to solve is shown.
 
-Online programming contests,
-in which people attempt to solve as many problems as possible
-in limited time frame of a few hours,
-became popular in the last years.
-In addition to organizing such contests regularly,
-HackerRank%
-\footnote{Available at \url{https://www.hackerrank.com/}.}
-also provides many training programming tasks for various topics,
-from introductory programming to machine learning.
-% Solutions are evaluated on a server against a prepared set of test cases with time limits.
-In addition to the classic motivation in the form of points, badges and leaderboards, students are motivated to practice to perform well in the competitions,
-where they can win some prizes and sometimes even job offers.
-HackerRank also helps student to decide on a problem to solve by showing its difficulty according to the author of the task (on a 3-star scale),
-as well as success rate among the past submissions.
-Furthermore, after solving a task,
-a specific recommendation the next task to solve is shown.
 
-
-\imgW[0.6]{hackerrank}{HackerRank. %
-Each task specifies input and output format, including some examples. %
-Solution can be written either locally or in the provided online editor.}
+%\imgW[0.6]{hackerrank}{HackerRank. %
+%Each task specifies input and output format, including some examples. %
+%Solution can be written either locally or in the provided online editor.}
 
 
 \section{Strategies for Easier Learning}

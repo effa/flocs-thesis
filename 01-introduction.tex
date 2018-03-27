@@ -2,20 +2,23 @@
 \label{chap:introduction}
 
 Artificial intelligence is a powerful tool for tackling difficult problems,
-from playing chess to driving an autonomous car.
-This thesis explores how can be the artificial intelligence used to make
-learning of introductory programming as engaging and efficient as possible.
+from playing chess to driving autonomous cars.
+This thesis explores how can be artificial intelligence used to optimize
+learning of introductory programming.
 
 Adaptive learning systems have been already successfully used in many domains
 \cite{alg.evaluation-geography} (+CITE).
-However, the most popular introductory programming tutorials (Hour of Code) use
+However, the most popular introductory programming tutorials still use
 a fixed sequence of tasks for everybody (CITE:HoC), leading to a suboptimal experience.
-Aritificial intelligence can be used to personalize the sequence of tasks.
+Aritificial intelligence can be used to personalize the sequence of tasks
+for each student.
 By giving students tasks of optimal difficulty, neither too easy, nor too
 difficult, we help them to achieve complete immersion into the problem solving
-activity, which is known as ``state of flow'' \cite{flow},
-or a zone of proximal development (CITE:Vygotsky) (figure \ref{fig:flow}).
-The state of flow is essential for the optimal learning experience.
+activity, which is known as a \emph{state of flow} \cite{flow},
+or a \emph{zone of proximal development} \cite{zone-of-proximal-development}
+(figure \ref{fig:flow}).
+The state of flow is essential for the optimal learning experience
+\cite{adaptive-practice}.
 
 \begin{figure}[htb]
   \centering
@@ -45,7 +48,7 @@ Which algorithms to use for task recommendation and mastery learning?
 How to evaluate components of the adaptive learning system?
 %How to evaluate if the adaptivity of the system helps to improve learning and engagement?
 % TODO: Make sure these questions are answered in the text (or remove them).
-To help us to answer these questions, we not only look at the existing systems
+To answer these questions, we not only look at the existing systems
 and research, but we also develop our own adaptive learning system for
 introductory programming\footnote{Available at \url{en.robomise.cz}}
 (figure \ref{fig:robomission-task1}).
@@ -63,9 +66,9 @@ and explore relevant techniques of adaptive learning (chapter \ref{chap:adaptive
 %We focus on models of domain and student for introductory programming,
 %algorithms for task recommendation and mastery learning,
 %and evaluation of the system and its components.
-Then, we describe our system for learning introductory programming --
-the game (chapter \ref{chap:design-of-game}),
-adpativity of the system (chapter \ref{chap:design-of-adaptivity}),
+Then, we describe a new game designed for learning introductory programming
+(chapter \ref{chap:design-of-game}),
+adpativity of our system (chapter \ref{chap:design-of-adaptivity}),
 and its implementation (chapter \ref{chap:implementation-of-robomission}).
 We conclude the thesis with analyses of collected data
 (chapter \ref{chap:analysis}).
