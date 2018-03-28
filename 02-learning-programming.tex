@@ -212,17 +212,23 @@ how it works.
 \end{figure}
 \footnotetext{Source: \url{https://tomorrowcorporation.com/humanresourcemachine}.}
 
+%\subsection{We Can Code}
+%\label{sec:umime}
+%
+%TODO: present UmimeProgramovat -> turtle graphics, mastery learning
+%\footnote{Available at \url{https://www.umimeprogramovat.cz/} (Czech only).}
 
-\subsection{Ozobot}
-\label{sec:ozobot}
-Ozobot%
-\footnote{Product webpage available at \url{http://ozobot.com/}.}
-is a small physical robot
-programmable by either a Blockly-based interface,
-  or even without a computer
-  by drawing lines on a paper and reading them with a color sensor on the robot.
-As it does not require ability to read and write
-  Ozobot is suitable for even very young children.
+
+%\subsection{Ozobot}
+%\label{sec:ozobot}
+%Ozobot%
+%\footnote{Product webpage available at \url{http://ozobot.com/}.}
+%is a small physical robot
+%programmable by either a Blockly-based interface,
+%  or even without a computer
+%  by drawing lines on a paper and reading them with a color sensor on the robot.
+%As it does not require ability to read and write
+%  Ozobot is suitable for even very young children.
 
 %\imgWithFootnote[0.8]{ozobot-robot}{Ozobot}%
 %{Source: \url{https://www.flickr.com/photos/robpegoraro/19464353039}, Rob Pegoraro.}
@@ -424,7 +430,7 @@ Purpose & Emphasizing usefulness of the programming skill. \\ %, confidence
 Progress, learning & Skills visualization, points, levels. \\
 Effectiveness, flow & Recommending tasks of optimal difficulty. \\ % concentration/flow
 Autonomy & Allowing to choose a topic or a task. \\
-Recognition & Badges, leaderboards. \\  %Appreciation
+Recognition & Badges, leaderboards. \\  %Appreciation  % leaderboard vs. scoreboard?
 Sharing & Possibility to share programs or achievements. \\
 Cooperation & Pair programming. \\
 Beauty, harmony & Appealing game world. \\ %, which is nice to look at and fun to play with \\
@@ -433,64 +439,112 @@ Creativity & Open-ended tasks, projects. \\  %, self-expression
 % Community?
 \bottomrule
 \end{tabular}
-\caption{Needs and strategies that fulfill these needs.}
+\caption{Needs and strategies that help to fulfill these needs.}
 \label{tbl:motivation-strategies}
 \end{table}
 
 
 
-\subsection{Game World}
+\subsection{Appealing Game World}
 \label{sec:motivation.game-world}
 Ideally, game world should appeal to students --
 even without tasks to solve,
-  it should be an interesting toy to play with.
+  it should be an interesting toy to play with \cite{book-of-lenses}.
+That is why all Hour of Code tutorials are based on movies and games
+  popular among children, such as Angry Brids, Frozen, or Star Wars
+  (\cref{fig:blockly-hoc} right).
 In such environments, it is possible to assign open-ended tasks,
   or even let the students create whatever they want,
   which works well especially for creative students seeking for self-expression.
+For example, Khan Academy programming curriculum contains many several
+open-ended drawing projects (\cref{fig:hrm-ka} right).
+%\cref{sec:robomission.game-world}
 
-// TBA: figures, providing diverse examples of interesting worlds, including several grid worlds and turtle graphics
-
-
-\subsection{Tasks}
+\subsection{Entertaining Tasks}
 \label{sec:motivation.tasks}
 For many students, giving them specific small problems works better
-  than large, loosely defined and open-ended tasks.
+  than large, loosely defined, open-ended tasks.
 By solving small problems quickly,
   they get a feeling of progress and learning.
-Another advantage of close tasks
+Another advantage of closed tasks
   is a more straightforward implementation of gamification features and adaptive behavior.
 
 Small closed tasks result in short programs,
-  but their behavior should be still interesting for the students to be satisfied.
+  but their behavior should be still interesting. % for the students to be satisfied.
 To achieve complex behavior,
   a system can either provide students with macro-commands (e.g. to draw a circle)
   or with a skeleton of complex code, with a few gaps to fill in by students.
 However, it is important for the students to feel ownership over the code,
-  which is especially a concern with a code skeleton.
-Solution suggested by Neil Fraser (and implemented in Blockly Games)
+  which is especially a concern with the code skeleton.
+Solution implemented in Blockly Games
   is to make a series of tasks in which the students
   build on their program from the previous task
   \cite{blockly-10-things}.
 
-// TBA: again some examples in a form of figures + descriptions
+% TODO: some examples in the form of figures + descriptions
+% TODO: other important aspects: variability
 
-%TODO: other important aspects: variability
 
-
-\subsection{Challenge}
+\subsection{Optimal Challenge}  % OR: "Optimal Difficulty"
 \label{sec:motivation.challenge}
 For a great learning experience,
   difficulty of the task must match the skill of the student.
 If the task it too easy,
-  student is not challenged and gets bored.
+  the student is not challenged and gets bored.
 If the task is too difficult,
-  student gets frustrated and desperate.
+  the student becomes frustrated and desperate.
 On the other hand, if the task has appropriate difficulty,
-  student is likely to be challenged and focused.
+  the student is likely to be challenged and focused
+  (\cref{fig:flow}).
 The complete immersion into the task the student is solving at the moment is called
-  a state of flow \cite{flow}.
+  a state of flow \cite{flow}
+  or a \emph{zone of proximal development} \cite{zone-of-proximal-development}
 Achieving the state of flow maximizes the learning outcome \cite{adaptive-practice},
   and even increases the long-term level of happiness. % TODO: find a source of this claim
 Next chapter describes techniques for estimating student’s skill
-  and show how use that estimate for task recommendation.
-% TODO: ref the flow diagram below
+  and show how to use that estimate for task recommendation and mastery learning.
+
+
+\subsection{Gamification and Progress Visualization}
+
+Sense of progress and learning can be boosted by visualizations of
+progress towards mastery in the current topic, solved tasks, completed problems sets,
+or acquired skills.
+\Cref{fig:progress-visualization} shows examples of progress bars from various systems.
+
+% TODO: cite relevant research, open learner model
+% NOTE: also helps to decide what to prectice next, while preserving student's
+% autonomy (soft recommendation)
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.48 \textwidth}
+  \centering
+  \includegraphics[width=.9\textwidth]{img/ka-skills}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+  \centering
+  \includegraphics[width=.9\textwidth]{img/hour-of-code-progress}
+  \bigskip
+  \vspace{1mm}
+  \includegraphics[width=.9\textwidth]{img/umime-progressbar}
+\end{subfigure}
+\caption{%
+  Progress bars: Khan Academy topics, Hour of Code tutorial,
+  and mastery progressbar in Umíme Programovat (``We Can Code'').}
+\end{figure}
+\label{fig:progress-visualization}
+\end{figure}
+
+
+%\subsection{Gamification}
+
+Although the programming tasks themselves can be considered as a game
+(e.g. Human Resource Machine from \cref{sec:human-resource-machine} is
+presented purely as a game),
+most learning systems add furhter gamification elements to reinforce the sense
+of progress.
+Common gamification elements include points, levels, badges, and leaderboards.
+
+% TODO: figures: Project Euler, KA
+% TODO: ref relevant research
