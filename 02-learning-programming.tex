@@ -12,7 +12,7 @@ These systems can be categorized by several criteria:
 
 \begin{table}[htb]
 \begin{center}
-\begin{tabular}{l l l}
+\begin{tabular}{l l}
 \toprule
 Criterion & Examples \\
 \midrule
@@ -27,7 +27,7 @@ Tasks & robot on grid, turtle graphics \\
 Programming language & block-based, textual \\
 Adaptivity & task recommendation, mastery learning \\
 %Price & free, paid
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
 \label{tbl:existing-systems-categorization}
@@ -403,22 +403,40 @@ In additon to the instructions, some systems offer hints, which appear either
   \cite{generating-hints}, the existing systems use a few manually prepared
   hints, intstead of relying on the automatic approaches.
 
-\section{Motivation}
+\section{Strategies for Motivation}
 \label{sec:motivation}
 
-In addition to employing the teaching strategies mentioned in section \ref{sec:strategies-for-easier-learning},
-  it is equally important to create an engaging environment supporting students’ motivation. Common strategies for increasing motivation are:
+In addition to strategies for easier learning presented in section
+\ref{sec:strategies-for-easier-learning}, it is equally important to create an
+engaging environment supporting students’ motivation.
+All strategies for supporting motivation are based on fulfilling some human
+nees \cite{nvc}. % TODO: cite specific page
+\Cref{tbl:motivation-strategies} links needs to common strategies.
+% TODO? related: flow, happiness, switch-elephant (prev. section: path)
 
-\begin{itemize}
-\item explaining the usefulness of the programming skill,
-\item appealing game world, which is nice to look at and fun play with,
-\item gamification elements, such as points and badges,
-\item social elements, such as possibility to share programs or achievements,
-\item creativity and self-expression (possibility to create own programs),
-\item appropriate challenge.
-%TODO: consider also: feel of power/control; progress/learning
-%TODO: connect those to fulfilling common needs such as being recognized etc.
-\end{itemize}
+\begin{table}[htb]
+\centering
+\begin{tabular}{ll}
+\toprule
+Needs & Strategies \\
+\midrule
+Purpose & Emphasizing usefulness of the programming skill. \\ %, confidence
+Progress, learning & Skills visualization, points, levels. \\
+Effectiveness, flow & Recommending tasks of optimal difficulty. \\ % concentration/flow
+Autonomy & Allowing to choose a topic or a task. \\
+Recognition & Badges, leaderboards. \\  %Appreciation
+Sharing & Possibility to share programs or achievements. \\
+Cooperation & Pair programming. \\
+Beauty, harmony & Appealing game world. \\ %, which is nice to look at and fun to play with \\
+Fun & Entertaining tasks. \\
+Creativity & Open-ended tasks, projects. \\  %, self-expression
+% Community?
+\bottomrule
+\end{tabular}
+\caption{Needs and strategies that fulfill these needs.}
+\label{tbl:motivation-strategies}
+\end{table}
+
 
 
 \subsection{Game World}
