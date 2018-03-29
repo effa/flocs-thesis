@@ -1,47 +1,27 @@
 \chapter{Adaptive Learning}
 \label{chap:adaptive-learning}
 
-% TODO:
-% - incorporate other notes from my/thesis gdoc
-% - inspiration from relevant articles
-% - add references for provided examples (playing chess, autonomous car, ...)
+% TODO: check terminonogly ALS vs. ITS, citation for ALS
+\emph{Adaptive Learning Systems} (ALS),
+(often called \emph{Intelligent Tutoring Systems}), \cite{its-overview}
+are educational systems that optimize efficiency of the learning process
+using techniques of artificial intelligence.
+Examples of using artificial intelligence to improve a learning system include:
+\begin{itemize}
+\item personalization of the sequence of tasks (CITE), %  for every student,
+% OR: "choosing the most suitable task for given student"
+%By giving the student a suitable task -- neither too easy, nor too difficult --
+%  it can help the student to achieve the state of flow (\ref{sec:motivation.challenge}).
+\item automatic hints generation \cite{generating-hints},
+\item (automatic feedback generation) (CITE),
+\item skills visualization (CITE),
+\item offline analyses leading to content improvements (CITE).
+  % (e.g. detection of problematic tasks,
+  % or suggestion how to group tasks into problem sets (CITE))
+% TODO: more examples?
+%\item cheating detection (CITE),
+\end{itemize}
 
-From playing chess to driving an autonomous car,
-  artificial intelligence proved to be a mighty tool
-  for tackling difficult algorithmic tasks.
-The power of artificial intelligence can be also used
-  to develop a personalized adaptive system for learning programming.
-Such system would create an optimal learning experience for each student
-  by providing them with problems of difficulty matching their skill,
-  so that the student stays challenged and interested in solving them.
-
-TODO: terminology note: Intelligent tutoring systems (ITS)
-  (REF e.g. Hyacinth S. Nwana. Intelligent tutoring systems: an overview)
-  (? is ITS = adaptive learning system, or is AL too specific term - just
-  one of more possible strategies?)
-
-In the existing systems (\ref{sec:existing-systems}),
-  the sequence of tasks is the same for everybody.
-As a result, the progress is necessarily too slow for some students,
-  who could skip some of the tasks,
-  while being too fast for others,
-  who could highly benefit from solving a couple of other similar tasks.
-Artificial intelligence can be used to personalize
-  the sequence of tasks for every student.
-By giving the student a suitable task
-  -- neither too easy, nor too difficult --
-  it can help the student to get into the state of flow
-  (\ref{sec:motivation.challenge}).
-
-In addition to choosing the most suitable task for given student,
-  artificial intelligence has also other possible uses in learning systems,
-  for example automatic hints generation \cite{generating-hints},
-  cheating detection (REF),
-  or skills visualization (REF).
-Furthermore, artificial intelligence techniques can be used
-  to analyze collected data offline.
-Such analyses can reveal problematic tasks,
-  or suggest how to group tasks into problem sets (TBA: ref).
 
 Adaptive learning systems have been already successful in some domains.
 For instance, Map Outlines%
@@ -52,113 +32,102 @@ It has been used by tens of thousands of students
   and online experiments have confirmed
   that the adaptivity of the system helps to improve the learning outcome
   \cite{alg.evaluation-geography}.
-In addition to geography, similar adaptive web applications
-  for learning anatomy%
-  \footnote{Available at \url{https://practiceanatomy.com}.},
-  biology%
-  \footnote{Available at \url{https://poznavackaprirody.cz} (in Czech only).},
-  elementary mathematics%
-  \footnote{Available at \url{https://matmat.cz} (in Czech only).},
-  and Czech grammar%
-  \footnote{Available at \url{https://umimecesky.cz} (in Czech only).},
-  were developed by the research group in recent years.
+%In addition to geography, similar adaptive web applications
+%  for learning anatomy%
+%  \footnote{Available at \url{https://practiceanatomy.com}.},
+%  biology%
+%  \footnote{Available at \url{https://poznavackaprirody.cz} (in Czech only).},
+%  elementary mathematics%
+%  \footnote{Available at \url{https://matmat.cz} (in Czech only).},
+%  or Czech grammar%
+%  \footnote{Available at \url{https://umimecesky.cz} (in Czech only).},
+%  were developed by the research group. % in recent years.
+%TODO: - mention other famous ITS (Duolingo);
+% TODO: examples of ALS for programming?
+From the existing systems for learning introductory programming,
+Problem Solving Tutor (\cref{sec:problem-solving-tutor}) can be considered
+as ALS, since it recommends next tasks to solve after completion of a task.
+% TODO: mention Umime programovat (mastery for the decision-making game)
 
-TODO:
-- mention other famous ITS (Duolingo);
-- specifically name ITS' related to programming - refs to the previous
-chapter (Umime programovat, Tutor)
-
-
-Sections \ref{sec:domain-modeling} and \ref{sec:student-modeling} present how
-to model the domain and students of the introductory programming.
-Sections \ref{sec:task-recommendation} and \ref{sec:mastery-learning}
-then describe two different uses of these models to make a learning system
-personalized, namely adaptive task recommendation, and mastery learning.
-Finally, section \ref{sec:metrics-and-evaluation} discusses how to evaluate
-different models or even whole learning systems.
-
-\subsection{Terminology}
-
-TODO: move to a most suitable place
-
+Typical ALS consists of the following components
+\cite{its-learner-models}:
+%(extended version of \cite{its-learner-models})
 \begin{itemize}
-\item \emph{Student} (learner) -- TODO.
-\item \emph{Task} (item, problem)
-  -- a problem presented to the student to solve.
-  Consists of setting, sample solution (and has a \emph{difficulty}).
-  (REF figure with an example from previous chapter)
-\item \emph{concept} (knowledge component, chunk)
-  -- knowlege (ability) such as loops or conditionals,
-  (together with tasks for practicing this ability?,
-   maybe: chunk = concept togehter with tasks to learn that concept)
-\item \emph{Task Set} (problem set)
-  -- a group of tasks for practicing a concept (chunk?).
-  (TODO: remove this term if not used)
-\item \emph{Skill}
-  -- how well a chunk is mastered by a student.
-\item \emph{Task Session}
-  -- a noninterrupted attempt of a student to solve a task.
-  (attributes: success, time, program snapshots)
+\item \emph{Domain model}
+  describes concepts, tasks, and relationships between them.
+  It can also include knowledge of an ideal student (rules for solving tasks),
+  and misconceptions (flawed rules)
+  (\cref{sec:domain-modeling}).
+  %  (possibly also misconceptions, rules for solving the tasks).
+\item \emph{Student model} %(learner model, user model)
+  describes past performance of a student on all tasks,
+  estimates concept skills,
+  and predicts future performance
+  (\cref{sec:student-modeling}).
+\item \emph{Tutor model}
+  (instructional policy)
+  %(instructional policy, instructional strategy, pedagogical module) --
+  decides what should given student do next
+  (e.g. which topic to pratice, which task to solve)
+  (\cref{sec:tutor-modeling}).
+\item \emph{User interface model} %(tutor-student interface) --
+  describes how the domain, student, and tutor models are presented to
+  the student (e.g., task environment, overview of tasks and
+  topics, achieved skills, recommended tasks)
+  (\cref{sec:user-interface}).
+%\item \emph{Sensor model} - collecting data from the interactions with the system
+%  (includes monitoring?).
+\item \emph{Analysis layer}
+  monitors and evaluates system behavior,
+  allows to perform AB experiments,
+  and manages online training of model parameters.
+  In addition to this online (inside-the-system) analyses,
+  offline (outside-the-sytem) analyses are often performed as well
+  to find useful interventions in the system
+  (\cref{sec:metrics-and-evaluation}).
+  %section \ref{sec:metrics-and-evaluation} discusses how to evaluate
+  % different models or even whole learning systems.
+%\item \emph{Offline analyses} (``Human in the loop'')
 \end{itemize}
 
-TODO: figure illustating all these terms
+%TODO: Note: online vs offline models: for domain and tutoring, offline models
+%are ok, for student, online models are necessity
 
-TODO: type of chunks: tasks, problem sets (missions, phases), programming concepts,
-  syntax concpets (blocks), game concepts, (misconceptions), mastery,
-  (NOTE: KLI framework also describes the differences between these different types
-  of chunks, which they call knowledge components; + also granularity levels)
+% TODO: improved diagram of ALS components (+ used data?)
+%\imgW{its-components}{Components of ITS with their input and output}
+%- domain model <- all historical data;
+%- student model <- student historical data, domain model
+%- tutoring model <- domain model, student model
+%- experiment layer (online analysis) <- all 3 models (possibly collections if it compares multiple ones) (possibly also UI model)
+%- UI <- results from all models (but usually not the actual models) (structure from the domain model for overivew of tasks, skills and mastery from the student model, recommendation from the tutoring model), these models can be selected by the experiment layer
+%- ? forward pass (system->student) vs. backpropagation through the models (student->system -> online parameters update)
+%- ? models vs. real entities (student model vs. student, UI model vs. UI)
 
-KLI framework (Koedinger 2012), KCs with examples for programming:
-- variable-variable (principle):
-  - very coarse: programming
-  - coarse: loops
-  - medium: while loops
-  - fine: programs with single while-not-end loop
-- variable-constant (category):
-  - coarse: game elements and mechanics?
-  - medium: asteroid?, winning rule?
-  - fine: ?
-- constant-constant (fact):
-  (names of game elements / names of parts of the environemnt / names of programming blocks),
-  (behavior of game elements, e.g. what happend when you hit the asteroid)
-
-\subsection{Components}
-
-TODO: high-level description of components + REF sections below
-REF: source of the division, e.g. \cite{its-learner-models}
-
-\begin{itemize}
-\item \emph{Domain model} -- concepts, tasks and relationships between them
-    (possibly also misconceptions, rules for solving the tasks).
-\item \emph{Student model} (learner model, user model) -- performance on tasks, skills of concepts.
-\item \emph{Tutor model} (instructional policy, instructional strategy, pedagogical module) --
-  decides what given student in given domain should do next (e.g. task recommendation).
-\item \emph{User interface model} (tutor-student interface) -- how the domain, student and tutor models should be presented to the student (e.g. task solving environment, overview of all tasks and concepts, achieved skills, recommended task).
-\item \emph{Sensor model} - collecting data from the interactions with the system
-  (includes monitoring?).
-\end{itemize}
-
-I think there are two more components of ITS:
-\begin{itemize}
-\item \emph{Online analysis/experiment/evaluation/hyperparams training layer/module} -- AB experiments, online hyperparams tuning.
-\item \emph{Offline analysis/evaluation/training} (Human in the loop - but part
-  of the online analysis includes human-in-the-loop as well).
-\end{itemize}
-
-TODO: diagram of the components (+ used data):
-- domain model <- all historical data;
-- student model <- student historical data, domain model
-- tutoring model <- domain model, student model
-- experiment layer (online analysis) <- all 3 models (possibly collections if it compares multiple ones) (possibly also UI model)
-- UI <- results from all models (but usually not the actual models) (structure from the domain model for overivew of tasks, skills and mastery from the student model, recommendation from the tutoring model), these models can be selected by the experiment layer
-- ? forward pass (system->student) vs. backpropagation through the models (student->system -> online parameters update)
-- ? models vs. real entities (student model vs. student, UI model vs. UI)
-
-
-NOTE: online vs offline models: for domain and tutoring, offline models are ok, for student, online models are necessity
-
-
-\imgW{its-components}{Components of ITS with their input and output}
+%\subsection{Terminology}
+%\begin{itemize}
+%\item \emph{Student} (learner) -- TODO.
+%\item \emph{Task} (item, problem)
+%  -- a problem presented to the student to solve.
+%  Consists of setting, sample solution (and has a \emph{difficulty}).
+%  (REF figure with an example from previous chapter)
+%\item \emph{concept} (knowledge component, chunk)
+%  -- knowlege (ability) such as loops or conditionals,
+%  (together with tasks for practicing this ability?,
+%   maybe: chunk = concept togehter with tasks to learn that concept)
+%\item \emph{Task Set} (problem set)
+%  -- a group of tasks for practicing a concept (chunk?).
+%  (TODO: remove this term if not used)
+%\item \emph{Skill}
+%  -- how well a chunk is mastered by a student.
+%\item \emph{Task Session}
+%  -- a noninterrupted attempt of a student to solve a task.
+%  (attributes: success, time, program snapshots)
+%\end{itemize}
+%TODO: figure illustating all these terms
+%TODO: type of chunks: tasks, problem sets (missions, phases), programming concepts,
+%  syntax concpets (blocks), game concepts, (misconceptions), mastery,
+%  (NOTE: KLI framework also describes the differences between these different types
+%  of chunks, which they call knowledge components; + also granularity levels)
 
 
 \section{Domain Modeling}
@@ -322,6 +291,20 @@ Learning:
 \item modeling decisions: which concepts, how granular, what are the
   relationships between them, which tasks belong to which concepts?
 \end{itemize}
+
+KLI framework (Koedinger 2012), KCs with examples for programming:
+- variable-variable (principle):
+  - very coarse: programming
+  - coarse: loops
+  - medium: while loops
+  - fine: programs with single while-not-end loop
+- variable-constant (category):
+  - coarse: game elements and mechanics?
+  - medium: asteroid?, winning rule?
+  - fine: ?
+- constant-constant (fact):
+  (names of game elements / names of parts of the environemnt / names of programming blocks),
+  (behavior of game elements, e.g. what happend when you hit the asteroid)
 
 \subsubsection{\textbf{Disjoint Concepts}}
 \begin{itemize}
@@ -1132,6 +1115,7 @@ concepts, if we have a similarity network between concepts)
 \end{itemize}
 
 \section{Tutor Modeling}
+\label{sec:tutor-modeling}
 
 \begin{itemize}
 \item \emph{Tutor models} (aka \emph{instructional policy}, \emph{instructional
@@ -1631,6 +1615,7 @@ for the student from the possibility to choose between them.
 
 
 \section{User Interface}
+\label{sec:user-interface}
 
 TODO: consider to omit this section
 
