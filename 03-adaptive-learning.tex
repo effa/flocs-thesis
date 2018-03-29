@@ -282,31 +282,41 @@ such as projection of all tasks to a plane. % TODO:REF:example
 %\end{itemize}
 
 
-\subsection{Tasks}
-
-\begin{itemize}
-\item aka problems, items
-\item name, setting, and solution
-\item parameters (features) --
-  computed from setting (e.g. size of the grid),
-  solution (e.g. length of the solution),
-  and performance data (e.g. median time).
-\item TODO: tasks pool visualization (projection) -- add plot
-\end{itemize}
-
-\subsubsection{\textbf{Concept-free Models}}
-\begin{itemize}
-\item = all task are assumed to cover a single indivisible concept (e.g. "programming")
-\item the simplest domain model = only tasks (no other chunk types) and no relationships
-\item oven without concepts, the models can have
-  rich structure (e.g. prerequisities between tasks,
-    see right figure \ref{fig:chunks-prerequisites})
-  and many parameters (e.g. similarities between tasks)
-\item REF: usage (most of the existing systems)
-\end{itemize}
+%\subsection{Tasks}
+%
+%\begin{itemize}
+%\item aka problems, items
+%\item name, setting, and solution
+%\item parameters (features) --
+%  computed from setting (e.g. size of the grid),
+%  solution (e.g. length of the solution),
+%  and performance data (e.g. median time).
+%\item TODO: tasks pool visualization (projection) -- add plot
+%\end{itemize}
+%
+%\subsubsection{\textbf{Concept-free Models}}
+%\begin{itemize}
+%\item = all task are assumed to cover a single indivisible concept (e.g. "programming")
+%\item the simplest domain model = only tasks (no other chunk types) and no relationships
+%\item oven without concepts, the models can have
+%  rich structure (e.g. prerequisities between tasks,
+%    see right figure \ref{fig:chunks-prerequisites})
+%  and many parameters (e.g. similarities between tasks)
+%\item REF: usage (most of the existing systems)
+%\end{itemize}
 
 
 \subsection{Concepts}
+
+The simplest domain models are \emph{concept-free} -- they assume that all
+tasks belong to a single undivisible concept. While this assumption is
+reasonable for many logic puzzles, it does not hold for introductory programming.
+For example, it is possible to master loops while struggling with functions,
+and vice versa.
+Domain with concepts (also called knowledge components \cite{knowledge-components})
+enable to build richer and more accurate student models.
+% they describe relationships between tasks, which can help student models to
+% better estimate performance on future tasks.
 
 \begin{itemize}
 \item (motivation) The assumption of a single concept for all tasks is
@@ -320,19 +330,19 @@ such as projection of all tasks to a plane. % TODO:REF:example
   relationships between them, which tasks belong to which concepts?
 \end{itemize}
 
-KLI framework (Koedinger 2012), KCs with examples for programming:
-- variable-variable (principle):
-  - very coarse: programming
-  - coarse: loops
-  - medium: while loops
-  - fine: programs with single while-not-end loop
-- variable-constant (category):
-  - coarse: game elements and mechanics?
-  - medium: asteroid?, winning rule?
-  - fine: ?
-- constant-constant (fact):
-  (names of game elements / names of parts of the environemnt / names of programming blocks),
-  (behavior of game elements, e.g. what happend when you hit the asteroid)
+%KLI framework \cite{kli-framework}, KCs with examples for programming:
+%- variable-variable (principle):
+%  - very coarse: programming
+%  - coarse: loops
+%  - medium: while loops
+%  - fine: programs with a single while-not-end loop
+%- variable-constant (category):
+%  - coarse: game elements and mechanics?
+%  - medium: asteroid?, winning rule?
+%  - fine: ?
+%- constant-constant (fact):
+%  (names of game elements / names of parts of the environemnt / names of programming blocks),
+%  (behavior of game elements, e.g. what happend when you hit the asteroid)
 
 \subsubsection{\textbf{Disjoint Concepts}}
 \begin{itemize}
@@ -425,12 +435,31 @@ KLI framework (Koedinger 2012), KCs with examples for programming:
 \end{itemize}
 
 
+\subsection{Problem Sets}
+
+\begin{itemize}
+\item aka task sets, topics, units, chapters,
+  (and we call them "missions" and "mission phases" in RoboMission)
+\item ? usually corresponds to concepts (or it is convenient if they do),
+\item can be hierarchical (and the hierarchy should match the hierarchy of
+  corresponding concepts)
+\item can be ordered (and the ordering should follow the prerequisity structure
+  of corresponding concepts)
+\item single concept can be practiced by multiple problem sets
+  (e.g. loops in robot on grid and in turtle graphics)
+\item usually presented in the UI (? so it can be viewed as a part of the UI model instead)
+\item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
+\item TODO: discuss example of Umime programovat (tree of concepts, problem
+  sets, each PS maps to a (single?) concept; where are items?)
+\end{itemize}
+
 
 \subsection{Hierarchical Models}
 
 \begin{itemize}
 \item in addition to the relationships between tasks and concept,
   we can also model the relationships between concepts
+  (similarly for problem sets)
 \item two commonly modelled relationships are generalization (this section) and
   prerequisities (next section)
 \item hierarchical model = allow for generalization relationship between concepts
@@ -456,25 +485,14 @@ KLI framework (Koedinger 2012), KCs with examples for programming:
     tasks linked directly to these integration concepts.
 \end{itemize}
 
+%(KLI framework \cite{kli-framework}), KCs with examples for programming:
+Hierarchy example:
+very coarse: programming,
+coarse: loops,
+medium: while loops,
+fine: programs with a single while-not-end loop.
+
 \imgW{concepts-hierarchical}{Hierarchial concepts -- tree (left), DAG (right).}
-
-\subsection{Problem Sets}
-
-\begin{itemize}
-\item aka task sets, topics, units, chapters,
-  (and we call them "missions" and "mission phases" in RoboMission)
-\item ? usually corresponds to concepts (or it is convenient if they do),
-\item can be hierarchical (and the hierarchy should match the hierarchy of
-  corresponding concepts)
-\item can be ordered (and the ordering should follow the prerequisity structure
-  of corresponding concepts)
-\item single concept can be practiced by multiple problem sets
-  (e.g. loops in robot on grid and in turtle graphics)
-\item usually presented in the UI (? so it can be viewed as a part of the UI model instead)
-\item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
-\item TODO: discuss example of Umime programovat (tree of concepts, problem
-  sets, each PS maps to a (single?) concept; where are items?)
-\end{itemize}
 
 
 \subsection{Prerequisities}
