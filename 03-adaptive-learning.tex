@@ -15,7 +15,7 @@ Examples of using artificial intelligence to improve a learning system include:
 \item automatic hints generation \cite{generating-hints},
 \item (automatic feedback generation) (CITE),
 \item skills visualization (CITE),
-\item offline analyses leading to content improvements (CITE).
+\item offline analyses leading to content improvements (CITE). % "actionable insight"
   % (e.g. detection of problematic tasks,
   % or suggestion how to group tasks into problem sets (CITE))
 % TODO: more examples?
@@ -83,7 +83,7 @@ Typical ALS consists of the following components
   and manages online training of model parameters.
   In addition to this online (inside-the-system) analyses,
   offline (outside-the-sytem) analyses are often performed as well
-  to find useful interventions in the system
+  to discover useful interventions in the system  % actionable insight
   (\cref{sec:metrics-and-evaluation}).
   %section \ref{sec:metrics-and-evaluation} discusses how to evaluate
   % different models or even whole learning systems.
@@ -133,125 +133,153 @@ Typical ALS consists of the following components
 \section{Domain Modeling}
 \label{sec:domain-modeling}
 
-\begin{itemize}
-\item Domain model is a collection of educational content, covered concepts,
-  relationships between them, and an algorithm to learn
-  parameters of the model from data.
-  (TODO: improve the definition, REF to examples)
-\item Usage:
-\begin{enumerate}
-\item In student models: provides structure for student skills and describes relationships between them, which can be used to predict a performance of student with given skills on given task.
-(This is useful for example for skill transfer -- after observing performances on a few tasks,
-    performance on other tasks can be inferred using the relations between the solved and
-    unsolved tasks described by the domain model.)
-\item In tutor models, e.g in mastery learning, we can select a task from a practiced concept until the concept is mastered (so we need to know which tasks contain each concept).
-\item In user interface, e.g. grouping tasks into problem sets,
-  or providing a rich open learner visualization (in conjungtation with the student model).
-\item In online/offline analysis (human-in-the-loop) for actionable insight
-    (e.g. we can find that a task behaves very differently than all others in
-    the same problem set, so we will explore the task and find a bug in its setting,
-    such as a missing limit, which makes the task much easier then expected).
-\end{enumerate}
-\item Appropriate model depends on the usage (no single best domain model),
-  so it may be useful to have multiple domain models inside a single system
-  (but the cost of creating and maintaining multiple domain models is a consideration).
-\item Comprehensive overview of domain modeling approaches e.g. in \cite{its-domain-models}
-  (here we focus specifically on the domain of introductory programming).
-\end{itemize}
+Domain model is a collection of educational content, covered concepts,
+relationships between them, together with an algorithm to learn
+parameters such as streghts of the relationships from data
+\cite{its-domain-models}.
+% (TODO: improve the definition, REF to examples), make sure it's consistent
+% with the short definition in the chapter intro
+Domain model can be used for example in the student model to provide structure
+for student skills, in the tutor model to select tasks containing chosen
+concept, in the user interface to group tasks into problem sets, an in the
+analyses to compare each task to the other tasks in the same problem set.
+
+%\begin{itemize}
+%\item Usage:
+%\begin{enumerate}
+%\item In student models: provides structure for student skills and describes relationships between them, which can be used to predict a performance of student with given skills on given task.
+%(This is useful for example for skill transfer -- after observing performances on a few tasks,
+%    performance on other tasks can be inferred using the relations between the solved and
+%    unsolved tasks described by the domain model.)
+%\item In tutor models, e.g in mastery learning, we can select a task from a practiced concept until the concept is mastered (so we need to know which tasks contain each concept).
+%\item In user interface, e.g. grouping tasks into problem sets,
+%  or providing a rich open learner visualization (in conjungtation with the student model).
+%\item In online/offline analysis (human-in-the-loop) for actionable insight
+%    (e.g. we can find that a task behaves very differently than all others in
+%    the same problem set, so we will explore the task and find a bug in its setting,
+%    such as a missing limit, which makes the task much easier then expected).
+%\end{enumerate}
+%%\item Appropriate model depends on the usage (no single best domain model),
+%%  so it may be useful to have multiple domain models inside a single system
+%%  (but the cost of creating and maintaining multiple domain models is a consideration).
+%%\item Comprehensive overview of domain modeling approaches e.g. in \cite{its-domain-models}
+%%  (here we focus specifically on the domain of introductory programming).
+%\end{itemize}
 
 
-\subsection{Domain Data}
+\subsection{Data and Algorithms}
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
-\begin{itemize}
-\item Input data (vs. model data) -- content + collected (historical) data.
-\item Content:
-  task statement (including name and world description),
-  sample solution, labels (e.g. covered concepts), problem sets.
-\item Historical: observations (REF to discussion on performance in student models section).
-\item Model data: chunks and relationships between them.
-\item Chunks = all entities in the domain:
-\begin{itemize}
-\item tasks,
-\item other educational content (text, videos, interactive visualizations),
-\item problem sets (group of tasks usually presented in the user interface),
-\item concepts (aka. knowledge components, learning objectives; e.g. loops),
-\item misconceptions (e.g. "if-statement is a loop").
-\end{itemize}
-\item In addition to content attributes (e.g. setting, description),
-    parameters can be associated with chunks, for example:
-\begin{itemize}
-\item median time,
-\item difficulty (?),
-\item mastery threshold.
-\end{itemize}
-\item Furthermore, relationships between chunks can be me modeled:
-\begin{itemize}
-\item inclusion/part-of (e.g. problem set contains tasks, tasks contain
-  concepts (Q: direction?))
-\item generalization/subclass (e.g. programming is a more general concept than loops),
-\item prerequisiites (e.g. single loops are prerequisity for nested loops).
-\item TODO: Q: what is the interpretation of the edges in BN
-  (vaguely it's something like "influence", or "directly depend on";
-   missing edges encodes conditional independence (given the parents))
-\end{itemize}
-\item The graph of entities with the binary relationship betweeen them is
-  called \emph{semantic net} (in the field of knowledge representation).
-\item Useful concept in semantic nets is \emph{inheritance}:
-  properties of classes also holds for their subclasses and instances (transitively),
-  unless an exception is specified.
-  For example, instead of setting the same set of allowed blocks in each task
-    in a problem set, it is enough to specify that toolbox only in the problem set.
-    However, if there is a task in the problem set that needs to add one special block,
-    it can override the default toolbox.
-\item All of these relationships can be either hard (binary) or soft (continuous).
-\item Modeling decisions: which type of chunks, (which parameters of chunks),
-  which relationships, how to set/compute the values (e.g. structure between
-  chunks, values of similarities between tasks), (interpretation/semantics?).
-\end{itemize}
+Domain model merges % compresses, comprises, summarises?
+content data (e.g. task statements and solutions) %, labels, problem sets),
+% label example: covered concepts
+with collected historical performance data.
+Entities in the domain are called \emph{chunks} and they include tasks
+and other learning content (texts, videos, interactive visualizations),
+problem sets, concepts, and misconceptions.
+In addition to content attributes (e.g. task setting), parameters computed
+from performance data can be associated with chunks (e.g. median solving time).
+Typical modeled relationships between chunks are
+generalization (e.g. programming is a more general concept than loops),
+inclusion (e.g. a problem set contains tasks),
+prerequisities (e.g. single loops are prerequisity for nested loops),
+and similarities (e.g. how similar are tasks with respect to the difficulty).
+Relationships can be either hard (binary) or soft (continuous).
 
-TODO: nonbinary relationships? needed for example to express CPTs in unconstrained BN
+%\begin{itemize}
+%\item Input data (vs. model data) -- content + collected (historical) data.
+%\item Content:
+%  task statement (including name and world description),
+%  sample solution, labels (e.g. covered concepts), problem sets.
+%\item Historical: observations (REF to discussion on performance in student models section).
+%\item Model data: chunks and relationships between them.
+%\item Chunks = all entities in the domain:
+%\begin{itemize}
+%\item tasks,
+%\item other educational content (text, videos, interactive visualizations),
+%\item problem sets (group of tasks usually presented in the user interface),
+%\item concepts (aka. knowledge components, learning objectives; e.g. loops),
+%\item misconceptions (e.g. "if-statement is a loop").
+%\end{itemize}
+%\item In addition to content attributes (e.g. setting, description),
+%    parameters can be associated with chunks, for example:
+%\begin{itemize}
+%\item median time,
+%\item difficulty (?),
+%\item mastery threshold.
+%\end{itemize}
+%\item Furthermore, relationships between chunks can be me modeled:
+%\begin{itemize}
+%\item inclusion/part-of (e.g. problem set contains tasks, tasks contain
+%  concepts (Q: direction?))
+%\item generalization/subclass (e.g. programming is a more general concept than loops),
+%\item prerequisiites (e.g. single loops are prerequisity for nested loops).
+%\item TODO: Q: what is the interpretation of the edges in BN
+%  (vaguely it's something like "influence", or "directly depend on";
+%   missing edges encodes conditional independence (given the parents))
+%\end{itemize}
+%\item The graph of entities with the binary relationship betweeen them is
+%  called \emph{semantic net} (in the field of knowledge representation).
+%\item Useful concept in semantic nets is \emph{inheritance}:
+%  properties of classes also holds for their subclasses and instances (transitively),
+%  unless an exception is specified.
+%  For example, instead of setting the same set of allowed blocks in each task
+%    in a problem set, it is enough to specify that toolbox only in the problem set.
+%    However, if there is a task in the problem set that needs to add one special block,
+%    it can override the default toolbox.
+%\item All of these relationships can be either hard (binary) or soft (continuous).
+%\item Modeling decisions: which type of chunks, (which parameters of chunks),
+%  which relationships, how to set/compute the values (e.g. structure between
+%  chunks, values of similarities between tasks), (interpretation/semantics?).
+%\end{itemize}
+%
+%TODO: nonbinary relationships? needed for example to express CPTs in unconstrained BN
+%
+%TODO: ontologies (= formal description of terms and relationships betwwen them
+%in given domain; -> knowledge graphs; knowledge representation field), Bayes Nets
+%
+%TODO: note: historical data vs. domain data (domain data = "compressed" version of
+%  "input data" (provided by content creators) and historical data.
 
-TODO: ontologies (= formal description of terms and relationships betwwen them
-in given domain; -> knowledge graphs; knowledge representation field), Bayes Nets
+%\subsection{Algorithms}
 
-TODO: note: historical data vs. domain data (domain data = "compressed" version of
-  "input data" (provided by content creators) and historical data.
+In addition to data, domain models include algorithms. Domain algorithms can be
+divided into three categories: learning, inference, and insight.
+Domain representation can be learned offline, by combining content and historical
+performance data. Typically, performance data are only used to learn parameters
+(e.g. task difficulties, similarities), but structure of the domain can be learned
+or improved as well (but that requires much more data) (CITE). If new tasks are
+introduced often into the system, then online update of some parameters may be
+preferred, but that is usually not the case in the systems for learning
+programming.
+The second group, inference algorithms, extend interpretation of the domain data.
+For example, hierarchical domain model may include an algorithm for
+aggregating skills into a parent concept skill. % TODO: another examples
+The third group, insight algorithms, include various visualizations,
+such as projection of all tasks to a plane. % TODO:REF:example
 
-\subsection{Algorithms}
 
-\begin{itemize}
-\item all but the simplest domain models contain some parameters,
-  which can be either set manually or learned from collected data
-\item domain model = data (chunks, parameters, relationships) + algorithms:
-  (REF: overview of components in \cite{pelanek-learner-modeling})
-\item 3 types of algorithms:
-\begin{enumerate}
-\item \emph{learning} domain data based on historical data
-\item \emph{inference} based on the domain data
-  (? basically semantics/interpretation of the data)
-  (e.g algorithms for mapping prerequisites to acceptance decision;
-    for mapping task performances to a concept skill/mastery,
-    for aggregating skills to a parent concept skill in a hierarchical model)
-\item ? getting \emph{insight} through visualization techniques
-    (e.g. projections to plane, TODO: add t-sne example)
-\end{enumerate}
-\item inference must be fast (in our case the domain is small, having tens or
-  hundreds of chunks, then linear complexity wrt. to the domain size is ok),
-    learning and insight algorihtms can be slower
-    (e.g. linear wrt. to the size of historical data)
-\end{itemize}
-
-Learning:
-\begin{itemize}
-\item what we can learn: parameters (usual), structure = relationships and
-  chunks (less usual, because it requires more data)
-\item learning algorithm can be offline
-  (once enough data is collected, parameters are quite stable)
-\item need to deal with new tasks (set their parameters by an expert or a content-based heuristic)
-\item extension: online update of the parameters (useful if a lot of new tasks
-  are introduced often, which is not our case)
-\end{itemize}
+%\begin{itemize}
+%\item all but the simplest domain models contain some parameters,
+%  which can be either set manually or learned from collected data
+%\item domain model = data (chunks, parameters, relationships) + algorithms:
+%  (REF: overview of components in \cite{pelanek-learner-modeling})
+%\item 3 types of algorithms:
+%\begin{enumerate}
+%\item \emph{learning} domain data based on historical data
+%\item \emph{inference} based on the domain data
+%  (? basically semantics/interpretation of the data)
+%  (e.g algorithms for mapping prerequisites to acceptance decision;
+%    for mapping task performances to a concept skill/mastery,
+%    for aggregating skills to a parent concept skill in a hierarchical model)
+%\item ? getting \emph{insight} through visualization techniques
+%    (e.g. projections to plane, TODO: add t-sne example)
+%\end{enumerate}
+%\item inference must be fast (in our case the domain is small, having tens or
+%  hundreds of chunks, then linear complexity wrt. to the domain size is ok),
+%    learning and insight algorihtms can be slower
+%    (e.g. linear wrt. to the size of historical data)
+%\end{itemize}
 
 
 \subsection{Tasks}
