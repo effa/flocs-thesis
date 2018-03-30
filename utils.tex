@@ -6,11 +6,10 @@
 % #3: caption
 \newcommand{\imgW}[3][1] {
 \begin{figure}[htb]
-  \begin{center}
-    \includegraphics[width=#1\textwidth]{img/#2}
-  \end{center}
-  \caption{#3}
-  \label{fig:#2}
+\centering
+\includegraphics[width=#1\textwidth]{img/#2}
+\caption{#3}
+\label{fig:#2}
 \end{figure}
 }
 

@@ -133,13 +133,13 @@ Typical ALS consists of the following components
 \section{Domain Modeling}
 \label{sec:domain-modeling}
 
-Domain model is a collection of educational content, covered concepts,
-relationships between them, together with an algorithm to learn
-parameters such as streghts of the relationships from data
+Domain model captures educational content, covered concepts, and relationships
+between them
+%together with an algorithm to lear parameters such as streghts of the relationships from data
 \cite{its-domain-models}.
 % (TODO: improve the definition, REF to examples), make sure it's consistent
 % with the short definition in the chapter intro
-Domain model can be used for example in the student model to provide structure
+It is used in the student model to provide structure
 for student skills, in the tutor model to select tasks containing chosen
 concept, in the user interface to group tasks into problem sets, an in the
 analyses to compare each task to the other tasks in the same problem set.
@@ -170,11 +170,7 @@ analyses to compare each task to the other tasks in the same problem set.
 \subsection{Data and Algorithms}
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
-Domain model merges % compresses, comprises, summarises?
-content data (e.g. task statements and solutions) %, labels, problem sets),
-% label example: covered concepts
-with collected historical performance data.
-Entities in the domain are called \emph{chunks} and they include tasks
+Entities in the domain (called \emph{chunks}) include tasks
 and other learning content (texts, videos, interactive visualizations),
 problem sets, concepts, and misconceptions.
 In addition to content attributes (e.g. task setting), parameters computed
@@ -184,7 +180,7 @@ generalization (e.g. programming is a more general concept than loops),
 inclusion (e.g. a problem set contains tasks),
 prerequisities (e.g. single loops are prerequisity for nested loops),
 and similarities (e.g. how similar are tasks with respect to the difficulty).
-Relationships can be either hard (binary) or soft (continuous).
+% NOTE: Relationships can be either hard (binary) or soft (continuous).
 
 %\begin{itemize}
 %\item Input data (vs. model data) -- content + collected (historical) data.
@@ -243,15 +239,17 @@ Relationships can be either hard (binary) or soft (continuous).
 
 %\subsection{Algorithms}
 
-In addition to data, domain models include algorithms. Domain algorithms can be
+In addition to the data, domain models include algorithms. Domain algorithms can be
 divided into three categories: learning, inference, and insight.
-Domain representation can be learned offline, by combining content and historical
-performance data. Typically, performance data are only used to learn parameters
-(e.g. task difficulties, similarities), but structure of the domain can be learned
-or improved as well (but that requires much more data) (CITE). If new tasks are
-introduced often into the system, then online update of some parameters may be
-preferred, but that is usually not the case in the systems for learning
-programming.
+Learning algorithms combine content data (e.g. task statements and solutions)
+and collected historical performance data into a compact domain representation.
+Typically, performance data are used only to learn parameters
+(e.g. task difficulties, similarities), while the structure of the domain is
+specified by the content creator.
+%, but structure of the domain can be learned or improved as well (but that requires much more data) (CITE).
+Domain representation can be learned offline, but if new tasks are introduced
+often into the system, then online update of some parameters may be preferred.
+%, but that is usually not the case in the systems for learning programming.
 The second group, inference algorithms, extend interpretation of the domain data.
 For example, hierarchical domain model may include an algorithm for
 aggregating skills into a parent concept skill. % TODO: another examples
@@ -308,27 +306,91 @@ such as projection of all tasks to a plane. % TODO:REF:example
 
 \subsection{Concepts}
 
-The simplest domain models are \emph{concept-free} -- they assume that all
+\emph{Concepts}, or \emph{knowledge components} \cite{knowledge-components},
+are features of tasks that correspond to learnable skills % or "skills that students can learn"
+that are required for solving the task.
+% NOTE: Examples of concepts of different granularity are programming, loops, and while loops.
+% TODO: improve/cite definition of a concept (see e.g. KLI paper -> KC)
+\emph{Concept-free} models assume that all
 tasks belong to a single undivisible concept. While this assumption is
 reasonable for many logic puzzles, it does not hold for introductory programming.
-For example, it is possible to master loops while struggling with functions,
+For example, it is possible to master loops while not knowing functions,
 and vice versa.
-Domain with concepts (also called knowledge components \cite{knowledge-components})
+\emph{Concept-aware} domain models
 enable to build richer and more accurate student models.
 % they describe relationships between tasks, which can help student models to
 % better estimate performance on future tasks.
 
-\begin{itemize}
-\item (motivation) The assumption of a single concept for all tasks is
-  reasonable for many logic puzzles (e.g. sudoku), but not in programming.
-  For example, it is possible to master loops while struggling with functions,
-  and vice versa.
-\item TODO: define/REF
-\item aka knowledge components \cite{knowledge-components}
-\item granularity: while-loop < loops < programming
-\item modeling decisions: which concepts, how granular, what are the
-  relationships between them, which tasks belong to which concepts?
-\end{itemize}
+% TODO: note on concepts granularity + REF to hierarchy section
+
+Depending on the multiplicity of the concept-task relationship,
+concepts are called either \emph{disjoint} (1:m) or \emph{overlapping} (n:m)
+(\cref{fig:concepts-disjoint-overlapping}).
+% NOTE: disjoint model = flat clusters of tasks; aka "concept model", "flat
+% concepts" (concepts are flat clusters of tasks, but this name stress that
+% there is no hierarchy).
+% Single programming task may require multiple skills at once, e.g. both loops
+% and conditional commands.
+Overlapping concepts can be represented as sets of tasks, bipartitie graph,
+or a feature matrix (\emph{Q-matrix}), where rows correspond to tasks, columns to concepts,
+and values denote whether given task contains given concept (1), or not (0)
+(\cref{fig:qmatrix}).
+In case of \emph{soft membership}, the sets are fuzzy, the bipartite graph has
+edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
+
+\imgW[0.8]{concepts-disjoint-overlapping}{%
+  %Comparison of disjoint and overlapping concepts.
+  In the disjoint model (left), each task belong to one concept,
+  while in the overlapping model (right), single task can contain multiple concepts.}
+
+\vspace{-25pt}
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[width=0.65\textwidth]{img/qmatrix-binary}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[width=0.65\textwidth]{img/qmatrix-continuous}
+\end{subfigure}
+\caption{%
+  Binary and continuous Q-matrices corresponding to the
+  bipartite graph of overlapping concepts from figure \ref{fig:concepts-disjoint-overlapping}.}
+\label{fig:qmatrix}
+\end{figure}
+
+
+Concepts can be either defined manually, or detected automatically
+% NOTE: Automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
+% operating on task-features or task-task similarity matrix
+% (REF: our paper about similarity of programming problems)
+\cite{niznan-thesis, rihak-phd}. % TODO: spec.pages
+Manually selected concepts are interpretable and do not require collected data,
+but may be suboptimal for the the intended usage of the domain model.
+%  so they can be used for skills visualizations in the user interface
+%  to provide students with the information about their learning progress.
+To combine advantages of both approaches, ALS can start with expert-provided
+concepts and later use automatic techniques to suggest how to improve
+the mapping from tasks to concepts \cite[chapter 3]{its-domain-models}.
+
+%TODO: note on more complicated semantics of edges in the overlapping model,
+%and assumptions leading to reduction of number of modeled parameters
+%(e.g. conjunctive or conmpensatory concepts).
+
+
+%\begin{itemize}
+%\item (motivation) The assumption of a single concept for all tasks is
+%  reasonable for many logic puzzles (e.g. sudoku), but not in programming.
+%  For example, it is possible to master loops while struggling with functions,
+%  and vice versa.
+%\item TODO: define/REF
+%\item aka knowledge components \cite{knowledge-components}
+%\item granularity: while-loop < loops < programming
+%\item modeling decisions: which concepts, how granular, what are the
+%  relationships between them, which tasks belong to which concepts?
+%\end{itemize}
 
 %KLI framework \cite{kli-framework}, KCs with examples for programming:
 %- variable-variable (principle):
@@ -344,327 +406,337 @@ enable to build richer and more accurate student models.
 %  (names of game elements / names of parts of the environemnt / names of programming blocks),
 %  (behavior of game elements, e.g. what happend when you hit the asteroid)
 
-\subsubsection{\textbf{Disjoint Concepts}}
-\begin{itemize}
-\item task:concepts 1:m (each task in execatly 1 concept)
-\item aka "concept model", "flat concepts" (concepts are flat clusters of tasks)
-\item Concepts can be either defined manually or detected automatically
-  (REF: \cite{niznan-thesis, rihak-phd}, spec.pages),
-\item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
-  operating on task-features or task-task similarity matrix
-  (REF: our paper about similarity of programming problems)
-\item or semiautomatically, improving upon a mapping from tasks to concepts
-    provided by an expert \cite{its-domain-models}, chapter 3).
-\item Manually selected concepts, such as loops and conditional commands,
-  have the advantage of being interpretable,
-  so they can be used for skills visualizations in the user interface
-  to provide students with the information about their learning progress.
-  Furthermore, no data needs to be collected in advance,
-  while the automatic techniques require a lot of data to provide stable results.
-  (TODO: specify "a lot of" + REF).
-\item example in figure \ref{fig:concepts-disjoint-overlapping} (left)
-\item REF: usage (? ProSo - single concept per problem type, e.g. all tasks in Robotanist are single concept)
-\end{itemize}
-
-\imgW{concepts-disjoint-overlapping}{Comparison of disjoint and overlapping concepts.}
-
-\begin{figure}[htb]
-\begin{center}
-  \includegraphics[width=0.42\textwidth]{img/qmatrix-binary}
-  \includegraphics[width=0.42\textwidth]{img/qmatrix-continuous}
-\end{center}
-\caption{%
-  Binary and continuous Q-matrix corresponding to the
-  bipartite graph in figure \ref{fig:concepts-disjoint-overlapping}.}
-\label{fig:qmatrix}
-\end{figure}
-
-\subsubsection{\textbf{Overlapping Concepts}}
-\begin{itemize}
-\item (motivation) Single programming task may require multiple skills
-  at once, e.g. both loops and conditional commands (REF to figure with such task).
-\item task:concepts m:n (i.e. each task can contain to multiple concepts)
-\item represenation: bipartite graph between tasks and concepts
-  (example in right part of figure \ref{fig:concepts-disjoint-overlapping})
-\item another representation: matrix tasks x concepts -> 1 if contained, 0 if
-  not = "Q-matrix" (see figure \ref{fig:qmatrix})
-\item values: binary (hard containment) / continuous (soft containment --
-  how much is given concept important for given task; concepts are fuzzy sets of tasks)
-\item Q-matrix is a special type of feature matrix, where all features correpond to concepts
-  (and the values are normalized)
-\item constructing Q-matrix: manually vs. automatically
-  (disadvantage of automatic approach is that it requires quite lot of data and
-    that the discovered concepts are not-interpretable) (TODO: REF)
-\item human-in-the-loop approach: does existing Q-matrix (possibly created by
-  expert) match collected performance data? what to change for better fit?
-    (small "safe" improvements)
-%\item tradeoff between plausibility and complexity:
-%  having multiple concepts per tasks introduces "credit assignement problem"
-%  = "Which concept is responsible for poor performance?"
-%  (details in \cite{pelanek-learner-modeling} + TODO: spec. page)
-\item semantics of the edges is now more complicated than for disjoint concepts,
-  because each concept can be presented in the task to a different degree
-  and skills in these concepts may interact in diverse ways,
-  (?) generally: any function mapping the skills (or their probability
-    distributions) of the parent concepts to the predicted performance (or its
-    probability distribution) (e.g. in general BN);
-\item usually, some assumptions are made to decrease the number of modeled parameters;
-  for example:
-    additive model (skills are added, so a higher skill can compensate for a lower skill),
-    conjunctive model (all skills needed to solve the task)
-    disjunctive model (any single skill is enough),
-    DINA and DINO (which are probabilistic versions of conjuctive and disjunctive modes
-    respectively, that introduce a \emph{guess} and \emph{slip} factors to give a nonzero
-    probability to the events such as when a student solves a task without
-    having mastered all required skills).
-    \cite[chapter 3]{its-domain-models}.
-\item Additive models can also include a normalization of the sum, e.g.:
-  $\hat{p}_{ij} = \sigma(s_j \cdot t_i)$, where
-  $\hat{p}_{ij}$ is the predicted (continuous) performance of student $j$ on task $i$,
-  $s_j$ is the vector of skills, $t_i$ is the row in Q-matrix for the task $i$,
-  and $\sigma$ is logistic sigmoid. (TODO?: example)
-  (TODO: fix: performance is undefined at this point...)
-% TODO: consider precise formulation for all other models as well,
-% see \cite[chapter 3]{its-domain-models}.
-% Note: We can also look on the interpretation from the other side: once the task
-% is failed, which skill(s) is/are to blame and how much (ie. how to decrease our estimates
-% if we predicted a success).
-\item TODO: is there an interpretation makes best sense in our domain?
-  (DINA and additive models seem reasonable, others not;
-  TODO: add an example to illustrate why the others are bad for us).
-\end{itemize}
+%\subsubsection{\textbf{Disjoint Concepts}}
+%\begin{itemize}
+%\item task:concepts 1:m (each task in execatly 1 concept)
+%\item aka "concept model", "flat concepts" (concepts are flat clusters of tasks)
+%\item Concepts can be either defined manually or detected automatically
+%  (REF: \cite{niznan-thesis, rihak-phd}, spec.pages),
+%\item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
+%  operating on task-features or task-task similarity matrix
+%  (REF: our paper about similarity of programming problems)
+%\item or semiautomatically, improving upon a mapping from tasks to concepts
+%    provided by an expert \cite{its-domain-models}, chapter 3).
+%\item Manually selected concepts, such as loops and conditional commands,
+%  have the advantage of being interpretable,
+%  so they can be used for skills visualizations in the user interface
+%  to provide students with the information about their learning progress.
+%  Furthermore, no data needs to be collected in advance,
+%  while the automatic techniques require a lot of data to provide stable results.
+%  (TODO: specify "a lot of" + REF).
+%\item example in figure \ref{fig:concepts-disjoint-overlapping} (left)
+%\item REF: usage (? ProSo - single concept per problem type, e.g. all tasks in Robotanist are single concept)
+%\end{itemize}
+%
+%\subsubsection{\textbf{Overlapping Concepts}}
+%\begin{itemize}
+%\item (motivation) Single programming task may require multiple skills
+%  at once, e.g. both loops and conditional commands (REF to figure with such task).
+%\item task:concepts m:n (i.e. each task can contain to multiple concepts)
+%\item represenation: bipartite graph between tasks and concepts
+%  (example in right part of figure \ref{fig:concepts-disjoint-overlapping})
+%\item another representation: matrix tasks x concepts -> 1 if contained, 0 if
+%  not = "Q-matrix" (see figure \ref{fig:qmatrix})
+%\item values: binary (hard containment) / continuous (soft containment --
+%  how much is given concept important for given task; concepts are fuzzy sets of tasks)
+%\item Q-matrix is a special type of feature matrix, where all features correpond to concepts
+%  (and the values are normalized)
+%\item constructing Q-matrix: manually vs. automatically
+%  (disadvantage of automatic approach is that it requires quite lot of data and
+%    that the discovered concepts are not-interpretable) (TODO: REF)
+%\item human-in-the-loop approach: does existing Q-matrix (possibly created by
+%  expert) match collected performance data? what to change for better fit?
+%    (small "safe" improvements)
+%%\item tradeoff between plausibility and complexity:
+%%  having multiple concepts per tasks introduces "credit assignement problem"
+%%  = "Which concept is responsible for poor performance?"
+%%  (details in \cite{pelanek-learner-modeling} + TODO: spec. page)
+%\item semantics of the edges is now more complicated than for disjoint concepts,
+%  because each concept can be presented in the task to a different degree
+%  and skills in these concepts may interact in diverse ways,
+%  (?) generally: any function mapping the skills (or their probability
+%    distributions) of the parent concepts to the predicted performance (or its
+%    probability distribution) (e.g. in general BN);
+%\item usually, some assumptions are made to decrease the number of modeled parameters;
+%  for example:
+%    additive model (skills are added, so a higher skill can compensate for a lower skill),
+%    conjunctive model (all skills needed to solve the task)
+%    disjunctive model (any single skill is enough),
+%    DINA and DINO (which are probabilistic versions of conjuctive and disjunctive modes
+%    respectively, that introduce a \emph{guess} and \emph{slip} factors to give a nonzero
+%    probability to the events such as when a student solves a task without
+%    having mastered all required skills).
+%    \cite[chapter 3]{its-domain-models}.
+%\item Additive models can also include a normalization of the sum, e.g.:
+%  $\hat{p}_{ij} = \sigma(s_j \cdot t_i)$, where
+%  $\hat{p}_{ij}$ is the predicted (continuous) performance of student $j$ on task $i$,
+%  $s_j$ is the vector of skills, $t_i$ is the row in Q-matrix for the task $i$,
+%  and $\sigma$ is logistic sigmoid. (TODO?: example)
+%  (TODO: fix: performance is undefined at this point...)
+%% TODO: consider precise formulation for all other models as well,
+%% see \cite[chapter 3]{its-domain-models}.
+%% Note: We can also look on the interpretation from the other side: once the task
+%% is failed, which skill(s) is/are to blame and how much (ie. how to decrease our estimates
+%% if we predicted a success).
+%\item TODO: is there an interpretation makes best sense in our domain?
+%  (DINA and additive models seem reasonable, others not;
+%  TODO: add an example to illustrate why the others are bad for us).
+%\end{itemize}
 
 
-\subsection{Problem Sets}
-
-\begin{itemize}
-\item aka task sets, topics, units, chapters,
-  (and we call them "missions" and "mission phases" in RoboMission)
-\item ? usually corresponds to concepts (or it is convenient if they do),
-\item can be hierarchical (and the hierarchy should match the hierarchy of
-  corresponding concepts)
-\item can be ordered (and the ordering should follow the prerequisity structure
-  of corresponding concepts)
-\item single concept can be practiced by multiple problem sets
-  (e.g. loops in robot on grid and in turtle graphics)
-\item usually presented in the UI (? so it can be viewed as a part of the UI model instead)
-\item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
-\item TODO: discuss example of Umime programovat (tree of concepts, problem
-  sets, each PS maps to a (single?) concept; where are items?)
-\end{itemize}
+%\subsection{Problem Sets}
+%
+%\begin{itemize}
+%\item aka task sets, topics, units, chapters,
+%  (and we call them "missions" and "mission phases" in RoboMission)
+%\item ? usually corresponds to concepts (or it is convenient if they do),
+%\item can be hierarchical (and the hierarchy should match the hierarchy of
+%  corresponding concepts)
+%\item can be ordered (and the ordering should follow the prerequisity structure
+%  of corresponding concepts)
+%\item single concept can be practiced by multiple problem sets
+%  (e.g. loops in robot on grid and in turtle graphics)
+%\item usually presented in the UI (? so it can be viewed as a part of the UI model instead)
+%\item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
+%\item TODO: discuss example of Umime programovat (tree of concepts, problem
+%  sets, each PS maps to a (single?) concept; where are items?)
+%\end{itemize}
 
 
 \subsection{Hierarchical Models}
 
-\begin{itemize}
-\item in addition to the relationships between tasks and concept,
-  we can also model the relationships between concepts
-  (similarly for problem sets)
-\item two commonly modelled relationships are generalization (this section) and
-  prerequisities (next section)
-\item hierarchical model = allow for generalization relationship between concepts
-\item (relationship name: generalization / specialization / inclusion ?)
-\item representation: rooted tree of chunks, inner nodes = concepts, leaves = tasks
-\item extension: DAG instead of tree
-  (comparision tree vs DAG in figure \ref{fig:concepts-hierarchical})
-\item Note that we can of course use hierarchical concepts and yet decide not to
-  model a hiearachy (although in that case, overlapping concepts are necessary,
-  e.g. if the task practices while loops, it also practices loops and programming concepts).
-\item construction: manually/automatically (hierarchical clustering?)
-\item TODO: discuss relationship between inclusion and prerequisities
-  (Q: isn't inclusion just a special case of soft prerequisity?
-  You need to master loops before you master programming (AND-node),
-  you need to master at least one of these tasks to master the loop concept (OR-node).)
-\item REF usage: MatMat (math domain)
-\item tasks in leaves only / in all nodes (different semantics of inner nodes:
-  "composition of independent concepts" vs "integration concepts"
-\item Experiment showing usefulness of hierarchial model in introductory programming:
-  \cite{learner-models-integration-skills} -- they model domain as BN with 4
-    types of nodes: observations, base concepts, integration concepts (TODO:
-    example), cognitive load node; they show that it's important to have also
-    tasks linked directly to these integration concepts.
-\end{itemize}
-
-%(KLI framework \cite{kli-framework}), KCs with examples for programming:
-Hierarchy example:
-very coarse: programming,
-coarse: loops,
-medium: while loops,
-fine: programs with a single while-not-end loop.
+Concepts vary in granularity and create hierarchies.
+For example, programming concept include loops, loops include while loops,
+and while loops include programs with a single while-not-end loop.
+% TODO: CITE \cite{kli-framework}?
+Hierachy can be modeled either as a rooted tree (single parent concept allowed),
+or as a directed acyclic graph (DAG) (\cref{fig:concepts-hierarchical}).
+Although hierarchical concepts can be used without modeling the hierarchy
+(using overlapping concepts, e.g. a task can contain while loops and
+a more general loops concept), \cite{learner-models-integration-skills} shows
+that explicitly modeling the hierarchy of concepts in the introductory
+programming can improve accuracy of the overlaying student model.
+% NOTE: paper: they model domain as BN with 4
+%types of nodes: observations, base concepts, integration concepts (TODO:
+%example), cognitive load node; they show that it's important to have also
+%tasks linked directly to these integration concepts.
 
 \imgW{concepts-hierarchical}{Hierarchial concepts -- tree (left), DAG (right).}
+
+%\begin{itemize}
+%\item in addition to the relationships between tasks and concepts,
+%  we can also model the relationships between concepts
+%\item two commonly modelled relationships are generalization (this section) and
+%  prerequisities (next section)
+%\item hierarchical model = allow for generalization relationship between concepts
+%\item (relationship name: generalization / specialization / inclusion ?)
+%\item representation: rooted tree of chunks, inner nodes = concepts, leaves = tasks
+%\item extension: DAG instead of tree
+%  (comparision tree vs DAG in figure \ref{fig:concepts-hierarchical})
+%\item Note that we can of course use hierarchical concepts and yet decide not to
+%  model a hiearachy (although in that case, overlapping concepts are necessary,
+%  e.g. if the task practices while loops, it also practices loops and programming concepts).
+%\item construction: manually/automatically (hierarchical clustering?)
+%\item TODO: discuss relationship between inclusion and prerequisities
+%  (Q: isn't inclusion just a special case of soft prerequisity?
+%  You need to master loops before you master programming (AND-node),
+%  you need to master at least one of these tasks to master the loop concept (OR-node).)
+%\item REF usage: MatMat (math domain)
+%\item tasks in leaves only / in all nodes (different semantics of inner nodes:
+%  "composition of independent concepts" vs "integration concepts"
+%\item Experiment showing usefulness of hierarchial model in introductory programming:
+%  \cite{learner-models-integration-skills} -- they model domain as BN with 4
+%    types of nodes: observations, base concepts, integration concepts (TODO:
+%    example), cognitive load node; they show that it's important to have also
+%    tasks linked directly to these integration concepts.
+%\end{itemize}
 
 
 \subsection{Prerequisities}
 
-\begin{itemize}
-\item another relationship between chunks (between concepts / between tasks / both)
-\item semantics: specify chunks that have to mastered prior to tacking given chunk;
-\item For example, nested loops cannot be mastered without mastering simple loops.
-\item multiple edges -- multiple interpretations: e.g.:
-  AND (all prerequistes must be met),
-  OR (at least one prerequisity must be met),
-  (TODO?: noisy and, noisy or),
-  ? additive (compensatory) prerequisites
-  (analogous to the multiple concept skills to task performance mapping).
-\item Generally, the interpretation can be any function from skills/performance
-  associated with prerequisites to a (binary) decision whether the prerequisites are met
-  (when working with probabilities, this leads to Bayesian networks?)
-\item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
-\item representation: genarally BN, restricted: AND/OR directed acyclic graph (DAG),
-  or even just DAG for POKS (examples in figure \ref{fig:chunks-prerequisites})
-\item REF usage:
-  (1) KSI (existing systems) -- and/or prerequisities between tasks;
-  (2) \cite{its-programming} -- soft (continuous) prerequisities (and only?)
-    between concepts interpreted as BN (params computed from historical data);
-  (3) another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
-\item can be combined with the hieararchical models
-  (?) and it can actually make the prerequisity structure easier, because
-    many edges between two groups of chunks on the same level
-    can be replaced by a single prerequisity between 2 higher-order chunks
-    (this is an example of the inheritence property).
-  (TODO: picture to illustrate the point, showing how many prerequisites between
-    2 groups of tasks can be replaced by a single prerequisity edge between 2 concepts)
-\end{itemize}
+Another relationship between chunks are prerequisites. They specify chunks
+that have to be mastered prior to tackling given chunk.  % TODO: grammar?
+For example, single loop is a prerequisity for nested loops.
+If chunks has multiple prerequisities, there are two common interpretations:
+all of the \emph{conjunctive prerequisities} must be mastered,
+while only a single from the set \emph{disjunctive prerequisities} is enough.
+We can describe both of these types in an \emph{and-or graph} (\cref{fig:chunks-prerequisites}).
+However, if only conjunctive prerequisites are needed, then it is enough to represent
+prerequisities by a DAG, called \emph{Partial Order Knowledge Structure} (POKS) (CITE).
+More genererally, each chunk can specify a function from skills of its prerequisities
+into a prior skill (and leave the \emph{ready-to-tackle decision} on a tutor model).
+If the skills can be interpreted as probabilities, then the resulting prerequisity structure
+is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
+% TODO: CITE BN.
+% NOTE: its-programming: prerequ. between concepts interpreted as BN (params
+% computed from historical data);
 
-
-\imgW{chunks-prerequisites}{%
-  Left: prerequisites between first-order concepts (AND);
+\imgW[0.9]{chunks-prerequisites}{%
+  Left: prerequisites between first-level concepts (AND);
   right: prerequisites between tasks (AND-OR).
-  TODO: add separate and-nodes and use arc for ANDs instead of ORs}
+  TODO: "while+if-else"; add separate and-nodes and use arc for ANDs instead of ORs}
 
+%\begin{itemize}
+%\item multiple edges -- multiple interpretations: e.g.:
+%  AND (all prerequistes must be met),
+%  OR (at least one prerequisity must be met),
+%  (TODO?: noisy and, noisy or),
+%  ? additive (compensatory) prerequisites
+%  (analogous to the multiple concept skills to task performance mapping).
+%\item Generally, the interpretation can be any function from skills/performance
+%  associated with prerequisites to a (binary) decision whether the prerequisites are met
+%  (when working with probabilities, this leads to Bayesian networks?)
+%\item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
+%\item representation: genarally BN, restricted: AND/OR directed acyclic graph (DAG),
+%  or even just DAG for POKS (examples in figure \ref{fig:chunks-prerequisites})
+%\item REF usage:
+%  (1) KSI (existing systems) -- and/or prerequisities between tasks;
+%  (2) \cite{its-programming} -- soft (continuous) prerequisities (and only?)
+%    between concepts interpreted as BN (params computed from historical data);
+%  (3) another example (for math): Dybuster Calcularis (Design and evaluation of the computer-based training program calcularis for enhancing numerical cognition.)
+%\item can be combined with the hieararchical models
+%  (?) and it can actually make the prerequisity structure easier, because
+%    many edges between two groups of chunks on the same level
+%    can be replaced by a single prerequisity between 2 higher-order chunks
+%    (this is an example of the inheritence property).
+%  (TODO: picture to illustrate the point, showing how many prerequisites between
+%    2 groups of tasks can be replaced by a single prerequisity edge between 2 concepts)
+%\end{itemize}
 
 
 \subsection{Similarities}
 
-\begin{itemize}
-\item association relationship between chunks (usually symetric)
-\item between tasks / concepts / cross (ie. all chunks)
-\item \emph{network model} -- only tasks (no other chunk types) and similarities
-  between them (described e.g. in \cite{rihak-phd})
-\item TODO: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
-\item Example: similarity matrix (heatmap, clustermap) between tasks
-  (and corresponding similarity graph) in figure \ref{fig:similarities-tasks}.
-\item REF: to our research on item similarity in introductory programming
-  (TODO: mention the most relevant results from the paper:
-   which data to use -- important, which metric -- less important; recommended transformations)
-\end{itemize}
+Similarity is a symetric relationship between chunks of the same type, for example tasks.
+It can be represented either as a matrix of soft similarities, or as a graph with
+edges between the most similar chunks (\cref{fig:similarities-tasks}).
+In the \emph{network model} \cite{rihak-phd}, task similarities are used to propagate
+knowledge about one task (observed performance) to another tasks (estimated performance)
+directly, without using concepts.
+% example: if student solves a task -> update our performance estimates on all other tasks
+The most important decision when computing similarities is what data to use,
+and it depends both on the intended usage and on the amount of collected data
+available (e.g. performance data are useful if the similarities are used in the student
+model to predict future performance; however, it requires that enough performance
+data is collected so that the computed similarities are stable).
+%Similarities between tasks, can be computed from either a feature matrix using task settings and solutions,
+% NOTE: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
+% REF: to our research on item similarity in introductory programming
+%(TODO: mention the most relevant results from the paper:
+% which data to use -- important, which metric -- less important; recommended transformations)
+% TODO: CITE some papers on computing similarities (e.g. our paper)
 
 \begin{figure}[htb]
-\begin{center}
-  \includegraphics[width=0.48\textwidth]{img/similarities-tasks}
-  \includegraphics[width=0.48\textwidth]{img/similarities-graph}
-\end{center}
+\centering
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[width=0.78\textwidth]{img/similarities-tasks}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[width=0.78\textwidth]{img/similarities-graph}
+\end{subfigure}
 \caption{%
-  Left: Similarity matrix between tasks (TODO: how computed);
+  Left: Similarity matrix between tasks;
   right: Similarity graph with edges between tasks with high similarity.
   TODO: make it readable}
 \label{fig:similarities-tasks}
 \end{figure}
 
-\subsection{Evaluation}
-
-\begin{itemize}
-\item problem: many options, which one to choose
-\item again: no single best domain model depends on its intended usage
-\item thus: the model should be evaluated wrt. the usage,
-  which can mean we can reduce the problem of evaluation the domain model
-  to the evaluation of the application -- try a bunch of different domain
-  models and see their effect on the performance in the application
-\item limitations:
-  (1) Only works with a small number of domain models to try
-  (if we want to optimize a continous parameters of the domain, then it
-    is more difficult).
-  (2) Requires the ability to evaluate the application, which is not
-    always possible (e.g.: getting insight, open learner model) or is
-    slow (e.g. requires online experiment).
-\item REF to details on evaluation in the last sections of this chapter
-\item TODO: illustrate: select one example of evalution and describe properly
-  (some approaches to evalution are e.g. in \cite{rihak-phd})
-\item TODO: example -- learning curve analysis \cite{its-domain-models}
-\item example: verification of homogeneity of tasks that are assumed to be
-  homogenous (interchangeable) according to current model (ie. they should
-  have similar average success and solving times; statistical test testing
-  that solving times comes from different distributions can be performed)
-  (TODO: perform such test and illustrate, showing the two distributions
-  and result of the test)
-\end{itemize}
+%\subsection{Evaluation}
+%
+%\begin{itemize}
+%\item problem: many options, which one to choose
+%\item again: no single best domain model depends on its intended usage
+%\item thus: the model should be evaluated wrt. the usage,
+%  which can mean we can reduce the problem of evaluation the domain model
+%  to the evaluation of the application -- try a bunch of different domain
+%  models and see their effect on the performance in the application
+%\item limitations:
+%  (1) Only works with a small number of domain models to try
+%  (if we want to optimize a continous parameters of the domain, then it
+%    is more difficult).
+%  (2) Requires the ability to evaluate the application, which is not
+%    always possible (e.g.: getting insight, open learner model) or is
+%    slow (e.g. requires online experiment).
+%\item REF to details on evaluation in the last sections of this chapter
+%\item TODO: illustrate: select one example of evalution and describe properly
+%  (some approaches to evalution are e.g. in \cite{rihak-phd})
+%\item TODO: example -- learning curve analysis \cite{its-domain-models}
+%\item example: verification of homogeneity of tasks that are assumed to be
+%  homogenous (interchangeable) according to current model (ie. they should
+%  have similar average success and solving times; statistical test testing
+%  that solving times comes from different distributions can be performed)
+%  (TODO: perform such test and illustrate, showing the two distributions
+%  and result of the test)
+%\end{itemize}
 
 
 
 \section{Student Modeling}
 \label{sec:student-modeling}
 
-\begin{itemize}
-\item Student model represents/captures
-  state of the student (e.g. her skills)
-  estimated from her past performance
-  used to predict her future performance. (simplified)
+Student model captures state of the student (e.g. skills) estimated from the
+past performance and typically enables to predict future performance
+%Comprehensive overviews of student modeling:
+\cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}.
+It is used in tutor models to detect mastery, or to select tasks matching
+student's skills, in the user interface to visualize skills \cite{instructor-dashboard-realtime},
+and in the analyses to get insight into how the students are learning.  % TODO: elaborate
 
-\item Usage:
-  \begin{itemize}
-  \item In tutor models: (e.g.)
-    recommending task of the optimal difficulty for given student,
-    detecting mastery (skill of given concepts is above a threshold),
-    showing hints when a student is digressing from the path towards a solution.
-  \item In UI: showing feedback for the students and teachers
-        \cite{instructor-dashboard-realtime}
-        (visualization of skills -- "open learner model").
-  \item For online evaluation -- insight for developers (TODO: example).
-  \item For offline evaluation -- insigth by researchers and programming teachers
-  (TODO: example).
-  \end{itemize}
-\end{itemize}
+% NOTE: in tutor models += showing hints when a student is digressing from the
+% path towards a solution.
+% NOTE: In UI: showing feedback for the students and teachers
+%        (visualization of skills -- "open learner model").
 
 
-\subsection{Domain vs. Student}
-
-TODO: These are just internal notes. After incorporate clarifying comments
-to relevant places, consider removing this section.
-
-\begin{itemize}
-\item The line between "domain" and "student" is fuzzy.
-  It differs a lot in different papers; some even don't distinguish a separated
-  domain model. (REF examples)
-\item We have decided to take the following approach:
-  The sole responsibility of student model is to track skills of a \emph{single}
-  student. Thus, the domain model includes also population-specific parameters,
-  such as initial skills, learning rate, chunk difficulties,
-  precise (numeric) relationships between skills (prerequisites, mastery).
-\item ?? Some of these parameters are learned within the domain model
-  and then used as fixed parameters in the student model.
-\item TODO: The above notes about population parameters to the domain section.
-\item We could define a separate \emph{population model}, which would be useful
- if ?? we would like to model more populations and/or
- estimate the population parameters online
- (?? REF: slepe mapy - prior knowledge + difficulties estimation)
-\item Note that even which chunks exist what are the relationships between them
-  may depend on the population (if the population is diverse), so there is
-  really no clear division on what should be a part of
-  "population independent domain model" and "population model"
-  (because it inherently depends on the population using the system,
-  so we can decide only for the current population and provided we have collected
-  enought data to analyze how large the differnces between subpopulations are
-  and if it has significant impact on the application the model is used for).
-\item ?? While being non-standard, we found this division to best match separation
-  of concerns and thus be suitable for both explaining (as in this text)
-  and impelementation (as in the developed system).
-\item Domain vs Student:
-  initial skills x current skills,
-  concepts x skills,
-  (tasks x performance),
-  difficulties x skills,
-  common for all students x for each student,
-  offline x online.
-\item Domain = state space, student = point in that space space
-  (\cite{its-learner-models}).
-\item example (from \cite{its-programming}):
-  domain model is DAG of concepts together with a Bayesian network over this DAG
-  (i.e. assignment of conditional probabilities to the edges),
-  student model is (for each student) assignment from each concept to the
-  knowledge (known / unknown / not-sure) -> knowlege for any concept can be
-  then inferred using the Bayesian network.
-\end{itemize}
+%\subsection{Domain vs. Student}
+%
+%TODO: These are just internal notes. After incorporate clarifying comments
+%to relevant places, consider removing this section.
+%
+%\begin{itemize}
+%\item The line between "domain" and "student" is fuzzy.
+%  It differs a lot in different papers; some even don't distinguish a separated
+%  domain model. (REF examples)
+%\item We have decided to take the following approach:
+%  The sole responsibility of student model is to track skills of a \emph{single}
+%  student. Thus, the domain model includes also population-specific parameters,
+%  such as initial skills, learning rate, chunk difficulties,
+%  precise (numeric) relationships between skills (prerequisites, mastery).
+%\item ?? Some of these parameters are learned within the domain model
+%  and then used as fixed parameters in the student model.
+%\item TODO: The above notes about population parameters to the domain section.
+%\item We could define a separate \emph{population model}, which would be useful
+% if ?? we would like to model more populations and/or
+% estimate the population parameters online
+% (?? REF: slepe mapy - prior knowledge + difficulties estimation)
+%\item Note that even which chunks exist what are the relationships between them
+%  may depend on the population (if the population is diverse), so there is
+%  really no clear division on what should be a part of
+%  "population independent domain model" and "population model"
+%  (because it inherently depends on the population using the system,
+%  so we can decide only for the current population and provided we have collected
+%  enought data to analyze how large the differnces between subpopulations are
+%  and if it has significant impact on the application the model is used for).
+%\item ?? While being non-standard, we found this division to best match separation
+%  of concerns and thus be suitable for both explaining (as in this text)
+%  and impelementation (as in the developed system).
+%\item Domain vs Student:
+%  initial skills x current skills,
+%  concepts x skills,
+%  (tasks x performance),
+%  difficulties x skills,
+%  common for all students x for each student,
+%  offline x online.
+%\item Domain = state space, student = point in that space space
+%  (\cite{its-learner-models}).
+%\item example (from \cite{its-programming}):
+%  domain model is DAG of concepts together with a Bayesian network over this DAG
+%  (i.e. assignment of conditional probabilities to the edges),
+%  student model is (for each student) assignment from each concept to the
+%  knowledge (known / unknown / not-sure) -> knowlege for any concept can be
+%  then inferred using the Bayesian network.
+%\end{itemize}
 
 
 \subsection{Classification of Student Models}
@@ -672,241 +744,312 @@ to relevant places, consider removing this section.
 \begin{itemize}
 \item \emph{Modeled components.}
 The most explored area is skill modeling, but broader student models may also
-include affect (e.g. frustration, boredom), motivation, and metacognition
-(knowledge about their knowledge) (REF).
+include emotions (e.g. frustration, boredom), needs, motivation, and metacognition (CITE).
+%(knowledge about their knowledge) (REF).
 \item \emph{Underlying domain model.}
-The simplest models assume either a single concept common for all tasks,
-or each task as separete concept (REF: slepe-mapy). In programming,
-we need to model multiple skills per task.
-(REF to overlapping concepts section)
-\item \emph{Granularity of skills.}
-Some models track the state of the student when solving a particular task
-(REF: rule-based models, constraint based models), while others
-only describe the state of the student between two task sessions
-(??REF: KLI framework) or even only between finished problem sets.
-\item \emph{Discrete vs. continuous skills.}
-Discrete = either known or not known (can have multiple levels, e.g.
-unknown -> known -> fluent) (e.g. BKT); continuous (e.g. logistic models).
-\cite{pelanek-learner-modeling}
-\item \emph{Representation of skills.}
-Instead of modeling full probability distribution of current skill, some models
-only track a single point estimate,
-?? or they assume a specific shape of the distribution that can be described by
-a few numbers (e.g. mean and standard deviation for normal distribution).
-\item \emph{Representation of performance}:
-  binary correctness (solved or failed),
-  discrete performance levels (e.g. poor, good, excellent),
-  continuous performance (\emph{partial credit} (REF)) $p_{ij} \in [0, 1]$,
-  log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
-  or a continuous score combining time and correctness
-  (see \cite[p.106]{rihak-phd} for some possible mappings).
-?? \emph{probabilistic models} (vs. deterministic)
-  = predict a probability distribution of performance insteaf of a single point
-  (?? and/or represent skill as probabilist distributions?)
-\item ?? \emph{Predictive vs. descriptive}.
+The simplest models assume either a single concept,
+or each task as separete concept. %(REF: slepe-mapy).
+More complex models can include multiple concepts,
+hierarchies, prerequisities, or similarities.
+\item \emph{Granularity of modeled events.}
+Some models track the state of the student during solving a task
+(CITE), % TODO:CITE: rule-based models, constraint based models),
+while others only describe the state of the student between task sessions
+\cite{kli-framework}. % TODO: check
+% or even only between finished problem sets.
+\item \emph{Discrete or continuous skills.}
+Some models assume discrete skills (e.g. known, or now know, or with multiple levels),
+% e.g. unknown -> known -> fluent; or LogisticHMM
+%(CITE/REF:BKT)
+while others assume continuous skill
+%(CITE/REF: logistic models).
+\cite{pelanek-learner-modeling}.
+\item \emph{Representation of skill estimate.}
+Instead of modeling full probability distribution of the skill, % discretized?
+most models track only a single point estimate
+(possibly with another parameter describing its uncertainty).
+% TODO:CITE?
+%?? or they assume a specific shape of the distribution that can be described by
+%a few numbers (e.g. mean and standard deviation for normal distribution).
+\item \emph{Representation of performance}.
+  Binary correctness (solved or failed),
+  discrete performance levels (poor, good, excellent),
+  continuous performance (in range $[0, 1]$),
+  %(\emph{partial credit} CITE) ($p_{ij} \in [0, 1]$)
+  or solving time.
+  %log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
+% NOTE:score combining time and correctness \cite[p.106]{rihak-phd} -- not relevant for use
+%\item ?? \emph{probabilistic models} (vs. deterministic)
+%  = predict a probability distribution of performance instead of a single point
+%  (?? and/or represent skill as probabilist distributions?)
+\item \emph{Predictive or descriptive}.
 Predictive models can predict the performance of the student on a given task,
-while descritive models only describe the past performance of the student.
-\item \emph{Online vs. offline.}
+while descritive models only summarize the past performance of the student.
+% TODO:CITE/example (NCC)
+\item \emph{Online or offline.}
 In online models, parameters can be updated gradually after each task session
-( i.e. ?? algrothm for learnining model parameters is online, REF: online algorithms).
-\item \emph{Learning vs. testing.}
-Models used in (??) adaptive testing (REF), assume that no learning happens
-during the interaction with the system. They can be reduced to models with
-learning by reestimating skills from the full student history after each task
-session, but this leads to offline models.
+(i.e. there exist an efficent online algorithm for learnining model parameters).
+% CITE: online algorithms.
+\item \emph{Assumptions about learning.}
+Models used in adaptive testing (CITE), assume no learning.
+%during interaction with the system.
+%They can be reduced to models with
+%learning by reestimating skills from the full student history after each task
+%session, but this leads to offline models.
 Some models that contain learning include additional assumptions
-about how the learning happens. For example, BKT (REF section)
-assumes a discrete transtion from unknown state to the known state.
-\item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
-The more skills and relationships between them the model includes,
-the more precisely it can capture the reality, but only
-if there is enough data to train the model; otherwise we are in danger of
-overfitting. (TODO: REF to the bias-variance tradeoff).
-The number of parameters that are specific for students must be low in order to
-estimate them quickly after just a few interactions of the student with the system.
-(+ they are assumed to change, no older observations loose their value)
+about how the learning happens, e.g. a constant increase of skill
+after each attempted task (CITE:PFA?).
+%For example, BKT (\cref{sec:bkt}) assumes a discrete transtion from unknown
+%state to the known state.
+%\item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
+%The more skills and relationships between them the model includes,
+%the more precisely it can capture the reality, but only
+%if there is enough data to train the model; otherwise we are in danger of
+%overfitting. (TODO: REF to the bias-variance tradeoff).
+%The number of parameters that are specific for students must be low in order to
+%estimate them quickly after just a few interactions of the student with the system.
+%(+ they are assumed to change, no older observations loose their value)
 %More complex models might be also more difficult to implement, debug and interpret.
 %   (?? this is a different kind of complexity; the first is size of hypothesis space)
 \end{itemize}
 
-No single best student model -- depends on the domain, intended usage, and also
-on the type and amount of data we have.
-In the rest of this section, we restrict our attention to the models relevant
-for the domain of introductory programming and the type of the system we
-are building. Specifically, we focus on models that
-model only skills of concepts and predict performance on tasks,
-allow for multiple skills per task,
-assume learning and can be updated online.
-
-Comprehensive overviews of student modeling:
-\cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}
-
-\subsection{Performance}
-
-\begin{itemize}
-\item Observed data from a task session:
-  solved/not, solving time, number of code executions, number of edits,
-  or even the individual edits (program snapshot), hints taken,
-  rating or labels provided by the student (e.g. perceived difficulty).
-\item TODO: mention different granularity/frequency levels for taking program
-  snapshots: edits (AST changes), executions
-  (REF: Educational Data Mining and Learning Analytics in Programming:
-  Literature Review and Case Studies -- they differentiate more levels:
-  and instead of "AST changes" they specify 2 levels ("key strokes" and
-  "line-level edits"), but only the two are relevant for us (and most online,
-  block-base programming environmant).
-\item We first compress these \emph{observational data} into a
-  single number representation of \emph{performance}.
-\item The chosen representation/computation may play important role for the usage
-  of the student model, e.g. in \cite{alg.mastery} they achieved better results
-  in mastery learning by incorporating solving times into the performance instead
-  of using just binary correctness (?? domains: math, czech).
-\item Performance representation in introductory programming:
-  most students solve most tasks given enough time, so correctness is out of
-  question. We could still map task session data into a binary performance (1
-  = good, 0 = poor), but that would not allow to distinguish between students
-  for whom are the tasks just right and those for whom are too easy.
-\item Three-level domain $p_{ij} \in \{0, 0.5, 1\}$ (poor, good, excellent performance)
-  could already contain sufficient information for many applications
-  (should be verified by future research)
-  and mathces the predictions whether a given task is for given student too
-  difficult, just right, or too easy.
-\item Ordinal scale from definition;
-  ??  It is convenient to treat it as an interval variable,
-  but then it should be verified on data that the chosen compressed performance
-  behaves accordingly. (TODO: explain / REF to a paper or relevant analysis in
-  thesis)
-\item ?? range $[0, 1]$ vs. -1, 0, 1; (disadvantage of 0-1: suggest it has interval
-  scale + possible confusion with the probabilistic interpretation, which
-  doesn't make much sense -- unless we assume a very specific shape of the
-  probablistic distribution, we need to specify 2 numbers to get the probablity
-  table)
-\item Example of performance compression/extraction:
-  based on solving time thresholds
-  (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
-  (+ possibly REF other examples)
-  (??TODO: figure -- with multiple possible representations).
-\item The compression algorithm can be much more complex;
-  for example, a trained recurrent neural network reading a series
-  of program snapshots embeddings  % AST transformed to vectors of floats
-  \cite{student-models-deep-learning}.
-\item Another option would be to model log-times (used e.g. in Tutor - REF),
-  or continuous partial credit by mapping solving times to the 0-1 range
-  (e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery}).
-\item While the compression causes a loss of information,
-  it also reduces noise present in the raw data.
-  Most importantly, it helps to avoid a combinatoric explosion of
-  considering each type of model with multiple different types of input data or
-  their combination.
-  Having a unified simple performance input makes the models simpler and
-  easier to interpret.
-\item Notation: true performance $p_{ij}$ vs. predicted performance $\hat{p}_{ij}$
-\end{itemize}
+%Which student model to used depends on the domain, intended usage, and also
+%on the type and amount of data we have.
+%In the rest of this section, we restrict our attention to the models relevant
+%for the domain of introductory programming and the type of the system we
+%are building. Specifically, we focus on models that
+%model only skills of concepts and predict performance on tasks,
+%allow for multiple skills per task,
+%assume learning and can be updated online.
 
 
-\subsection{Skills}
+\subsection{Data and Algorithms}
 
-\begin{itemize}
-\item (domain vs. student: tasks -- performance, concepts -- skills)
-\item ?? definition:
-  $\theta_{cj} \in [0, 1]$ expresses how much student $j$ knows concept $c$
-  (0 not at all, 1 mastered).
-  (?? TODO: Consider using $[-1, 1]$ with 0 calibrated either to the "ready-to-learn"
-  concept (flow point), or to the initial student.)
-\item Possibly: not only a single point estimage, but also uncertainty,
-  or even full distribution of the estimated skill.
-\item Note: terms "skills" are often used interchangebly with "concepts" in
-  the literature; in this thesis we strictly distinguish between "concepts"
-  (independent of any student) and "skills" (associated with a student-concept
-  pair).
-\item Each student model thus depends ("overlays") a domain model, which
-  defines a set of concepts for which to associate skills
-  and describes how these skills interact among themselves and how they
-  relate to each task.
-\item Student models use domain as a structure,
-  assigning skills (and possibly other parameters, such as uncertainty)
-  to the chunks in taht structure.
-\end{itemize}
+Student model use a domain model as an underlaying structure,
+assigning estimated \emph{skills} to each concept, % either estimated or self-declared
+and \emph{performances} (either observed or predicted) to each task.
+% NOTE: space-time tradeoof: Typically, all but the predicted performances are stored.
+%Skills can be represented as a single point estimage, or with uncertainty,
+%  or even full distribution of the estimated skill.
+Similarly as skills summarize all previous task sessions of the student,
+performance is a compressed information about the series of
+interactions with the task (code edits, executions, taken hings, provided rating).
+Simple performance compression can only consider solving times and specify two
+thresholds (for excelllent and good performance).
+The compression algorithm can be more complex,
+such as a trained recurrent neural network reading a series
+of program snapshots embeddings  % AST transformed to vectors of floats
+\cite{student-models-deep-learning}.
+% NOTE: Sweat spot: somewhere in between these two rather extreme approaches.
 
+While the compression causes a loss of information, it also reduces noise
+present in the raw data. Most importantly, it helps to avoid a combinatoric
+explosion of considering each type of model with multiple different types of
+input data or their combination.
+%Having a unified simple performance input makes the models simpler and easier to interpret.
+Used data play an important role, e.g. in \cite{alg.mastery} they achieved
+better results in mastery learning by incorporating solving times into the
+performance instead of using just binary correctness (TODO: domains? math,
+czech).
 
-\subsection{Data Structures and Algorithms}
-
-We specify the model by its data and procedures
-(as in \cite{pelanek-learner-modeling}).
-We further distinguish between the historical data that are transformed into
-the model data (by an online update function after each task session).
-
-\subsubsection{Historical Data}
-\begin{itemize}
-\item list of task sessions
-\item task session is $(t, i, j, c, p^{t}_{ij})$ with
-  timestamp $t$ , task $i$, student $j$, (context $c$),
-  observed performance $p^{t}_{ij}$.
-\end{itemize}
-
-\subsubsection{Model Data}
-\begin{itemize}
-\item underalying domain (e.g. disjunctive concepts),
-\item population parameters, e.g. initial skills, learning rate,
-\item skills for each student-??concept pair.
-\end{itemize}
-
-\subsubsection{Algorithms}
-\begin{itemize}
-\item \emph{learning} population parameters (can be offline),
-  (?? can we make population parameters part of the domain to have a single
-  group of "offline-learned" parameters = domain = everything independent
-  of a specific student)
-\item \emph{update} of student skills based on an observed task session
-  (online learning),
-\item \emph{prediction} of performance for given student and task.
-  (?? also prediction of skill for student-concept,
-  if the data are more complex, e.g. hierarchical model?),
-\item \emph{visualization} of a group of learners, e.g. learning curves
-  (?? broader -- insight: also clustering of students, ...)
-\item TODO: figure showing interaction between the data and algorithms.
-\end{itemize}
-
-\subsubsection{Learning population parameters}
-\begin{itemize}
-\item input: domain $D$, history: collected task sessions
-\item output: population parameters $P$: initial skills, learning rate, ...
-\item TODO: replace text by a figure
-\end{itemize}
-
-\subsubsection{Online skill update}
-\begin{itemize}
-\item input: domain $D$, (population parameters $P$),
-  student state before the task session $\theta^{t}_{j}$,
-  new task session $(t, i, j, p^{t}_{ij})$
-\item output: student state (skills) after the task session $\theta^{t+1}_{j}$
-\item TODO: replace text be a figure
-\end{itemize}
-
-\subsubsection{Performance prediction}
-\begin{itemize}
-\item input: domain $D$, (?? population parameters $P$),
-  student state $\theta^{t}_{j}$, task $i$, (context)
-\item output: predicted response of the student to the task,
-  e.g. performance $\hat{p}^t_{ij}$
-\item TODO: replace text be a figure
-\end{itemize}
+There are three types of algorithms connected to student models: online update
+of skills after a new task session, prediction of performance on given task,
+and insight algorithms that work either with a single student (e.g. skills
+visualization), or a population (e.g. learning and engagement curves).
 
 
-\subsection{Elo Models}  % TODO: Consider "Logistic models"
-\label{sec:elo}
 
-The Elo model \cite{alg.elo, irt-elo-math}
-  extends the logistic model (REF, ?? IRT: \cite{irt-visual-guide})
+%\subsection{Performance}
+
+%\begin{itemize}
+%\item Observed data from a task session:
+%  solved/not, solving time, number of code executions, number of edits,
+%  or even the individual edits (program snapshot), hints taken,
+%  rating or labels provided by the student (e.g. perceived difficulty).
+%\item TODO: mention different granularity/frequency levels for taking program
+%  snapshots: edits (AST changes), executions
+%  (REF: Educational Data Mining and Learning Analytics in Programming:
+%  Literature Review and Case Studies -- they differentiate more levels:
+%  and instead of "AST changes" they specify 2 levels ("key strokes" and
+%  "line-level edits"), but only the two are relevant for us (and most online,
+%  block-base programming environmant).
+%\item We first compress these \emph{observational data} into a
+%  single number representation of \emph{performance}.
+%\item The chosen representation/computation may play important role for the usage
+%  of the student model, e.g. in \cite{alg.mastery} they achieved better results
+%  in mastery learning by incorporating solving times into the performance instead
+%  of using just binary correctness (?? domains: math, czech).
+%\item Performance representation in introductory programming:
+%  most students solve most tasks given enough time, so correctness is out of
+%  question. We could still map task session data into a binary performance (1
+%  = good, 0 = poor), but that would not allow to distinguish between students
+%  for whom are the tasks just right and those for whom are too easy.
+%\item Three-level domain $p_{ij} \in \{0, 0.5, 1\}$ (poor, good, excellent performance)
+%  could already contain sufficient information for many applications
+%  (should be verified by future research)
+%  and matches the predictions whether a given task is for given student too
+%  difficult, just right, or too easy.
+%\item Ordinal scale from definition;
+%  ??  It is convenient to treat it as an interval variable,
+%  but then it should be verified on data that the chosen compressed performance
+%  behaves accordingly. (TODO: explain / REF to a paper or relevant analysis in
+%  thesis)
+%\item ?? range $[0, 1]$ vs. -1, 0, 1; (disadvantage of 0-1: suggest it has interval
+%  scale + possible confusion with the probabilistic interpretation, which
+%  doesn't make much sense -- unless we assume a very specific shape of the
+%  probablistic distribution, we need to specify 2 numbers to get the probablity
+%  table)
+%\item Example of performance compression/extraction:
+%  based on solving time thresholds
+%  (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
+%  (+ possibly REF other examples)
+%  (??TODO: figure -- with multiple possible representations).
+%\item The compression algorithm can be much more complex;
+%  for example, a trained recurrent neural network reading a series
+%  of program snapshots embeddings  % AST transformed to vectors of floats
+%  \cite{student-models-deep-learning}.
+%\item Another option would be to model log-times (used e.g. in Tutor - REF),
+%  or continuous partial credit by mapping solving times to the 0-1 range
+%  (e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery}).
+%\item While the compression causes a loss of information,
+%  it also reduces noise present in the raw data.
+%  Most importantly, it helps to avoid a combinatoric explosion of
+%  considering each type of model with multiple different types of input data or
+%  their combination.
+%  Having a unified simple performance input makes the models simpler and
+%  easier to interpret.
+%\item Notation: true performance $p_{ij}$ vs. predicted performance $\hat{p}_{ij}$
+%\end{itemize}
+
+
+%\subsection{Skills}
+
+%\begin{itemize}
+%\item (domain vs. student: tasks -- performance, concepts -- skills)
+%\item ?? definition:
+%  $\theta_{cj} \in [0, 1]$ expresses how much student $j$ knows concept $c$
+%  (0 not at all, 1 mastered).
+%  (?? TODO: Consider using $[-1, 1]$ with 0 calibrated either to the "ready-to-learn"
+%  concept (flow point), or to the initial student.)
+%\item Possibly: not only a single point estimage, but also uncertainty,
+%  or even full distribution of the estimated skill.
+%\item Note: terms "skills" are often used interchangebly with "concepts" in
+%  the literature; in this thesis we strictly distinguish between "concepts"
+%  (independent of any student) and "skills" (associated with a student-concept
+%  pair).
+%\item Each student model thus depends ("overlays") a domain model, which
+%  defines a set of concepts for which to associate skills
+%  and describes how these skills interact among themselves and how they
+%  relate to each task.
+%\item Student models use domain as a structure,
+%  assigning skills (and possibly other parameters, such as uncertainty)
+%  to the chunks in that structure.
+%\end{itemize}
+
+
+%\subsection{Data and Algorithms}
+
+%We specify the model by its data and procedures
+%(as in \cite{pelanek-learner-modeling}).
+%We further distinguish between the historical data that are transformed into
+%the model data (by an online update function after each task session).
+%
+%\subsubsection{Historical Data}
+%\begin{itemize}
+%\item list of task sessions
+%\item task session is $(t, i, j, c, p^{t}_{ij})$ with
+%  timestamp $t$ , task $i$, student $j$, (context $c$),
+%  observed performance $p^{t}_{ij}$.
+%\end{itemize}
+%
+%\subsubsection{Model Data}
+%\begin{itemize}
+%\item underalying domain (e.g. disjunctive concepts),
+%\item population parameters, e.g. initial skills, learning rate,
+%\item skills for each student-??concept pair.
+%\end{itemize}
+%
+%\subsubsection{Algorithms}
+%\begin{itemize}
+%\item \emph{learning} population parameters (can be offline),
+%  (?? can we make population parameters part of the domain to have a single
+%  group of "offline-learned" parameters = domain = everything independent
+%  of a specific student)
+%\item \emph{update} of student skills based on an observed task session
+%  (online learning),
+%\item \emph{prediction} of performance for given student and task.
+%  (?? also prediction of skill for student-concept,
+%  if the data are more complex, e.g. hierarchical model?),
+%\item \emph{visualization} of a group of learners, e.g. learning curves
+%  (?? broader -- insight: also clustering of students, ...)
+%\item TODO: figure showing interaction between the data and algorithms.
+%\end{itemize}
+%
+%\subsubsection{Learning population parameters}
+%\begin{itemize}
+%\item input: domain $D$, history: collected task sessions
+%\item output: population parameters $P$: initial skills, learning rate, ...
+%\item TODO: replace text by a figure
+%\end{itemize}
+%
+%\subsubsection{Online skill update}
+%\begin{itemize}
+%\item input: domain $D$, (population parameters $P$),
+%  student state before the task session $\theta^{t}_{j}$,
+%  new task session $(t, i, j, p^{t}_{ij})$
+%\item output: student state (skills) after the task session $\theta^{t+1}_{j}$
+%\item TODO: replace text be a figure
+%\end{itemize}
+%
+%\subsubsection{Performance prediction}
+%\begin{itemize}
+%\item input: domain $D$, (?? population parameters $P$),
+%  student state $\theta^{t}_{j}$, task $i$, (context)
+%\item output: predicted response of the student to the task,
+%  e.g. performance $\hat{p}^t_{ij}$
+%\item TODO: replace text be a figure
+%\end{itemize}
+
+
+\subsection{Logistic Models}  % OR "Elo models"
+\label{sec:elo}  % TODO: rename label
+
+Logistic models \cite{irt-visual-guide}  % TODO:check-cite
+are a family of student models that predict performance $P(s, d)$
+of a student with skill $s$ on a task with difficulty $d$
+using a logistic function applied to the difference between the skill and the difficulty:
+\begin{equation}\label{eq:logistic}
+P(s, d) = \frac{1}{1 + e^{-(s - d)}}
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[domain=-2:4, smooth, samples=20, scale=0.9]
+\draw [thick, ->] (-2,0) -- (4,0) node [below right] {$s$};
+\draw [thick, ->] (0,0) -- (0,2.5) node [left] {$P(s,d)$};
+\draw [thick] (-0.1,1) node [left] {$0.5$} -- (0.1,1);
+\draw [thick] (-0.1,2) node [left] {$1$} -- (0.1,2);
+\draw [thin, dashed] (0,2) -- (4,2);
+\draw [thin, dashed] (0,1) -- (1,1) -- (1, 0);
+\draw [thin, dashed] (-0.57,2) -- (-2,2);
+\draw [thick] (1,0.1) -- (1,-0.1) node [below] {$d$};
+\draw [very thick] plot (\x, {2 / (1 + exp(1 - \x))});
+\end{tikzpicture}
+\caption{One-parameter Unidimensional Logistic Model}
+\label{fig:logistic-model}
+\end{figure}
+
+
+Elo model \cite{alg.elo, irt-elo-math} extends the logistic model
   to capture changing knowledge.
 Inspired by the rating of chess players \cite{elo-rating},
   the model interprets each attempt  to solve a task
-  as a ``match'' between the student and the task.
+  as a match between the student and the task.
 After this match ends, skill and difficulty estimates are revised.
 Depedning on whether the student solves the task better or worse than expected
   by the model, her skill is increased or decreased.
-The size of the change is proportional to the prediction error -- difference
-  between the predicted and the actual performance ($p_{ij} - \hat{p}_{ij}$) (``surprise'').
+The size of the change is proportional to the prediction error, which is the difference
+  between the predicted and the actual performance ($p_{ij} - \hat{p}_{ij}$). % (``surprise'').
 
 \begin{itemize}
 \item learning rate -- not decreasing, becouse the skill is assumed to change over time
@@ -932,30 +1075,6 @@ The size of the change is proportional to the prediction error -- difference
 \item TODO: relationship to EMA
 \end{itemize}
 
-TODO: formulate it within the 3-value performance (or change the performance to be between 0-1)
-Elo models assume  that the probability of a student with skill $s$
-?? successfully solving a task with difficulty $d$
-is given by the following function:
-\begin{equation}\label{eq:logistic}
-P(s, d) = \frac{1}{1 + e^{-(s - d)}}
-\end{equation}
-
-\begin{figure}[h]
-  \centering
-  \begin{tikzpicture}[domain=-2:4, smooth, samples=20, scale=1]
-  \draw [thick, ->] (-2,0) -- (4,0) node [below right] {$s$};
-  \draw [thick, ->] (0,0) -- (0,2.5) node [left] {$P(s,d)$};
-  \draw [thick] (-0.1,1) node [left] {$0.5$} -- (0.1,1);
-  \draw [thick] (-0.1,2) node [left] {$1$} -- (0.1,2);
-  \draw [thin, dashed] (0,2) -- (4,2);
-  \draw [thin, dashed] (0,1) -- (1,1) -- (1, 0);
-  \draw [thin, dashed] (-0.57,2) -- (-2,2);
-  \draw [thick] (1,0.1) -- (1,-0.1) node [below] {$d$};
-  \draw [very thick] plot (\x, {2 / (1 + exp(1 - \x))});
-  \end{tikzpicture}
-  \caption{One-parameter Unidimensional Logistic Model}
-  \label{fig:logistic-model}
-\end{figure}
 
 
 \subsubsection{Multiple Skills Elo}
