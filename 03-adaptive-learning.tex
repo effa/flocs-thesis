@@ -1051,67 +1051,75 @@ Depedning on whether the student solves the task better or worse than expected
 The size of the change is proportional to the prediction error, which is the difference
   between the predicted and the actual performance ($p_{ij} - \hat{p}_{ij}$). % (``surprise'').
 
-\begin{itemize}
-\item learning rate -- not decreasing, becouse the skill is assumed to change over time
-  (``nonstationary variable'')
-  \cite{student-models-recent-data}
-  % TODO: check the cited paper properly
-\item note: possibility to also update task difficulties online (with
-  decreasing learning rate, because the difficulties are assumed to converge)
-\item The main advantage of using the Elo model is its simplicity, flexibility (TODO: elaborate),
-  good prediction performance (REF) and intrinsic online nature, which allows for immediate
-  updates of parameters as students are interacting with the system.
-\item TODO: ?? relationship to PFA, PFAE
-\item The performance predicton and udpate depends on the underlaying domain model.
-  In the following sections, we discuss some of the possibilities.
-\end{itemize}
-
-\subsubsection{Single Skill Elo}
-
-\begin{itemize}
-\item underlying model: concept-free (REF)
-\item TODO: formulas (?? predicting what -- continuous partial score?)
-\item TODO: figure
-\item TODO: relationship to EMA
-\end{itemize}
+There are variants of Elo that work with more complex domain models,
+such as \emph{Multiple Skills Elo} for multiple disjoint concepts,
+\emph{Hierarchical Elo} for tree hierarchical model,
+and \emph{Network Elo} that utilize task similarities in the network domain model.
+\cite{rihak-phd}.
+(TODO: what about overlapping concepts, which we are most interested about)
 
 
-
-\subsubsection{Multiple Skills Elo}
-
-\begin{itemize}
-\item underlying model: Disjoint Concepts / Overlapping Concepts (REF)
-\item Disjoint Skills: as basic Elo but the total skill is the sum of the
-global skill and concept skill (updating both the same way) (\cite{rihak-phd}, TODO: page).
-\item TODO: Overlapping Skills: ?? (derivation from chosen error measure -> formulas)
-\item alternative solution to the ``credit assignment problem'':
-  not to update the skills directly after a failure on a single task,
-  but first diagnose the issue - give the student tasks with only a subset of concepts,
-  to find the problematic concept for which the skill should be decreased
-  \cite{assistment-trasfer-models}
-\end{itemize}
-
-\subsubsection{Hierarchical Elo}
-
-\begin{itemize}
-\item underlying model: hierarchical model (REF)
-\item REF: \cite{rihak-phd} -- assuming disjoint concepts
-\item predictions: total skill = sum all ancestors skills
-\item update: all ancestors sequentialy (from the top-most), elo-like update
-\item TODO: formulas
-\end{itemize}
-
-
-\subsubsection{Network Elo}
-
-\begin{itemize}
-\item underlying model: network model (REF)
-\item REF: \cite{rihak-phd}
-\item each time a task is solved, update skill for all tasks according to the
-similarity to the one solved (this can be propably also done on the level of
-concepts, if we have a similarity network between concepts)
-\item TODO: formulas
-\end{itemize}
+%\begin{itemize}
+%\item learning rate -- not decreasing, because the skill is assumed to change over time
+%  (``nonstationary variable'')
+%  \cite{student-models-recent-data}
+%  % TODO: check the cited paper properly
+%\item note: possibility to also update task difficulties online (with
+%  decreasing learning rate, because the difficulties are assumed to converge)
+%\item The main advantage of using the Elo model is its simplicity, flexibility (TODO: elaborate),
+%  good prediction performance (REF) and intrinsic online nature, which allows for immediate
+%  updates of parameters as students are interacting with the system.
+%\item TODO: ?? relationship to PFA, PFAE
+%\item The performance predicton and udpate depends on the underlaying domain model.
+%  In the following sections, we discuss some of the possibilities.
+%\end{itemize}
+%
+%\subsubsection{Single Skill Elo}
+%
+%\begin{itemize}
+%\item underlying model: concept-free (REF)
+%\item TODO: formulas (?? predicting what -- continuous partial score?)
+%\item TODO: figure
+%\item TODO: relationship to EMA
+%\end{itemize}
+%
+%
+%
+%\subsubsection{Multiple Skills Elo}
+%
+%\begin{itemize}
+%\item underlying model: Disjoint Concepts / Overlapping Concepts (REF)
+%\item Disjoint Skills: as basic Elo but the total skill is the sum of the
+%global skill and concept skill (updating both the same way) (\cite{rihak-phd}, TODO: page).
+%\item TODO: Overlapping Skills: ?? (derivation from chosen error measure -> formulas)
+%\item alternative solution to the ``credit assignment problem'':
+%  not to update the skills directly after a failure on a single task,
+%  but first diagnose the issue - give the student tasks with only a subset of concepts,
+%  to find the problematic concept for which the skill should be decreased
+%  \cite{assistment-trasfer-models}
+%\end{itemize}
+%
+%\subsubsection{Hierarchical Elo}
+%
+%\begin{itemize}
+%\item underlying model: hierarchical model (REF)
+%\item REF: \cite{rihak-phd} -- assuming disjoint concepts
+%\item predictions: total skill = sum all ancestors skills
+%\item update: all ancestors sequentialy (from the top-most), elo-like update
+%\item TODO: formulas
+%\end{itemize}
+%
+%
+%\subsubsection{Network Elo}
+%
+%\begin{itemize}
+%\item underlying model: network model (REF)
+%\item REF: \cite{rihak-phd}
+%\item each time a task is solved, update skill for all tasks according to the
+%similarity to the one solved (this can be propably also done on the level of
+%concepts, if we have a similarity network between concepts)
+%\item TODO: formulas
+%\end{itemize}
 
 
 
@@ -1624,7 +1632,7 @@ The system can be more strict and show only a single recommended task,
   % Note: currently called "mini-instructions" in the system
 \item \emph{post-explanations} --
   why something happened (REF example print-screen, e.g. that the task was not
-  solved becouse the spaceship has not reached the final line),
+  solved because the spaceship has not reached the final line),
 \item \emph{worked-out examples} --
   special type of explanations, "inductive explanations",
   short programs/snippets to illustrate a concept.
