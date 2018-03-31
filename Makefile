@@ -1,4 +1,4 @@
-.PHONY: all pdf watch clean open install notebook
+.PHONY: all pdf watch clean open install notebook slides
 
 # Text.
 # Assuming latexmk and evince installed.
@@ -16,6 +16,10 @@ clean:
 
 open:
 	evince thesis.pdf &
+
+# Slides.
+slides: slides/slides.tex
+	cd slides; latexmk -pdf -pv -pdflatex="pdflatex -interaction batchmode --shell-escape %O %S" slides.tex
 
 # Analysis.
 # Recommended to run inside a virtual environment (see README).

@@ -1,0 +1,841 @@
+% \iffalse\begin{macrocode}
+%<*driver>
+
+\documentclass{ltxdoc}
+
+% Set up the bibliography.
+\usepackage{filecontents}
+\begin{filecontents}{mubeamer.bib}
+@MANUAL{tantau17,
+  author        =   {Till Tantau and Joseph Wright and Vedran Miletić},
+  year          =   {2017},
+  title         =   {The \textsf{beamer} class},
+  subtitle      =   {User Guide for version 3.42},
+  urldate       =   {2017-08-25},
+  url           =   {http://mirrors.ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf},
+  langid        =   {english}}
+@MANUAL{farar14,
+  author        =   {Pavel Far\'{a}\v{r}},
+  year          =   {2014},
+  title         =   {Support package for free fonts by ParaType},
+  urldate       =   {2017-08-25},
+  url           =   {http://mirrors.ctan.org/fonts/paratype/doc/paratype.pdf},
+  langid        =   {english}}
+@MANUAL{jilek05,
+  author        =   {Pavel J\'ilek},
+  year          =   {2005},
+  title         =   {Manu\'al01},
+  subtitle      =   {Designmanu\'al jednotn\'eho vizu\'aln\'iho stylu},
+  urldate       =   {2017-08-25},
+  url           =   {https://sablony.muni.cz/media/24132/design_manual_2005_platne_kapitoly.pdf},
+  langid        =   {czech}}
+\end{filecontents}
+\usepackage[
+  backend=biber,
+  style=iso-numeric,
+  sorting=none,
+  autolang=other,
+  sortlocale=auto]{biblatex}
+\addbibresource{mubeamer.bib}
+
+% Boilerplate
+\usepackage[utf8]{inputenc} % this file uses UTF-8
+\usepackage[czech,english]{babel}
+\usepackage{tgpagella}
+\usepackage{hologo}
+\usepackage{booktabs}
+\usepackage[scaled=0.86]{berasans}
+\usepackage[scaled=1.03]{inconsolata}
+\usepackage[resetfonts]{cmap}
+\usepackage[T1]{fontenc} % use 8bit fonts
+\emergencystretch 2dd
+\usepackage{hypdoc}
+\usepackage{microtype}
+\usepackage{ragged2e}
+
+% Making paragraphs numbered
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+            {-2.5ex\@plus -1ex \@minus -.25ex}%
+            {1.25ex \@plus .25ex}%
+            {\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{4} % how many sectioning levels to assign
+\setcounter{tocdepth}{4}    % how many sectioning levels to show
+
+% ltxdoc class options
+\CodelineIndex
+\MakeShortVerb{|}
+\EnableCrossrefs
+\DoNotIndex{}
+\makeatletter
+\c@IndexColumns=2
+\makeatother
+
+\begin{document}
+  \RecordChanges
+  \DocInput{mubeamer.dtx}
+  \printbibliography
+  \PrintIndex
+  \RaggedRight
+  \PrintChanges
+\end{document}
+
+%</driver>
+%    \end{macrocode}
+%<*theme>
+% \fi
+%
+% \title{A \textsf{beamer} theme for the typesetting of presentations at the Masaryk
+%   University, Brno}
+% \author{Vít Novotný, Aleš Křenek}
+% \date{\today}
+% \maketitle
+%
+% \begin{abstract}
+% \noindent This document details the design and the implementation of the
+% \textsf{mubeamer} theme for the \textsf{beamer} \Hologo{LaTeX2e}
+% class~\cite{tantau17}.  The theme is intended to be used across the Masaryk
+% University in Brno and is loosely based on a theme developed by Aleš Křenek
+% for the Institute of Computer Science at the Masaryk University in
+% Brno\footnote{The original beamer theme developed by Aleš Křenek is available
+% internally at
+% \url{https://sablony.muni.cz/pracoviste/nefakultni-pracoviste/uvt/ostatni/tex-prezentace/tex-prezentace}.}.
+% Included is technical documentation for anyone who wishes to modify the class
+% as well as information on the basic usage for the ordinary user.
+% \end{abstract}
+%
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeMU}[2017/08/29]
+\mode<presentation>
+%    \end{macrocode}
+%
+% \tableofcontents
+% \listoftables
+%
+% \section{Requirements}
+% \subsection{Required \TeX{} Engine}
+% \textsf{Mubeamer} should work out-of-box with all conventional \TeX\ engines
+% (\TeX, \hologo{eTeX}, \hologo{pdfTeX}, Lua\TeX, \hologo{XeTeX}) both in
+% \textsc{dvi} and \textsc{pdf} mode.
+%
+% \subsection{Required Packages}
+% \textsf{Mubeamer} requires the \textsf{etoolbox} package to patch the
+% |\includegraphics| command in section \ref{sec:filenames_and_pathnames}.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+% Optional packages include font packages as documented in section
+% \ref{sec:processing_options}.
+%
+% \section{Basic Usage}
+% To use \textsf{mubeamer}, specify |\usetheme|\oarg{options}|{MU}| in the
+% preamble of your \textsf{beamer} document; the available \meta{options} are
+% documented in section \ref{sec:options}. Inside your document, you can use
+% the standard markup provided by the \LaTeX{} \textsf{beamer}
+% class~\cite{tantau17}. To get started quickly, inspect the example files
+% distributed alongside \textsf{mubeamer}.
+% 
+% \section{Package Options}\label{sec:options}
+% \subsection{Defining the Options}
+% \begin{macro}{\mubeamer@option@locale}
+% The |locale|=\meta{language name} specifies the language that will determine
+% which labels and logos are displayed. \emph{When the |locale| option is
+% unspecified, the main language of the \textsf{babel} and \textsf{polyglossia}
+% packages is used. If neither package is available, |locale=english| is used.}
+%    \begin{macrocode}
+\DeclareOptionBeamer{locale}{\def\mubeamer@option@locale{#1}}
+\ExecuteOptionsBeamer{locale={%
+  \@ifundefined{languagename}{english}{\languagename}}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@option@workplace}
+% The |workplace|=\meta{work place} specifies the work place whose the labels
+% and logos that will be displayed.  The \meta{work place}s recognized at the
+% Masaryk University in Brno are outlined in table \ref{table:workplaces}.
+% \emph{When the |workplace| option is unspecified, |workplace=mu| is used.}
+%    \begin{macrocode}
+\DeclareOptionBeamer{workplace}{\def\mubeamer@option@workplace{#1}}
+\ExecuteOptionsBeamer{workplace=mu}
+%    \end{macrocode}
+% \begin{table}
+% \begin{center}
+% \begin{tabular}{lc}
+%   \toprule
+%   Work place & \meta{work place} \\
+%   \midrule
+%   University Archives & |arch| \\
+%   Central European Institute of Technology & |ceitec| \\
+%   Cerit & |cerit| \\
+%   Technology Transfer Office & |ctt| \\
+%   Centre for International Cooperation & |czs| \\
+%   Faculty of Economics and Administration & |econ| \\
+%   Faculty of Informatics & |fi| \\
+%   Faculty of Sports Studies & |fsps| \\
+%   Faculty of Social Studies & |fss| \\
+%   Institute for Biostatistics and Analyses & |iba| \\
+%   Institute of Computer Science & |ics| \\
+%   Information System of Masaryk University & |is| \\
+%   Career Centre & |kariera| \\
+%   Language Centre & |lang| \\
+%   Faculty of Law & |law| \\
+%   Faculty of Medicine & |med| \\
+%   Masaryk University & |mu| \\
+%   Mendel Museum & |muzeu| \\
+%   Faculty of Education & |ped| \\
+%   Faculty of Arts & |phil| \\
+%   Masaryk University Press & |press| \\
+%   Central Management Structure of the Ceitec Project & |ptceitec| \\
+%   Rector's Office & |rect| \\
+%   Faculty of Science & |sci| \\
+%   Accomodation and Catering Services & |skm| \\
+%   Support Centre for Students with Special Needs & |teiresias| \\
+%   Management of the University Campus at Bohunice & |ucb| \\
+%   University Center Telč & |uct| \\
+%   \bottomrule
+% \end{tabular}
+% \caption{The work~places recognized at the Masaryk University
+%   in Brno}
+% \label{table:workplaces}
+% \end{center}
+% \end{table}
+% \end{macro}
+%
+% \begin{macro}{\ifmubeamer@option@fonts}
+% \begin{macro}{\ifmubeamer@option@scaling}
+% The |fonts|=\meta{regime} option specifies how \textsf{mubeamer} sets up
+% the default font families. The following \meta{regime}s are recognized:
+% \begin{itemize}
+% \item |fonts=none|  will make no changes to the currently set up font families.
+% \item |fonts=basic| will make the PT Sans and PT Mono font
+% families~\cite{farar14} the default sans-serif and monospace font families.
+% \item \emph{|fonts=scaled| is the default option when the |fonts| option is
+% unspecified.} Like |fonts=basic|, the |scaled| \meta{regime} will make PT
+% Sans and PT Mono the default sans-serif and monospace font families. On top of
+% that, the PT Sans Caption font family will become the default sans-serif
+% family at small font sizes to improve readability; the mechanism is
+% documented in section \ref{sec:processing_options}.
+% \end{itemize}
+%    \begin{macrocode}
+\newif\ifmubeamer@option@fonts
+\newif\ifmubeamer@option@scaling
+\def\mubeamer@temp@option@fonts@none{none}
+\def\mubeamer@temp@option@fonts@basic{basic}
+\def\mubeamer@temp@option@fonts@scaled{scaled}
+\DeclareOptionBeamer{fonts}{%
+  \def\mubeamer@temp@option@arg{#1}%
+  \ifx\mubeamer@temp@option@arg\mubeamer@temp@option@fonts@none
+    \mubeamer@option@fontsfalse
+    \mubeamer@option@scalingfalse
+  \else
+    \ifx\mubeamer@temp@option@arg\mubeamer@temp@option@fonts@basic
+      \mubeamer@option@fontstrue
+      \mubeamer@option@scalingfalse
+    \else
+      \ifx\mubeamer@temp@option@arg\mubeamer@temp@option@fonts@scaled
+        \mubeamer@option@fontstrue
+        \mubeamer@option@scalingtrue
+      \else
+        \PackageError{beamerthemeMU}%
+          {fonts=#1 is not a valid option}%
+          {fonts={none|basic|scaled} are the only valid options}%
+      \fi
+    \fi
+  \fi
+}
+\ExecuteOptionsBeamer{fonts=scaled}
+%    \end{macrocode}
+% \end{macro}^^A{\ifmubeamer@option@fonts}
+% \end{macro}^^A{\ifmubeamer@option@scaling}
+%
+% \begin{macro}{\ifmubeamer@option@gray}
+% The |gray| option makes all labels and logos gray, whereas the |color| option
+% makes them colored. \emph{The |color| option is the default when neither
+% option is specified.}
+%    \begin{macrocode}
+\newif\ifmubeamer@option@gray
+\DeclareOptionBeamer{gray}{\mubeamer@option@graytrue}
+\DeclareOptionBeamer{color}{\mubeamer@option@grayfalse}
+\ExecuteOptionsBeamer{color}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Processing the Options}\label{sec:processing_options}
+%    \begin{macrocode}
+\ProcessOptionsBeamer
+%    \end{macrocode}
+% If the |fonts=basic| or the |fonts=scaled| option is specified, we load the
+% \textsf{PTSans} and \textsf{PTMono} packages. This will make the PT Sans and
+% PT Mono font families the default sans-serif and monospace font families.
+% Since the packages do not handle font selection for \hologo{XeTeX} and
+% Lua\TeX{}, we load the fonts manually in these \TeX{} engines using commands
+% from the \textsf{fontspec} package, which we assume the user has already
+% loaded themself.
+% \begin{macro}{\ifmubeamer@scaling@enabled}
+% \begin{macro}{\mubeamer@scaling@family@basic}
+% \begin{macro}{\mubeamer@scaling@family@caption}
+% \begin{macro}{\mubeamer@scaling@apply}
+% If the |fonts=scaled| option is specified, we will load the
+% \textsf{PTSansCaption} package and we patch the \LaTeX\ font size commands,
+% so that switching to |\scriptsize| and below will:
+% \begin{itemize}
+% \item change the default sans-serif family to PT Sans Caption if PT Sans is
+% the current default sans-serif family, and
+% \item change the current font family to PT Sans Caption if PT Sans is the
+% current font family.
+% \end{itemize}
+% Switching to |\small| and above will do the reverse.
+%    \begin{macrocode}
+\ifmubeamer@option@scaling
+  \RequirePackage{PTSansCaption}
+  \@ifpackageloaded{fontspec}{
+    \newfontfamily\mubeamer@temp@fontname
+      [NFSSFamily=PTSansCaption-TLF]{PT Sans Caption}
+  }{}
+\fi
+\ifmubeamer@option@fonts
+  \RequirePackage{PTSans}
+  \RequirePackage{PTMono}
+  \@ifpackageloaded{fontspec}{
+    \newfontfamily\mubeamer@temp@fontname
+      [NFSSFamily=PTSans-TLF]{PT Sans}
+    \newfontfamily\mubeamer@temp@fontname
+      [NFSSFamily=PTMono-TLF]{PT Mono}
+  }{}
+\fi
+\newif\ifmubeamer@scaling@enabled
+\ifmubeamer@option@scaling
+  \def\mubeamer@scaling@family@basic{PTSans-TLF}
+  \def\mubeamer@scaling@family@caption{PTSansCaption-TLF}
+  \mubeamer@scaling@enabledtrue
+  \def\mubeamer@scaling@apply #1 (#2 -> #3){%
+    \expandafter\let\expandafter\mubeamer@temp@fontsize
+      \csname #1\endcsname
+    \expandafter\let\csname mubeamer@original@#1\endcsname
+      \mubeamer@temp@fontsize
+    \expandafter\def\csname #1\endcsname{%
+      \ifmubeamer@scaling@enabled
+        \expandafter\ifx\csname mubeamer@scaling@family@#2\endcsname
+          \sfbasic\expandafter\let\expandafter\sfdefault
+          \csname mubeamer@scaling@family@#3\endcsname
+        \fi
+        \expandafter\ifx\csname mubeamer@scaling@family@#2\endcsname
+          \f@family\expandafter\fontfamily
+          \csname mubeamer@scaling@family@#3\endcsname\selectfont
+        \fi
+      \fi
+      \csname mubeamer@original@#1\endcsname}}
+  \mubeamer@scaling@apply Huge         (caption -> basic)
+  \mubeamer@scaling@apply huge         (caption -> basic)
+  \mubeamer@scaling@apply LARGE        (caption -> basic)
+  \mubeamer@scaling@apply Large        (caption -> basic)
+  \mubeamer@scaling@apply large        (caption -> basic)
+  \mubeamer@scaling@apply normalsize   (caption -> basic)
+  \mubeamer@scaling@apply small        (caption -> basic)
+  \mubeamer@scaling@apply footnotesize (basic -> caption)
+  \mubeamer@scaling@apply scriptsize   (basic -> caption)
+  \mubeamer@scaling@apply tiny         (basic -> caption)
+\fi
+%    \end{macrocode}
+% Table~\ref{table:scaling} shows how switching to PT Sans Caption at
+% small font sizes improves readability.
+% \begin{table}
+% \begin{center}
+% \makeatletter
+% \begin{tabular}{rll}
+%                     & Without optical scaling & With optical scaling \medskip\\
+%   \cs{Huge}         & \fontfamily{PTSans-TLF}\selectfont\Huge\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\Huge\f@family \\
+%   \cs{huge}         & \fontfamily{PTSans-TLF}\selectfont\huge\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\huge\f@family \\
+%   \cs{LARGE}        & \fontfamily{PTSans-TLF}\selectfont\LARGE\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\LARGE\f@family \\
+%   \cs{Large}        & \fontfamily{PTSans-TLF}\selectfont\Large\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\Large\f@family \\
+%   \cs{large}        & \fontfamily{PTSans-TLF}\selectfont\large\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\large\f@family \\
+%   \cs{normalsize}   & \fontfamily{PTSans-TLF}\selectfont\normalsize\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\normalsize\f@family \\[-0.95pt]
+%   \cs{small}        & \fontfamily{PTSans-TLF}\selectfont\small\f@family
+%                     & \fontfamily{PTSans-TLF}\selectfont\small\f@family \\[-1.95pt]
+%   \cs{footnotesize} & \fontfamily{PTSans-TLF}\selectfont\footnotesize\f@family
+%                     & \fontfamily{PTSansCaption-TLF}\selectfont\footnotesize\f@family \\[-2.95pt]
+%   \cs{scriptsize}   & \fontfamily{PTSans-TLF}\selectfont\scriptsize\f@family
+%                     & \fontfamily{PTSansCaption-TLF}\selectfont\scriptsize\f@family \\[-4.95pt]
+%   \cs{tiny}         & \fontfamily{PTSans-TLF}\selectfont\tiny\f@family
+%                     & \fontfamily{PTSansCaption-TLF}\selectfont\tiny\f@family \\
+% \end{tabular}
+% \makeatother
+% \caption{The impact of optical scaling on the readability of small text}
+% \label{table:scaling}
+% \end{center}
+% \end{table}
+% \end{macro}^^A{\mubeamer@scaling@apply}
+% \end{macro}^^A{\mubeamer@scaling@family@caption}
+% \end{macro}^^A{\mubeamer@scaling@family@basic}
+% \end{macro}^^A{\ifmubeamer@scaling@enabled}
+%
+% \begin{macro}{\mubeamer@option@locale@logo}
+% \begin{macro}{\mubeamer@option@locale@label}
+% |\mubeamer@option@locale@{logo,label}| specify separately the locale for
+% logos and for labels. Both commands inherit the value of
+% |\mubeamer@option@locale|.
+%    \begin{macrocode}
+\def\mubeamer@option@locale@logo{\mubeamer@option@locale}
+\def\mubeamer@option@locale@label{\mubeamer@option@locale}
+%    \end{macrocode}
+% \end{macro}^^A{\mubeamer@option@locale@label}
+% \end{macro}^^A{\mubeamer@option@locale@logo}
+%
+% \section{Filenames and Pathnames}\label{sec:filenames_and_pathnames}
+% \begin{macro}{\mubeamer@pathname@base}
+% |\mubeamer@pathname@base| is the pathname of the base directory
+% containing logo, label either directly or in subdirectories.
+%    \begin{macrocode}
+\def\mubeamer@pathname@base{mubeamer/}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Logos and Labels}
+% \begin{macro}{\mubeamer@pathname@logo}
+% |\mubeamer@pathname@logo| is the pathname of the base directory
+% directly containing logo files.
+%    \begin{macrocode}
+\def\mubeamer@pathname@logo{\mubeamer@pathname@base logo/}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@pathname@label}
+% |\mubeamer@pathname@label| is the pathname of the base directory
+% directly containing label files.
+%    \begin{macrocode}
+\def\mubeamer@pathname@label{\mubeamer@pathname@base label/}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@filename@logo}
+% |\mubeamer@filename@logo| is the filename of the logo that will be
+% displayed at the bottom of the title page.
+%    \begin{macrocode}
+\def\mubeamer@filename@logo{%
+  \mubeamer@pathname@logo mubeamer-\mubeamer@option@workplace-%
+    \mubeamer@option@locale@logo
+    \ifmubeamer@option@gray\else
+      -color%
+    \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@filename@logo@fallback}
+% |\mubeamer@filename@logo@fallback| is the filename of the logo that will
+% be displayed at the bottom of the title page if |\mubeamer@filename@logo| is
+% not found.
+%    \begin{macrocode}
+\def\mubeamer@filename@logo@fallback{%
+  \mubeamer@pathname@logo mubeamer-\mubeamer@option@workplace-english%
+    \ifmubeamer@option@gray\else
+      -color%
+    \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@filename@logo@lastresort}
+% |\mubeamer@filename@logo@lastresort| is the filename of the logo that will be
+% displayed at the bottom of the title page if
+% |\mubeamer@filename@logo@fallback| is not found.
+%    \begin{macrocode}
+\def\mubeamer@filename@logo@lastresort{%
+  \mubeamer@pathname@logo mubeamer-mu-english%
+    \ifmubeamer@option@gray\else
+      -color%
+    \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@filename@label}
+% |\mubeamer@filename@label| is the filename of the label that will be
+% displayed at the top of all frames.
+%    \begin{macrocode}
+\def\mubeamer@filename@label{%
+  \mubeamer@pathname@label mubeamer-\mubeamer@option@workplace-%
+    \mubeamer@option@locale@label
+    \ifmubeamer@option@gray\else
+      -color%
+    \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@filename@label@fallback}
+% |\mubeamer@filename@label@fallback| is the filename of the label that will be
+% displayed at the top of all frames if |\mubeamer@filwname@label| is not
+    % found.
+%    \begin{macrocode}
+\def\mubeamer@filename@label@fallback{%
+  \mubeamer@pathname@label mubeamer-\mubeamer@option@workplace-english%
+    \ifmubeamer@option@gray\else
+      -color%
+    \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@subroutine@includegraphics}
+% |\mubeamer@subroutine@includegraphics|\oarg{\texttt{\textbackslash
+% includegraphics} options}\marg{primary file name}\marg{secondary file
+% name}\marg{tertiary file name} attempts to display the graphics file
+% \meta{primary file name}. If \meta{primary file name} is not found,
+% \meta{secondary file name} is tried instead. If \meta{secondary file name} is
+% not found either, and \meta{tertiary file name} is non-empty, then
+% \meta{tertiary file name} is tried.
+%    \begin{macrocode}
+\newcount\mubeamer@temp@recursion
+\newcommand*\mubeamer@subroutine@includegraphics[4][]{%
+  \begingroup
+  \mubeamer@temp@recursion=0
+  \patchcmd{\Gin@ii}{\Gin@esetsize}{%
+    \renewcommand{\@latex@error}[2]{%
+      \ifnum\mubeamer@temp@recursion<2
+        \advance\mubeamer@temp@recursion by 1
+        \ifnum\mubeamer@temp@recursion=1
+          \includegraphics[#1]{#3}
+        \else
+          \if\empty#4\empty
+            \PackageError{beamerthemeMU}%
+              {none of the following graphics files was found: #2, #3}%
+              {check that the mubeamer package has been correctly
+               installed\MessageBreak and that you specified an existing
+               workplace}%
+          \else
+            \includegraphics[#1]{#4}
+          \fi
+        \fi
+      \else
+        \PackageError{beamerthemeMU}%
+          {none of the following graphics files was found: #2, #3, #4}%
+          {check that the mubeamer package has been correctly
+           installed\MessageBreak and that you specified an existing
+           workplace}%
+      \fi}%
+    \Gin@esetsize}{}{%
+      \PackageError{beamerthemeMU}%
+        {unable to patch the includegraphics command}%
+        {contact the maintainer of the package}}%
+  \includegraphics[#1]{#2}%
+  \endgroup}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Patch Files}
+% \begin{macro}{\mubeamer@pathname@patch}
+% |\mubeamer@pathname@patch| is the pathname of the base directory containing
+% patch files.
+%    \begin{macrocode}
+\def\mubeamer@pathname@patch{\mubeamer@pathname@base patch/}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@filename@patch}
+% |\mubeamer@filename@label| is the filename of the patch file that will be
+% applied at the end of this style file.
+%    \begin{macrocode}
+\def\mubeamer@filename@patch{%
+  \mubeamer@pathname@patch mubeamer-\mubeamer@option@workplace}
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Layout and Design}
+% \subsection{Lengths}
+% \subsubsection{Spacing}
+% \begin{macro}{\mubeamer@length@margin}
+% |\mubeamer@length@margin| is the horizontal margin across all frames and the
+% bottom margin of the title frame.
+%    \begin{macrocode}
+\newlength\mubeamer@length@margin
+\mubeamer@length@margin=0.7cm
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@length@toppadding}
+% |\mubeamer@length@toppadding| is the distance between the headline and the
+% frame title.
+%    \begin{macrocode}
+\newlength\mubeamer@length@toppadding
+\mubeamer@length@toppadding=28pt
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@length@footlinebottompadding}
+% |\mubeamer@length@footlinebottompadding| is the bottom padding of the footline.
+%    \begin{macrocode}
+\newlength\mubeamer@length@footlinebottompadding
+\mubeamer@length@footlinebottompadding=.163cm
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@length@logotopmargin}
+% |\mubeamer@length@logotopmargin| specifies the top margin of the logo
+% displayed at the bottom of the title page.
+%    \begin{macrocode}
+\newlength\mubeamer@length@logotopmargin
+\mubeamer@length@logotopmargin=\mubeamer@length@margin
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mubeamer@length@footlineheight}
+% |\mubeamer@length@footlineheight| is the total height of the footline.
+%    \begin{macrocode}
+\newlength\mubeamer@length@footlineheight
+\mubeamer@length@footlineheight=.4cm
+%    \end{macrocode}
+% \end{macro}
+% \subsubsection{Label and Logo Size}
+% \begin{macro}{\mubeamer@length@labelwidth@titlepage}
+% \begin{macro}{\mubeamer@length@labelheight@titlepage}
+% |\mubeamer@length@label{width,height}@titlepage| specify the dimensions of
+% the label displayed at the top of the title page.
+%    \begin{macrocode}
+\newlength\mubeamer@length@labelwidth@titlepage
+\newlength\mubeamer@length@labelheight@titlepage
+\mubeamer@length@labelwidth@titlepage=3.5cm
+\mubeamer@length@labelheight@titlepage=1.4cm
+%    \end{macrocode}
+% \end{macro}^^A{\mubeamer@length@labelheight@titlepage}
+% \end{macro}^^A{\mubeamer@length@labelwidth@titlepage}
+%
+% \begin{macro}{\mubeamer@length@labelwidth}
+% \begin{macro}{\mubeamer@length@labelheight}
+% |\mubeamer@length@label{width,height}| specify the dimensions of the label
+% displayed at the top of all frames other than the title page.
+%    \begin{macrocode}
+\newlength\mubeamer@length@labelwidth
+\newlength\mubeamer@length@labelheight
+\mubeamer@length@labelwidth=2.7cm
+\mubeamer@length@labelheight=1.08cm
+%    \end{macrocode}
+% \end{macro}^^A{\mubeamer@length@labelheight@titlepage}
+% \end{macro}^^A{\mubeamer@length@labelwidth@titlepage}
+%
+% \begin{macro}{\mubeamer@length@logomaxwidth}
+% \begin{macro}{\mubeamer@length@logomaxheight}
+% |\mubeamer@length@logomax{width,height}| specify the maximum dimensions of
+% the logo displayed at the bottom of the title page.
+%    \begin{macrocode}
+\newlength\mubeamer@length@logomaxwidth
+\newlength\mubeamer@length@logomaxheight
+\mubeamer@length@logomaxwidth=3cm
+\mubeamer@length@logomaxheight=1.5cm
+%    \end{macrocode}
+% \end{macro}^^A{\mubeamer@length@logomaxheight}
+% \end{macro}^^A{\mubeamer@length@logomaxwidth}
+%
+% \subsection{Colors}
+% The following colors are specified in the \textsc{rgb} color space assuming the 
+% sRGB IEC61966 v2.1 color profile with black scaling. The colors are taken
+% directly from the design manual of the Masaryk University in
+% Brno~\cite{jilek05}.
+% \subsubsection{Basic Palette}
+% The basic palette is defined in \cite[section~2.01]{jilek05}. It consists of a
+% base color, seven shades of gray as the neutral colors, and two hues of
+% orange as the accent colors.
+%    \begin{macrocode}
+\definecolor{mubeamer@base}{RGB}{0,39,118}
+\definecolor{mubeamer@gray1}{RGB}{240,240,240}
+\definecolor{mubeamer@gray2}{RGB}{225,225,225}
+\definecolor{mubeamer@gray3}{RGB}{210,210,210}
+\definecolor{mubeamer@gray4}{RGB}{190,190,190}
+\definecolor{mubeamer@gray5}{RGB}{170,170,170}
+\definecolor{mubeamer@gray6}{RGB}{150,150,150}
+\definecolor{mubeamer@gray7}{RGB}{130,130,130}
+\definecolor{mubeamer@orange1}{RGB}{245,165,0}
+\definecolor{mubeamer@orange2}{RGB}{240,140,0}
+%    \end{macrocode}
+% \subsubsection{Faculty Colors}
+% The faculty colors are defined in \cite[section~2.03]{jilek05}.
+%    \begin{macrocode}
+\definecolor{mubeamer@law}{RGB}{128,55,155}
+\definecolor{mubeamer@med}{RGB}{240,25,40}
+\definecolor{mubeamer@sci}{RGB}{0,175,63}
+\definecolor{mubeamer@phil}{RGB}{0,161,222}
+\definecolor{mubeamer@ped}{RGB}{255,160,47}
+\definecolor{mubeamer@econ}{RGB}{120,35,39}
+\definecolor{mubeamer@fi}{RGB}{252,212,80}
+\definecolor{mubeamer@fss}{RGB}{0,123,105}
+\definecolor{mubeamer@fsps}{RGB}{0,154,166}
+%    \end{macrocode}
+%
+% \subsection{Beamer Settings}
+% \subsubsection{Themes}
+% The |infolines| outer theme displays the current section and subsection at
+% the top of all frames.
+%    \begin{macrocode}
+\useoutertheme{infolines}
+%    \end{macrocode}
+% \subsubsection{Dimensions}
+%    \begin{macrocode}
+\setbeamersize{%
+  text margin left=\mubeamer@length@margin,
+  text margin right=\mubeamer@length@margin}
+%    \end{macrocode}
+% \subsubsection{Templates}
+% The work~place-specific label is diplayed at the top of all frames. The label
+% is larger at the title page.
+%    \begin{macrocode}
+\setbeamertemplate{background canvas}{%
+  \ifnum\value{page}=1
+    \let\mubeamer@temp@length\mubeamer@length@labelheight@titlepage
+  \else
+    \let\mubeamer@temp@length\mubeamer@length@labelheight
+  \fi
+  \leavevmode\hskip\mubeamer@length@margin
+  \mubeamer@subroutine@includegraphics%
+    [height=\mubeamer@temp@length]%
+    {\mubeamer@filename@label}%
+    {\mubeamer@filename@label@fallback}{}}
+%    \end{macrocode}
+% The frame title and subtitle are displayed underneath the label.
+%    \begin{macrocode}
+\setbeamertemplate{frametitle}{%
+  \vskip\mubeamer@length@toppadding
+  \vtop{{%
+      \usebeamerfont{frametitle}{\insertframetitle}%
+      \ifx\insertframesubtitle\@empty\else\\
+        \usebeamerfont{framesubtitle}{\insertframesubtitle}
+      \fi}
+    \vfill}}
+%    \end{macrocode}
+% No navigation symbols are displayed at the bottom of frames.
+%    \begin{macrocode}
+\setbeamertemplate{navigation symbols}{}
+%    \end{macrocode}
+% The footline displays the author, the title, the date, and the page numbers
+% at the bottom of all frames.
+%    \begin{macrocode}
+\setbeamertemplate{footline}{%
+  \hskip\mubeamer@length@margin
+  \usebeamercolor[fg]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \ \lower2pt\hbox{\Large$\cdot$}\ 
+  \usebeamercolor[fg]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \ \lower2pt\hbox{\Large$\cdot$}\ 
+  \usebeamercolor[fg]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate
+  \hfill
+  \insertframenumber{} / \inserttotalframenumber
+  \hskip\mubeamer@length@margin
+  \vrule width 0pt height \mubeamer@length@footlineheight
+         depth \mubeamer@length@footlinebottompadding}
+%    \end{macrocode}
+% The title page forces bottom vertical alignment as if |[b]| were specified.
+% This is to make sure that people don't end up with wonky-looking title pages
+% by mistake.
+%    \begin{macrocode}
+\setbeamertemplate{title page}{%
+  \vskip0pt plus 1filll
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}%
+    \medskip
+
+  {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
+    \bigskip
+
+  {\usebeamerfont{author} \insertauthor}%
+    \medskip
+
+  {\usebeamerfont{date} \insertdate}%
+  \vskip\mubeamer@length@logotopmargin
+  \mubeamer@subroutine@includegraphics%
+    [
+      width=\mubeamer@length@logomaxwidth,
+      height=\mubeamer@length@logomaxheight,
+      keepaspectratio
+    ]%
+    {\mubeamer@filename@logo}%
+    {\mubeamer@filename@logo@fallback}%
+    {\mubeamer@filename@logo@lastresort}
+  \vskip\mubeamer@length@margin}
+%    \end{macrocode}
+% Bibliography entries are preceded with the reference text (like ``[Dijkstra,
+% 1982]'').
+%    \begin{macrocode}
+\setbeamertemplate{bibliography item}[text]
+%    \end{macrocode}
+% Bullet list entries are preceded with squares.
+%    \begin{macrocode}
+\setbeamertemplate{itemize items}[square]
+%    \end{macrocode}
+% Blocks are round and cast a shadow.
+%    \begin{macrocode}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+%    \end{macrocode}
+% \subsubsection{Fonts and Colors}
+%    \begin{macrocode}
+\setbeamerfont{structure}{series=\bfseries}
+\setbeamercolor{structure}{fg=mubeamer@gray6}
+
+\setbeamerfont{alerted text}{series=\bfseries}
+\setbeamercolor{alerted text}{fg=mubeamer@orange2}
+
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamercolor{title}{fg=mubeamer@base}
+\setbeamerfont{title in head/foot}{size=\tiny,series=\bfseries}
+\setbeamercolor{title in head/foot}{parent=structure}
+
+\setbeamerfont{author}{series=\bfseries,size=\small}
+\setbeamerfont{author in head/foot}{size=\tiny,series=\bfseries}
+\setbeamercolor{author in head/foot}{parent=structure}
+
+\setbeamerfont{date}{size=\footnotesize}
+\setbeamerfont{date in head/foot}{size=\tiny,series=\bfseries}
+\setbeamercolor{date in head/foot}{parent=structure}
+
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamercolor{frametitle}{parent=title}
+
+\setbeamerfont{framesubtitle}{series=\bfseries,size=\large}
+\setbeamercolor{framesubtitle}{parent=subtitle}
+
+\setbeamercolor{bibliography entry author}{%
+  use=normal text,fg=normal text.fg}
+\setbeamercolor{bibliography entry title}{%
+  use=normal text,fg=normal text.fg} 
+\setbeamercolor{bibliography entry location}{%
+  use=normal text,fg=normal text.fg} 
+\setbeamercolor{bibliography entry note}{%
+  use=normal text,fg=normal text.fg}
+
+\setbeamerfont{footnote}{size=\footnotesize}
+\setbeamercolor{footnote mark}{parent=structure}
+
+\setbeamerfont{section in head/foot}{parent=structure}
+\setbeamercolor{section in head/foot}{parent=structure}
+
+\setbeamerfont{subsection in head/foot}{parent=normal text}
+\setbeamercolor{subsection in head/foot}{parent=structure}
+
+\setbeamercolor{block title}{fg=white,bg=mubeamer@base}
+\setbeamercolor{block title example}{%
+  use=alerted text,fg=white,bg=mubeamer@gray7}
+\setbeamercolor{block title alerted}{%
+  use=alerted text,fg=white,bg=mubeamer@orange1}
+
+\setbeamercolor{block body}{%
+  parent=normal text,use=block title,
+  bg=block title.bg!10!bg}
+\setbeamercolor{block body example}{%
+  parent=normal text,bg=mubeamer@gray1}
+\setbeamercolor{block body alerted}{%
+  parent=normal text,use=block title alerted,
+  bg=block title alerted.bg!10!bg}
+%    \end{macrocode}
+% \section{Applying Patch Files}
+% A work~place-specific patch file is applied if it exists.
+%    \begin{macrocode}
+\IfFileExists{\mubeamer@filename@patch.sty}{%
+  \RequirePackage{\mubeamer@filename@patch}}{}
+\mode
+  <all>
+%    \end{macrocode}
+% \iffalse
+%</theme>
+% \fi
