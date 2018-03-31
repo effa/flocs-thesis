@@ -1018,11 +1018,10 @@ Logistic models \cite{irt-visual-guide}  % TODO:check-cite
 are a family of student models that predict performance $P(s, d)$
 of a student with skill $s$ on a task with difficulty $d$
 using a logistic function applied to the difference between the skill and the difficulty:
-\begin{equation}\label{eq:logistic}
-P(s, d) = \frac{1}{1 + e^{-(s - d)}}
-\end{equation}
 
-\begin{figure}[h]
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.58\textwidth}
 \centering
 \begin{tikzpicture}[domain=-2:4, smooth, samples=20, scale=0.9]
 \draw [thick, ->] (-2,0) -- (4,0) node [below right] {$s$};
@@ -1035,6 +1034,13 @@ P(s, d) = \frac{1}{1 + e^{-(s - d)}}
 \draw [thick] (1,0.1) -- (1,-0.1) node [below] {$d$};
 \draw [very thick] plot (\x, {2 / (1 + exp(1 - \x))});
 \end{tikzpicture}
+\end{subfigure}
+\begin{subfigure}{.38\textwidth}
+\centering
+\begin{equation}\label{eq:logistic}
+P(s, d) = \frac{1}{1 + e^{-(s - d)}}
+\end{equation}
+\end{subfigure}
 \caption{One-parameter Unidimensional Logistic Model}
 \label{fig:logistic-model}
 \end{figure}
@@ -1054,9 +1060,9 @@ The size of the change is proportional to the prediction error, which is the dif
 There are variants of Elo that work with more complex domain models,
 such as \emph{Multiple Skills Elo} for multiple disjoint concepts,
 \emph{Hierarchical Elo} for tree hierarchical model,
-and \emph{Network Elo} that utilize task similarities in the network domain model.
+and \emph{Network Elo} that utilize task similarities of the network domain model
 \cite{rihak-phd}.
-(TODO: what about overlapping concepts, which we are most interested about)
+(TODO: what about overlapping concepts, which we are most interested in?)
 
 
 %\begin{itemize}
@@ -1125,74 +1131,120 @@ and \emph{Network Elo} that utilize task similarities in the network domain mode
 
 \subsection{Dynamic Bayesian Networks}
 
-\begin{itemize}
-\item underlying domain model: chunks DAG (REF)
-  (?? prereqisities or also other relationships?);
-\item hidden nodes = skills associated with concepts
-\item observed nodes = performance on tasks
-\item edges = encode dependenices (REF: BN definitional):
-\item dynamic = BN with time -- each variable also depends on itslef in previous timestamp
-  (before the last observation) (generalization of HMM)
-\item (?? in domain): for each node have a mapping from skills/performance of children
-  to skill/performance of parents (probability distribution)
-\item ?? direction of edges (TODO: figure)
-\item ?? approaches to model the distribution
-  (discretization, assuming normal distribution for skill estimate)
-\item ?? TODO: relationship between BN and Elo
-  (Wang et al. 2013: Dynamic item response theory models: combining BN with logistic models)
-\item ?? TODO: online update of skills after a performance?
-  (to avoid repeated time-consuming skill inference)
-\item TODO: formula for performance prediction ("inference in DBN")
-\item example: \cite{its-programming}
-\item ?? exact inference in general DBN not feasible (big network + continous distributions),
-  -> ?? approximate inference (? sampling techniques),
-  restrictions on the distributions and/or unerlying DAG,
-  online tracking of skills (online update).
-\item TODO: multiple skills: REF: Xu, Y., Mostow J.: Using logistic regression to trace multiple subskills in a dynamic Bayes Net. (LR-DBN) \cite{bn-logreg} (one-level hierarchy?)
-\end{itemize}
+Another family of student models is based on \emph{Bayesian networks} (BN) (CITE).
+Nodes in a BN correspond to either hidden or observed skills and performances.
+BN estimates probability distribution of possible values of the hidden nodes.
+Structure of a BN is a DAG, in which edges encode conditional dependencies between nodes.
+Edges are given by the
+underlaying domain (inclusion, prerequisities, and generalization).  % TODO:check.
+In \emph{Dynamic Bayesian Networks} (DBN) (CITE) each node also depends
+on its own value before the last observation.
+Each node is assigned a \emph{state function} mapping possible states of the nodes it
+depends on to the probability distribution of its values.  % TODO: check
 
 
-\subsubsection{Bayesian Knowledge Tracing}
-\label{sec:bkt}
+%\begin{itemize}
+%\item underlying domain model: chunks DAG (REF)
+%  (?? prereqisities or also other relationships?);
+%\item hidden nodes = skills associated with concepts
+%\item observed nodes = performance on tasks
+%\item edges = encode dependenices (REF: BN definitional):
+%\item dynamic = BN with time -- each variable also depends on itslef in previous timestamp
+%  (before the last observation) (generalization of HMM)
+%\item (?? in domain): for each node have a mapping from skills/performance of children
+%  to skill/performance of parents (probability distribution)
+%\item ?? direction of edges (TODO: figure)
+%\item ?? approaches to model the distribution
+%  (discretization, assuming normal distribution for skill estimate)
+%\item ?? TODO: relationship between BN and Elo
+%  (Wang et al. 2013: Dynamic item response theory models: combining BN with logistic models)
+%\item ?? TODO: online update of skills after a performance?
+%  (to avoid repeated time-consuming skill inference)
+%\item TODO: formula for performance prediction ("inference in DBN")
+%\item example: \cite{its-programming}
+%\item ?? exact inference in general DBN not feasible (big network + continous distributions),
+%  -> ?? approximate inference (? sampling techniques),
+%  restrictions on the distributions and/or unerlying DAG,
+%  online tracking of skills (online update).
+%\item TODO: multiple skills: REF: Xu, Y., Mostow J.: Using logistic regression to trace multiple subskills in a dynamic Bayes Net. (LR-DBN) \cite{bn-logreg} (one-level hierarchy?)
+%\end{itemize}
 
-\begin{itemize}
-\item special case of DBN, assuming single or disjoint concepts (REF: relevant domain section)
-\item (for single skill, it is even a special case of HMM)
-\item ref: \cite{bkt} % TODO: check the paper
-\item for each skill, two hidden states (known/mastered) or not, observed: performance
-\item assumes: learning (in contrast to basic IRT)
-\item assumes: discrete knowledge state (eithter known or not known) (?! not compatible?)
-\item assumes: on each opportunity to use the skill (e.g. solving a task with
-  the corresponding concept), there is a constant probability of learning that skill
-\item TODO: formulas for prediction and update; figure / or just REF
-\item TODO: relevant extension: BKT with hiearchical model of skills
-\end{itemize}
+
+%\subsubsection{Bayesian Knowledge Tracing}
+%\label{sec:bkt}
+
+\emph{Bayesian Knowledge Tracing} (BKT) \cite{bkt} % TODO: check the paper
+is a widely used special case of DBN, which makes a few assumptions to allow
+for fast update of hidden skills. % and prediction of performances.
+It assumes flat disjoint concepts, binary skills (i.e. each skill is either
+known or not known), and constant rate of learning (after each task session, there
+is a constant probability of learning that skill, independently of the
+performance).
+With these assumption, each skill can be tracked by a separate simple
+\emph{Hidden Markov Model} (HMM) (CITE).
+
+% TODO: figure (for programming example) + formulas for prediction and update
+
+%\begin{itemize}
+%\item special case of DBN, assuming single or disjoint concepts (REF: relevant domain section)
+%\item (for single skill, it is even a special case of HMM)
+%\item ref: \cite{bkt} % TODO: check the paper
+%\item for each skill, two hidden states (known/mastered) or not, observed: performance
+%\item assumes: learning (in contrast to basic IRT)
+%\item assumes: discrete knowledge state (eithter known or not known) (?! not compatible?)
+%\item assumes: on each opportunity to use the skill (e.g. solving a task with
+%  the corresponding concept), there is a constant probability of learning that skill
+%\item TODO: formulas for prediction and update; figure / or just REF
+%\item TODO: relevant extension: BKT with hiearchical model of skills
+%\end{itemize}
+
+BKT is too restricted for the domain of introductory programming, where skills are
+overlapping and not binary. Other models try to find a balance
+between too restricted BKT and general, but intractable DBN.
+% "BKT can be extended in several ways to relaxing some of its assumptions, while..."
+Typical strategy is to restrict the form of the state function in DBN.
+For example, conjunctive and disjunctive prerequisities can be allowed,
+leading to \emph{And-Or DBN}, where each node is either AND or OR type, which
+determines the form of its state function
+\cite[section 5.1.2]{student-models-review-2012}. % TODO? elaborate/example
+Another strategy is to restrict domain of each node to a small number values,
+(e.g. learned, ready to learn, not ready to learn),
+which then allows to model general prerequisites %between concepts
+\cite{its-programming}.
+%(e.g. easy, just right, difficult) \cite{its-programming}
+% NOTE: Can be also used for hierarchies (probably).
+% NOTE: In this work, some of the concepts are self declared, other inferred; so there
+% is no inclusion-relationship, I'm not sure if that is also important factor (?)
+Overlapping skills can be tracked by an extension of BKT, where contribution
+of each skill is estimated using logistic regression \cite{bn-logreg}.
+% TODO: check and extend
+% TODO: explore another relevant BKT extensions
 
 
-\subsubsection{AND-OR Bayesian Network}
+%\subsubsection{AND-OR Bayesian Network}
+%
+%\begin{itemize}
+%\item REF \cite{student-models-review-2012} (section 5.1.2)
+%\item REF the relevant underlaying domain mode
+%\item special case of DBN with assumptions on the conditional probabilities -- 2 node types:
+%\item OR: single mastered skill parent skill is enough to master the child skill
+%  (?? achieve = known = master = 1, but what about continuous skills?)
+%\item AND: all parent skills need to be mastered to master the child chunk
+%\item TODO: leaky-OR, noisy-AND; NIDA/DINA, NIDO/DINO models
+%\item ?? extensions to continuous skills?
+%\item ?? orientation of the edges (and the type of nodes in RoboMission)
+%\item TODO: formulas, figure / or just REF
+%\item TODO: consider to move to the domain model
+%\item TODO: discuss the relevance for our domain
+%\end{itemize}
 
-\begin{itemize}
-\item REF \cite{student-models-review-2012} (section 5.1.2)
-\item REF the relevant underlaying domain mode
-\item special case of DBN with assumptions on the conditional probabilities -- 2 node types:
-\item OR: single mastered skill parent skill is enough to master the child skill
-  (?? achieve = known = master = 1, but what about continuous skills?)
-\item AND: all parent skills need to be mastered to master the child chunk
-\item TODO: leaky-OR, noisy-AND; NIDA/DINA, NIDO/DINO models
-\item ?? extensions to continuous skills?
-\item ?? orientation of the edges (and the type of nodes in RoboMission)
-\item TODO: formulas, figure / or just REF
-\item TODO: consider to move to the domain model
-\item TODO: discuss the relevance for our domain
-\end{itemize}
-
-\subsection{Knowledge Space Models}
-
-\begin{itemize}
-\item TODO: explain KST ("Knowledge Space Theory") + REF
-\item combination of knowledge space and a logistic model
-      (notion of "distance to knowledge boundary") \cite{progression-analysis}
-\end{itemize}
+%\subsection{Knowledge Space Models}
+%
+%\begin{itemize}
+%\item TODO: explain KST ("Knowledge Space Theory") + REF
+%\item combination of knowledge space and a logistic model
+%      (notion of "distance to knowledge boundary") \cite{progression-analysis}
+%\end{itemize}
 
 
 \subsection{Evaluation}
