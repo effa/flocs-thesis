@@ -1250,227 +1250,278 @@ of each skill is estimated using logistic regression \cite{bn-logreg}.
 \subsection{Evaluation}
 \label{sec:student-model-evaluation}
 
-\begin{itemize}
-\item Ideally, the student model should be evaluated wrt to its intended usage.
-% ?TODO: elaborate: \cite{pelanek-learner-modeling}
-\item Example: if the student model is used as a component for task recommendation,
- then we should prefer the student model that leads to the best recommendations.
- (REF: evaluation of task recommendations - later).
-\item However: evaluate the impact of the student model is difficult (ex./REF),
-  -> proxies, such as predictive accuracy.
-  (with the hope that it would lead to the improvement in the application).
-\item Although better predictions may have a positive impact on the application,
-  it is not guaranteed (see simulations in \cite{evaluation-leopard}),
-  so it is important not to blindly maximize the predictive accuracy
-  and use several evaluation approaches.
-  %If online experiments show that the more accurate predictions would actually
-  %lead to decrease of the long-term objectives,
-  %then these improvements in the predictive power should not by applied.
+Ideally, student models should be evaluated with respect to their intended usage.
+For example, if the student model is used as a component for task recommendation,
+then the model that leads to the best recommendations should be preferred.
+However, evaluating impact of the student model is difficult, % TODO:CITE:example
+so proxy quality measures are used instead,
+% (with the hope that it would lead to the improvement in the application).
+such as \emph{predictive accuracy}, % \cite{pelanek-evaluation-student-models} %(TODO:+page),
+\emph{reliability and resolution} %of predictions
+\cite{pelanek-evaluation-student-models}, %(TODO:+page),
+and \emph{plausability} of parameters \cite{learner-models-integration-skills}.
+% and stability of parameters (CITE).
+% TODO: (all above) briefly describe
+% TODO: another proxies? e.g. reread \cite{pelanek-evaluation-student-models}
+Although better predictions often have a positive impact on the application,
+it is not guaranteed \cite{evaluation-leopard},
+so it is important not to blindly maximize predictive accuracy,
+and to use several proxy quality measures.  % or "evaluation approaches"
+% NOTE: If online experiments show that the more accurate predictions would
+% actually lead to decrease of the long-term objectives, then these
+% improvements in the predictive power should not by applied.
 
-\item Quality measures:
-\begin{itemize}
-\item \emph{Predictive accuracy.}
-  TODO: describe, REF.
-  (REF+page: \cite{pelanek-evaluation-student-models})
-\item \emph{Reliability and resolution of predictions}
-  TODO: describe
-  (REF+page: \cite{pelanek-evaluation-student-models})
-\item ?? \emph{Stability of parameters.}
-  TODO: describe, REF.
-\item \emph{Plausability of parameters.}
-  TODO: describe, \cite{learner-models-integration-skills}
-\item Evaluation wrt. usage -> REF tutor models and system evaluation sections.
-\item TODO: \emph{Other?}
-  TODO: describe, REF.
-\item TODO+REF: overview of metrics for student models comparison e.g. in
-  \cite{pelanek-evaluation-student-models}
-
-\end{itemize}
-
-\item Metrics for predictive accuracy:
-\begin{itemize}
-\item Vector of observed performances $p$ is compared to the vector of predicted performances $\hat{p}$ (usually element-wise, summing the individual errors).
-\item Many metrics. Depends on the performance representation.
-\item For interval variables
-  (e.g. log-times, continuous partial credit, probability of success):
-  default choice is RMSE (Root Mean Squar Error). (REF paper supporting this choice).
-  $$
-  RMSE(p, \hat{p}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (p_i - \hat{p}_i)^2}
-  $$
-\item ?? Advantages:
-  simple,
-  differentiable (can be used for optimization through gradient descent),
-  ??theretical soundness (given some ?reasonable assumptions, minimum RMSE results in
-  best linear estimator, and with an additional assumption of normally distirbuted noise
-  even to maximum likelihood estimator (TODO: elaborate+REF; maybe Bishop, 2006).
-\item Disadvantages:
-  (1) susceptible to outliers (single outlier can make the error arbitrary high),
-  (2) can be misleading if performance is not an interval variable).
-% NOTE: Omitted derivation of RMSE (see version control if needed).
-\item \emph{Qualitative metrics}
-  -- for (at least) nominal variables, such as discretized performance
-  -- compare discretized predictions (with the observed values).
-  For example, \emph{accuracy} is a ratio between correct predictions to all predictions.
-  They allow for setting different risks (weights) on different types of errors.
-  (?TODO: precision, recall etc. for multivalued domain?
-    ?? Figure of confusion metrics for 3 values and derived metrics?)
-  (?TODO: metrics independent on chosen thresholds, such as AUC, AUC-PR?)
-  %?? However, these metrics do not distinguish between small and large errors of the predictions,
-  %   which makes them less appropriate for student modelling.
-%\item ?? These qualitative metrics depend on specific thresholds chosen
-%  for discretization of continuous predictions.
-%  There are metrics avoiding this ?problem by using only ranking of predictions.
-%  The most common one is AUC, ``Area Under Curve'',
-%  which is the probability that if one failure and one success are selected by random,
-%  the predictor would assign a higher probability to the success event than to the failure.
-%  There are a few limitations of AUC.
-%  First, it considers all thresholds, but only a range of them is usually relevant.
-%  Second, by only considering the ordering of predictions,
-%    if all predictions are multiplied by a constant, AUC remains unchanged.
-%  Third, if the predicted classes are strongly imbalanced,
-%    high AUC can be achieved by simple classifiers
-%    even if they perform poorly on the minority class.
-%  Generally, AUC is a reasonable choice for intrinsically classification problems,
-%    but not necessarily for student modeling \cite{pelanek-evaluation-student-models}.
-\item ?? sth for ordinal variables (possibly for discretized performance)?
-\item ??TODO: diagram: comparison of these individual errors, sth like in
-  \cite[p.6]{pelanek-evaluation-student-models}, but for 3-valued performance and
-  metrics mentioned here.
-\end{itemize}
-\end{itemize}
+%Metrics for predictive accuracy:
+%\begin{itemize}
+%\item Vector of observed performances $p$ is compared to the vector of predicted performances $\hat{p}$ (usually element-wise, summing the individual errors).
+%\item Many metrics. Depends on the performance representation.
+%\item For interval variables
+%  (e.g. log-times, continuous partial credit, probability of success):
+%  default choice is RMSE (Root Mean Squar Error). (REF paper supporting this choice).
+%  $$
+%  RMSE(p, \hat{p}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (p_i - \hat{p}_i)^2}
+%  $$
+%\item ?? Advantages:
+%  simple,
+%  differentiable (can be used for optimization through gradient descent),
+%  ??theretical soundness (given some ?reasonable assumptions, minimum RMSE results in
+%  best linear estimator, and with an additional assumption of normally distirbuted noise
+%  even to maximum likelihood estimator (TODO: elaborate+REF; maybe Bishop, 2006).
+%\item Disadvantages:
+%  (1) susceptible to outliers (single outlier can make the error arbitrary high),
+%  (2) can be misleading if performance is not an interval variable).
+%% NOTE: Omitted derivation of RMSE (see version control if needed).
+%\item \emph{Qualitative metrics}
+%  -- for (at least) nominal variables, such as discretized performance
+%  -- compare discretized predictions (with the observed values).
+%  For example, \emph{accuracy} is a ratio between correct predictions to all predictions.
+%  They allow for setting different risks (weights) on different types of errors.
+%  (?TODO: precision, recall etc. for multivalued domain?
+%    ?? Figure of confusion metrics for 3 values and derived metrics?)
+%  (?TODO: metrics independent on chosen thresholds, such as AUC, AUC-PR?)
+%  %?? However, these metrics do not distinguish between small and large errors of the predictions,
+%  %   which makes them less appropriate for student modelling.
+%%\item ?? These qualitative metrics depend on specific thresholds chosen
+%%  for discretization of continuous predictions.
+%%  There are metrics avoiding this ?problem by using only ranking of predictions.
+%%  The most common one is AUC, ``Area Under Curve'',
+%%  which is the probability that if one failure and one success are selected by random,
+%%  the predictor would assign a higher probability to the success event than to the failure.
+%%  There are a few limitations of AUC.
+%%  First, it considers all thresholds, but only a range of them is usually relevant.
+%%  Second, by only considering the ordering of predictions,
+%%    if all predictions are multiplied by a constant, AUC remains unchanged.
+%%  Third, if the predicted classes are strongly imbalanced,
+%%    high AUC can be achieved by simple classifiers
+%%    even if they perform poorly on the minority class.
+%%  Generally, AUC is a reasonable choice for intrinsically classification problems,
+%%    but not necessarily for student modeling \cite{pelanek-evaluation-student-models}.
+%\item ?? sth for ordinal variables (possibly for discretized performance)?
+%\item ??TODO: diagram: comparison of these individual errors, sth like in
+%  \cite[p.6]{pelanek-evaluation-student-models}, but for 3-valued performance and
+%  metrics mentioned here.
+%\end{itemize}
 
 \section{Tutor Modeling}
 \label{sec:tutor-modeling}
 
-\begin{itemize}
-\item \emph{Tutor models} (aka \emph{instructional policy}, \emph{instructional
-  strategy}) are used to help students with learning.
-  They support the teacher by making some decisions instead of her
-  (such as assigning tasks to students)
-  % enabling her to concentrate on the tasks for which the people are better
-  % then computers (typically inner-loop interactions, see below)
-  or even substitute the teacher completely when not available
-  (e.g. for home studying).
-\item Includes several tasks (problems); common classification:
-  within a single task session
-  (\emph{inner loop}, \emph{microadaptivity}, \emph{problem solving tutors}),
-  %\emph{solving process tutors}),
-  or between task sessions
-  (\emph{outer loop}, \emph{macroadaptivity}, \emph{problem selection tutors})
-  \cite{its-learner-models}.
-  Both loops can be further decomposed hierarchically
-  (e.g. in outer loop: choosing a problem set to practice vs. choosing a task
-  within that problem set).
-  % TODO: add example for inner loop (note: not common)
-  % View from \cite{its-learner-models}: inner = problem step,
-  % outer = problem selection, curriculum loop = which PS).
-\item Tutor tasks (control problems):
-\begin{itemize}
-\item \emph{Curriculum sequencing}. (?? Content sequencing)
-  What topic to learn next? (What problem set to practice next?)
-  Relevant for systems with a lot of diverse content with prerequisity structure.
-  (e.g. in \cite{its-programming}).  % \emph{learning path}
-  (Alson known as \emph{curriculum loop} \cite{its-learner-models}.)
-\item \emph{Mastery learning}.
-  Continue to practice the current topic or progress to another one?
-  (e.g. in Umime Programovat)
-% TODO: unify/clarify topic = problem set?
-\item \emph{Task recommendation}.
-  Which task to tackle next (possibly from a given problem set)?
- (e.g.: Tutor)
-\item \emph{Adaptive scaffolding} (??).
-  Should we provide the student with a help to solve the current task
-  (e.g., show an instruction, a hint, a worked out example, or an explatanation)?
-  (or even a suggestion to give up and try an easier task).
-  (Example: cognitive tutors - REF.)
-\end{itemize}
-\item TODO: figure: curriculum-outer-inner loops + corresponding tutor tasks
+\emph{Tutor models} (a.k.a. \emph{instructional policy}) (CITE) %, \emph{instructional strategy})
+are used to help students with learning.
+%They either substitute a teacher
+%(e.g. for learning at home), or support them by making some decisions ...
+They support teachers by making the decisions that are difficult for people
+to do optimally, % "that require data analysis,"
+such as assigning the most suitable task to each student individually.
+% NOTE: enabling her to concentrate on the tasks for which the people are better
+% then computers (typically inner-loop interactions, see below).
 
-\item Our focus is on the outer-loop.
-  The inner-loop is better suited for people (instructors)
-  (REF: Essa, 2016: A possible future for next generation adaptive learning
-  systems.)
+According to modeled decisions, tutor models can be devided into two categories:
+\emph{problem selection tutors} (\emph{outer loop}, \emph{macroadaptivity})
+for decisions between tasks, % task sessions,
+and \emph{problem solving tutors} (\emph{inner loop}, \emph{microadaptivity})
+for decisions within a task \cite{its-learner-models}. % TODO:CITE:page/more specific resource
+Problem selection tutors can be further decomposed % hierarchically
+into
+\emph{mastery decision} (Continue to practice the current topic?),
+\emph{curriculum sequencing} (Which topic to learn next?),
+and \emph{task recommendation} (Which task to solve next?).
+Inner-loop tutors decide when and which hint to show to the
+student. % "to help them to solve the task."
+Currently, the inner loop decisions are better performed by people,
+% given they can afford 1:1 interactions (and given there even is a teacher...)
+so ALS should primarily focus on the outer loop decisions \cite{als-future}.
+% TODO: think over (e.g. it's also clear that teachers/students usually want
+% to control curriculum loop themselves, so only the mastery decision
+% and task recommendation within given problem set is left for the ALS.)
+% - it also mixes two possible arguments: are people better in inner-loop
+% then people in outer loop; OR are people better in inner loop then
+% computers in inner loop? (or both)
+% TODO: figure: diagram of tutor problems
 
-\item ?? TODO: \emph{ML paradigm}.
-supervised learning (scoring/classification/recommendation algorithms, items =
-PS, tasks, hints), vs. reinforcement learning (actions = PS, tasks, hints)
-\cite{rl-for-tutors-evaluation} (elaborate, REF, other paradigms?)
-\item \emph{Model-based vs. model-free} (??).  % TODO: check terminology
-  Often, tutor models use a domain and a student model as an input, but some
-  tutors use either the full history of the student, or, on the other end of
-  the spectrum, just a simple summary statistic (such as number of solved
-  consecutive tasks with good performance) However, both of these cases can be
-  viewed just as trivial special cases of student models) (REF).
-  TODO: ?? to be called model-based, \emph{predictive} model is needed?
-  (that's how the terminology is used in RL)
+%% Reflexive vs. planning agents
+Existing systems and research focus on \emph{reflexive tutors}, which
+provide a single decision with no planning. % without a look-ahead planning.
+% cf. RL, Robotics, and CSP communities
+This approach is suboptimal. Consider a problem set with only two
+unsolved tasks left; neither of them is enough to master the topic.
+If the more difficult task matches the skill slightly better, then
+the reflexive agent first selects this, and then the easier task.
+\emph{Planning tutor} would prefer more natural ordering,
+starting with the easier task.
 
-\item \emph{Hierarchical tutor} may use different student and domain models
-  for different tasks (outer loop vs. inner loop).
+%% ML paradigm
+Most tutor models can be viewed as \emph{recommendation algorithms}, % TODO:CITE
+where items are either problem sets, tasks, or hints.
+An exception is mastery decision which is better formulated as a
+classification problem.
+While training tutor models can be approached as a \emph{supervised learning problem}, % TODO:CITE
+obtaining labeled training data is not straightforward.
+\emph{Reinforcement learning}  \cite{rl}
+% (with actions being either problem sets, tasks, or hints)
+allows to learn action preferences using future rewards derived from the estimated time
+spent in flow \cite{rl-for-tutors-evaluation}.  % TODO:FIX: now it looks that the referenced article uses flow
+% TODO: Explore->cite.
+% TODO: Cite/elaborate. Rethink/explore: other paradigms?
 
-\item \emph{Reflexive vs. planning tutors}.
-Current research and systems focus on single decision based on learned models
-without a look-ahead planning.  % vs. in RL, Robotics, and CSP communities
-Example to illustrate how the planning could help in task recommendation:
-2 unsolved tasks left in current PS, neither of them is enough to master the topic,
-the more difficult is slightly better fit to the skill; still it is better to
-start with the easier one.
-Example of planning for curriculum sequencing: generating a sequence of tasks
-(\emph{learning path}) towards a requested topic \cite{its-programming}.
+% TODO: Consider to mention tutor representations and notion of model-based/free
+% (see notes bellow).
 
-\item Output is either a single action to perform,
-  (deterministic strategy/policy)
-  or preferences on actions (stochastic strategy/policy).
-  (Action selection for distributions: max / randomly-by-weights +
-  exploration.)
-  Available actions depend on the tutor task;
-  e.g. which hint to show, which task to recommend, etc.
-\item Possible representations of the tutor:
-\begin{itemize}
-\item ?? \emph{Value function + student model.}  % terminology borrowed from RL
-  Value function $v(s, w): S \times \mathbb{R}^n \rightarrow \mathbb{R}$
-  represents approximated discounted cumulative reward (...).
-  To derive a policy, predictive student model is needed.
-  Example: \cite{rl-for-tutors-evaluation}
-  (model-based policy iteration, inner-loop tutor).
-\item \emph{Rules.}
-  Mapping from conditions about states to actions, possibly with preferences.
-  Each rule $R_i$ is a triple $(c_i, a_i, p_i)$
-  consisting of a binary condition $c_i: S \rightarrow \{0, 1\}$,
-  action $a_i \in A$, and preference $p_i \in \mathbb{R}$.
-  If several rules apply, then either the one with the highest preference is used,
-  or their (aggregated) preferences are used as weights for randomized selection.
-  (REF)
-  (Extension: ??soft/fuzzy rules: $c_i: S\rightarrow [0, 1]$)
-% (?? names: rule-base tutors, production rules, expert systems) (REF).
-\item \emph{Action-value function.}  % terminology borrowed from RL
-  Function $q(s, a, w): S \times A \times \mathbb{R}^n \rightarrow \mathbb{R}$,
-  that for given state, action and weights (parameters) returns a score
-  (prefererence -- REF to evalution section).
-  For a finite amount of states, the mapping can be stored as a table
-  (i.e. no weights are used)
-  otherwise is approximated, e.g. through linear regression -- a weighted sum
-  of some features that depend on the given student and action.
-  (Rules can be transformed to action-value fn by aggregating preferences of
-  all rules that trigger for current state. TODO: formula)
-  (REF example)
-\item \emph{All-actions-value function.}
-  Function $q(s, w): S \times \mathbb{R}^n \rightarrow A \times \mathbb{R}$,
-  that computes scores for all actions in a single pass.
-  (?TODO: figure to show the difference between various representations)
-\item \emph{Policy.}  % terminology borrowed from RL
-  Mapping $\pi(s, w): S \times \mathbb{R}^n\rightarrow A$
-  from student state (and parameters) directly to an action
-  (e.g. decision tree?, first unmastered PS)
-  or distribution on actions. (e.g. uniformly random).
-  (REF example)
-  (Action-value fn can be streightforwardly transformed to a
-  deterministic/stochastic policy.)
-\item TODO ?? Other options.
-\end{itemize}
-\end{itemize}
+
+
+
+%\begin{itemize}
+%\item \emph{Tutor models} (a.k.a. \emph{instructional policy}, \emph{instructional
+%  strategy}) are used to help students with learning.
+%  They support the teacher by making some decisions instead of her
+%  (such as assigning tasks to students)
+%  % enabling her to concentrate on the tasks for which the people are better
+%  % then computers (typically inner-loop interactions, see below)
+%  or even substitute the teacher completely when not available
+%  (e.g. for home studying).
+%\item Includes several tasks (problems); common classification:
+%  within a single task session
+%  (\emph{inner loop}, \emph{microadaptivity}, \emph{problem solving tutors}),
+%  %\emph{solving process tutors}),
+%  or between task sessions
+%  (\emph{outer loop}, \emph{macroadaptivity}, \emph{problem selection tutors})
+%  \cite{its-learner-models}.
+%  Both loops can be further decomposed hierarchically
+%  (e.g. in outer loop: choosing a problem set to practice vs. choosing a task
+%  within that problem set).
+%  % TODO: add example for inner loop (note: not common)
+%  % View from \cite{its-learner-models}: inner = problem step,
+%  % outer = problem selection, curriculum loop = which PS).
+%\item Tutor tasks (control problems):
+%\begin{itemize}
+%\item \emph{Curriculum sequencing}. (?? Content sequencing)
+%  What topic to learn next? (What problem set to practice next?)
+%  Relevant for systems with a lot of diverse content with prerequisity structure.
+%  (e.g. in \cite{its-programming}).  % \emph{learning path}
+%  (Alson known as \emph{curriculum loop} \cite{its-learner-models}.)
+%\item \emph{Mastery learning}.
+%  Continue to practice the current topic or progress to another one?
+%  (e.g. in Umime Programovat)
+%% TODO: unify/clarify topic = problem set?
+%\item \emph{Task recommendation}.
+%  Which task to tackle next (possibly from a given problem set)?
+% (e.g.: Tutor)
+%\item \emph{Adaptive scaffolding} (??).
+%  Should we provide the student with a help to solve the current task
+%  (e.g., show an instruction, a hint, a worked out example, or an explatanation)?
+%  (or even a suggestion to give up and try an easier task).
+%  (Example: cognitive tutors - REF.)
+%\end{itemize}
+%\item TODO: figure: curriculum-outer-inner loops + corresponding tutor tasks
+%
+%\item Our focus is on the outer-loop.
+%  The inner-loop is better suited for people (instructors)
+%  \cite{als-future}
+%
+%\item ?? TODO: \emph{ML paradigm}.
+%supervised learning (scoring/classification/recommendation algorithms, items =
+%PS, tasks, hints), vs. reinforcement learning (actions = PS, tasks, hints)
+%\cite{rl-for-tutors-evaluation} (elaborate, REF, other paradigms?)
+%\item \emph{Model-based vs. model-free} (??).  % TODO: check terminology
+%  Often, tutor models use a domain and a student model as an input, but some
+%  tutors use either the full history of the student, or, on the other end of
+%  the spectrum, just a simple summary statistic (such as number of solved
+%  consecutive tasks with good performance) However, both of these cases can be
+%  viewed just as trivial special cases of student models) (REF).
+%  TODO: ?? to be called model-based, \emph{predictive} model is needed?
+%  (that's how the terminology is used in RL)
+%
+%\item \emph{Hierarchical tutor} may use different student and domain models
+%  for different tasks (outer loop vs. inner loop).
+%
+%\item \emph{Reflexive vs. planning tutors}.
+%Current research and systems focus on single decision based on learned models
+%without a look-ahead planning.  % vs. in RL, Robotics, and CSP communities
+%Example to illustrate how the planning could help in task recommendation:
+%2 unsolved tasks left in current PS, neither of them is enough to master the topic,
+%the more difficult is slightly better fit to the skill; still it is better to
+%start with the easier one.
+%Example of planning for curriculum sequencing: generating a sequence of tasks
+%(\emph{learning path}) towards a requested topic \cite{its-programming}.
+%
+%\item Output is either a single action to perform,
+%  (deterministic strategy/policy)
+%  or preferences on actions (stochastic strategy/policy).
+%  (Action selection for distributions: max / randomly-by-weights +
+%  exploration.)
+%  Available actions depend on the tutor task;
+%  e.g. which hint to show, which task to recommend, etc.
+%\item Possible representations of the tutor:
+%\begin{itemize}
+%\item ?? \emph{Value function + student model.}  % terminology borrowed from RL
+%  Value function $v(s, w): S \times \mathbb{R}^n \rightarrow \mathbb{R}$
+%  represents approximated discounted cumulative reward (...).
+%  To derive a policy, predictive student model is needed.
+%  Example: \cite{rl-for-tutors-evaluation}
+%  (model-based policy iteration, inner-loop tutor).
+%\item \emph{Rules.}
+%  Mapping from conditions about states to actions, possibly with preferences.
+%  Each rule $R_i$ is a triple $(c_i, a_i, p_i)$
+%  consisting of a binary condition $c_i: S \rightarrow \{0, 1\}$,
+%  action $a_i \in A$, and preference $p_i \in \mathbb{R}$.
+%  If several rules apply, then either the one with the highest preference is used,
+%  or their (aggregated) preferences are used as weights for randomized selection.
+%  (REF)
+%  (Extension: ??soft/fuzzy rules: $c_i: S\rightarrow [0, 1]$)
+%% (?? names: rule-base tutors, production rules, expert systems) (REF).
+%\item \emph{Action-value function.}  % terminology borrowed from RL
+%  Function $q(s, a, w): S \times A \times \mathbb{R}^n \rightarrow \mathbb{R}$,
+%  that for given state, action and weights (parameters) returns a score
+%  (prefererence -- REF to evalution section).
+%  For a finite amount of states, the mapping can be stored as a table
+%  (i.e. no weights are used)
+%  otherwise is approximated, e.g. through linear regression -- a weighted sum
+%  of some features that depend on the given student and action.
+%  (Rules can be transformed to action-value fn by aggregating preferences of
+%  all rules that trigger for current state. TODO: formula)
+%  (REF example)
+%\item \emph{All-actions-value function.}
+%  Function $q(s, w): S \times \mathbb{R}^n \rightarrow A \times \mathbb{R}$,
+%  that computes scores for all actions in a single pass.
+%  (?TODO: figure to show the difference between various representations)
+%\item \emph{Policy.}  % terminology borrowed from RL
+%  Mapping $\pi(s, w): S \times \mathbb{R}^n\rightarrow A$
+%  from student state (and parameters) directly to an action
+%  (e.g. decision tree?, first unmastered PS)
+%  or distribution on actions. (e.g. uniformly random).
+%  (REF example)
+%  (Action-value fn can be streightforwardly transformed to a
+%  deterministic/stochastic policy.)
+%\item TODO ?? Other options.
+%\end{itemize}
+%\end{itemize}
 
 
 \subsection{Curriculum Sequencing}
+
+
+Relevant for systems with a lot of diverse content with prerequisity structure.
+(e.g. in \cite{its-programming}).  % \emph{learning path}
+(Alson known as \emph{curriculum loop} \cite{its-learner-models}.)
 
 \begin{itemize}
 \item Problems of curriculum sequencing:
@@ -1667,6 +1718,11 @@ The system can be more strict and show only a single recommended task,
 
 
 \subsection{Adaptive Scaffolding}
+
+Should we provide the student with a help to solve the current task
+(e.g., show an instruction, a hint, a worked out example, or an explatanation)?
+(or even a suggestion to give up and try an easier task).
+(Example: cognitive tutors - REF.)
 
 \begin{itemize}
 \item (inner loop)
