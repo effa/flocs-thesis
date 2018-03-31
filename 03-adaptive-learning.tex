@@ -1516,286 +1516,369 @@ spent in flow \cite{rl-for-tutors-evaluation}.  % TODO:FIX: now it looks that th
 %\end{itemize}
 
 
-\subsection{Curriculum Sequencing}
-
-
-Relevant for systems with a lot of diverse content with prerequisity structure.
-(e.g. in \cite{its-programming}).  % \emph{learning path}
-(Alson known as \emph{curriculum loop} \cite{its-learner-models}.)
-
-\begin{itemize}
-\item Problems of curriculum sequencing:
-\begin{itemize}
-\item \emph{Problem set selection}: domain, student $\rightarrow$ single problem set.
-\item \emph{Problem sets filtering / ranking / scoring}:
-  recommend multiple PS, possibly ordered, possibly with assigned scores (how
-  much they are recommended).
-\item \emph{Generating learning path}: given a student and requested problem set (or a concept),
-  return a (minimal) sequence of problem sets that leads to the acquiring the
-  requested knowledge \cite{its-programming}.
-\end{itemize}
-
-\item Similar to task recommendation (REF section). Differences:
-  much fewer problem sets than tasks,
-  focus on prerequsities,
-  often there even exists a reasonable total ordering of problem sets
-  (consider units in a textbook).
-\item Advantages of PS selection + task selection from a PS over direct task selection from all tasks in the system:
-  (1) this decomposition makes the problem much simpler (both subproblems can be solved reasonably well even by simple heuristics);
-  (2) focus and coherence of tasks -- students know what they are learning and does not need to adjust to very different setting every time (e.g. toolbox is not changing chaotically).
-
-\item In a system for learning introductory programming with only a few problem sets,
-  it is reasonably to assume that the student would like to "solve" (achieve mastery in)
-  all problem sets. % Especially, if the UI shows which PS are solved and which not.
-\item In such case, having a total ordering on all problem sets (according to their
-  ``global difficulty'') and always recommending the first unsolved problem set
-  is a reasonable approach.
-\item If the structure is not ordinal, than we can still manually specify a
-partial ordering describing which PS follow after another PS (used e.g. in UmimeX)
-% ?? usually: "follow" = reversed-OR-prerequisity,
-explicitly describing a recommendation fot the next PS after the current one is solved.
-\item Yet another option is to specify prerequisties and recommend only PS whose
-  prerequisites are satisfied.
-\item The structure between PS in domains can be discovered/verified/improved using
-  offline analysis of collected data, or online experiments comparing multiple options.
-\end{itemize}
-
-
-
 \subsection{Mastery Learning}
 \label{sec:mastery-learning}
 
-\begin{itemize}
-\item Mastery learning means practicing of a topic (?PS) until covered concepts
-  are mastered, and only then moving to the next topic. (REF)
-  % "fixed outcome, varied time"
-  % (vs. classical education: fixed time, varied outcome)
-\item Study on how the mastery learning helps (or rather how the violations of mastery learning
-  lead to worse results): \cite{mastery-learning-scale}.
-\item Problem: input: domain, student (skills), output: decision: mastered/not.
-\item Solution: online algorithm called \emph{mastery criterion}.
-\item Reduction to chosing a suitable student model \ref{sec:student-modeling}
-  and a threshold $T$;
-  update the student model after each interaction,
-  and declare mastery when the skill
-  %(probability of success or a fuzzy skill of given concept)
-  on the practiced topic exceeds the threshold
-  ($\theta > T$).
-\item Usage of student model:
-  (1) to determine if the student already achieved mastery,
-  (2) to show progress to the student (progressbar).
-  % TODO: screenshot of a mastery progress bar (e.g. from UmimeX)
-\item Simple approaches -- using \emph{summary statistics}, i.e.
-  single-concept single-difficulty descriptive student models:  % TODO: make sure the terms are defined
-\begin{itemize}
-\item EMA (REF EMA section in student modeling) (used in UmimeP, REF-existing-systems),
-\item NCC (``N consecutive correct''), but that assumes binary performance
-  (we could use something like N-with-at-least-good-performance).
-  (used in KA/2018, REF-existing-systems).
-  % Probably analyzed in "The use of probabilistic models in the assessment of mastery",
-  % but that is a super-old article.
-\end{itemize}
-\item If the problem set is coherent (tasks in PS have approximately same difficulty
-  and cover the same concepts), than simple EMA works well \cite{alg.mastery}.
-\item More important than chosen type of model is its input data;
-  e.g. if the solving time is included in the performance (REF to performance section),
-  and value of the threshold
-  \cite{alg.mastery}. % in the cited paper: they improved "quality" of MS by including
-  % solving times over just binary correctness, ?? in both Math and Czech?
-\item Disadvantage: no knowledge transfer (using the student history to improve
-  mastery learning). Solution: using a sophisticated student model -- either completely,
-  or just for initial setting of parameters of the simple model
-  (e.g. inital score and/or learning rate and/or threshold for EMA).
-\item TODO: REF some research/systems examples using sophisticated student models
-  for mastery learning (hub: bibliography in \cite{alg.mastery}).
-\item Parameters:
-\begin{itemize}
-\item threshold + parameters of chosen student models
-\item Balance between overpractice and underpractice. (The righ value is application dependent.)
-\item TODO: Effort vs. Score plot/metrics
-  \cite{evaluation-leopard, learner-models-integration-skills}
-\item Manually: ?? using effort-score graphs \cite{alg.mastery} TODO: (elaborate)
-\item Heuristically (1-step learning): e.g. require specific maximum time (e.g. 1 minute)
-  to achieve mastery for genius.
-\item Joint vs. 2-phase optimization
-  (2-phase: for predictive models: first optimize the student model for its
-  predictive accuracy, then optimize the threshold given fixed student model).
-\item ?? ML wrt. to the long-short term metrics
-\end{itemize}
-\end{itemize}
+In mastery learning (CITE+\cite{mastery-learning-scale}), each topic
+% topic = either concept or a PS
+is practiced until it is mastered, and only then student moves
+to the next topic.  % TODO: concept / topic / PS?
+% NOTE: "fixed outcome, varied time" (vs. classical education: fixed time, varied outcome)
+% NOTE: Study on how the mastery learning helps (or rather how the violations
+% of mastery learning lead to worse results): \cite{mastery-learning-scale}.
+Mastery decision % or \emph{mastery criterion}?
+is an algorithm that returns a binary information about whether the student
+(represented by a student model) already mastered the topic or not.
+% TODO: check
 
+Typically, mastery is decided by comparing skill estimated by the student
+model to a threshold. % "calibrated threshold"
+If the student model is predictive, then the threshold can be compared directly
+to the probability that the current topic is mastered.
+If the practiced problem set is homogeneous (all tasks have approximately same difficulty
+and cover the same concepts), than it is enough to use a simple concept-free
+single-difficulty descriptive student models,  % TODO: make sure the terms are defined
+such as \emph{Exponential Moving Average} (EMA) of past performances
+\cite{alg.mastery}.
+% TODO: It would be maybe better to define EMA in Student models section
+% and to adapt it to our domain.
+
+The right value of the threshold depends not only on the used student model and
+its hyperparameters, but also on the application, which determines desired
+balance between overpractice and underpactice (CITE).
+\emph{Effort-score} plot and metrics
+\cite{alg.mastery, evaluation-leopard, learner-models-integration-skills} % TODO: check
+help to choose the threshold.
+Alternatively, the theshold can be calibrated by requiring a specific time or
+number of tasks for specific students (e.g. exactly five tasks for a genius who
+solves each task with a high performance). % TODO:CITE
+
+
+%\begin{itemize}
+%\item Problem: input: domain, student (skills), output: decision: mastered/not.
+%\item Solution: online algorithm called \emph{mastery criterion}.
+%\item Reduction to chosing a suitable student model \ref{sec:student-modeling}
+%  and a threshold $T$;
+%  update the student model after each interaction,
+%  and declare mastery when the skill
+%  %(probability of success or a fuzzy skill of given concept)
+%  on the practiced topic exceeds the threshold
+%  ($\theta > T$).
+%\item Usage of student model:
+%  (1) to determine if the student already achieved mastery,
+%  (2) to show progress to the student (progressbar).
+%\item Simple approaches -- using \emph{summary statistics}, i.e.
+%  concept-free descriptive student models without task difficulties:  % TODO: make sure the terms are defined
+%\begin{itemize}
+%\item EMA (REF EMA section in student modeling) (used in UmimeP, REF-existing-systems),
+%\item NCC (``N consecutive correct''), but that assumes binary performance
+%  (we could use something like N-with-at-least-good-performance).
+%  (used in KA/2018, REF-existing-systems).
+%  % Probably analyzed in "The use of probabilistic models in the assessment of mastery",
+%  % but that is a super-old article.
+%\end{itemize}
+%\item If the problem set is homogeneous (tasks in PS have approximately same difficulty
+%  and cover the same concepts), than simple EMA works well \cite{alg.mastery}.
+%\item More important than chosen type of model is its input data;
+%  e.g. if the solving time is included in the performance (REF to performance section),
+%  and value of the threshold
+%  \cite{alg.mastery}. % in the cited paper: they improved "quality" of MS by including
+%  % solving times over just binary correctness, ?? in both Math and Czech?
+%\item Disadvantage: no knowledge transfer (using the student history to improve
+%  mastery learning). Solution: using a sophisticated student model -- either completely,
+%  or just for initial setting of parameters of the simple model
+%  (e.g. inital score and/or learning rate and/or threshold for EMA).
+%\item TODO: REF some research/systems examples using sophisticated student models
+%  for mastery learning (hub: bibliography in \cite{alg.mastery}).
+%\item Parameters:
+%\begin{itemize}
+%\item threshold + parameters of chosen student models
+%\item Balance between overpractice and underpractice. (The righ value is application dependent.)
+%\item TODO: Effort vs. Score plot/metrics
+%  \cite{evaluation-leopard, learner-models-integration-skills}
+%\item Manually: ?? using effort-score graphs \cite{alg.mastery} TODO: (elaborate)
+%\item Heuristically (1-step learning): e.g. require specific maximum time (e.g. 1 minute)
+%  to achieve mastery for genius.
+%\item Joint vs. 2-phase optimization
+%  (2-phase: for predictive models: first optimize the student model for its
+%  predictive accuracy, then optimize the threshold given fixed student model).
+%\item ?? ML wrt. to the long-short term metrics
+%\end{itemize}
+%\end{itemize}
+
+
+\subsection{Curriculum Sequencing}
+
+% NOTE: Relevant for systems with a lot of diverse content with prerequisity structure.
+% (e.g. in \cite{its-programming}).  % \emph{learning path}
+% NOTE: Also known as \emph{curriculum loop} \cite{its-learner-models}.
+
+Selecting the best task from the pool of all tasks in the system
+can be decomposed into two subproblems: (1) selecting a problem set,
+and (2) selecting a task from this problem set.
+This decomposition makes the problem easier to handle, because
+both subproblems can be solved reasonably well even by simple heuristics.
+Furthermore, it ensures cohorence of recommended tasks;
+students know what they are learning and they do not need to adjust to a very
+different setting (e.g. toolbox) with every task.
+
+Instead of selecting a single recommended problem set, some systems may
+instead need to filter, rank, or score all problem sets.
+% \emph{Problem set selection}: domain, student $\rightarrow$ single problem set.
+A planning tutor can even generate a \emph{learning path}, which is a sequence
+of problem sets that lead to acquiring of a requested knowledge
+\cite{its-programming}.
+
+% NOTE: "The main difference between problem set selection and task selection is that
+% (in a system for learning introductory programming with only a few problem
+% sets) it is reasonably to assume that the student would like to solve all problem
+% sets." -- not sure if true in general, ALS can use one of 2 strategies:
+% small number of PS with a lot of tasks (then it's true), OR a large number of
+% small PS (then we dont' want the student to solve all PS and they probably
+% want to solve all tasks in the selected PS.
+
+Problem set selection focuses on the prerequisity structure.
+% NOTE: Often there even exists a reasonable total ordering of problem sets.
+%  (consider units in a textbook).
+% Especially, if the UI shows which PS are solved and which not.
+If the number of problem sets is reasonably small, we can assume that the student
+wants to solve all of them, in which case it make sense to recommend the problem
+sets from the easiest to the most difficult.
+If the ordering is not total, one of the problem sets with satisfied prerequisties
+can be recommended.
+% NOTE: even safe to omit and leave decison on the student/teacher
+If the number of problem sets is large, it may be useful to use a complex student model
+and choose a problem set with difficulty matching student's skills.
+%that can predict performance on all problem sets and select the problem set
+%that the student is likely to solve, but not too easily.
+Alternative approach is to describe which problem sets naturally \emph{follow} after another,
+and recommend those that follow after the one which was just solved .
+% NOTE: used in UmimeX
+% ?? usually: "follow" = reversed-OR-prerequisity,
+Both for the prerequisities and follow relation, it is important that the domain model
+maches reality. To some extent, offline analysis can be used to either verify, improve or even
+discover the structure. To overcome limitations of the offline evaluation,
+a few competing domain models can be compared in an online experiment.
 
 
 \subsection{Task Recommendation}  % ?? "task selection"
 \label{sec:task-recommendation}
 
-\begin{itemize}
-\item Problem: given domain, student, and a problem set, choose an optimal
-  task from the problem set to assign to the student now.
-\item Problem set: chosen by the student or curriculum sequencing tutor.
+\emph{Task selection} is a problem of choosing a single best task
+from a given problem set for a given student.
+% given domain, student, and a problem set, choose an optimal
+% (more general tasks, that can be reduced to task selection: scoring, ranking).
+The problem is usually solved in two phases:
+First, filters (\emph{hard constraints}) are applied,
+such as avoiding already solved
+tasks, avoiding the task which was just given up by the student,
+and following prerequisities.  % prerequisities are more suited for PS
+Second, for all remaining tasks a preference is computed based on several criteria
+(\emph{soft constraints}), such as
+optimal difficulty (how well does the task matches student skills),
+balance between diversity and coherence
+(avoiding too similar tasks as the previous one, especially if the student
+solved the task easily, but also avoiding too large changes),
+and exploration (value of information received by observing the student solving this task).
+% TODO: Rewrite to avoit too long sentences.
 
-\item Types of recommenders according to outputs:
-\begin{itemize}
-\item \emph{task selection}: single recommended task,
-\item \emph{filtering}: group of task to recommend/forbid,
-\item ?? \emph{scoring}: score for each task according to how much it is
-recommended,
-\item ?? \emph{ranking}: ordering of tasks (all or just the most recommended),
-\end{itemize}
+If the problem set is homogeneous, than the criteria should have similar values
+for all tasks, and therefore it is safe to select the task \emph{uniformly at random},
+which maximizes exploration.
+Otherwise, the typical approach is to manually select an error function for each
+soft constraint, compute \emph{weighted sum of errors} for each task and
+select the task with the smallest error.
+% TODO:CITE
 
-\item \emph{Soft vs. hard recommendations}. (?? Move (partially) to UI model?)
-Recommendations can be either \emph{hard}, i.e. enforced by the system
-or \emph{soft}, i.e. they are presented as suggestions, but the the choice
-is left on the student.
-% Only a single task can be chosen as hard recommendation.
-Even just showing predictions to the student (e.g. in the form of predicted
-solving times or showing difficulty predictions such as
-``too easy'', ``too difficult'', and ''ready to attempt'')
-can be already perceived as a very mild form of recommendation.
-For example, suggestions in the form of traffic-light colors
-  are used in the system described in \cite{its-programming}.
-Soft recommendations can be further achieved either by
-  ordering tasks according to how much they are recommended,
-  or only showing a subset of suitable tasks.
-The system can be more strict and show only a single recommended task,
-  (as in HackerRank -- REF to figure) (or 2 tasks: Tutor),
-  or even enforce the recommendation by immediately progressing student to
-  the next task without asking and giving them a chance to select a different task.
+In principle, either the weights of individual error functions, or even the error functions
+themselves can be chosen to optimize a desired metric, but there are two complications.
+First, the training data are sparse, because only a single followed recommendation was
+observed for each student in given state. % TODO: formulate better
+Second, it is not clear whether the recommendation was correct % TODO: elaborate
+and proxies must be used (e.g., recommendation is declared as good if the
+observed performance was neither too low, nor too high).
 
-\item Hard and soft constraints (filters and criteria).
-\item Typically hard constraints: (?? filters)
-\begin{itemize}
-\item Only choose tasks from given problem set.
-\item Avoid already solved tasks.
-\item Avoid the task which was just given up by the student.
-\item (Follow the prerequisities specified in the domain.)
-  (More relevant for curriculum sequencing.)
-\end{itemize}
-\item It is enough to simply apply all filters, unless a sequence of tasks is
-  considered instead of just one. (?? In that case, the techniques from the area
-  of CSP could be used -- REF.)
-\item Typically soft constraints/criteria:
-\begin{itemize}
-\item Optimal difficulty (matching the student skills).
-\item Balance diversity and coherence.
-  Avoid too similar task as the previous one(s),
-  especially if the student solved the task easily.
-  On the other hand, do not make too "big jumps" (e.g. different toolbox or
-  story in each task).
-\item (?? Soft prerequisities)
-\item Exploration (value of information).
-\end{itemize}
-
-\item ?? Approaches: \emph{heuristic} vs. \emph{optimized} (wrt. a metric)
-  (?? learning -- online/offline).
-\item Techniques (for single task recommendation):
-  (TODO: disentangle tutor representation vs. learning)
-\begin{itemize}
-\item \emph{Uniform random selection}. Maximizes the exploration.
-  Works well if the problem set is coherent (approximately same difficulty etc.)
-  (REF usage: Umime Programovat)
-\item Typical example of action-value function for task recommendation is
-  a \emph{weighted sum of errors on the soft constraints}.
-  Both error functions and their weights are ?usually chosen manually
-  (REF usage -- MatMat?).
-  In principle, the weights could be learned to optimize a desired metric, but the
-  learning process is more difficult than for student models,
-  because it is less clear if the decison/prediction was correct
-  (section \ref{tutors.evaluation}).
-  (Task selection: minimizing the sum of errors / randomly-weighted)
-  (Alternative combination of errors: maximum, product/sum-logs).
-\item Instead of manually picking the error functions, we can directly learn
-  them (e.g. via multilayer perceptron) %, or genetic algorithms, ...?
-  ?? not used (or is there an example to REF?)
-\item ?? Policy learning? -- e.g. a decison tree mapping student to a task
-  (?? used anywhere?).
-\item \emph{$\epsilon$-greedy strategy}: combination of random selection choose randomly $\epsilon$
-  to balance exploration and exploitation.
-\item ?? Principled approaches: MDP, weighted/fuzzy CSP
-\end{itemize}
-\item TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
-\end{itemize}
+To balance epxloration and epxloitation, the system can either select tasks at random
+with the probability proportional to its preference (inversed and normalized error),
+or it can choose a random task with probability $\epsilon$, and the best task otherwise,
+which is call \emph{$\epsilon$-greedy strategy}.
 
 
-\subsection{Adaptive Scaffolding}
+%In principle, the weights could be learned to optimize a desired metric, but the
+%learning process is more difficult than for student models,
+%because it is less clear if the decison/prediction was correct
+%(section \ref{tutors.evaluation}).
+%(Task selection: minimizing the sum of errors / randomly-weighted)
+%(Alternative combination of errors: maximum, product/sum-logs).
 
-Should we provide the student with a help to solve the current task
-(e.g., show an instruction, a hint, a worked out example, or an explatanation)?
-(or even a suggestion to give up and try an easier task).
-(Example: cognitive tutors - REF.)
 
-\begin{itemize}
-\item (inner loop)
-\item ?? \emph{scaffoling} = helping student to solve a task
-  (why: to make them to solve tasks slightly behind ther current knowledge to extend it).
-\item ?? \emph{adaptive scaffolding} -- (vaguely) helping student during solving a task
-  using automatic techniques to either generate possible hints in advance,
-  or to decide when and which hint to show.
+%\begin{itemize}
+%\item Problem: given domain, student, and a problem set, choose an optimal
+%  task from the problem set to assign to the student now.
+%\item Problem set: chosen by the student or curriculum sequencing tutor.
+%
+%\item Types of recommenders according to outputs:
+%\begin{itemize}
+%\item \emph{task selection}: single recommended task,
+%\item \emph{filtering}: group of task to recommend/forbid,
+%\item ?? \emph{scoring}: score for each task according to how much it is
+%recommended,
+%\item ?? \emph{ranking}: ordering of tasks (all or just the most recommended),
+%\end{itemize}
+%
+%\item \emph{Soft vs. hard recommendations}. (?? Move (partially) to UI model?)
+%Recommendations can be either \emph{hard}, i.e. enforced by the system
+%or \emph{soft}, i.e. they are presented as suggestions, but the the choice
+%is left on the student.
+%% Only a single task can be chosen as hard recommendation.
+%Even just showing predictions to the student (e.g. in the form of predicted
+%solving times or showing difficulty predictions such as
+%``too easy'', ``too difficult'', and ''ready to attempt'')
+%can be already perceived as a very mild form of recommendation.
+%For example, suggestions in the form of traffic-light colors
+%  are used in the system described in \cite{its-programming}.
+%Soft recommendations can be further achieved either by
+%  ordering tasks according to how much they are recommended,
+%  or only showing a subset of suitable tasks.
+%The system can be more strict and show only a single recommended task,
+%  (as in HackerRank -- REF to figure) (or 2 tasks: Tutor),
+%  or even enforce the recommendation by immediately progressing student to
+%  the next task without asking and giving them a chance to select a different task.
+%
+%\item Hard and soft constraints (filters and criteria).
+%\item Typically hard constraints: (?? filters)
+%\begin{itemize}
+%\item Only choose tasks from given problem set.
+%\item Avoid already solved tasks.
+%\item Avoid the task which was just given up by the student.
+%\item (Follow the prerequisities specified in the domain.)
+%  (More relevant for curriculum sequencing.)
+%\end{itemize}
+%\item It is enough to simply apply all filters, unless a sequence of tasks is
+%  considered instead of just one. (?? In that case, the techniques from the area
+%  of CSP could be used -- REF.)
+%\item Typically soft constraints/criteria:
+%\begin{itemize}
+%\item Optimal difficulty (matching the student skills).
+%\item Balance diversity and coherence.
+%  Avoid too similar task as the previous one(s),
+%  especially if the student solved the task easily.
+%  On the other hand, do not make too "big jumps" (e.g. different toolbox or
+%  story in each task).
+%\item (?? Soft prerequisities)
+%\item Exploration (value of information).
+%\end{itemize}
+%
+%\item ?? Approaches: \emph{heuristic} vs. \emph{optimized} (wrt. a metric)
+%  (?? learning -- online/offline).
+%\item Techniques (for single task recommendation):
+%  (TODO: disentangle tutor representation vs. learning)
+%\begin{itemize}
+%\item \emph{Uniform random selection}. Maximizes the exploration.
+%  Works well if the problem set is coherent (approximately same difficulty etc.)
+%  (REF usage: Umime Programovat)
+%\item Typical example of action-value function for task recommendation is
+%  a \emph{weighted sum of errors on the soft constraints}.
+%  Both error functions and their weights are ?usually chosen manually
+%  (REF usage -- MatMat?).
+%  In principle, the weights could be learned to optimize a desired metric, but the
+%  learning process is more difficult than for student models,
+%  because it is less clear if the decison/prediction was correct
+%  (section \ref{tutors.evaluation}).
+%  (Task selection: minimizing the sum of errors / randomly-weighted)
+%  (Alternative combination of errors: maximum, product/sum-logs).
+%\item Instead of manually picking the error functions, we can directly learn
+%  them (e.g. via multilayer perceptron) %, or genetic algorithms, ...?
+%  ?? not used (or is there an example to REF?)
+%\item ?? Policy learning? -- e.g. a decison tree mapping student to a task
+%  (?? used anywhere?).
+%\item \emph{$\epsilon$-greedy strategy}: combination of random selection choose randomly $\epsilon$
+%  to balance exploration and exploitation.
+%\item ?? Principled approaches: MDP, weighted/fuzzy CSP
+%\end{itemize}
+%\item TODO: mention simple heuristic approach from Tutor: 2 tasks of similar difficulty as the just solved task which were not solved previously
+%\end{itemize}
 
-\item Possible \emph{hints} (types of scaffolding):
-\begin{itemize}
-\item TODO: refine terminology.
-\item \emph{pre-explanations} --
-  how something works, e.g. semantics of repeat-block,
-  % Note: currently called "mini-instructions" in the system
-\item \emph{post-explanations} --
-  why something happened (REF example print-screen, e.g. that the task was not
-  solved because the spaceship has not reached the final line),
-\item \emph{worked-out examples} --
-  special type of explanations, "inductive explanations",
-  short programs/snippets to illustrate a concept.
-\item \emph{instructions}: what to do right now
-  (e.g. ``Drag and drop this block into the workspace.''),
-\item \emph{interruption suggestion} --
-  (special type of instruction),
-  suggestion to give up and try an easier task.
-\item TODO: ref examples and relevant research for all of these.
-\end{itemize}
 
-\item All of the can be to some extent used manually (i.e defining exact point in time
-  and exact hints that will be shown to the student).
-\item Extension points for adaptivity:
-\begin{itemize}
-\item \emph{hints generation} from collected history (REF),
-\item \emph{just-in-time hint selection} (REF+page: \cite{student-models-review-2012})
-  % note: they mention a broader category of "just-in-time feedback")
-  -- algorithm that decides whether to show a hint and which one
-  (using either a heuristic, such as passed time, or and inner-loop student model that capture
-  possible misconceptions of the student).
-\item \emph{hint personalization} -- modifying the text of hint based on the information
-  about the student
-  (simple example: using name of the student or their favourite characters in the text).
-  (REF: there was a paper about how these simple things help for interest of the students)
-\end{itemize}
-\item TODO: Examples + REFs (e.g lisp-tutor)
-
-\item Just-in-time hint selection -- how:
-\begin{itemize}
-\item \emph{Detecting incorrect steps.}
-  Requires "ideal student model" = given the current state, what step to do
-  next to solve the task.
-  If diverting, show the student an instruction that forces him to get back on
-  the right path leading to a solution.
-  REF: lisp tutor.
-\item \emph{Detecting misconceptions.}
-  Requires an inner-loop student model that includes misconceptions (TODO: example)
-  and showing a relevant hint to ?eliminate each misconcpetion as soon as detected.
-\item \emph{Rule-based approach.}
-  More generally, the tutor can include arbitrary conditions on current student state,
-  mapping them to hints (and possibly preferences).
-  The preferences can be then optimized e.g. using ?? buckshort heuristic (REF) (or RL, see below).
-  % ?? Even new completely rules can be learned automatically, using
-  % population-based heuristic search such as genetic algorthms (REF). --
-  % probably not enough/useful data and you don't want to do that online...
-\item \emph{Reinforcement learning.}
-  Optimizing policy for an (unknown) MDP, in which
-  state = student model for given task (inner loop),
-  actions = possible hints (or none),
-  time steps: e.g. after each edit or code execution,
-  reward: e.g. +1 if solves the task (+ discount to prefer shorter paths).
-  -> ?? RL techniques (enough data? used or not?)
-\end{itemize}
-\end{itemize}
+%\subsection{Adaptive Scaffolding}
+%
+%Should we provide the student with a help to solve the current task
+%(e.g., show an instruction, a hint, a worked out example, or an explatanation)?
+%(or even a suggestion to give up and try an easier task).
+%(Example: cognitive tutors - REF.)
+%
+%\begin{itemize}
+%\item (inner loop)
+%\item ?? \emph{scaffoling} = helping student to solve a task
+%  (why: to make them to solve tasks slightly behind ther current knowledge to extend it).
+%\item ?? \emph{adaptive scaffolding} -- (vaguely) helping student during solving a task
+%  using automatic techniques to either generate possible hints in advance,
+%  or to decide when and which hint to show.
+%
+%\item Possible \emph{hints} (types of scaffolding):
+%\begin{itemize}
+%\item TODO: refine terminology.
+%\item \emph{pre-explanations} --
+%  how something works, e.g. semantics of repeat-block,
+%  % Note: currently called "mini-instructions" in the system
+%\item \emph{post-explanations} --
+%  why something happened (REF example print-screen, e.g. that the task was not
+%  solved because the spaceship has not reached the final line),
+%\item \emph{worked-out examples} --
+%  special type of explanations, "inductive explanations",
+%  short programs/snippets to illustrate a concept.
+%\item \emph{instructions}: what to do right now
+%  (e.g. ``Drag and drop this block into the workspace.''),
+%\item \emph{interruption suggestion} --
+%  (special type of instruction),
+%  suggestion to give up and try an easier task.
+%\item TODO: ref examples and relevant research for all of these.
+%\end{itemize}
+%
+%\item All of the can be to some extent used manually (i.e defining exact point in time
+%  and exact hints that will be shown to the student).
+%\item Extension points for adaptivity:
+%\begin{itemize}
+%\item \emph{hints generation} from collected history (REF),
+%\item \emph{just-in-time hint selection} (REF+page: \cite{student-models-review-2012})
+%  % note: they mention a broader category of "just-in-time feedback")
+%  -- algorithm that decides whether to show a hint and which one
+%  (using either a heuristic, such as passed time, or and inner-loop student model that capture
+%  possible misconceptions of the student).
+%\item \emph{hint personalization} -- modifying the text of hint based on the information
+%  about the student
+%  (simple example: using name of the student or their favourite characters in the text).
+%  (REF: there was a paper about how these simple things help for interest of the students)
+%\end{itemize}
+%\item TODO: Examples + REFs (e.g lisp-tutor)
+%
+%\item Just-in-time hint selection -- how:
+%\begin{itemize}
+%\item \emph{Detecting incorrect steps.}
+%  Requires "ideal student model" = given the current state, what step to do
+%  next to solve the task.
+%  If diverting, show the student an instruction that forces him to get back on
+%  the right path leading to a solution.
+%  REF: lisp tutor.
+%\item \emph{Detecting misconceptions.}
+%  Requires an inner-loop student model that includes misconceptions (TODO: example)
+%  and showing a relevant hint to ?eliminate each misconcpetion as soon as detected.
+%\item \emph{Rule-based approach.}
+%  More generally, the tutor can include arbitrary conditions on current student state,
+%  mapping them to hints (and possibly preferences).
+%  The preferences can be then optimized e.g. using ?? buckshort heuristic (REF) (or RL, see below).
+%  % ?? Even new completely rules can be learned automatically, using
+%  % population-based heuristic search such as genetic algorthms (REF). --
+%  % probably not enough/useful data and you don't want to do that online...
+%\item \emph{Reinforcement learning.}
+%  Optimizing policy for an (unknown) MDP, in which
+%  state = student model for given task (inner loop),
+%  actions = possible hints (or none),
+%  time steps: e.g. after each edit or code execution,
+%  reward: e.g. +1 if solves the task (+ discount to prefer shorter paths).
+%  -> ?? RL techniques (enough data? used or not?)
+%\end{itemize}
+%\end{itemize}
 
 
 \subsection{Evaluation}
