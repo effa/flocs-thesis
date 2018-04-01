@@ -83,7 +83,7 @@ Typical ALS consists of the following components
   and manages online training of model parameters.
   In addition to this online (inside-the-system) analyses,
   offline (outside-the-sytem) analyses are often performed as well
-  to discover useful interventions in the system  % actionable insight
+  to discover useful interventions to the system  % actionable insight
   (\cref{sec:metrics-and-evaluation}).
   %section \ref{sec:metrics-and-evaluation} discusses how to evaluate
   % different models or even whole learning systems.
@@ -2080,12 +2080,31 @@ or using text instead of blocks % (everything else being equal).
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
 
-
+Evaluation layer allows for \emph{iterative improvement} of ALS.
 To decide which interventions improves the quality of ALS,
   suitable metrics must be measured. %chosen and evaluated.
 Metrics are also used for optimizing models,
   from fitting parameters % and (choosing) hyperparameters
   to selecting the best model from a set of candidates.
+
+ALS cannot be perfect from its fist deployment,
+and its quality increases with the number of small
+incremental improvements performed, so it is beneficial to
+evaluate and update the system frequently.
+This \emph{rule of the loop} \cite{book-of-lenses},
+%\emph{``Plan to launch and iterate''}
+was observed to hold not only for ALS \cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}, % TODO: better resource?
+but also for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
+% its-domain-models: "Treat each domain model as a hypothesis rather than a
+% perfect final definition. (...) Facilitate iterative improvement of domain models."
+% NOTE: Example: - start with the initial ("expert-provided") domain model ->
+% collect data -> analyse -> refine -> iterate (\cite[chapter 10]{its-domain-models})
+Frequent high-quality evalution is achieved by a combination of
+  online AB experiments, live monitoring, and offline analyses.
+  % \cite{stupid-tutoring-systems-intelligent-humans}
+%- offline analyses -- the term ``human in the loop''
+%\cite{stupid-tutoring-systems-intelligent-humans}
+% "inteligence amplification" (instead of AI)
 
 %TODO: table/diagram showing goals hierarchy and their usage:
 %1. mission -> guide for long term objectives? (not measurable)
@@ -2295,6 +2314,9 @@ This combined metric has an advantage of incorporating both learning and engagem
 \subsection{Live Evaluation}
 \label{sec:live-evaluation}
 
+% NOTE: Terminology: online evaluation / monitoring = AB experiemnts
+% (long-term) + live evaluation (short-term)
+
 In ALS, new versions of models are deployed from time to time
   with parameters learned from the recent data.
 The behavior of the new models must be carefully monitored
@@ -2303,8 +2325,8 @@ The behavior of the new models must be carefully monitored
 For this purpose, metrics that can be linked immediately
   to the tutor model actions are needed.
 These metrics are called \emph{online attributable metrics}.  % TODO: find used terminology
+%and this type of evaluation as \emph{live evaluation}
 % OR "short term metrics"
-%and this type of evaluation \emph{live evaluation}.
 
 These metrics are often formulated as a question concerning a single recommendation,
 such as
@@ -2329,28 +2351,27 @@ Finally, individual errors are aggregated, and the average error is reported.
 
 Offline experiments use historical collected data
   to avoid the cost of live evaluation.
-Offline experiments allows to reuse the same data to evaluate several models,
-  obtaining the results quickly,
-  and avoiding a potential negative impact on students if the evaluated model is poor.
-
-The specific approaches and challenges of evalution of student and tutor models
-were already discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
+They allow to reuse the same data to evaluate several models,
+  to obtain the results quickly,
+  and to avoid potential negative impact on students if the evaluated model is poor.
 Offline evaluation is typically used as a check before pushing
-  a new model online to.
-It can also be used for model selection,
+  a new model online.
+It can be also used for model selection,
   including hyperparameters search.
-Finally, offline learning algorithms typically use
-  a metric to guide them
-  (these are discussed in section \ref{sec:metrics-to-guide-learning}).
-
+%Finally, offline learning algorithms typically use
+%  a metric to guide them
+%  (these are discussed in section \ref{sec:metrics-to-guide-learning}).
 
 %Another disadvantage of offline evaluation compared to live evaluation
 %  is that the data used for evaluation does not come from the completely
 %  same distribution of events as will occur in the live system,
 %  which limits generalization guarantees of such evaluation.
 
-For an unbiased offline evaluation, it is important to test the model on different data
-then it was trained on. Unlike in many supervised learning problems, events from ALS
+The specific approaches to evalution of student and tutor models and related challenges
+were already discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
+A common consideration for an unbiased offline evaluation is to ensure that
+the model is tested on different data then it was trained on.
+Unlike in many supervised learning problems, events from ALS
 cannot be divided into train and test group randomly, because that would lead
 to predicting past from the future. % optimistic bias
 The evaluation should mimic as close as possible the real scenario of how will be
@@ -2425,30 +2446,30 @@ is also desirable, then the data should be split accordingly \cite{student-model
 %students)
 %(in sklearn this is called "Group k-fold cross-validation")
 
-\subsection{Metrics to Guide Learning}
-\label{sec:metrics-to-guide-learning}
-
-Learning algorithms often incorporate a metric they attempt to optimize.
-In this context, the metric is often called \emph{loss function}.
-For example,
-  Ordinary Least Squares (used for linear regression models) minimizes RMSE.
-Some learning algorithms, such as gradient descent,
-  allow to minimize arbitrary metric
-  for which it is easy to compute partial derivatives with respect to model parameters.
-Loss functions can be viewed as just further proxies for long-term objectives.
-Therefore, in the case of choice, it is beneficial to choose a loss function
-  that matches the long-term objectives more closely.
-
-As a common example, some loss functions allow to specify weights for each training example.
-If it is derived from the long-term goals that predicting one class correctly
-  is more important than predicting the other class correctly
-  (e.g. if it is more important to predict correctly failure than success),
-  larger weights should be assigned to the examples with the more important class.
-
-Note that these metrics are not limited to the offline environment. Specifically, if the
-model only process each student-task interaction once (\emph{online models}), than the
-model parameters can be updated based on the value of the error metric
-(or its gradient in the case of gradient descent) in the live environment.
+%\subsection{Metrics to Guide Learning}
+%\label{sec:metrics-to-guide-learning}
+%
+%Learning algorithms often incorporate a metric they attempt to optimize.
+%In this context, the metric is often called \emph{loss function}.
+%For example,
+%  Ordinary Least Squares (used for linear regression models) minimizes RMSE.
+%Some learning algorithms, such as gradient descent,
+%  allow to minimize arbitrary metric
+%  for which it is easy to compute partial derivatives with respect to model parameters.
+%Loss functions can be viewed as just further proxies for long-term objectives.
+%Therefore, in the case of choice, it is beneficial to choose a loss function
+%  that matches the long-term objectives more closely.
+%
+%As a common example, some loss functions allow to specify weights for each training example.
+%If it is derived from the long-term goals that predicting one class correctly
+%  is more important than predicting the other class correctly
+%  (e.g. if it is more important to predict correctly failure than success),
+%  larger weights should be assigned to the examples with the more important class.
+%
+%Note that these metrics are not limited to the offline environment. Specifically, if the
+%model only process each student-task interaction once (\emph{online models}), than the
+%model parameters can be updated based on the value of the error metric
+%(or its gradient in the case of gradient descent) in the live environment.
 
 \subsection{Simulation Experiments}
 
@@ -2457,66 +2478,42 @@ while offline experiments use historical data.
 Simulated experiments provide a third alternative,
   which does not require any collected data at all.
 
+% TODO: make the text more specific for programming
 Not needing collected data makes simulations widely and easily applicable.
 On the other hand, researchers must be careful when interpreting
-  the results of a simulation, as the simulation results are nothing more than
+  the results of a simulation, as the simulation results are % nothing more than
   just consequences of used assumptions.
-Nevertheless, simulation are perfect for models debugging,
+Nevertheless, simulation is perfect for models debugging,
   for example to find fatal errors in the implementation.
-Furthermore, \emph{sensitivity analysis} is a technique for finding
-  which parameters of the model are important and should be learned,
-  and which can be safely set manually without frequent retraining.
+Simulations can aslo suggest
+how much data at least is needed for robust estimation of parameters (CITE),
+what is the best performance that can be achieved with such model (CITE),
+or which parameters of the model which parameters of the model are important
+and should be learned, and which can be safely set manually (CITE). % without frequent retraining.
+% the last technique is called \emph{Sensitivity analysis}
+% TODO: CITE examples (e.g. in thran-thesis)
 
-In practice, simulations can also take advantage of collected data
-  if they are available -- to estimate some of the model parameters
-  or to evaluate how much the model predictions agree with
-  what was observed in the reality.
+%In practice, simulations can also take advantage of collected data
+%  if they are available -- to estimate some of the model parameters
+%  or to evaluate how much the model predictions agree with
+%  what was observed in the reality.
 
+%NOTE: - view on the simulation experiments as the 3rd way between deduction (mathematical models) and induction (statistics, machine learning)
 
-TODO:
-- view on the simulation experiments as the 3rd way between deduction (mathematical models) and induction (statistics, machine learning)
-- REF examples (e.g. in thran-thesis)
-- they can also provide best-case performance, suggest how much data (at least) is needed to achieve stability/good performance
+Simulations can take advantage of collected data that are available.
+For example, in \cite{instructor-dashboard-realtime} an instructor dashboard is evaluated
+by combining collected performance data % TODO:check
+with simulated instructors interacting with the dashboard.
 
-
-Examples:
-- \cite{instructor-dashboard-realtime}:
- simulating instructors interacting with a dashboard (to evaluate how the dashboard is useful)
-
-
-\subsection{Data Collection}
-
-TODO: overview of issues e.g. in \cite{pelanek-learner-modeling}
-
-TODO: attrition bias (type of selection bias, can be caused by self-selection)
-
-TODO: Feedback Loops
-% TODO: describe the bias: recommenders -> influence collected data ->
-% evaluation on the data influenced by them; (big issue in recommendation
-% systems in general)
-% TODO: give an example (including the resulting problem)
-% TODO: REF: Google Rules of ML 36
-
-
-\subsection{Iterative Improvement}
-\label{sec:iterative-improvement}
-
-Importance:
-- importance of iterative improvement in general (rule of the loop -- REF: book of lenses)
-- specifically in ML -- REF Google Rules of ML 16: "Plan to launch and iterate"
-- specifically in ITS: REF
-- specifically for domain models: recommendation from \cite[p.124]{its-domain-models}:
-"Treat each domain model as a hypothesis rather than a perfect final definition. (...)
-Facilitate iterative improvement of domain models."
-
-TODO: How:
-- important components mentioned in the above sections:
-  monitoring (metrics), performing AB-experiments, live evaluation, offline
-  analysis
-- offline analyses -- the term ``human in the loop''
-\cite{stupid-tutoring-systems-intelligent-humans}
-
-TODO: examples:
-- start with the initial ("expert-provided") domain model -> collect data ->
-analyse -> refine -> iterate (\cite[chapter 10]{its-domain-models})
-
+%\subsection{Data Collection}
+%
+%TODO: overview of issues e.g. in \cite{pelanek-learner-modeling}
+%
+%TODO: attrition bias (type of selection bias, can be caused by self-selection)
+%
+%TODO: Feedback Loops
+%% TODO: describe the bias: recommenders -> influence collected data ->
+%% evaluation on the data influenced by them; (big issue in recommendation
+%% systems in general)
+%% TODO: give an example (including the resulting problem)
+%% TODO: REF: Google Rules of ML 36
