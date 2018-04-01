@@ -1972,7 +1972,7 @@ necessary to consider both of these models. This strategy can be also useful
 for incremental deployment, where an already used model is compared to its
 new version, which only differs by parameters recomputed on fresh data.
 In this case, low agreement would indicate a bug in the model
-or data pipeline \cite[][Rule \#24]{google-ml-rules}.
+or data pipeline \cite[][Rule 24]{google-ml-rules}.
 To compare agreement between two recommendation algorithms, we can use
 \emph{ranking metrics}, such as \emph{Spearman's correlation coefficient},
 % \emph{Kendall's rank correlation coefficient}, or ??Discounted cumulative gain (REF).
@@ -2067,7 +2067,8 @@ ALS can model UI explicitly in order to compare different versions
 of UI in an online AB experiment,
 which allows to investigate influence of various aspects of
 the UI, such as that different types of programming blocks are colored differently,
-or using text instead of blocks from the first task. % (everything else being equal).
+or using text instead of blocks % (everything else being equal).
+\cite{comparing-blocks-text-weintrop2017}.
 % TODO: more/better examples?
 
 % TODO:
@@ -2080,11 +2081,11 @@ or using text instead of blocks from the first task. % (everything else being eq
 \label{sec:metrics-and-evaluation}
 
 
-To decide if the adaptivity improves the quality of the learning system,
-  suitable metrics must be chosen and evaluated.
+To decide which interventions improves the quality of ALS,
+  suitable metrics must be measured. %chosen and evaluated.
 Metrics are also used for optimizing models,
-  first for parameters fitting, second for choosing hyperparameters,
-  and third for selecting best model from a set of possible models.
+  from fitting parameters % and (choosing) hyperparameters
+  to selecting the best model from a set of candidates.
 
 %TODO: table/diagram showing goals hierarchy and their usage:
 %1. mission -> guide for long term objectives? (not measurable)
@@ -2096,33 +2097,33 @@ Metrics are also used for optimizing models,
 \subsection{Mission Statement}
 \label{sec:mission}
 
-There are hundreds of possible metrics that the system could measure.
-What metric to choose depends on the purpose of the evaluation,
-  which can range from guiding a parameters-fitting algorithm
-  to interpreting results of an AB experiment.
-To make sure that chosen metrics are not misleading,
-  they should reflect the ultimate goal of the system,
-  which is sometimes also called the \emph{mission}.
-
-Even the mission itself should reflect some higher-level goals.
-Nevertheless, goals create an infinite hierarchy
-  and a starting point (called \emph{paradigm}) must be chosen,
-  from which the lower-level goals are derived.
-An example of such paradigm is
-  ``effort to maximize the overall happiness in the population''.
-% TODO: Without going into further philosophical discussions or attempts for precise definitions,
-%       ... we will just adopt this paradigm for the rest of this thesis.
+%There are hundreds of possible metrics that the system could measure.
+%What metric to choose depends on the purpose of the evaluation,
+%  which can range from guiding a parameters-fitting algorithm
+%  to interpreting results of an AB experiment.
+%To make sure that chosen metrics are not misleading,
+%  they should reflect the ultimate goal of the system,
+%  which is sometimes also called the \emph{mission}.
+%
+%Even the mission itself should reflect some higher-level goals.
+%Nevertheless, goals create an infinite hierarchy
+%  and a starting point (called \emph{paradigm}) must be chosen,
+%  from which the lower-level goals are derived.
+%An example of such paradigm is
+%  ``effort to maximize the overall happiness in the population''.
+%% TODO: Without going into further philosophical discussions or attempts for precise definitions,
+%%       ... we will just adopt this paradigm for the rest of this thesis.
 
 At first sight, a reasonable mission of a system for learning programming
   is a long-term increase in algorithmic-problem solving skill in the population.
 However, other factors than the skill should be considered as well.
-For example, how much students enjoyed the time in the system,
+For example, how much students enjoy the time in the system,
   how they are satisfied with their accomplishments,
-  or if they are motivated for further learning of programming;
-  all of these may play an important role for the overall happiness in the population.
-In the \emph{Rules of Machine Learning}, Martin Zinkevich
-  points out that there is no single best objective \cite[][Rule \#39]{google-ml-rules}.
-As a solution to this ``multiple objectives dilemma'',
+  or if they are motivated for further learning of programming.
+%;  all of these may play an important role for the overall happiness in the population.
+%In the \emph{Rules of Machine Learning}, Martin Zinkevich
+%  points out that there is no single best objective \cite[][Rule \#39]{google-ml-rules}.
+As a solution to this \emph{multiple objectives dilemma} \cite[][Rule 39]{google-ml-rules},
   the mission can be formulated as achieving a balanced increase in all
   of these important factors.
 Such formulation reminds developers of the system not to overfocus on one factor
@@ -2132,159 +2133,187 @@ Such formulation reminds developers of the system not to overfocus on one factor
 \subsection{Long Term Objectives}
 \label{sec:long-term-objectives}
 
-The huge disadvantage of the mission statements
-  is that they are not measurable.
-To make informed decisions,
-  such as which of the two recommendation algorithms to prefer,
-  measurable metrics are needed.
-Therefore, various proxy metrics are used.
-These proxy metrics should be precisely formulated and measurable,
-  but at the same time they should be related as much as possible to the system mission.
+% TODO: Term AB experiments should be explained in this section!
 
-To elaborate on the mission from section \ref{sec:mission},
-  a long term objective could be
-  ``maximizing the number of students
-  who mastered elementary programming quickly while having fun''.
-To make this metric usable,
-  terms ``mastering elementary programming'', ``quickly'', and ``having fun''
-  must be defined in a measurable way.
-While ``achieving mastery in elementary programming quickly'' can be
+Mission statements are not measurable.
+Measurable metrics are needed to make informed decisions,
+such as which of two recommendation algorithms to prefer.
+While being precise and measurable, these proxy metrics
+should still be related to the mission as much as possible.
+
+First, the mission statement can be refined into the following
+  long term objective: ``maximizing the number of students
+  who mastered elementary programming while having fun''.  % + "quickly"?
+Second, we need to define terms used in this objective in a measurable way.
+  %terms ``mastering elementary programming'', ``quickly'', and ``having fun''
+While ``achieving mastery in elementary programming'' can be
   formulated as an objective criterion
-  (e.g. ``the student solved at least 5 tasks for each concept, each in less than 5 minutes''),
+  (e.g. the student solved at least 5 tasks for each concept with at least good performance),
   ``having fun'' requires the system to ask students about their subjective feelings.
+% NOTE: Terminology: objective = metric that we know we want to either maximize/minimize
 % TODO: note that looking at the mission statement above,
 % it's not clear that there must be an objective mastery criterion
 % which should be achieved by all students
+%Furthermore, a time frame must be specified, for example last 30 days.
+%While short time frames allow for faster decisions and hence more improvements over time,
+%the period must be long enough to collect enough data for statistical significant results
+%and to avoid seasonality effects (such as different user behavior during weekends).
+%% NOTE + to allow for more exploration, which improves long-term performance of the system.
+To avoid subjective ratings, ALS can start with simpler long-term objectives
+(which are also easier to measure and interpret), such as the following:
 
-Furthermore, a time frame must be specified, for example last 30 days.
-While short time frames allow for faster decisions and hence more improvements over time,
-there are several reasons for making the time frame longer:
-\begin{itemize}
-  \item to collect enough data for statistical significant results,
-  \item to avoid seasonality effects (such as different user behavior during weekends),
-  \item to allow for more exploration, which improves long-term performance of the system.
-\end{itemize}
+\begin{table}[htb]
+\centering
+\begin{tabular}{l l}
+\toprule
+Metric & Description \\
+\midrule
+Daily Active Users & students who have solved at least 1 task this day \\
+Monthly Active Users & students who solved $\geq$ 10 tasks in last 30 days \\
+Returning Users & students who solved a task in 2 different days \\
+Converted Users & students who finished all levels in the system \\
+% (or just the last one, or have solve at least one task from each level) \\
+Daily Solved Tasks & tasks solved by all students \\
+Daily Flow Tasks & tasks solved with not too low/high performance \\
+% "Flow-minutes" & Total time spent on tasks with good performance. \\
+\bottomrule
+\end{tabular}
+\label{tbl:long-term-metrics}
+\end{table}
 
-There are many other possible long-term metrics, for example:
-\begin{enumerate}
-  \item Daily active users (DAU) -- students who have solved at least 1 task this day.
-  \item Monthly number of active users (30DAU) -- students who have solved at least 10 tasks this month.
-  \item Returning users -- students who have solved at least one task one day and have returned and solved another task another day.
-  \item Converted users -- students who have finished last level in the system.
-  \item Converted users -- students who have solved at least one task from each level.
-  \item Number of solved tasks.
-  \item Total time spent on successful attempts.
-\end{enumerate}
-
-It is not immediately clear which of these metrics is the best proxy for the system mission.
-Thankfully, it was observed that at the beginning all the metrics which seem to somehow
-reflect the system mission tend to improve simultaneously, no matter which one
-is chosen to be directly optimized \cite[][Rule \#12]{google-ml-rules}.
+It is not clear which of these metrics is the best proxy for the mission.
+Fortunately, at the beginning of optimization process all the metrics
+which reflect the mission tend to improve simultaneously, no matter which one
+is chosen to be directly optimized.
+%\cite[][Rule \#12]{google-ml-rules}.
 To understand how their values are influenced by changes in the learning system,
 it is useful to measure and report all of them from the beginning
-\cite[][Rule \#2]{google-ml-rules}.
+%\cite[][Rule \#2]{google-ml-rules}.
+\cite[][Rule 2, 12]{google-ml-rules}.
 
-All of these suggested metrics measure a complex aggreage effect of the system
-behavior during some period.
-However, it is recommended to start the system optimization with a metric which is simple
-and directly attributable to individual recommendations \cite[][Rule \#12]{google-ml-rules}.
-The attributable metrics are presented in section \ref{sec:live-evaluation}.
+%All of these suggested metrics measure a complex aggreage effect of the system
+%behavior during some period.
+%However, it is recommended to start the system optimization with a metric which is simple
+%and directly attributable to individual recommendations \cite[][Rule \#12]{google-ml-rules}.
+%The attributable metrics are presented in section \ref{sec:live-evaluation}.
 
 % TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
 % TODO: note on AB experiments: there will be always a difference -> needs to asses statistical significance (is the difference due to changed condition or just because of random noise)
 % -> t-test and similar (but mind their assumptions!) -> p-value + alpha-level -> decision
 % -> add error bars to measured metrics: e.g. 95% confidence interval / standard error / standard deviation / range (+ effect size)
 
-\subsection{Evaluation of Programming Skill}
+
+Limitation of these simple metrics is that they only measure \emph{engagement},
+but not learning.
+% NOTE: so they could be improved by simply easier tasks (possibly even tasks
+% not related to programming!).
+In experiments, learning is measured by a programming post-test,
+% Ideally, we would like the students to fill a post-test also after
+% some time (for example in 1 month, 1 year, 5 years, ... but that is not realistic).
+but ALS need to evaluate students continuously to collect data about
+all students and not only those that stay in the system and are willing
+to take a post-test.
+ALS can assign a randomly selected task after each 20 minutes of practice,
+and measure the average performance.
+% TODO: it's not really possible to select any tasks from the system, they may be
+% too difficult and frustrate students for a long time (as opposed to geography,
+% where each question is fast.
+To avoid frustrating by too difficult tasks, only tasks that the student already have
+skills for can be considered for the random selection; the observed performance
+then need to be weighted by the difficulty of the chosen task.
+This combined metric has an advantage of incorporating both learning and engagement.
+% TODO: elaborate
+% TODO: check/discuss if this combined metric makes sense.
+% TODO: think of a metric that would combine learning and engagement.
+% (? product of the difficulty and performance, when the task is selected from
+% only the tasks that the student has skills for?)
+% TODO: explore WHITE and TEAL metrics
 
 % TODO: dichotomy between enjoyment and learning metrics - enjoyment is easier to measure (length of interaction), but learning is possibly even more important for the system mission (neither pure enjoyment nor pure learning would work -> principle of balance); measuring enjoyment -> survival analysis; measuring learning -> learning curves
 % TODO: for measuring learning in AB-experiments: (pretests) and postests
 
-The tasks environment in the learning systems usually differs significantly
-  from the real-world environment,
-  e.g. by using block-based programming language,
-  or by other aspects mentioned in section \ref{sec:strategies-for-easier-learning}.
-Ultimately, what matters is the performance of students in the real world,
-  outside the simplified learning environment%
-\footnote{%
-  This issue is also mentioned by Weintrop and Wilensky %
-  in \cite{challenges-of-blocks-based-environments}, %
-  in the context of proper evaluation of block-base programming environments.}.
-This aspect should be considered when choosing a proper long-term objective.
-For example, trying to achieve minimum solving times on tasks in the learning system
-  might be a misleading objective
-  -- it would likely lead to ``overfitting'' students to the particular learning system,
-  by giving them all available tasks from the simplest to the most difficult.
+%The tasks environment in the learning systems usually differs significantly
+%  from the real-world environment,
+%  e.g. by using block-based programming language,
+%  or by other aspects mentioned in section \ref{sec:strategies-for-easier-learning}.
+%Ultimately, what matters is the performance of students in the real world,
+%  outside the simplified learning environment%
+%\footnote{%
+%  This issue is also mentioned by Weintrop and Wilensky %
+%  in \cite{challenges-of-blocks-based-environments}, %
+%  in the context of proper evaluation of block-base programming environments.}.
+%This aspect should be considered when choosing a proper long-term objective.
+%For example, trying to achieve minimum solving times on tasks in the learning system
+%  might be a misleading objective
+%  -- it would likely lead to ``overfitting'' students to the particular learning system,
+%  by giving them all available tasks from the simplest to the most difficult.
+%
+%TODO: REF 5-week high-school experiment, block-based vs. text-based:
+%- \cite{comparing-blocks-text-weintrop2017}
+%(important feature for such comparision is to have a two learning environments,
+%that only differ in the text/block version of the editor, everything else being same).
 
-TODO: REF 5-week high-school experiment, block-based vs. text-based:
-- \cite{comparing-blocks-text-weintrop2017}
-(important feature for such comparision is to have a two learning environments,
-that only differ in the text/block version of the editor, everything else being same).
 
-
-\subsection{User-centered Evaluation}
-
-In addition to quantitative (objective) metrics (such as whether the
-recommended task was clicked and solved), the system can also explicitly ask
-students to provide qualitative (subjective) feedback.
-For example, after the student solves the task, the system can show a dialog
-asking about the perceived difficulty -- whether the task was ``too
-easy'', ``too difficult'' or `just right''.
-Other tags about tasks can be collected as well, e.g. ``boring'', ``weird'', or ``fun''.
-
-Collecting these tags allows to compute metrics that looks as close proxies to
-the system mission, such as the total time spent in flow.
-As it combines both enjoyment and learning,
-flow would be a great proxy if it could be measured reliably.
-% TODO: ref to a relevant research about flow
-
-However, a known disadvantage of subjective ratings is the amount of noise
-in them. They are significantly influenced by the current mood and attention of
-the student.
-In addition, answering these questions may bother students a little bit
-and it also takes some time the students could spend on learning instead,
-(but it is negligible compared to the practicing time).
-
-TODO: quantitative vs. qualitative and online vs. field studies are othogonal,
-all combinations possible: e.g. in the field study \cite{comparing-blocks-text-weintrop2017},
-they measured both quantiative data (performance) and qualitative (attitude);
-the same can be done in the online learning system.
-
-TODO: note on other user-centered evaluation strategies:
-questionaires, free feedback (via feedback button), user-testing (single student / class), focus groups, semi-structured interviews with sutdents.
-
-TODO: example of a 5-week experiment in schools (field study):
-\cite{comparing-blocks-text-weintrop2017}
-- investigated qualities: confidence, enjoyment, perceived difficulty, interest in future opportunities to learn CS, authenticity of the environment - "is it similar to what real programmers do?", efficiency of the environment ("made me a better programmer?")
-
-TODO: example of short user study asking for perceived quality of recommendations
-(of remedial tasks) \cite{learner-models-integration-skills}
+%\subsection{User-centered Evaluation}
+%
+%In addition to quantitative (objective) metrics (such as whether the
+%recommended task was clicked and solved), the system can also explicitly ask
+%students to provide qualitative (subjective) feedback.
+%For example, after the student solves the task, the system can show a dialog
+%asking about the perceived difficulty -- whether the task was ``too
+%easy'', ``too difficult'' or `just right''.
+%Other tags about tasks can be collected as well, e.g. ``boring'', ``weird'', or ``fun''.
+%
+%Collecting these tags allows to compute metrics that looks as close proxies to
+%the system mission, such as the total time spent in flow.
+%As it combines both enjoyment and learning,
+%flow would be a great proxy if it could be measured reliably.
+%% TODO: ref to a relevant research about flow
+%
+%However, a known disadvantage of subjective ratings is the amount of noise
+%in them. They are significantly influenced by the current mood and attention of
+%the student.
+%In addition, answering these questions may bother students a little bit
+%and it also takes some time the students could spend on learning instead,
+%(but it is negligible compared to the practicing time).
+%
+%TODO: quantitative vs. qualitative and online vs. field studies are othogonal,
+%all combinations possible: e.g. in the field study \cite{comparing-blocks-text-weintrop2017},
+%they measured both quantiative data (performance) and qualitative (attitude);
+%the same can be done in the online learning system.
+%
+%TODO: note on other user-centered evaluation strategies:
+%questionaires, free feedback (via feedback button), user-testing (single student / class), focus groups, semi-structured interviews with sutdents.
+%
+%TODO: example of a 5-week experiment in schools (field study):
+%\cite{comparing-blocks-text-weintrop2017}
+%- investigated qualities: confidence, enjoyment, perceived difficulty, interest in future opportunities to learn CS, authenticity of the environment - "is it similar to what real programmers do?", efficiency of the environment ("made me a better programmer?")
+%
+%TODO: example of short user study asking for perceived quality of recommendations
+%(of remedial tasks) \cite{learner-models-integration-skills}
 
 \subsection{Live Evaluation}
 \label{sec:live-evaluation}
 
-In some learning systems, a new version of a model is deployed every day
+In ALS, new versions of models are deployed from time to time
   with parameters learned from the recent data.
-The behavior of the new model must be carefully monitored
+The behavior of the new models must be carefully monitored
   to detect problems as soon as possible,
-  without waiting several weeks to evaluate an AB experiment.
+  without waiting a few weeks to evaluate an AB experiment.
 For this purpose, metrics that can be linked immediately
-  to the recommender actions are needed.
-These metrics are called ``online attributable metrics''  % TODO: find used terminology
-and this type of evaluation ``live evaluation''.
+  to the tutor model actions are needed.
+These metrics are called \emph{online attributable metrics}.  % TODO: find used terminology
+% OR "short term metrics"
+%and this type of evaluation \emph{live evaluation}.
 
-These metrics are often formulated as a question concerning a single recommendation.
-To transform them into a number, either sum or average of these individual errors is computed.
-% TODO: so sum or average? or some other aggregation function?
-
-Reflecting the long-term objectives from section \ref{sec:long-term-objectives},
-  there are some examples of online attributable metrics:
-\begin{itemize}
-  \item Was the recommended task chosen by the student?
-  \item \ldots and did the student solved the task?
-  \item \ldots in a reasonable time (e.g. 1-15 minutes)?
-  \item \ldots and did not the student marked it as ``too easy'' or ``too difficult''?
-\end{itemize}
+These metrics are often formulated as a question concerning a single recommendation,
+such as
+``Did the student solve the recommended task?'',
+``Did she solve it with a good performance?'',
+``Did not she mark it as too easy or too dificult?''.
+Each recommendation can be then attributed an error, which is either 0 or 1, depending
+on whether the statement is true or false.
+Finally, individual errors are aggregated, and the average error is reported.
 
 % TODO: relationship to metrics defined in section \ref{sec:metrics-for-recommendation}
 
@@ -2292,105 +2321,109 @@ Reflecting the long-term objectives from section \ref{sec:long-term-objectives},
 
 % TODO: taking delta wrt. previous model
 
-TODO: note on multi-armed bandits (special case of RL with a single state) as
-an alternative to AB experiments that deals with the exploration-exploitation
-tradeoff; (description in the context of ITS: \cite[p.129]{its-domain-models}).
+%TODO: note on multi-armed bandits (special case of RL with a single state) as
+%an alternative to AB experiments that deals with the exploration-exploitation
+%tradeoff; (description in the context of ITS: \cite[p.129]{its-domain-models}).
 
 \subsection{Offline Evaluation}
 
 Offline experiments use historical collected data
   to avoid the cost of live evaluation.
-The advantages of offline experiments compared to online evaluation include
-  the possibility to run as many experiments as needed,
+Offline experiments allows to reuse the same data to evaluate several models,
   obtaining the results quickly,
-  reusing the same data to evaluating different models,
-  and avoiding potential negative impact on students if the evaluated model is poor.
+  and avoiding a potential negative impact on students if the evaluated model is poor.
 
-Of course, offline evaluation is limited,
-  because there are not all the historical data needed
-  for proper evaluation.
-For example, when evaluating a new recommendation algorithm,
-  the data about a student responding to a particular recommendation
-  are often not available.
-Another disadvantage of offline evaluation compared to live evaluation
-  is that the data used for evaluation does not come from the completely
-  same distribution of events as will occur in the live system,
-  which limits generalization guarantees of such evaluation.
-% TODO: note: further decrease of relevance to the system mission - but worth
-
+The specific approaches and challenges of evalution of student and tutor models
+were already discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
 Offline evaluation is typically used as a check before pushing
-  the model online to avoid problems as soon as possible.
+  a new model online to.
 It can also be used for model selection,
   including hyperparameters search.
-Finally, offline learning algorithms typically also use
+Finally, offline learning algorithms typically use
   a metric to guide them
   (these are discussed in section \ref{sec:metrics-to-guide-learning}).
 
 
-TODO: comparing to other (e.g. currently used) model (e.g. correlation between predictions, delta between recommendations):
-1. for a prototype (idea) of new model: if the correlations are high, there is probably no significant gain in exploring this model (compared to using the current one);
-2. for same model with retrained parameters for newly collected data - if the delta is too big, we should be suspicious and investigate.
+%Another disadvantage of offline evaluation compared to live evaluation
+%  is that the data used for evaluation does not come from the completely
+%  same distribution of events as will occur in the live system,
+%  which limits generalization guarantees of such evaluation.
 
-TODO: evaluating parameters stability (see thran-thesis) - as above just with the same model (comparing the same model trained on different samples from the collected data)
+For an unbiased offline evaluation, it is important to test the model on different data
+then it was trained on. Unlike in many supervised learning problems, events from ALS
+cannot be divided into train and test group randomly, because that would lead
+to predicting past from the future. % optimistic bias
+The evaluation should mimic as close as possible the real scenario of how will be
+the trained models used, which leads to a methodology called \emph{online
+evaluation with generalization to new learners} \cite{pelanek-learner-modeling}.
+If generalization to new tasks, problem sets, or populations (e.g. schools)
+is also desirable, then the data should be split accordingly \cite{student-models-review-2012}.
 
-\subsection{Cross Validation}
 
-TODO: consider removing this section and only point to a relevant description
-of CV in the context of student models evaluation, e.g. in \cite{pelanek-learner-modeling}
-(our main scenario/methodology: "online evaluation with generalization to new learners")
+%TODO: comparing to other (e.g. currently used) model (e.g. correlation between predictions, delta between recommendations):
+%1. for a prototype (idea) of new model: if the correlations are high, there is probably no significant gain in exploring this model (compared to using the current one);
+%2. for same model with retrained parameters for newly collected data - if the delta is too big, we should be suspicious and investigate.
+%
+%TODO: evaluating parameters stability (see thran-thesis) - as above just with the same model (comparing the same model trained on different samples from the collected data)
 
-Trained models must be evaluated on data unseen during training.
-Straightforward approach is to split collected data into two parts,
-  first used for training (\emph{training set})
-  and second for evaluation (\emph{test set}).
-To use data more efficiently, the train-test split can be repeated
-  $k$ times, taking different $1/k$ portion of the data for testing every time,
-  and computing averaged performance.
-The described method is called \emph{cross validation}.
-
-While random train-test split over all training examples works often
-  best in many machine learning domains,
-  one must be careful when dealing with data from learning systems.
-A completely random split would lead to predicting past performance
-  of student from the model trained on their future performance,
-  which could result in over-optimistic results.
-The recommended splitting technique is ``user-stratified'',
-  in which we randomly split students,
-  and create training set from all events of one group of students,
-  and first $n$ events of all students in the second group.
-The test set then contains $(n+1)$-th events from the students
-  in the second group.
-The evaluation can be repeated for all possible $n$'s and averaged.
-This is simple and fast for online models
-  (that can be trained iteratively by one training event),
-  but it is more involved and often too slow for offline models.
-To make the evaluation reasonably fast,
-  some simplifications can be used,
-  such as predicting not only one, but multiple events
-  for each student in the second group during a single split.
-
-% TODO: make it clear that even for online models, we are still discussing offline evaluation
-% TODO: discuss compromises for evaluation of offline models (or point out to a relevant paper)
-
-If the model contains hyperparameters to select,
-  it is important to use yet another non-overlapping portion
-  of data for hyperparameters search,
-  which used neither for training, nor for final evaluation.
-This third portion of data is sometimes called \emph{validation set}
-  (though the terminology for this is not unified).
-Cross validation can be generalized to account for this 3-parts split
-  and the resulting method is called \emph{nested cross validation}.
-
-% TODO: figures to illustrate all the described methods and splits
-
-NOTE: \cite{student-models-review-2012} also discusses the "correct level on
-which to perform the cross-validation": never on the level of individual
-"actions" (task sessions), but rather on the student level (to see how the
-system will behave for the new students in the system, for which it wasn't
-pretrained offline), sometimes it make sense to use the "chunk level"
-(to see how it generalizes to new chunks), "school levels" (new populations of
-students)
-(in sklearn this is called "Group k-fold cross-validation")
+%\subsection{Cross Validation}
+%
+%TODO: consider removing this section and only point to a relevant description
+%of CV in the context of student models evaluation, e.g. in \cite{pelanek-learner-modeling}
+%(our main scenario/methodology: "online evaluation with generalization to new learners")
+%
+%Trained models must be evaluated on data unseen during training.
+%Straightforward approach is to split collected data into two parts,
+%  first used for training (\emph{training set})
+%  and second for evaluation (\emph{test set}).
+%To use data more efficiently, the train-test split can be repeated
+%  $k$ times, taking different $1/k$ portion of the data for testing every time,
+%  and computing averaged performance.
+%The described method is called \emph{cross validation}.
+%
+%While random train-test split over all training examples works often
+%  best in many machine learning domains,
+%  one must be careful when dealing with data from learning systems.
+%A completely random split would lead to predicting past performance
+%  of student from the model trained on their future performance,
+%  which could result in over-optimistic results.
+%The recommended splitting technique is ``user-stratified'',
+%  in which we randomly split students,
+%  and create training set from all events of one group of students,
+%  and first $n$ events of all students in the second group.
+%The test set then contains $(n+1)$-th events from the students
+%  in the second group.
+%The evaluation can be repeated for all possible $n$'s and averaged.
+%This is simple and fast for online models
+%  (that can be trained iteratively by one training event),
+%  but it is more involved and often too slow for offline models.
+%To make the evaluation reasonably fast,
+%  some simplifications can be used,
+%  such as predicting not only one, but multiple events
+%  for each student in the second group during a single split.
+%
+%% TODO: make it clear that even for online models, we are still discussing offline evaluation
+%% TODO: discuss compromises for evaluation of offline models (or point out to a relevant paper)
+%
+%If the model contains hyperparameters to select,
+%  it is important to use yet another non-overlapping portion
+%  of data for hyperparameters search,
+%  which used neither for training, nor for final evaluation.
+%This third portion of data is sometimes called \emph{validation set}
+%  (though the terminology for this is not unified).
+%Cross validation can be generalized to account for this 3-parts split
+%  and the resulting method is called \emph{nested cross validation}.
+%
+%% TODO: figures to illustrate all the described methods and splits
+%
+%NOTE: \cite{student-models-review-2012} also discusses the "correct level on
+%which to perform the cross-validation": never on the level of individual
+%"actions" (task sessions), but rather on the student level (to see how the
+%system will behave for the new students in the system, for which it wasn't
+%pretrained offline), sometimes it make sense to use the "chunk level"
+%(to see how it generalizes to new chunks), "school levels" (new populations of
+%students)
+%(in sklearn this is called "Group k-fold cross-validation")
 
 \subsection{Metrics to Guide Learning}
 \label{sec:metrics-to-guide-learning}
