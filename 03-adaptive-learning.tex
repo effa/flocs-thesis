@@ -744,8 +744,11 @@ and in the analyses to get insight into how the students are learning.  % TODO: 
 \begin{itemize}
 \item \emph{Modeled components.}
 The most explored area is skill modeling, but broader student models may also
-include emotions (e.g. frustration, boredom), needs, motivation, and metacognition (CITE).
+include emotions (e.g. frustration, boredom), needs, preferences, motivation,
+and metacognition (CITE).
 %(knowledge about their knowledge) (REF).
+% NOTE: + preferences, e.g. about ideal challenge level, amount of text, theme,
+% e.g. prefer tasks with a shooting spaceship or with ice-skating princesses
 \item \emph{Underlying domain model.}
 The simplest models assume either a single concept,
 or each task as separete concept. %(REF: slepe-mapy).
@@ -2034,39 +2037,44 @@ that use complete lists of ordered items.
 \section{User Interface}
 \label{sec:user-interface}
 
-User interface is also a common subject of personalization (CITE).
+User interface (UI) is also a common subject of personalization (CITE).
 % Not only in ALS, generally in HCI research.
 % NOTE: also called "tutor-student interface"
-User interface provides visualizations that are based on
-the domain model (e.g. overview of taks and problem sets),
+UI provides visualizations that are based on
+the domain model (e.g. overview of tasks and problem sets),
 the student model (e.g. visualization of skills CITE),
 or the tutor model (e.g. displaying recommendations).
 % progress towards mastery (= tutor+student model) (progressbar)
+All these visualizations can be personalized using
+preferences or other information from the student model
+\cite[chapter 9]{its-domain-models}.
+For example,
+%explanations of concepts can include student's name, and
+tasks can use student's favourite characters and colors.
+% NOTE: Reference to self has been shown to improve retention.
+% TODO: better examples? (favourite colors, favourite music, sound volume,
+% possibly even theme if it doesn't change semantics of the task, e.g.
+% flowers instead of diamonds).
 
-- interaction with what is good underlyaing model (e.g. task recommendation
-different if the recommendation is soft/hard, if it shows one/two rcm...)
+UI influences what are the best underlying models
+and how the collected data should be interpreted.
+For example, optimal task recommendation algorithm can be
+different if instead of a single enforced task,
+all tasks in the current problem set are displayed ordered by their score.
+% TODO: more about soft/hard rcm (see above, task rcm section)
 
-Reason to model:
-- to perform AB experiments with several versions
-- to personalize for a given student (but all the individual preferences should
-  be already in the student model), UI decides how to visualize various elements
-  based on the student models
+ALS can model UI explicitly in order to compare different versions
+of UI in an online AB experiment,
+which allows to investigate influence of various aspects of
+the UI, such as that different types of programming blocks are colored differently,
+or using text instead of blocks from the first task. % (everything else being equal).
+% TODO: more/better examples?
 
-
-TODO:
-- personalized presentation of a single task
-(e.g. prefer tasks with a shooting spaceship or with ice-skating princesses,
-or reference to self \cite[chapter 9]{its-domain-models})
-(using information from student model)
-- open learner visualization (= visualization of student model)
-- personalized overview of tasks with a current recommendation (= visualization
-of domain and tutor model)
-- showing task recommendation (= visualization of tutor model),
-  (see soft-vs-hard recommendations section)
-- (real-time) dashboards for instructors to support good decisions,
-  such as how to pair students or which student to help \cite{instructor-dashboard-realtime}
-  (the cited paper includes an evalution using a combination of historical and simulated data;
-  and domain-specific metrics such as \emph{Help Index} and \emph{Peer Tutor Impact}).
+% TODO:
+%- (real-time) dashboards for instructors to support good decisions,
+%  such as how to pair students or which student to help \cite{instructor-dashboard-realtime}
+%  (the cited paper includes an evalution using a combination of historical and simulated data;
+%  and domain-specific metrics such as \emph{Help Index} and \emph{Peer Tutor Impact}).
 
 \section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
