@@ -1690,19 +1690,32 @@ soft constraint, compute \emph{weighted sum of errors} for each task and
 select the task with the smallest error.
 % TODO:CITE
 
-In principle, either the weights of individual error functions, or even the error functions
-themselves can be chosen to optimize a desired metric, but there are two complications.
-First, the training data are sparse, because only a single followed recommendation was
-observed for each student in given state. % TODO: formulate better
-Second, it is not clear whether the recommendation was correct % TODO: elaborate
-and proxies must be used (e.g., recommendation is declared as good if the
-observed performance was neither too low, nor too high).
+% NOTE: The following doesn't make sense, becouse that would only lead to maximizing
+% the error imposed on the optimal difficulty. It would require to observe long-term
+% consequences of decisions on the student (or even the sytem in case of exploration
+% preference).
+%In principle, either the weights of individual error functions, or even the
+%error functions themselves could be chosen to optimize a desired metric.
+%However, collected data are too sparse,
+%because result of only a single followed recommendation is
+%observed for each student in a given state. % (\cref{tutors.evaluation}).
+%To work around this problem, surrogate training data can be generated
+%using a population of simulated students.
+%Another issue is that it is not clear whether the recommendation was correct, % TODO: elaborate
+%so a proxy must be used. For example, recommendation is declared as correct if the
+%observed performance was neither too low, nor too high.
 
-To balance epxloration and epxloitation, the system can either select tasks at random
+% TODO: Fix the above (commented) paragraph - learning weight (or fns) would require
+% to evalute long-term metric (or using RL approach) , which is possibly doable
+% at least as a simulated experiment.
+
+To balance exploration and epxloitation, the system can either select tasks at random
 with the probability proportional to its preference (inversed and normalized error),
+% NOTE: either directly or with exponential weighting (ie. using softmax)
 or it can choose a random task with probability $\epsilon$, and the best task otherwise,
 which is call \emph{$\epsilon$-greedy strategy}.
-
+% NOTE: the second approach complicates the selection, it makes it more explicit, how much
+% random choices are there and which of them they are (which simplifies evaluation).
 
 %In principle, the weights could be learned to optimize a desired metric, but the
 %learning process is more difficult than for student models,
@@ -1884,107 +1897,163 @@ which is call \emph{$\epsilon$-greedy strategy}.
 \subsection{Evaluation}
 \label{tutors.evaluation}
 
-\begin{itemize}
-\item Evaluation should be derived from the long-term objectives (REF).
-\item Online (on-policy) vs. offline (off-policy).
-\item Offline evaluation of tutor models is difficult due to missing data.
-  For example, if an evaluated algorithm recommends a task $t$ to student $s$
-  in a specific point of his learning process (e.g. after first 2 solved tasks)
-  but the student $s$ attempted different task at that point,
-  there is no easy way to tell if the recommendation is good or not.
-\item The extremeness of data sparsity makes offline evaluation so challenging,
-  that many learning systems completely skip this type of evaluation,
-  apply offline evaluation only to student models
-  (section \ref{sec:student-model-evaluation})
-  and check quality of tutor models only on the live traffic
-  (section \ref{sec:live-evaluation}).
-\item Nevertheless, realizing that the offline evaluation serves just as
-  a limited proxy metric and its results must be taken with a grain of salt,
-  it may be still useful to perform at least some offline evaluation before
-  putting the recommender to the wild of real world.
-\item Online evaluation is more reliable, but also much more expensive.
-  If we are considering many possible tutor models, it is useful
-  to first use an offline evaluation to limit the number of models to evaluate
-  online to just a few (in order to avoid confronting users with very poor
-  tutor models and to collect more data for each of the evaluated model).
+Tutor models can be evaluated either online (in a running system using that model),
+or offline (using collected data from a system using a different model).
+% NOTE: Terminology: Online (on-policy) vs. offline (off-policy).
+Offline evaluation of tutor models is difficult due to missing data.
+If the evaluated algorithm recommends a different task then the student attempted
+at that point, there is no easy way to tell if the recommendation is correct. % "is good or not."
+The extremeness of data sparsity makes offline evaluation so challenging,
+that many ALS completely skip this type of evaluation, % TODO: ALS or ALSs?
+apply offline evaluation only to student models (\cref{sec:student-model-evaluation}),
+and check quality of tutor models only on the live traffic
+(\cref{sec:live-evaluation}).
+% (possible paragraph split)
+Nevertheless, realizing that the offline evaluation serves just as
+a limited proxy metric,
+% and its results must be intrpreted carefully, / "taken with a grain of salt,"
+it can be still useful to perform at least some offline evaluation,
+e.g. to limit the number of models to evaluate online to just a few.
+% - "before putting the recommender to the wild of real world."
+% - (in order to avoid confronting users with very poor
+% tutor models and to collect more data for each of the evaluated model).
+% -  Online evaluation is more reliable, but also much more expensive.
 
-\item ?? Possible unifying views of various types tutor models presented above:
-  (1) recommendation algorithms (recommendation: PS, task, hint).
-  (2) MDP-control problem (RL) (actions: PS, mastery decison, tasks, hints) .
-  (difference is whether we consider each action/recommendation separately or not)
-\item Evalution based on recommendation algorithm view requires to define
-  a single recommendation error measure: e.g. 0 if the student solved
-  the task with good performance, 1 otherwise.
-\item Evaluation based on MDPs requires to define a \emph{reward} of each state
-  (?? the more solved tasks with the higher reward) and a discount factor.
+%The evaluation can either take into account only the immedate result of
+%each recommendation (supervised learning view), or it can consider its
+%long-term impact (reinforcement learning view).
+%Supervise learning
+Evaluation of accuracy of recommendations requires to define which
+recommendations are correct, e.g. if the observed performance was neither too
+low, nor too high.
+%(TODO:check)
+A \emph{confusion matrix} can be computed for a series of events,
+based on the correctness of the followed recommendation and on whether, the
+evaluated algorithm would recommend the same item
+(either within top $N$ items, or with a probality above given threshold).
+% The resulting \emph{confusion matrix} can be summarized by metrics such as
+% accuracy, precision, and recall (CITE).
+%Depending on the user interface, fixed $N$ might or might not make sense. If not,...
+There are metrics that avoid dependency on a specific threshold, such as
+AUC (Area Under Curve), or MAP (Mean Average Precision) (CITE).  % TODO: or DCG?
 
-\item Approaches based on recommendation algorithm view:
-\begin{itemize}
-\item Prepare a small manually labeled dataset describing appropriate and
-  inappropriate recommendations for given situations.
-\item ?? Use collected data: for each event, check if the item (e.g. task)
-  would be a good recommendation or not (as defined above)
-  and whether the item is withing top $N$ items recommended by the evaluated
-  algorithm. The resulting \emph{confusion matrix} can be summarized
-  by metrics such as accuracy, precision, and recall. (REF)
-  Depending on the user interface, fixed $N$ might or might not make sense.
-  If not, it is possible to use more sophisticated metrics without a fixed $N$,
-  such as AUC (Area Under Curve), or MAP (Mean Average Precision) (REF).
-  % TODO: or DCG?
-  The disadvantage is that collected data are highly biased (either by the
-  adaptive behavior of the system, or by the self-selection bias)
-  (REF to the section on feedback loops for how to partially deal with this issue).
-\item Measure agreement in recommendations between a new recommender and one
-  which is already used and was evaluated on live traffic (recommended by
-  \cite[][Rule \#24]{google-ml-rules}). Especially for incremental deployment,
-  when the same type of model is used, just with recomputed parameters,
-  the agreement should be high.
-  To compare agreement between two recommendation algorithms, we can use
-  \emph{ranking metrics} that use complete lists of ordered items.
-  Example of some ranking metrics are Spearman's rank correlation coefficient,
-  Kendall's rank correlation coefficient, or ??Discounted cumulative gain (REF).
-  % TODO: other ranking metrics (average precision, lift index)?
-\item TODO: note on type of metrics: classification metrics, ranking metrics, ...
-\item TODO: \emph{WHITE} metric (Whole Intelligent Tutoring System Empirical Evaluation)
-  \cite{evaluation-leopard}
-\end{itemize}
+Unfortunately, collected data are highly biased, either by the
+adaptive behavior of the system, or by the self-selection bias. % TODO:CITE
+% (REF to the section on feedback loops for how to partially deal with this issue).
+% It's possible to use only a ranodmly recommended tasks, but then it limits
+% the amount of evaluation data.
+Strategies to avoid the bias in the collected data include
+evaluation on only random recommendations (decreases the amount of data),
+% TODO: or more generally, correcting/reweighting the distribution of collected
+% data to be uniform (or rather to match expected distribution when the evaluated
+% model would be used?)
+online evaluation (time-consuming),
+or evalution using simulated students (requires assumptions).
+% TODO: REF/CITE (all above).
+% TODO: (check and REF for online experiments of tutor models,
+%  hub: \cite[p.2/138]{rl-for-tutors-evaluation})
 
-\item Hierarchical tutor evaluation (e.g. combined effect of a particular combination
-  of a PS selection algorithm, mastery decision algorithm and task selection algorithm):
-\begin{itemize}
-\item The combination can be view as just a more complicated task selection algorithm
-  (choosing now from all tasks in the system), so the evaluation approaches described
-  above for any tutor model still apply (??).
-\item In addition: \emph{progression analysis} -- measuring composition (and pace)
-  (composition = balance between introduction of new concepts and practicing (reinforcing) the already learned concepts) \cite{progression-analysis}
-\item REF to another approaches in later sections (online experiments, simulations)
-  (check and REF for online experiments of tutor models,
-  hub: \cite[p.2/138]{rl-for-tutors-evaluation})
-\item REF to evaluation section: how to evaluate combined effect of all tutor
-  models and other components in the adaptive system
-\end{itemize}
+% TODO: RL view (briefly)
 
-\item %# Beyond simple accuracy
-So far mentioned metrics focus on accuracy of the recommendations,
-but there are other useful properties of recommendation algorithms,
-such as robustness or diversity.
-% TODO: note: but they are more difficult to express/measure,
-% so they are used much less in practice
-For example, if the system shows two recommended tasks,
-but they are nearly identical, there is no added value
-for the student from the possibility to choose between them.
-% ?? TODO: describe also robustness, REF to the relevant research
-\end{itemize}
+In addition to the accuracy of recommendations, % (how likely they are good / lead to flow)
+further properties of tutor models can be also explored,
+e.g. robustness, diversity, % TODO:CITE
+or composition (balance between introduction of new concepts and practicing the old ones)
+\cite{progression-analysis}.  % balanced progression, balanced composition.
+It is also possible to measure metrics that quantify the amount of effort needed
+to learn some concepts , e.g. \emph{WHITE} (Whole Intelligent Tutoring System Empirical Evaluation) \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
+
+Another evaluation strategy is to measure agreement between recommendations
+produced by two tutor models. If the correlation is high, then it is not
+necessary to consider both of these models. This strategy can be also useful
+for incremental deployment, where an already used model is compared to its
+new version, which only differs by parameters recomputed on fresh data.
+In this case, low agreement would indicate a bug in the model
+or data pipeline \cite[][Rule \#24]{google-ml-rules}.
+To compare agreement between two recommendation algorithms, we can use
+\emph{ranking metrics}, such as \emph{Spearman's correlation coefficient},
+% \emph{Kendall's rank correlation coefficient}, or ??Discounted cumulative gain (REF).
+% TODO: other ranking metrics (average precision, lift index)?
+that use complete lists of ordered items.
+
+
+
+%\begin{itemize}
+%\item Evaluation should be derived from the long-term objectives (REF).
+%\item Evaluation based on MDPs requires to define a \emph{reward} of each state
+%  (?? the more solved tasks with the higher reward) and a discount factor.
+%\item Approaches based on recommendation algorithm view:
+%\begin{itemize}
+%\item Prepare a small manually labeled dataset describing appropriate and
+%  inappropriate recommendations for given situations.
+%\item ?? Use collected data: (above)
+%\item Measure agreement in recommendations between a new recommender and one
+%  which is already used and was evaluated on live traffic (recommended by
+%  \cite[][Rule \#24]{google-ml-rules}). Especially for incremental deployment,
+%  when the same type of model is used, just with recomputed parameters,
+%  the agreement should be high.
+%  To compare agreement between two recommendation algorithms, we can use
+%  \emph{ranking metrics} that use complete lists of ordered items.
+%  Example of some ranking metrics are Spearman's rank correlation coefficient,
+%  Kendall's rank correlation coefficient, or ??Discounted cumulative gain (REF).
+%  % TODO: other ranking metrics (average precision, lift index)?
+%\item TODO: note on type of metrics: classification metrics, ranking metrics, ...
+%\item TODO: \emph{WHITE} metric (Whole Intelligent Tutoring System Empirical Evaluation)
+%  \cite{evaluation-leopard}
+%\end{itemize}
+%
+%\item Hierarchical tutor evaluation (e.g. combined effect of a particular combination
+%  of a PS selection algorithm, mastery decision algorithm and task selection algorithm):
+%\begin{itemize}
+%\item The combination can be view as just a more complicated task selection algorithm
+%  (choosing now from all tasks in the system), so the evaluation approaches described
+%  above for any tutor model still apply (??).
+%\item In addition: \emph{progression analysis} -- measuring composition (and pace)
+%  (composition = balance between introduction of new concepts and practicing (reinforcing) the already learned concepts) \cite{progression-analysis}
+%\item REF to another approaches in later sections (online experiments, simulations)
+%  (check and REF for online experiments of tutor models,
+%  hub: \cite[p.2/138]{rl-for-tutors-evaluation})
+%\item REF to evaluation section: how to evaluate combined effect of all tutor
+%  models and other components in the adaptive system
+%\end{itemize}
+%
+%\item %# Beyond simple accuracy
+%So far mentioned metrics focus on accuracy of the recommendations,
+%but there are other useful properties of recommendation algorithms,
+%such as robustness or diversity.
+%% TODO: note: but they are more difficult to express/measure,
+%% so they are used much less in practice
+%For example, if the system shows two recommended tasks,
+%but they are nearly identical, there is no added value
+%for the student from the possibility to choose between them.
+%% ?? TODO: describe also robustness, REF to the relevant research
+%\end{itemize}
 
 
 
 \section{User Interface}
 \label{sec:user-interface}
 
-TODO: consider to omit this section
+User interface is also a common subject of personalization (CITE).
+% Not only in ALS, generally in HCI research.
+% NOTE: also called "tutor-student interface"
+User interface provides visualizations that are based on
+the domain model (e.g. overview of taks and problem sets),
+the student model (e.g. visualization of skills CITE),
+or the tutor model (e.g. displaying recommendations).
+% progress towards mastery (= tutor+student model) (progressbar)
+
+- interaction with what is good underlyaing model (e.g. task recommendation
+different if the recommendation is soft/hard, if it shows one/two rcm...)
+
+Reason to model:
+- to perform AB experiments with several versions
+- to personalize for a given student (but all the individual preferences should
+  be already in the student model), UI decides how to visualize various elements
+  based on the student models
+
 
 TODO:
-- also called "tutor-student interface"
 - personalized presentation of a single task
 (e.g. prefer tasks with a shooting spaceship or with ice-skating princesses,
 or reference to self \cite[chapter 9]{its-domain-models})
@@ -1994,8 +2063,6 @@ or reference to self \cite[chapter 9]{its-domain-models})
 of domain and tutor model)
 - showing task recommendation (= visualization of tutor model),
   (see soft-vs-hard recommendations section)
-  progress towards mastery (= tutor+student model)
-  (progressbar)
 - (real-time) dashboards for instructors to support good decisions,
   such as how to pair students or which student to help \cite{instructor-dashboard-realtime}
   (the cited paper includes an evalution using a combination of historical and simulated data;
