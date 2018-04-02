@@ -61,9 +61,11 @@ using a theme of a spaceship flying through space and collecting diamonds
 Each field in the \epmh{space world} has a background color, which
 the spaceship can read and use for decisions (e.g. turning left on red fields).
 In addition to the spaceship controlled by the student,
-there are a few other game objects, that can reside on one of the fields.
-These are diamonds, that need to be collected,
-large asteroids, that cause spaceship to crash if it hits them,
+there are the following game objects:
+% there are a few other game objects: %, that can reside on one of the fields.
+%These are
+diamonds, that need to be collected,
+large asteroids, that destroy the spaceship if it hits them,
 small meteoroids, that can be shooted,
 and wormholes that serves as teleports.
 
@@ -91,6 +93,9 @@ movement in any of the four directions, or only forward movement and turning)
 % TODO: or 4 as a semi-step (single direction OR default movement)
 Furthermore, as the spaceship is always facing up, a common left-right
 confusion is mitigated (CITE).
+Wormholes allow to reuse rows to avoid too long worlds.  % TODO: elaborate?
+% (more possible remedies available options available)
+
 
 %\item movement -- always 1 row forward ("continuous flight ahead") --
 %  advantages:
@@ -141,45 +146,122 @@ confusion is mitigated (CITE).
 \section{Tasks and Programs}
 \label{sec:robomission.programs}
 
-intuitive and clear goal: reach last row (blue line), collect all dimanods
+Each task asks the student to create a program in Blockly,
+that would guide the spaceship safely to the last row,
+collecting all diamonds on its way (REF:fig-below).
+% Advantage: very clear and intuitive goal
+Setting of a task consists of a space world description,
+% as described in the previous section
+limits for the length of the program and the number of shots,
+and available programming blocks. % toolbox
+The student can execute her current program as many times
+as she wish, until her program is correct.
 
-\begin{itemize}
-\item Given an instace of a spaceworld as described in the previous section
-(input), the goal is to create a program for the spaceship such that it reaches
-the final row and collects all diamonds on the way.
-\item Form of the program: Blockly blocks (+ potentially RoboCode based on
-Python, ref to grammar in next chapter; ref to Blockly in prev. chapters)
-\item Available blocks: depends on the level;
-  actions (...), sensing (...), repeat, while, if, if-else.
-\item execute current program any time until correct
-\item limits: ``lines'', energy.
-  (TODO: explain what they are and why/when they are needed).
-\item Why line-limit instead of block-limit: too many blocks (consider while
-  loop with a compound condition), so it becomes even difficult to count;
-  while the number of lines is always reasonable.
-  Bonus: the limit can be directly used for text-based programming as well.
-\item TODO: design decision: similar to Python as much as possible: for easy transition
-(see the transitional strategies section in chapter 2), allows for AB experiments
-comparing directly the influence of the text/block environment as done e.g.
-in the field study in \cite{comparing-blocks-text-weintrop2017}.
-\end{itemize}
+%% Blocks.
+The set of available blocks is gradually expanding with
+increasing level. This \emph{toolbox standardization}
+is easier for both task creators (it is enough to specify
+one of a few standard toolboxes, instead of name all available blocks
+for each task), and students (available blocks are not changing
+chaotically with easch task).
+%- available blocks: depending on the level (sweet spot between chaotically changing toolbox with each task and overloading by all commands from the beginning
+% NOTE: blocks: actions (...), sensing (...), repeat, while, if, if-else;
+The easiest tasks use only action commands (fly, left, right, shoot),
+while the more advanced tasks offer repeat loop, while loop, if and if-else statements,
+and tests for colors and position.
+No special test for the last row is needed, since all tasks follow a convention
+of coloring the last row by blue color.
+
+%% Programs
+In order to simplify future learning of a textual programming language,
+we made the text on blocks match a Python syntax, % translated to Czech in Czech localization
+with the exception of the repeat block, where the Python equivalent
+(\texttt{for i in range(5)}) is more difficult to understand for beginners
+then simple \texttt{repeat 5}.
+% NOTE: in future, this allows for AB experiments
+%comparing directly the influence of the text/block environment as done e.g.
+%in the field study in \cite{comparing-blocks-text-weintrop2017}.
+
+%% Limits.
+There are two limits that a task can specify.
+The \emph{length} limit defines maximum number of statements
+in the program. Limit on number of statements instead of blocks was chosen in
+order to make the limit smaller number and thus the counting easier.
+As a bonus, this definition could be used for textual programming as well.
+% which is not case for the blocks limit
+This limit forces students to use loops instead of a long sequence of
+actions.
+The \emph{energy} limit controls for the number
+of performed shots. Without this limit, students could always use
+shooting without thinking when they really need it.
+
+
+TODO: figure with a few examples of tasks and corresponding solutions
+\clearpage  % just to mark the room for the figure
+
+
+\section{Problem Sets}
+
+
+% NOTE: term ``level design''
+
+RoboMission contains over 80 tasks divided into 9 problem sets (levels)
+(\cref{fig:robomission-tasks-overview}).
+The levels were originally created manually, based on the required blocks
+and a difficulty estimated by us. Later, after some performance data
+were collected we have further decomposed the levels into two-level
+hierarchy to enforce prerequisities between them and we moved
+a few tasks into levels that better match their observed
+difficulty among students.
+% NOTE: But the observed difficulty depends on the context, such as
+% the level, the task is presented in.
+
+\imgW[0.75]{robomission-tasks-overview}{RoboMission contains 9 levels, each with about 8-10 tasks.}
+
+As a motivational element which helps to satisfy the need of progress,
+students earn credits for each solved task and they progress to
+next level when they receive a sufficient number of credits
+(\cref{fig:robomission-levels-credits}).
+
+\imgW[0.75]{robomission-levels-credits}{Students earn credits after each solved task.}
 
 
 \section{Instructions and Explanations}
 
-\imgW{robomission-mini-instruction}{When a student encounters a new programming concept or programming element, the system displays a short instruction.}
-\imgW{robomission-mini-explanation}{The system shows an explanation why the exection was unsuccessful.}
-\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
+Clear instructions and hints are another strategy to make the learning easier
+(\cref{sec:instructions-and-hints}).
+We combine simple adaptive instructions and post-event explanations.
+When a student encounters a new programming concept or a game element,
+the system displays a short instruction (\cref{fig:robomission-mini-instruction}).
+% NOTE: They are adaptive in the way that they only show the first time student encounter
+% the concept.
 
+% TODO: Update text and images to match the current state and to be more readable
+% (cut out the relevant part of the screenshot).
+\imgW[0.78]{robomission-mini-instruction}{Mini instruction for a new game concept.}
+
+Furthermore, the system provides short explanations after each unsuccessful execution,
+describing why it was unsuccessful,
+e.g. some diamonds were not collected,
+or the spaceship has not reached the final row.
+% NOTE: simple inner-loop reflexive agent
+
+\imgW[0.78]{robomission-mini-explanation}{Mini explanation of an unsuccessful attempt.}
+%\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
 
 \section{Game Editor}  % OR: task editor?
 \label{sec:robomission.task-editor}
 
-A part of the system is at task editor (REF: image)
-that enables to easily create new tasks.
-(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
-(TODO: mention that the task editor is part of the public site, so anybody can create a task, provide a link and ref to details about task format in the next chapter)
+The online Game Editor (\cref{fig:task-editor})
+helps to create new tasks easily.
+In the editor, the task creator immediately sees visualization of the space world,
+he can test a solution in either Blockly or its text-based equivalent (\emph{RoboCode})
+(\cref{fig:task-editor-vim}),
+and import or export tasks via a custom Markdown-based format.
+%(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
+The editor is a part of the public site, so even students can create their own new tasks.
+% Which support the need of creativity; + potentially allows to get a lot of tasks into
+% the system, which is could be interesting for adaptivity.
 
-
-\imgW{task-editor}{Task editor allows to create new tasks.}
-\imgW{task-editor-vim}{Task editor allows to to write solutions in Python-based RoboCode and edit space world in Vim mode.}
+\imgW[0.8]{task-editor}{Game Editor for creating new tasks.}
+\imgW[0.8]{task-editor-vim}{Game Editor in Vim mode.}
