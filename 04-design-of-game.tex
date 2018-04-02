@@ -44,69 +44,104 @@ and recommending tasks of optimal difficulty
 %  between 10-15 years? (or simply primary school)
 
 % TODO: Img: English localization.
-\imgW[0.9]{robomission-task2}{Task with asteroids.}
+\imgW[0.9]{robomission-task2}{RoboMission, Zig-zag task.}
 
 % NOTE: rule of the loop \cite{book-of-lenses}
 
 \section{Game World}  % Space World
 \label{sec:robomission.game-world}
 
+The game world itself should be pleasure to look at and fun to play with,
+even without a specific task to solve \cite{book-of-lenses}.
 We have based the game world on a popular choice of a robot on grid,
-using a theme of a spaceship flying through space and collecting diamonds.
+using a theme of a spaceship flying through space and collecting diamonds
+(\cref{fig:spaceworld}).
 % TODO: better word than "popular"?
+%% Game elements.
+Each field in the \epmh{space world} has a background color, which
+the spaceship can read and use for decisions (e.g. turning left on red fields).
+In addition to the spaceship controlled by the student,
+there are a few other game objects, that can reside on one of the fields.
+These are diamonds, that need to be collected,
+large asteroids, that cause spaceship to crash if it hits them,
+small meteoroids, that can be shooted,
+and wormholes that serves as teleports.
 
-\begin{itemize}
-\item original version - robot-in-maze, issues:
-  \begin{itemize}
-  \item not flexible and did not allow for a lot of diverse easy tasks,
-  \item which is crucial for adaptive learning system
-  \item unnecessarily long programs for simple ideas (non-elegant programs) (TBA: show comparision)
-  \item non-elegant tasks
-  \item ugly worlds
-  \item not very original and entertaining for kids
-  \end{itemize}
-\item principle: game world itself must be pleasure to look at and fun to play
-with (even without a specific goal) \cite{book-of-lenses}
-\item requirements (on the topic/theme/world):
-  \begin{itemize}
-  \item entertaining for children
-  \item allowing to create plenty of diverse (and entertaining) tasks, inluding very simple ones
-  \item programs should be not too verbose
-  \item not limiting adaptability (e.g. story requring a fixed sequence of tasks would be a problem)
-  \item (not limiting another topics later)
-  \end{itemize}
-\item new game: rocket in space - different theme, mechanics, graphics
-\item world elements: grid with colored fields (color clouds) and objects: asteroids and meteoroids, diamonds, wormholes (TODO: explain why), final line, spaceship
-\item spaceship actions (left, fly, right, shoot) and sensors (color, position), limited energy
-\item movement -- always 1 row forward ("continuous flight ahead") --
-  advantages:
-  (1) mitigates ubiquitous left-right turning confusion;
-  (2) shorter programs (REF example);
-  disadvantages:
-  (1) this behavior is different than what most users initially expect
-  (2) underutilization of fields (only 1 field in each row and only once)
-      (leading to long worlds).
-\item chosen remedy for the 2nd disadvantage: worm holes
-  % (another possibilities: multiple spaceships, long worlds)
-\item TODO: shooting (multiple basic commands necessary for diversity of easy tasks)
-\item explosion if: gets outside the track, hits a stone
-\item goal: reach last row (blue line), collect all dimanods
-\item fully observable world
-\item no chance (randomness would complicate evaluation and interpretation
-  of data) (there is still some \emph{surprise} in the game for the players:
-  ``Will my program solve the task or not?'')
-%\item REF to formal grammar for the space world in the next chapter
-\end{itemize}
+The spaceships start on the bottom row and it always moves one row forward
+after any action. % towards its final destination (the last row).
+% TODO: elaborate / illustrative figure showing a step and a path
+In addition to flying and turning, the spacehsip can also shoot small meteroids.
+Having these four basic actions (fly, left, right, shoot) already allows for a
+diversity of simple tasks which only practice sequence of commands.
+% TODO: limited energy, in order to force thinking about whether to fly or shoot
+The spaceship has two sensors, one for the color under the spaceship, and
+second for its horizontal position (column index). Having two different sensors allows
+for diverse tasks practicing conditions, including testing inequalities, and
+potentially also compound conditions.
+
+An inovative feature of the game is the default forward movement,
+%where turning results in a shift to a neighboring column
+%and each action (including turning) are linked with a forward movement.
+which results in shorter programs.
+For example, to fly around a stone, only two commands are needed % (left, right),
+instead of either 4 or 8 (depending on whether the available commands include
+movement in any of the four directions, or only forward movement and turning)
+(REF:fig).
+% 4: LFFR (e.g. in StarWars game), 8: LFRFFRFL
+% TODO: or 4 as a semi-step (single direction OR default movement)
+Furthermore, as the spaceship is always facing up, a common left-right
+confusion is mitigated (CITE).
+
+%\item movement -- always 1 row forward ("continuous flight ahead") --
+%  advantages:
+%  (1) mitigates ubiquitous left-right turning confusion;
+%  (2) shorter programs (REF example);
+%  disadvantages:
+%  (1) this behavior is different than what most users initially expect
+%  (2) underutilization of fields (only 1 field in each row and only once)
+%      (leading to long worlds).
+%\item chosen remedy for the 2nd disadvantage: worm holes
+%  % (another possibilities: multiple spaceships, long worlds)
+
+%\begin{itemize}
+%\item original version - robot-in-maze, issues:
+%  \begin{itemize}
+%  \item not flexible and did not allow for a lot of diverse easy tasks,
+%  \item which is crucial for adaptive learning system
+%  \item unnecessarily long programs for simple ideas (non-elegant programs) (TBA: show comparision)
+%  \item non-elegant tasks
+%  \item ugly worlds
+%  \item not very original and entertaining for kids
+%  \end{itemize}
+%\item requirements (on the topic/theme/world):
+%  \begin{itemize}
+%  \item entertaining for children
+%  \item allowing to create plenty of diverse (and entertaining) tasks, inluding very simple ones
+%  \item programs should be not too verbose
+%  \item not limiting adaptability (e.g. story requring a fixed sequence of tasks would be a problem)
+%  \item (not limiting another topics later)
+%  \end{itemize}
+%\item fully observable world
+%\item no chance (randomness would complicate evaluation and interpretation
+%  of data) (there is still some \emph{surprise} in the game for the players:
+%  ``Will my program solve the task or not?'')
+%%\item REF to formal grammar for the space world in the next chapter
+%\end{itemize}
 
 % TODO: use different spaceworld than in Imlementation chapter.
-\imgW[0.4]{spaceworld}{Example of Space World.}
+\imgW[0.28]{spaceworld}{Examples of Space World. TODO: add more spaceworlds}
 
 
-\imgW{prototype-pits}{Lesson from the first prototype: world must contain elements that the program cannot check to enable diverse tasks. As we had a natural sensor to check walls, we needed to add pits that could not be checked by any sensor.}
+%\imgW{prototype-pits}{Lesson from the first prototype: world must contain
+%elements that the program cannot check to enable diverse tasks. As we had a
+%natural sensor to check walls, we needed to add pits that could not be checked
+%by any sensor.}
 
 
-\section{Programs}
+\section{Tasks and Programs}
 \label{sec:robomission.programs}
+
+intuitive and clear goal: reach last row (blue line), collect all dimanods
 
 \begin{itemize}
 \item Given an instace of a spaceworld as described in the previous section
@@ -129,23 +164,18 @@ comparing directly the influence of the text/block environment as done e.g.
 in the field study in \cite{comparing-blocks-text-weintrop2017}.
 \end{itemize}
 
-% TODO: Tasks section?
 
-
-\section{Hints}
-\begin{itemize}
-\item instructions/explanations
-\end{itemize}
+\section{Instructions and Explanations}
 
 \imgW{robomission-mini-instruction}{When a student encounters a new programming concept or programming element, the system displays a short instruction.}
 \imgW{robomission-mini-explanation}{The system shows an explanation why the exection was unsuccessful.}
 \imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
 
 
-\section{Task Editor}  % game editor?
+\section{Game Editor}  % OR: task editor?
 \label{sec:robomission.task-editor}
 
-A part of the system is the task editor (REF: image)
+A part of the system is at task editor (REF: image)
 that enables to easily create new tasks.
 (TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
 (TODO: mention that the task editor is part of the public site, so anybody can create a task, provide a link and ref to details about task format in the next chapter)
