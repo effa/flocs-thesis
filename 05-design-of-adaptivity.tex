@@ -1,23 +1,24 @@
 \chapter{Design of Adaptivity}
 \label{chap:design-of-adaptivity}
 
-\begin{itemize}
-\item RoboMission = app for efficient and fun learning of elementary programming for children (= mission)
-\item how: entertaining problems of optimal difficulty $\rightarrow$ max \emph{flow} $\rightarrow$ max fun, learning efficiency, happiness
-\item covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
-%\item linearized description: design (this chapter), implementation (next chapter); in reality: many iterations
-\end{itemize}
+In the last chapter, we have mentioned how we incorporated many of the
+strategies to support learning and motivation into our game.
+In this chapter, we discuss another strategy helping to achieve the state of
+flow, the one that is special to adaptive learning systems,  % TODO:reformulate
+recommending tasks of optimal difficulty.
+% ... "which is the secret sauce of adaptive learning systems"
+% ... "which is powered by the AI"
+% TODO: More links to learning/motivation \label{sec:motivation.challenge}
+% TODO: link to the adaptivity chapter
 
-
-\section{System Behavior}
+\section{Expected Behavior}  % or "Specification", "Goals", "System Behavior", "Behavior specification"
 \label{sec:robomission.behavior}
 
-Wide range of task difficulty, together with the adaptive behavior,
-should make the systems useful for anybody who wants to learn
-elementary programming.
-However, this long-term goal requires many iterations,
-as well as a lot of data.
-Currently, the system primarily targets at children between 8-15 years.
+Wide range of task difficulties, combined with the adaptive behavior,
+should make the system useful for anybody who wants to learn
+introductory programming.
+However, this long-term goal requires many iterations and a lot of data.
+Currently, the system primarily targets at children between 10 and 15 years.
 
 \subsection{Main Use Case}
 \label{sec:robomission.use-case}
@@ -94,6 +95,7 @@ and practice (reinforcement tasks) as in \cite{progression-analysis})
   progressing to a new mission or phase increase the challenge,
   then the perceived challenge drops during a single phase as student is getting
   more skill; result in increasing "wave" flow; recommended by \cite{book-of-lenses}
+\item covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
 \end{itemize}
 
 
@@ -123,9 +125,12 @@ and practice (reinforcement tasks) as in \cite{progression-analysis})
 \end{itemize}
 
 
+% TODO? UI? Probably not enough material for this
 
-\section{Monitoring and Analysis}
-\label{sec:robomission.monitoring}
+
+
+\section{Analysis Layer}
+\label{sec:robomission.analysis-layer}
 
 Even with careful testing, there will always be some errors in the deployed systems.
 For example, there might be a task that is much easier than expected,
