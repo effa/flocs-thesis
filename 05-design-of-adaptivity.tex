@@ -179,21 +179,52 @@ in at most 20 minutes.  % 10, 15?
 
 \section{Domain Model}
 
+In this phase of development, we have decided not to model overlapping concepts,
+% NOTE: not enough data, not clear how they combine and how they relate to PS
+% which are still needed for the users
+and insted restrict our domain to non-overlapping problem sets, which are
+easier to handle.
+% ... We started by manually dividing tasks into 9 problem sets (levels)
+We have devided tasks into 9 ordered disjoint problem sets
+(\emph{missions}, \emph{levels}),
+mostly based on the available programming blocks and contained game elements,
+and then we have further refine each mission into approximately 3 orderd
+disjoint groups (\emph{phases}), in order to enforce the most important
+prerequisities within each mission (e.g. introducing worm holes before
+using them in more difficult tasks).
+The resulting two-level hierarchical and ordered problem set structure is shown
+in \cref{fig:robomission.domain}.
+All tasks belong to exactly one phase,
+and tasks inside the same phase should be approximately homegeneous.
+TODO: tasks within phase -- unordered, interchangeable, about 5?
+
 \begin{itemize}
-\item tasks divided into hierarchical PS (2 layers): called missions and phases
-\item missions -- ordered, 9?, TODO: example/all?,
-\item phases of a mission -- ordered, about 3?, TODO: example,
-\item tasks within phase -- unordered, interchangeable, about 5?
 \item TODO: link to what presented in earlier chapters
-\item FIG
 \item TODO: (mention: aiming for a balance between introduction of new concepts
 and practice (reinforcement tasks) as in \cite{progression-analysis})
+(typically 3 phases corresponding to introduction, recombination, reinforcement/practice)
 \item FIG: flow wrt to missions and phases:
   progressing to a new mission or phase increase the challenge,
   then the perceived challenge drops during a single phase as student is getting
   more skill; result in increasing "wave" flow; recommended by \cite{book-of-lenses}
-\item covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
 \end{itemize}
+
+\begin{figure}[htb]
+\centering
+TODO: domain diagram
+(all 9 missions; (mostly/all) unlabeled nodes for phases and tasks)
+% should show covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
+\caption{Domain model used in RoboMission.}
+\label{fig:robomission.domain}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+TODO: flow diagram specifically for progress through missions and phases
+(increase of challenge with each new phase, then decrease during the phase)
+\caption{Dramaturgy of flow in RoboMission.}
+\label{fig:robomission.flow}
+\end{figure}
 
 
 \section{Student Model}
