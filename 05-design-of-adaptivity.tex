@@ -47,9 +47,10 @@ recommended task, and with a link to the page with overview of all tasks.
 Ideally, each recommendation should lead to the state of flow.
 % TODO: How to measure? One way: looking ath the long-term objectives
 As we cannot directly observe whether the student is in the state of flow,
-we must rely on a proxy data, which can be either subjective
+we must rely on proxy data, which can be either subjective
 (using perceived difficulty ranking),
 or objective (using observed performance), %should be neither too low, nor too high),
+% "qualitative" vs. "quantitative"
 % TODO: REF:performance
 as we have discussed in section
 on attributable metrics (\cref{sec:live-evaluation}).
@@ -110,6 +111,12 @@ in at most 20 minutes.  % 10, 15?
 \item If asked at the beginning and at the end of the tutorial about their
   interest in learning computer science, the end report should be statistically
   higher.
+% TODO: Not sure if to mention the self-report points, as they are not
+% currently used in the system.
+% TODO: (Another flow-related) If the student marks the current task as too
+% easy, the next task is strictly more difficult. If the student marks the
+% current task as too difficult, the next task is as most as difficult as the
+% current one.
 \end{itemize}
 % TODO: compare these requiremnts againts collected data and gvid-report
 
@@ -179,51 +186,49 @@ in at most 20 minutes.  % 10, 15?
 
 \section{Domain Model}
 
-In this phase of development, we have decided not to model overlapping concepts,
+%In this phase of development, we have decided not to model overlapping concepts,
 % NOTE: not enough data, not clear how they combine and how they relate to PS
 % which are still needed for the users
-and insted restrict our domain to non-overlapping problem sets, which are
-easier to handle.
+Currently, we do not model overlapping concepts, since their use would require
+more data to analyze their interaction.
+Instead, we devide tasks into disjoint linearly order hierarchical problem
+sets (\cref{fig:robomission.domain}). % , which are easier to handle.
 % ... We started by manually dividing tasks into 9 problem sets (levels)
-We have devided tasks into 9 ordered disjoint problem sets
-(\emph{missions}, \emph{levels}),
-mostly based on the available programming blocks and contained game elements,
-and then we have further refine each mission into approximately 3 orderd
-disjoint groups (\emph{phases}), in order to enforce the most important
-prerequisities within each mission (e.g. introducing worm holes before
-using them in more difficult tasks).
-The resulting two-level hierarchical and ordered problem set structure is shown
-in \cref{fig:robomission.domain}.
-All tasks belong to exactly one phase,
-and tasks inside the same phase should be approximately homegeneous.
-TODO: tasks within phase -- unordered, interchangeable, about 5?
-
+The hierarchy has two levels: the top-level problem sets are call \emph{missions},
+and they contain about 8-10 tasks, which are further split into three smaller
+problem sets called \emph{phases}.
+Missions and phases are ordered, while tasks within a given phase are not.
+The missions were chosen primarily by the available programming blocks and
+included game elements, and secondarily by an estimated difficulty.
+% (initialy human-estimated, later refined using collected data
+% NOTE: Data collected befor division into phases (TODO: mention in the
+% analysis chapter...)
+The contribution of refining the missions into phases is threefold:
 \begin{itemize}
-\item TODO: link to what presented in earlier chapters
-\item TODO: (mention: aiming for a balance between introduction of new concepts
-and practice (reinforcement tasks) as in \cite{progression-analysis})
-(typically 3 phases corresponding to introduction, recombination, reinforcement/practice)
-\item FIG: flow wrt to missions and phases:
-  progressing to a new mission or phase increase the challenge,
-  then the perceived challenge drops during a single phase as student is getting
-  more skill; result in increasing "wave" flow; recommended by \cite{book-of-lenses}
+\item Phases enforce important prerequisities within a mission (e.g.
+introducing wormholes before using them in more difficult tasks).
+\item Phases help to achieve a balanced composition \cite{progression-analysis},
+  introducing new concepts in the first phase,
+  recombining them with previously learned concepts in the second phase,
+  and further reinforcing (practicing) of known concepts in the third phase.
+% TODO: Although this division is only a guide, doesn't hold exatly...
+% TODO: elaborate on the relevance of the paper
+% TODO: check the paper (terms of the phases, their "oreder" and meaning)
+%The resulting two-level hierarchical and ordered problem set structure is shown
+%in \cref{fig:robomission.domain}.
+\item Phases are approximately homogeneous, i.e. difficulty of all tasks in a
+  given phase is similar. This allows allows for simpler tutor models.
+  % and they practic similar concepts
 \end{itemize}
+% TODO: link to what presented in earlier chapters
 
 \begin{figure}[htb]
 \centering
-TODO: domain diagram
-(all 9 missions; (mostly/all) unlabeled nodes for phases and tasks)
+TODO: domain diagram\\
+(all 9 missions with labels; unlabeled nodes for phases and tasks)
 % should show covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
 \caption{Domain model used in RoboMission.}
 \label{fig:robomission.domain}
-\end{figure}
-
-\begin{figure}[htb]
-\centering
-TODO: flow diagram specifically for progress through missions and phases
-(increase of challenge with each new phase, then decrease during the phase)
-\caption{Dramaturgy of flow in RoboMission.}
-\label{fig:robomission.flow}
 \end{figure}
 
 
@@ -251,6 +256,27 @@ TODO: flow diagram specifically for progress through missions and phases
 \item mastery decision: student model above + threshold exactly 1 (?)
 \item TODO: link to what presented in earlier chapters
 \end{itemize}
+
+
+
+
+TODO: flow wrt to missions and phases:
+  progressing to a new mission or phase increase the challenge,
+  then the perceived challenge drops during a single phase as student is getting
+  more skill; result in increasing "wave" flow; recommended by \cite{book-of-lenses}
+  (\cref{fig:robomission.flow})
+
+\begin{figure}[htb]
+\centering
+TODO: flow diagram specifically for progress through missions and phases
+(increase of challenge with each new phase, then decrease during the phase)
+\caption{Dramaturgy of flow in RoboMission.}
+\label{fig:robomission.flow}
+\end{figure}
+
+
+
+
 
 
 % TODO? UI? Probably not enough material for this
