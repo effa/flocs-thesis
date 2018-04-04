@@ -1,0 +1,70 @@
+\chapter{Used Technologies}
+\label{chap:technologies}
+
+Technolgoies used in the project change quite quickly in order to meet new requirements,
+especially on frontend, where the tools and best practices are evolving rapidly.
+The following table shows the technologies in spring 2018.
+
+%Table \ref{tbl:technologies} shows overview of the technologies used
+%in the project in spring 2018.
+%Note that they are gradually evolving, either to meet new requirements,
+%or simply to replace old technologies with newer ones.
+%This is especially true for frontend, where the tools and best practices
+%are evolving rapidly.
+%When this project started in 2015,
+%we used several at that time popular technologies
+%(AngularJS, Bootstrap, bower, grunt)
+%which became obsolete during next 2 years,
+%so we replaced them by newer ones.
+%Many technologies were introduced naturally as the projects grew,
+%e.g. Django Rest Framework for REST API,
+%or redux-saga for cleaner handling of asynchronous side-effects
+%(instead of the originally used redux-thunk).
+
+\begin{center}
+\begin{tabular}{l l l}
+\toprule
+Area & Technology & Main Reason  \\
+\midrule
+\textbf{Project management} & GitHub & easy to use \\  % "Project management"
+% Version control & git & easy to use \\
+Commands & make, django, npm & easy to use \\
+% Monitoring & Google Analytics & widely-used \\
+\hline
+\textbf{Backend} & Python 3 & concise, high-level \\
+%Dependencies & pip & easy to use \\
+%Environment & virtualenv[wrapper] & easy to use \\
+Unit tests & pytest & concise, readable \\
+Web framework & Django & feature-complete \\ %, well-documented \\
+REST API & DRF & feature-complete \\ %, well-documented \\
+Database & PostgreSQL & widely used \\
+Web server & Nginx + Gunicorn & widely used \\
+Scheduled jobs & cron, django-crontab & standard tool \\
+Data export & Django Rest Pandas & tranformations \\ % before export \\
+\hline
+\textbf{Frontend} & ES6 & concise, readable \\
+Dependencies & npm & easy to use \\
+Bundling & webpack & feature-complete \\ %, widely used \\
+Compiling & babel & feature-complete \\ % , widely used \\
+State & redux  & predictability, testability \\  % behavior, testability \\
+Side effects & redux-sagas  & readability, testability \\
+Views & React & declarative, reausable \\
+Design (UI) & Material-UI & looks good \\
+HTTP client & axios & promises \\
+Code blocks & Blockly & well-tested \\
+Parsing & PEG JS & declarative rules \\  %(Parsing expression grammar) \\
+Interpretation & JS-interpreter & stepping, custom hooks \\
+Localization & react-intl & one place for all messages \\
+\hline
+\textbf{Analysis} & jupyter, pandas, sklearn & interactive, high-level \\
+Plotting & matplotlib, seaborn & features; nice results \\
+%Machine learning & sklearn & powerful \\
+%\hline
+%\textbf{Analysis} & Python 3 & high-level, widely used \\
+%Documents & jupyter notebook & interactivity \\
+%DataFrames & pandas & feature-complete, well-documented \\
+%Plotting & matplotlib, seaborn & powerful, looks good \\
+%Machine learning & sklearn & powerful \\
+\bottomrule
+\end{tabular}
+\end{center}

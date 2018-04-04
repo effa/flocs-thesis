@@ -1,102 +1,33 @@
 \chapter{Implementation of RoboMission}
 \label{chap:implementation-of-robomission}
 
-The first part of this chapter describes general aspects of the implementation,
-such as used technologies and overall architecture of frontend and backend.
-The second part presents a few selected details that are specific to the created system.
+This chapter describes general architecture of the RoboMission application,
+together with a few specific aspects, such as representation of task sources,
+and transformation between blocks and several textual versions of the code.
 
 \section{System Architecture}
 
-The application uses a standard client-server architecture,
-with a fat frontend client communicating with server backend via REST API.
-In addition to the fronend app and backend service,
+The application uses a client-server architecture,
+with a fat frontend client communicating with the server backend via REST API.
+In addition to the frontend app and backend service,
 there are two other parts of the system:
 scheduled jobs, which run periodically every night (e.g. metrics computation),
 and tools for offline analysis of collected data
-(jupyter notebook templates and helper functions).  % TODO: specify "helper functions"
+(e.g. jupyter notebook templates).
+% TODO: and "helper functions"
 % TODO: ref/cite human-in-the-loop principle
 % TODO: consider: list the parts in itemize
 % TODO: other potential parts (future):
 % - tasks/content management tools (CLI+browser)
 % - simulations (CLI+browser)
-
 % TODO: consider to include FE and BE sections below as subsections of this section
+%TODO: diagram of overall architecture (client-server, communication, monitoring, scheduled jobs, offline analysis)
 
-TODO: diagram of overall architecture (client-server, communication, monitoring, scheduled jobs, offline analysis)
+TODO: include FE and BE archicture inside this section.
 
-\section{Used Technologies}
+REF: used technologies changing quickly, so we have only included their overview
+in the \cref{chap:technologies}.
 
-Table \ref{tbl:technologies} shows overview of the tehcnologies used
-in the project at the beginning of 2018.
-Note that they are gradually evolving, either to meet new requirements,
-or simply to replace old technologies with newer ones.
-This is especially true for frontend, where the tools and best practices
-are evolving rapidly.
-When this project started in 2015,
-we used several at that time popular technologies
-(AngularJS, Bootstrap, bower, grunt)
-which became obsolete during next 2 years,
-so we replaced them by newer ones.
-Many technologies were introduced naturally as the projects grew,
-e.g. Django Rest Framework for REST API,
-or redux-saga for cleaner handling of asynchronous side-effects
-(instead of the originally used redux-thunk).
-
-
-\begin{table}[h]
-\begin{center}
-\begin{tabular}{l l l}
-\toprule
-Area & Technology & Main Reason  \\
-\midrule
-Version control & git, GitHub & easy to use \\
-Custom commands & make + django, npm & easy to use \\
-Project management & GitHub (issues, project board) & easy to use \\
-% Monitoring & Google Analytics & widely-used \\
-\hline
-\textbf{Backend} & Python 3 & concise, high-level \\
-Dependencies & pip & easy to use \\
-Environment & virtualenv[wrapper] & easy to use \\
-Unit tests & pytest & concise, readable \\
-Web framework & Django & feature-complete, well-documented \\
-REST API & Django Rest Framework & feature-complete, well-documented \\
-Database & PostgreSQL & widely used \\
-Web server & Nginx + Gunicorn & widely used \\
-Scheduled jobs & cron (+ django-crontab) & standard tool \\
-Data Export & Django Rest Pandas & tranformations before export \\
-\hline
-\textbf{Frontend} & ES6 & concise and readable code \\
-Dependencies & npm & easy to use \\
-Bundling & webpack & feature-complete, widely used \\
-Compling & babel & feature-complete, widely used \\
-State & redux  & predictable behavior, testability \\
-Side effects & redux-sagas  & readability, testability \\
-Views & React & declarativness, reausability \\
-Design (UI) & Material-UI & looks good \\
-HTTP client & axios & based on promises \\
-Code Blocks & Blockly & well-tested \\
-Parsing & PEG JS & declarative rules \\  %(Parsing expression grammar) \\
-Interpretation & JS-interpreter & stepping, custom hooks \\
-Localization & react-intl & single place for all messages \\
-\hline
-\textbf{Analysis} & jupyter, pandas, sklearn & interactivity, high-levelness \\
-Plotting & matplotlib, seaborn & powerful; results look good \\
-%Machine learning & sklearn & powerful \\
-%\hline
-%\textbf{Analysis} & Python 3 & high-level, widely used \\
-%Documents & jupyter notebook & interactivity \\
-%DataFrames & pandas & feature-complete, well-documented \\
-%Plotting & matplotlib, seaborn & powerful, looks good \\
-%Machine learning & sklearn & powerful \\
-\bottomrule
-\end{tabular}
-\end{center}
-\caption{%
-  Overview of main technologies used in the project. %
-  The \emph{Reason} briefly explains why we have chosen the particular technoglogy
-  (not why we have covered the area at all).}
-\label{tbl:technologies}
-\end{table}
 
 \section{Frontend}
 
@@ -199,7 +130,7 @@ function* submitFeedback(action) {
 \end{itemize}
 
 
-\section{Tasks Description}
+\section{Task Sources}
 
 Each task is described by a single file in a restricted markdown format,
 containing name, category, setting and solution.
@@ -265,7 +196,7 @@ fly()
 \end{lstlisting}
 
 
-\subsection{SpaceWorld}
+% \subsection{SpaceWorld Descriptions}
 
 Each SpaceWorld is described by a simple human-readable string.
 See figure \ref{fig:spaceworld-in-editor} for an example and descripton.
