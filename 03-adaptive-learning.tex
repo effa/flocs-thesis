@@ -2084,6 +2084,9 @@ or using text instead of blocks % (everything else being equal).
 %\section{Metrics and Evaluation}
 \label{sec:metrics-and-evaluation}
 
+% TODO: mention and cite "AB experiments" (used in latex chapters)
+
+
 Analysis layer allows for \emph{iterative improvement} of ALS.
 To decide which interventions improves the quality of ALS,
   suitable metrics must be measured. %chosen and evaluated.
@@ -2099,7 +2102,9 @@ This \emph{rule of the loop} \cite{book-of-lenses},
 %\emph{``Plan to launch and iterate''}
 was observed to hold for ALS \cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}, % TODO: better resource?
 as well as for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
-% its-domain-models: "Treat each domain model as a hypothesis rather than a
+% TODO and for SW development (SCRUM); and for games (Book of lenses)
+% - our project includes all these elements (game design, SW devel., RecSys, ALS)
+% - its-domain-models: "Treat each domain model as a hypothesis rather than a
 % perfect final definition. (...) Facilitate iterative improvement of domain models."
 % NOTE: Example: - start with the initial ("expert-provided") domain model ->
 % collect data -> analyse -> refine -> iterate (\cite[chapter 10]{its-domain-models})
@@ -2109,6 +2114,20 @@ Frequent high-quality evalution is achieved by a combination of
 %- offline analyses -- the term ``human in the loop''
 %\cite{stupid-tutoring-systems-intelligent-humans}
 % "inteligence amplification" (instead of AI)
+
+%% TODO:
+%Even with a careful testing, there will always be some errors in the deployed
+%systems.  For example, there might be a task that is much easier than
+%expected, due to missing limit or some other mistake in its setting.  In
+%addition to the errors in data,  % TODO: fix parallelism
+%the adpative behavior of the system is extremelly difficult to test as well.
+%Various offline metrics exist, but they are only proxies for our true
+%objectives and can be sometimes misleading.  As a result, it is not only more
+%practical, but outright necessary to deploy system that is imperfect, and then
+%find and fix the problems that arise.  To spot the problems as soon as
+%possible, monitoring is a crucial component, that facilitates iterative
+%improvement of the system.
+
 
 %TODO: table/diagram showing goals hierarchy and their usage:
 %1. mission -> guide for long term objectives? (not measurable)
@@ -2185,6 +2204,7 @@ While ``achieving mastery in elementary programming'' can be
 To avoid subjective ratings, ALS can start with simpler long-term objectives
 (which are also easier to measure and interpret), such as the following:
 
+% TODO: consider: Users --> Students
 \begin{table}[htb]
 \centering
 \begin{tabular}{l l}
@@ -2192,13 +2212,15 @@ To avoid subjective ratings, ALS can start with simpler long-term objectives
 Metric & Description \\
 \midrule
 Daily Active Users & students who have solved at least 1 task this day \\
-Monthly Active Users & students who solved $\geq$ 10 tasks in last 30 days \\
+% GA: Monthly Active Users & students who solved at least 1 task in last 30 days \\
 Returning Users & students who solved a task in 2 different days \\
+% Learning Users ? & students who solved $\geq$ 10 tasks in last 30 days \\
 Converted Users & students who finished all levels in the system \\
 % (or just the last one, or have solve at least one task from each level) \\
 Daily Solved Tasks & tasks solved by all students \\
 Daily Flow Tasks & tasks solved with not too low/high performance \\
 % "Flow-minutes" & Total time spent on tasks with good performance. \\
+% "Solving hours"
 \bottomrule
 \end{tabular}
 \label{tbl:long-term-metrics}

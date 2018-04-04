@@ -288,10 +288,11 @@ Concerning the inner loop, the system provide only a basic
 rule-based agent for displaying instructions and explanations,
 as described in \cref{sec:game.explanations}.
 
-The tutor is hierachical, first selecting a problem set, then a task from
-this problem set. In order to asses if a problem set is mastered,
+The outer-loop tutor is hierachical;
+it first selects a problem set, then a task from this problem set.
+In order to assess if a problem set is mastered,
 the corresponding verified skill
-(computed by the student model described in the previous section)
+computed by the student model described in the previous section
 is compared to the threshold of 1. % ?
 % TODO: diagram of PS, TS selection and mastery decison
 
@@ -301,33 +302,33 @@ The system contains only a small number of problem sets,
 so it is reasonable to assume that the student would like to solve all of
 them,
 % TODO: further increased by the tendency to "get everything green"
-in which case it is preferable to solve them in order from the
+in which case it is preferable to solve them in the order from the
 easiest to the most difficult.
-Homogeneous phases allow to select a task uniformly at random from
-all unsolved tasks in the phase, which is a strategy maximizing exploration.
+Homogenity of phases allow to safely select a task uniformly at random from
+all unsolved tasks in that phase, which is a strategy maximizing exploration.
 % UI:
 Recommendations provided by the system are \emph{soft};
-i.e. that student can ignore the recommendation and select any task
+i.e. that student can ignore them and select any task
 from the overview of all tasks.
 
 Progression through the missions and phases gradually increases the difficulty,
 but the increase is not monotonous.
 % TODO: Reformulate not to use so many "increase"
-Perceived difficulty increases after progess to a new mission or phase,
-but it decreases during solving tasks from a single phase,
-as the student improves her skills, while the objective difficulty stays
+Perceived difficulty increases after progess to a new phase,
+but it decreases during solving tasks from the same phase,
+as the student's skill improves, while the objective difficulty stays
 approximately same (\cref{fig:robomission.flow}).
-On one hand, it means that the difficulty of the tasks is not always optimal
-for the student, possibly slightly overshooting at the beginning of the phases,
+On one hand, it means that the difficulty does not always match student's
+skills perfectly, possibly slightly overshooting at the beginning of a phase,
 and undershooting at the end.
 On the other hand, it means that the perceived difficulty level is not
 same all the time, but has a wavy character, which is more interesting
-for students However, the resulting \emph{dramaturgy of flow}
-is more interesting for students \cite{book-of-lenses}.
+for students % \emph{dramaturgy of flow}
+\cite{book-of-lenses}.
 
 \begin{figure}[htb]
 \centering
-TODO: flow diagram specifically for progress through missions and phases
+TODO: flow diagram specifically for progress through phases
 (increase of challenge with each new phase, then constant during the phase)
 % result: waves, but more "spiky"
 % (but the objective difficulty does not decrease, it stays constant
@@ -345,102 +346,121 @@ TODO: flow diagram specifically for progress through missions and phases
 \section{Analysis Layer}
 \label{sec:robomission.analysis-layer}
 
-Even with careful testing, there will always be some errors in the deployed systems.
-For example, there might be a task that is much easier than expected,
-due to missing limit or some other mistake in its setting.
-In addition to the errors in data,  % TODO: fix parallelism
-the adpative behavior of the system is extremelly difficult to test as well.
-As discused in section \ref{sec:metrics-and-evaluation} is only a proxy for our true objectives
-and can be sometimes misleading.
-As a result, it is not even more practical, but even neccessary to deploy system
-that is imperfect, and then find and fix the problems that arise.
-To spot the problems as soon as possible,
-monitoring is a crucial component,
-that facilites iterative improvement of the system.
-% TODO: ref to iterative improvement section / rule of the loop principle
+In order to iteratively improve adaptivity, as well as the programming game
+and other aspects of the ALS,
+an analysis layer (\cref{sec:metrics-and-evaluation})
+that provides several different views on the behavior of the system
+is crucial.
+Our analysis layer includes the following components:
 
-\subsection{Admin Requirements}
-\label{sec:admin-requirements}
-
-Similarly to regular users, administrators also have requirements on the systems:
+% \subsection{Monitoring Components}
+%To fulfill the requirements from section \ref{sec:admin-requirements},
+%the system includes the following components:
 
 \begin{itemize}
-\item Admin can immediately see how much is the system used and how the system behaves with respect to the short-term ("live-evaluation") metrics (...)
-\item Admin receives feedback from provided by users, and error reports on unhandled exceptions.
-\item Admin can see metrics on individual tasks (to quickly detect issues with a task).
-\end{itemize}
-
-
-\subsection{Monitoring Components}
-
-To fulfill the requiremetns from section \ref{sec:admin-requirements},
-the system includes the following components:
-
-\begin{itemize}
-\item \textbf{Google Analytics} --
-  shows distribution of users with respect to time and space.
+\item \emph{Google Analytics}
+  shows distribution of users with respect to the time and space.
   In addition to page visits,
-  it can also process specific events sent from the frontend,
-  such as clicking on the execution button,
-  and divide them into groups, e.g. by task or group for AB experiment.
-  (figure \ref{fig:google-analytics})
-\item \textbf{Monitoring Dashboard} (see figure \ref{fig:monitoring-dashboard})
-      which shows values of metrics for last month.
-      (Computed metrics are described in section \ref{sec:robomission.metrics}.)
-\item \textbf{User Feedback} --
-  a modal form that can be opened by a user on any page
-  to send us a message that something is not working as expected.
-  Each user feedback is send to the administrators by an email.
-\item \textbf{Error Reports} --
-  if an unhandled top-level error occur on the server,
-  it is not only logged, but also send to the administrators.
-\item \textbf{Data Exports} --
-  All collected data are every week exported as a zip bundle containing
-  CSV files prepared for convenient offline analysis.
-\item \textbf{Investigaion Notebook} --
-  a template of jupyter notebook with a command that generates exports
-  and serves them directly as pandas data frames
-  (see figure \ref{fig:investigation-notebook}).
-\item \textbf{Logs} --
-  all requests, performed actions, unhandled errors and submitted feedback are logged
-  to files on the server for manual inspection.
+  it can also process specific events sent from the frontend
+  (such as clicking on the execution button),
+  and divide them into groups, e.g. by the task being solved
+  % or group for AB experiment.
+  (\cref{fig:google-analytics}).
+\item \emph{Monitoring Dashboard}
+  shows values of a few long-term objectives % metrics related to the long-term objectives
+  %(\ref{sec:long-term-objectives})
+  in the last month, namely daily active students, daily solved tasks, and
+  solving hours (total time spent on successful attempts)
+  (\cref{fig:monitoring-dashboard}).
+  % + "success ratio" = proportion of successful attempts,
+  The system also computes a few metrics for each task
+  (solved count, median time, and success ratio) in order to detect
+  bugs in them.
+  % These metrics are recomputed every night.
+\item \emph{Monitoring Notebook}
+  is a weekly-recomputed jupyter notebook (CITE) that performs several analyses
+  and visualizations using the latest data (\cref{fig:monitoring-notebook}).
+  It serves the similar purpose as the monitoring dashboard, but it is
+  easier to extend. It is enough to add a cell into the notebook;
+  %and test it on a collected data,
+  no change to the backend or frontend is needed.
+  %NOTE: + investigation notebook that with a command that generates exports
+  %and serves them directly as pandas data frames
+\item \emph{Error Reports and User Feedback}.
+  If an unhandled top-level error occurs on the server,
+  it is not only logged, but also sent to the administrators.
+  Administrators also receive emails with messages provided by users via
+  a feedback form that can be invoked on any page.
+\item \emph{Data Exports and Logs}.
+  All collected data are exported every week as a zip bundle containing
+  CSV files prepared for %convenient offline analysis.
+  offline analysis.
+  In addition, all requests, performed actions, and unhandled errors % and submitted feedbacks
+  are logged to text files on the server for manual inspection.
 \end{itemize}
 
 
-\imgW[0.7]{google-analytics}{Preview from Google Analytics (breakdown for "execution" event).}
+\imgW{google-analytics}{%
+  Preview from Google Analytics (January--March 2018).} % (breakdown for "execution" event).}
 
-% TODO: latest dashboard, ideally with readable values
-\imgW[0.6]{monitoring-dashboard}{Metrics visualized in the monitoring dashobard.}
+% TODO: make it readable or remove
+\imgW{monitoring-dashboard-fragment}{%
+  Number of active students and number of solved tasks during March 2018
+  visualized in the monitoring dashboard.}
+
+% TODO: check if the table lines looks ok when printed
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[width=0.95\textwidth]{img/monitoring-notebook-levels}
+\end{subfigure}
+\begin{subfigure}{.51\textwidth}
+\centering
+\includegraphics[width=0.95\textwidth]{img/monitoring-notebook-repeat}
+\end{subfigure}
+\caption{%
+  Mean success and median time for all missions (left),
+  and tasks in the Repeat mission (right),
+  visualized in the monitoring notebook
+  from March 31, 2018. This simple analysis reveals e.g.
+  that 7th mission (comparing) is probably more difficult than the 8th (if-else),
+  % it's not clear, because the population of students is different; they
+  % might already learn something important in the 7th level for the 8th
+  % level
+  and that Clean Your Path task is significantly more difficult than
+  the other tasks in the mission.}
+% TODO: observation about clean-your-path
+\label{fig:monitoring-notebook}
+\end{figure}
 
 % TODO: update investigation notebook (fix error in last cell, current data;
 % should show something interesting, or at least some descriptive analylis)
-\imgW[0.7]{investigation-notebook}{Template of jupyter notebook for investigation of live data.}
+%\imgW[0.7]{investigation-notebook}{Template of jupyter notebook for investigation of live data.}
 
 
-\subsection{Metrics}
-\label{sec:robomission.metrics}
 
-% TODO: include live metrics if there are any
-Every night, the system recomputes metrics related to the long-term objectives
-(as described in \ref{sec:long-term-objectives}):
+% NOTE on iterative development: first prototype: 2016, one year of
+% development, thrown away; for testing our initial ideas and find what works
+% and what not; 50 tasks with a robot in maze; problems with the robot in the
+% maze: not fun (boring, not inovative, repetitiveness), did not allow for a
+% plenty of diverse easy tasks (which is necessary for adaptive systems),
+% required a lot of blocks even for simple programs (compared to the SpaceGame)
+% + problems with the codebase (maintainability, extensibility - why?); and the
+% good things? (SPA, explored/verified useful technologies, such as Blockly and
+% Django)
 
-\begin{itemize}
-\item "daily active students" = number of users who solved at least 1 task this day,
-\item "solving hours" = total time spent on successful attempts,
-\item "success ratio" = proportion of successful attempts,
-\item number of solved tasks.
-%\item (TBA: update if it changed)
-\end{itemize}
+%\imgW{prototype-task-environment}{First prototype of the system, with a classic robot-in-maze game.}
 
 
-The system also computes metrics about each task (in order to e.g. detect problematic ones):
-\begin{itemize}
-\item solved count,
-\item median time,
-\item success ratio.
-\end{itemize}
-
-
+%\subsection{Admin Requirements}
+%\label{sec:admin-requirements}
+%Similarly to regular users, administrators also have requirements on the systems:
+%\begin{itemize}
+%\item Admin can immediately see how much is the system used and how the system behaves with respect to the short-term ("live-evaluation") metrics (...)
+%\item Admin receives feedback from provided by users, and error reports on unhandled exceptions.
+%\item Admin can see metrics on individual tasks (to quickly detect issues with a task).
+%\end{itemize}
 
 
 % TODO: consider if to include non-functional requirements or not
@@ -452,23 +472,3 @@ The system also computes metrics about each task (in order to e.g. detect proble
 %\item easy to refactor and add new things (new tasks, levels, recommendation strategies etc.)
 %\item robust, efficient, interpretable behavior
 %\end{itemize}
-
-
-\section{Rule of the Loop}
-\label{sec:robomission.rule-of-the-loop}
-
-\begin{itemize}
-\item the design interleaved with the implementation -> final design is completely different than the original one
-\item ref: rule of the loop
-  (CITE: in game design \cite{book-of-lenses},
-  in machine learning \cite[][Rule \#16]{google-ml-rules},
-  for WS development: SCRUM; our project includes all these 3 elements)
-\item first prototype: 2016, one year of development, thrown away; for testing our initial ideas and find what works and what not; 50 tasks with a robot in maze
-  \begin{itemize}
-  \item problems with the robot in the maze: not fun (boring, not inovative, repetitiveness), did not allow for a plenty of diverse easy tasks (which is necessary for adaptive systems), required a lot of blocks even for simple programs (compared to the SpaceGame)
-  \item problems with the codebase (maintainability, extensibility - why?)
-  \item and the good things? (SPA, explored/verified useful technologies, such as Blockly and Django)
-  \end{itemize}
-\end{itemize}
-
-\imgW{prototype-task-environment}{First prototype of the system, with a classic robot-in-maze game.}
