@@ -234,48 +234,107 @@ TODO: domain diagram\\
 
 \section{Student Model}
 
-\begin{itemize}
-\item skill for each chunk (PS) (or rather "verified skill"), between 0 and 1
-\item update: phase skill $s^0_f \leftarrow 0$;
-  $s^{t+1}_f \leftarrow \min(1, s^t_f + \max(p, \frac{1}{|F_f|}))$
-  (TODO: explain + notation: f, p, F)
-\item update: mission skill: just average of phase skills (huge simplification...)
-\item TODO: link to what presented in earlier chapters
-\item TODO: discretized performance (elaborate: values, how computed, REF)
-\end{itemize}
+% TODO: terminology and links from \cref{sec:student-modeling}
+For each student we keep track of her skill for each problem set. % phase and mission.
+The skill $s \in [0, 1]$ represents manifested ability to solve tasks in
+a given problem set. The initial skill is 0, it is increased after each solved
+task from the problem set, and once the skill reaches 1 the problem set is solved.
+The model is decsriptive, because it does not model the probability of
+a student solving a task (with some performance), but rather an amount
+of verified skill.
+An advantage is that this skill can be shown directly to the student
+(e.g. visualized as a progressbar towards completion of the current mission).
+% E.g. at the beginning, the probability is higher than 0 for sure.
+% used directly in visualization
 
+We use discrete representation of performance with 3 levels (poor, good,
+excellent). Currently, only solving time is considered for the performance
+compression: for each task, we set a time threshold for a solution to be
+considered as good or excellent
+(set as 1.5 and 0.75 multiples of median time).
+% TODO: support the decision by an analysis (REF)
+% TODO: Note that it's huge simplification and a subject of future research.
+
+After each solved task session, the corresponding skill is increased by
+an amount $p \in [0, 1]$ which depends on the performance.
+For each performance level, we set the increment such that $1/p$ tasks solved
+with such performance are enough for manifesting mastery in this phase.
+The increment does not depend on the task, because we assume homogeneous
+phases.  %, and it does not depend on our previous estimate
+Either a single task solved with an excellent performance, or two
+tasks solved with a good performance are enough to solve the phase,
+translating into $p_{excellent} = 1$ and $p_{good} = 0.5$.
+Furhtermore, solving all tasks in a phase (even if with a poor performance),
+should be always enough to solve the phase.
+%(this is a technical requirement, stemming from the fact that we do not want
+%to present students with the same task they already solved again)
+Therefore, the update rule is:
+$s \leftarrow \min(1, s + \max(p, \frac{1}{n}))$,
+where $n$ is the number of tasks in the phase.
+% The $1/n$ term ensures that the student eventually masters the phase.
+% NOTE: we never want to decrease skill of a student
+
+To aggregate the skills of the phases into the skill of the mission,
+we simply take average of the phase skills.
+In future, we would like to use more sohpisticated aggregation,
+which would allow to compensate unsolved tasks in the first phase
+by more difficult tasks in the later phases.
+% TODO: reformulate
 
 \section{Tutor Model}
 
-\begin{itemize}
-\item PS selection: first unmastered
-  (first unmastered phase of first numastered mission)
-  (reasoning: students want "green everything", small number of PS)
-\item task selection: random + filter to avoid solved tasks
-  (reasoning: interchangeable tasks; exploration maximization)
-\item mastery decision: student model above + threshold exactly 1 (?)
-\item TODO: link to what presented in earlier chapters
-\end{itemize}
+We currently focus on the outer-loop tutor modeling.
+Concerning the inner loop, the system provide only a basic
+rule-based agent for displaying instructions and explanations,
+as described in \cref{sec:game.explanations}.
 
+The tutor is hierachical, first selecting a problem set, then a task from
+this problem set. In order to asses if a problem set is mastered,
+the corresponding verified skill
+(computed by the student model described in the previous section)
+is compared to the threshold of 1. % ?
+% TODO: diagram of PS, TS selection and mastery decison
 
+The tutor selects for practice the first unmastered phase of the first
+unmastered mission, using the total ordering provided by the domain model.
+The system contains only a small number of problem sets,
+so it is reasonable to assume that the student would like to solve all of
+them,
+% TODO: further increased by the tendency to "get everything green"
+in which case it is preferable to solve them in order from the
+easiest to the most difficult.
+Homogeneous phases allow to select a task uniformly at random from
+all unsolved tasks in the phase, which is a strategy maximizing exploration.
+% UI:
+Recommendations provided by the system are \emph{soft};
+i.e. that student can ignore the recommendation and select any task
+from the overview of all tasks.
 
-
-TODO: flow wrt to missions and phases:
-  progressing to a new mission or phase increase the challenge,
-  then the perceived challenge drops during a single phase as student is getting
-  more skill; result in increasing "wave" flow; recommended by \cite{book-of-lenses}
-  (\cref{fig:robomission.flow})
+Progression through the missions and phases gradually increases the difficulty,
+but the increase is not monotonous.
+% TODO: Reformulate not to use so many "increase"
+Perceived difficulty increases after progess to a new mission or phase,
+but it decreases during solving tasks from a single phase,
+as the student improves her skills, while the objective difficulty stays
+approximately same (\cref{fig:robomission.flow}).
+On one hand, it means that the difficulty of the tasks is not always optimal
+for the student, possibly slightly overshooting at the beginning of the phases,
+and undershooting at the end.
+On the other hand, it means that the perceived difficulty level is not
+same all the time, but has a wavy character, which is more interesting
+for students However, the resulting \emph{dramaturgy of flow}
+is more interesting for students \cite{book-of-lenses}.
 
 \begin{figure}[htb]
 \centering
 TODO: flow diagram specifically for progress through missions and phases
-(increase of challenge with each new phase, then decrease during the phase)
+(increase of challenge with each new phase, then constant during the phase)
+% result: waves, but more "spiky"
+% (but the objective difficulty does not decrease, it stays constant
+% (so it's important to think what is on the y-axis!)
 \caption{Dramaturgy of flow in RoboMission.}
 \label{fig:robomission.flow}
 \end{figure}
-
-
-
 
 
 

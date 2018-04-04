@@ -1381,8 +1381,9 @@ While training tutor models can be approached as a \emph{supervised learning pro
 obtaining labeled training data is not straightforward.
 \emph{Reinforcement learning}  \cite{rl}
 % (with actions being either problem sets, tasks, or hints)
-allows to learn action preferences using future rewards derived from the estimated time
-spent in flow \cite{rl-for-tutors-evaluation}.  % TODO:FIX: now it looks that the referenced article uses flow
+allows to learn action preferences using future rewards
+(derived e.g. from the estimated time spent in flow)
+\cite{rl-for-tutors-evaluation}.
 % TODO: Explore->cite.
 % TODO: Cite/elaborate. Rethink/explore: other paradigms?
 
@@ -1658,8 +1659,10 @@ Alternative approach is to describe which problem sets naturally \emph{follow} a
 and recommend those that follow after the one which was just solved .
 % NOTE: used in UmimeX
 % ?? usually: "follow" = reversed-OR-prerequisity,
-Both for the prerequisities and follow relation, it is important that the domain model
-maches reality. To some extent, offline analysis can be used to either verify, improve or even
+Both for the prerequisities and the follow relation, it is important that the
+domain model maches reality.  % TODO: isn't it too strong requirement to "mach
+% the reality"?
+To some extent, offline analysis can be used to either verify, improve or even
 discover the structure. To overcome limitations of the offline evaluation,
 a few competing domain models can be compared in an online experiment.
 
