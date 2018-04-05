@@ -149,56 +149,56 @@ for computing performance, skills, and recommendation.
 An overview of technologies used currently in the project
 is included in \cref{chap:technologies}.
 
+\section{Domain Representation}
 
-\section{Task Sources}
+Domain is represented by a JSON file describing all problem sets %missions, phases, and
+and relationships between them, as well as their setting (e.g. toolbox to use)
+and name of tasks they contain.
+Each task is then described in its own file (\cref{sec:impl.task-sources}).
+Furthermore, there is a separate JSON file containing values for parameters
+of domain entities (e.g. a time threshold for good performance for each task).
+It is convenient to have the relationships and the parameters in different files,
+because the former is currently edited by people, while the latter is
+a result of a computation.
 
-Each task is described by a single file in a restricted markdown format,
-containing name, category, setting and solution.
-The high-level grammar for task description looks like this:
+\subsection{Task Sources}
+\label{sec:impl.task-sources}
 
+Each task is described by a single file in a markdown-based format (CITE),
+containing its name, setting, and solution.
+The high-level grammar for task descreption and an example is shown in
+\cref{fig:task-source}.
+
+% There is also top-level [- option: value]*, currently not used
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.49\textwidth}
+{\lstset{numbers=none, showlines=true}
 \begin{lstlisting}
 # <name>
-[- option: value]*
 
 ## Setting
 ```
 <SpaceWorld>
 ```
+
 [- option: value]*
+
 
 ## Solution
 ```
 <RoboCode>
 ```
-\end{lstlisting}
-
-Currently, there is one mandatory top-level option (task category)
-and two optional setting options (length, energy).
-(TBA: ref to example below; ref to 2 subparts - SpaceWorld grammar, RoboCode grammar)
-% [consider] Markdown files are then parsed and loaded into DB by a single command.
-
-Task sources in markdown have several advantages:
-it is human readable,
-each change is version-controlled,
-and the task can be edited easily in any text editor.
-However, it is more convenient to use online task editor (REF to task editor fig),
-unless it is a really minor modification, or unless one wants to change multiple tasks at once.
-
-% [consider]
-% - Localized task names are not part of the task source,
-% because all localized messages live on the same place in a single file on FE.
-% - PEG grammar for parsing
-% - internal represenation (DB model and its serializers for FE and for CSV exports)
 
 
-Example of complete task source (for rendered task see figure \ref{fig:robomission-task1}. TBA: show rendered task and its source side by side)
-
+\end{lstlisting}}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+{\lstset{numbers=none}
 \begin{lstlisting}
 # turning-left
-- category: moves
 
 ## Setting
-
 ```
 |bM|b |b |bM|b |
 |kA|k |kM|k |kA|
@@ -207,18 +207,50 @@ Example of complete task source (for rendered task see figure \ref{fig:robomissi
 ```
 
 ## Solution
-
 ```
 left()
 fly()
 fly()
 ```
-\end{lstlisting}
+\end{lstlisting}}
+\end{subfigure}
+\caption{%
+  Left: High-level task source grammar.
+  Right: An example of a task source
+  (task Turning Left, rendered in \cref{fig:robomission-task1}).}
+\label{fig:task-source}
+\end{figure}
+
+SpaceWorld and RoboCode fragments must follow their own grammars, which
+are described in \cref{sec:impl.spaceworld,sec:robocode}.
+Currently, there are only two setting options: length and energy limits.
+%Currently, there is one mandatory top-level option (task category)
+%and two optional setting options (length, energy).
+%(TBA: ref to example below; ref to 2 subparts - SpaceWorld grammar, RoboCode grammar)
+% [consider] Markdown files are then parsed and loaded into DB by a single command.
+% [consider]
+% - Localized task names are not part of the task source,
+% because all localized messages live on the same place in a single file on FE.
+% - PEG grammar for parsing
+% - internal represenation (DB model and its serializers for FE and for CSV exports)
 
 
-% \subsection{SpaceWorld Descriptions}
+Task sources in markdown files have several advantages:
+% as opposed to have them in DB
+they are human readable,  % + rendered by GH to a nicer presentation
+each change is version-controlled,
+and the task can be edited easily in any text editor.
+However, it is still more convenient to edit tasks in the online game editor
+(\cref{sec:robomission.task-editor}),
+unless it is a minor modification,
+or unless one wants to change multiple tasks at once by a batch command.
 
-Each SpaceWorld is described by a simple human-readable string.
+\subsection{SpaceWorld Description}
+\label{sec:impl.spaceworld}
+
+% TODO: Unify "game world" -- "space world"
+Each SpaceWorld (\cref{sec:robomission.game-world}) is described by a simple
+human-readable string.
 See figure \ref{fig:spaceworld-in-editor} for an example and descripton.
 Set of valid SpaceWorld descriptions can be described by the
 following context-free grammar:
@@ -230,6 +262,8 @@ Field -> Background Object*
 Background -> 'r' | 'g' | 'b' | 'y' | 'k'
 Object -> 'S' | 'A' | 'M' | 'D' | 'W'
 \end{lstlisting}
+
+% TODO: PEG grammars for implementation (why)
 
 
 %\begin{figure}[h]
@@ -259,21 +293,22 @@ Object -> 'S' | 'A' | 'M' | 'D' | 'W'
 %\end{figure}
 
 
-\imgW[0.9]{spaceworld-in-editor}%
-{Example SpaceWorld with its source code.
-Each line describes one row of the grid
+\imgW[0.7]{spaceworld-in-editor}%
+{Example SpaceWorld with its description. % source code.
+Each line represents one row of the grid
 and is split by pipes (``|'') into fields.
 Each field starts with a lower-cased letter denoting color of the field
-(b -- blue, r -- red, k -- black, etc.),
+(e.g. b = blue, k = black),
 followed by an optional upper-case letter denoting an object
-(A -- asteroid, M -- meteoroid, W -- wormhole, S -- spaceship, etc.).
-For example ``rD'' is a red field with a diamond.}
+(A = asteroid, S = spaceship, etc.).
+For example, ``rD'' is a red field with a diamond.}
 
 
 
 \section{RoboCode}
+\label{sec:robocode}
 
-RoboCode is a language based on Python that is used in task sources for solutions.
+\emph{RoboCode} is a language based on Python that is used in task sources for solutions.
 It is also meant to be used in more advanced levels as the transitional phase
 from block-based to text-based programming.
 The requirements for the language are following:
