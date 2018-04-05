@@ -308,30 +308,38 @@ For example, ``rD'' is a red field with a diamond.}
 \section{RoboCode}
 \label{sec:robocode}
 
-\emph{RoboCode} is a language based on Python that is used in task sources for solutions.
-It is also meant to be used in more advanced levels as the transitional phase
-from block-based to text-based programming.
-The requirements for the language are following:
-\begin{itemize}
-\item easy for beginners, understandable without previous knowledge,
-\item conciseness (short, but readable programs),
-\item matching Blockly blocks closely (for easy transition from Blockly),
-\item matching Python closely (for easy transition to Python).
-\end{itemize}
+\emph{RoboCode} is a language based on Python,
+that is used for representing solutions in task sources.
+It closely corresponds to the text written on Blockly blocks;
+with just a few exceptions, such as added parentheses
+(e.g. ``fly()'' instead of ``fly'')
+and shortened literals (e.g. ``b'' instead of ``blue'').
+% difference: parenthesis (color() vs. color) and literals ('b' vs. blue)
+% TODO: check the statement above
+It is also intended to be used in more advanced problem sets as the
+transitional phase from block-based to text-based programming.
+The language was designed in the following requirements in mind:
+simplicity for beginners, understandable even without its previous knowledge,
+conciseness (short, but readable programs),
+and matching Python closely (for easy transition to Python).
 
-\subsection{Syntax and Semantic}
-\label{sec:syntax-semantic}
+%\subsection{Syntax and Semantic}
+%\label{sec:syntax-semantic}
 
 % TODO[consider] note on mixing lexer+parser+some semantic analysis
 % (which is partially convenient, partially confusing)
 
-There are four commands for performing actions:
-\begin{lstlisting}
-fly()
-left()
-right()
-shoot()
-\end{lstlisting}
+There are four basic commands: % for performing actions:
+\texttt{fly()},
+\texttt{left()},
+\texttt{right()}, and
+\texttt{shoot()}.
+%\begin{lstlisting}
+%fly()
+%left()
+%right()
+%shoot()
+%\end{lstlisting}
 Each action is combined with moving one row forward.
 The movement takes place after the action, with the exception of left and right turning actions, where the movement and the action happen simultaneously,
 i.e. the spaceship flies diagonally to the left or to the right.
@@ -340,17 +348,17 @@ i.e. the spaceship flies diagonally to the left or to the right.
 % commands are special cases.
 
 Loops and conditional statements are same as in the Python,
-with the notable exception of the repeat loop,
-which was simplified to the form matching a corresponding
-Blockly block, which is easier to understand by beginners:
+with the exception of the repeat loop,
+which was simplified to a form
+% matching a corresponding Blockly block, which is
+easier to understand by beginners:
 % TODO: ass robocode highlighting
 \begin{lstlisting}
 repeat 4:
     fly()
 \end{lstlisting}
-
-Tests inside while-loops and if-statements are limited to the following forms
-(again in order to match the respective Blockly blocks):
+Tests inside while-loops and if-statements are limited to the following forms:
+% (again in order to match the respective Blockly blocks):
 \begin{lstlisting}
 position() [==|!=|>|<|>=|<=] [1..6]
 color() [==|!=] ['r'|'g'|'b'|'y'|'k']
@@ -358,6 +366,7 @@ color() [==|!=] ['r'|'g'|'b'|'y'|'k']
 \end{lstlisting}
 The letters in the color-test have the same meaning as in the space world description,
 ('r' for red, 'g' for green, etc.)
+REF example below
 
 
 \begin{figure}[h]
