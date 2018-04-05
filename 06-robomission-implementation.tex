@@ -138,10 +138,15 @@ Google Analytics.  % better examples?
 %serializers, models, core (actions, credits, recommendation)
 %\end{itemize}
 
-TODO: Backend provides REST API (CITE) by defining database models, serializers and
-viewsets  (+ core)
-The technologies are becoming obsolete soon, so will not discuss them in detail.
-An overview of technologies which are used currently in the project
+Backend is decomposed into modules defining database entities,
+their serializers (JSON for sending to frontend and CSV for exports),
+\emph{ViewSets} (CITE) describing REST API,
+and core modules with pure functions
+for computing performance, skills, and recommendation.
+% TODO: + domain parsing, monitoring.
+%Technologies are becoming obsolete soon,
+%so will not discuss them in the text.
+An overview of technologies used currently in the project
 is included in \cref{chap:technologies}.
 
 
