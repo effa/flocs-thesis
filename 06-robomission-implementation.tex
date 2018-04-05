@@ -3,7 +3,7 @@
 
 This chapter describes general architecture of the RoboMission application,
 together with a few specific aspects, such as representation of task sources,
-and transformation between blocks and several textual versions of the code.
+and transformation between programming blocks and code.
 
 \section{System Architecture}
 
@@ -13,7 +13,7 @@ In addition to the frontend app and backend service,
 there are two other parts of the system:
 scheduled jobs, which run periodically every night (e.g. metrics computation),
 and tools for offline analysis of collected data
-(e.g. jupyter notebook templates).
+(e.g. jupyter notebooks). % templates).
 % TODO: and "helper functions"
 % TODO: ref/cite human-in-the-loop principle
 % TODO: consider: list the parts in itemize
@@ -23,111 +23,126 @@ and tools for offline analysis of collected data
 % TODO: consider to include FE and BE sections below as subsections of this section
 %TODO: diagram of overall architecture (client-server, communication, monitoring, scheduled jobs, offline analysis)
 
-TODO: include FE and BE archicture inside this section.
+% \section{Frontend}
+Frontend is a single page application with \emph{redux architecture} (CITE),
+which means that a single immutable state stores all application data.
+The state cannot be mutated directly; a new state can be created only
+%from the old one
+by dispatching actions.
+Each part of the state then defines its \emph{reducer},
+which is a pure function that takes previous state and action, and returns a new state.
+% ... and the only way the state can be changed is by dispatching actions.
+% ... dispatcher then takes dispatched actions one by one and reduce them (notifying
+%     connected containers about the new state)
+% ... reducers: state, action -> new state (pure functions)
+% "unidirectional UI" (as opposed to MVC and similar architectures)
+The view is then assembled using declarative reusable components, that can
+be either \emph{presentational} (e.g. describing how the game world should be
+rendered), or \emph{behavioral}, selecting data from the state to use for
+the rendering, and defining actions to dispatch and their triggers.
+The application also defines a few asynchronous workflows called \emph{sagas},
+e.g. for program interpretation, for task solving proces, or for sending events to
+Google Analytics.  % better examples?
+%% TODO: at least one sentence about React components?
+%\subsection{React Components}
+%
+%\begin{itemize}
+%\item mostly declarative - simple mental model: rebuilding from scratch every time anything change -> less error prone
+%\item reusability -> use of single component on many places in different contexts,
 
-REF: used technologies changing quickly, so we have only included their overview
-in the \cref{chap:technologies}.
-
-
-\section{Frontend}
-
-The frontend is a single page application with redux-architecture,
-which means that there is a single state (model) storing all application data,
-all the only way the state can be changed is by dispatching actions.
-Each part of state then defines its reducer,
-which is a pure function that takes previous state, action, and returns a new state.
-
-
-\imgW{frontend-dependencies}{%
-  Frontend modules/packages and dependencies between them.}
+%% TODO: Improve the diagram to make a point; otherwise remove.
+%\imgW{frontend-dependencies}{%
+%  Frontend modules/packages and dependencies between them.}
 % TODO: Give examples of (in description) of what are submodules inside core, utils, reducers, sagas, containers, components.
 % TODO: Note that some dependencies are eliminated via dependency injection in
   % redux-architecture (+ example!)
 % TODO: Improve diagram, use a standard notation (see slides from Software Engineering)
 % TODO: Explain the difference between component and containers.
 
-TODO: redux-architecture (data+events flow) diagram (specifically for our app) (and show how the flow of events is easier to reason about in React+Redux (than in Angular)).
+%TODO: redux-architecture (data+events flow) diagram (specifically for our app) (and show how the flow of events is easier to reason about in React+Redux (than in Angular)).
 
-\begin{itemize}
-\item "unidirectional UI" (as opposed to MVC and similar architectures)
-\item state: immutable, read-only
-\item reducers: state, action -> new state (pure functions)
-\item changing state directly is not possible, the only way is to dispatch action -> dispatcher then takes dispatched actions one by one and reduce them (notifying connected containers about the new state)
-\end{itemize}
+%% TODO: at least one sentence about React components?
+%\subsection{React Components}
+%
+%\begin{itemize}
+%\item mostly declarative - simple mental model: rebuilding from scratch every time anything change -> less error prone
+%\item reusability -> use of single component on many places in different contexts,
+%  or even outside the app (use space-world for ai-search-workshop)
+%\item example from our codebase (code, image)
+%\end{itemize}
 
-\subsection{React Components}
-
-\begin{itemize}
-\item mostly declarative - simple mental model: rebuilding from scratch every time anything change -> less error prone
-\item reusability -> use of single component on many places in different contexts,
-  or even outside the app (use space-world for ai-search-workshop)
-\item example from our codebase (code, image)
-\end{itemize}
-
-\subsection{Asynchronous Side Effects}
-\label{sec:robomission-asynchronous-side-effects}
-
-Frontend applications are usually full of asynchronous side effects
-(e.g. fetching data from server, wating for user actions).
-Many ways to handle them were proposed,
-such as callbacks (REF) or promises (REF).
-%The most basic one are callbacks --
-%asychronous function takes a function (``callback'') as a parameter
-%and calls it once the asynchronous action is resolved.
-%(TODO: mention/explain promises -- advantage: very explicit; clean error
-%handling; show example for data fetching)
-
-However, both callbacks and promises become awkward for expressing complex
-asynchronous flows, such as visualizing code execution,
-leading to unreadable ``callback hell''. % TODO: ref for callback hell
-Sagas provide an alternative way of handling asynchronous effects using generators.
-Instead of performing asynchronous effects directly, sagas yield
-descriptions of such effects.
-As an example, there is a saga responsible for processing
-submitted feedback.
-Note that while the code contains many asynchronous effects,
-it can be read nearly as easy as standard linear synchronous code.
-
-% TODO: insert comments in the code
-% TODO: mention other advantage of sagas - great testability
-% TODO: also mention new async-await concept
-
-\begin{lstlisting}[language=ES6]
-// Generator for a single submit-feedback request
-function* submitFeedback(action) {
-  const { text, email } = action.payload;
-  // Asynchronous request to get a value from state
-  const url = yield select(getFeedbackUrl);
-  try {
-    // Asynchronous request to post data to server
-    yield call(api.sendFeedback, url, text, email);
-    // Asynchronous request to dispatch a new action
-    yield put(actions.submitFeedback.success());
-  }
-  catch (error) {
-    const { fieldErrors } = error;
-    yield put(
-      actions.submitFeedback.failure(fieldErrors));
-  }
-}
-\end{lstlisting}
-
+% TODO: This might be relevant if shown for code interpretation instead of
+% sending feedback.
+%\subsection{Asynchronous Side Effects}
+%\label{sec:robomission-asynchronous-side-effects}
+%
+%Frontend applications are usually full of asynchronous side effects
+%(e.g. fetching data from server, wating for user actions).
+%Many ways to handle them were proposed,
+%such as callbacks (REF) or promises (REF).
+%%The most basic one are callbacks --
+%%asychronous function takes a function (``callback'') as a parameter
+%%and calls it once the asynchronous action is resolved.
+%%(TODO: mention/explain promises -- advantage: very explicit; clean error
+%%handling; show example for data fetching)
+%
+%However, both callbacks and promises become awkward for expressing complex
+%asynchronous flows, such as visualizing code execution,
+%leading to unreadable ``callback hell''. % TODO: ref for callback hell
+%Sagas provide an alternative way of handling asynchronous effects using generators.
+%Instead of performing asynchronous effects directly, sagas yield
+%descriptions of such effects.
+%As an example, there is a saga responsible for processing
+%submitted feedback.
+%Note that while the code contains many asynchronous effects,
+%it can be read nearly as easy as standard linear synchronous code.
+%
+%% TODO: insert comments in the code
+%% TODO: mention other advantage of sagas - great testability
+%% TODO: also mention new async-await concept
+%
+%\begin{lstlisting}[language=ES6]
+%// Generator for a single submit-feedback request
+%function* submitFeedback(action) {
+%  const { text, email } = action.payload;
+%  // Asynchronous request to get a value from state
+%  const url = yield select(getFeedbackUrl);
+%  try {
+%    // Asynchronous request to post data to server
+%    yield call(api.sendFeedback, url, text, email);
+%    // Asynchronous request to dispatch a new action
+%    yield put(actions.submitFeedback.success());
+%  }
+%  catch (error) {
+%    const { fieldErrors } = error;
+%    yield put(
+%      actions.submitFeedback.failure(fieldErrors));
+%  }
+%}
+%\end{lstlisting}
 
 % TODO: add code samples for each concept (react component + image, reducer, saga)
 % TODO(optional): awesome ES6 (example from our code)
 % TODO(Material Design): example of our component + code
 
-\section{Backend}
+% \section{Backend}
 
-\begin{itemize}
-\item Django, Django Rest Framework
-\item django apps (python packages): learn, monitoring (potential diagram for planned architecture: users, tasks, learn, adaptability, monitoring, simulations, analysis)
-\item models (...), serializers, views, services/use cases/core
-\item data export
-\item monitoring app, metrics computation
-\item generators (e.g. metric computation)
-\item architecture (of individual apps): viewsets/management, services, serializers, models, core (actions, credits, recommendatin)
-\end{itemize}
+%\begin{itemize}
+%\item Django, Django Rest Framework
+%\item django apps (python packages): learn, monitoring (potential diagram for planned architecture: users, tasks, learn, adaptability, monitoring, simulations, analysis)
+%\item models (...), serializers, views, services/use cases/core
+%\item data export
+%\item monitoring app, metrics computation
+%\item generators (e.g. metric computation)
+%\item architecture (of individual apps): viewsets/management, services,
+%serializers, models, core (actions, credits, recommendation)
+%\end{itemize}
+
+TODO: Backend provides REST API (CITE) by defining database models, serializers and
+viewsets  (+ core)
+The technologies are becoming obsolete soon, so will not discuss them in detail.
+An overview of technologies which are used currently in the project
+is included in \cref{chap:technologies}.
 
 
 \section{Task Sources}
