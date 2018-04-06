@@ -263,8 +263,6 @@ Background -> 'r' | 'g' | 'b' | 'y' | 'k'
 Object -> 'S' | 'A' | 'M' | 'D' | 'W'
 \end{lstlisting}
 
-% TODO: PEG grammars for implementation (why)
-
 
 %\begin{figure}[h]
 %\begin{center}
@@ -347,11 +345,11 @@ i.e. the spaceship flies diagonally to the left or to the right.
 % place after the action") is only relevant for shoot(), and all the other
 % commands are special cases.
 
-Loops and conditional statements are same as in the Python,
-with the exception of the repeat loop,
-which was simplified to a form
+Loops and conditional statements are same as in Python,
+with an exception of the repeat loop,
+which was simplified % to a form
 % matching a corresponding Blockly block, which is
-easier to understand by beginners:
+to be easier to understand: % by beginners:
 % TODO: ass robocode highlighting
 \begin{lstlisting}
 repeat 4:
@@ -364,12 +362,11 @@ position() [==|!=|>|<|>=|<=] [1..6]
 color() [==|!=] ['r'|'g'|'b'|'y'|'k']
 <test> [and|or] <test>
 \end{lstlisting}
-The letters in the color-test have the same meaning as in the space world description,
-('r' for red, 'g' for green, etc.)
-REF example below
-
-
-\begin{figure}[h]
+The letters in the color-test have the same meaning as in the space world
+description (e.g. 'r' for red). Control structures can be nested:
+% TODO: Program for solvint the task from the previous section
+%       (change either the program, the task, or both).
+%\begin{figure}[h]
 \begin{lstlisting}
 while color() != 'b':
     if position() == 1:
@@ -378,104 +375,107 @@ while color() != 'b':
         shoot()
     fly()
 \end{lstlisting}
-\caption{Example of a complete RoboCode program}
-\label{fig:robocode-example}
-\end{figure}
+%\caption{Example of a complete RoboCode program}
+%\label{fig:robocode-example}
+%\end{figure}
 
 
 \subsection{RoboAST}
 
-\begin{table}[h]
-\begin{center}
+While Python-like RoboCode is convenient for writing sample solutions,
+more compact form would be better for logging, storing in DB and analysis.
+Secondly, a block-based presentation of the code is needed for students.
+Last but not least, a JavaScript equivalent of the code is useful for
+interpreting the code in the browser.
+\Cref{tbl:code-representation} shows overview of all representations.
+
+
+\begin{table}[htb]
+\centering
 \begin{tabular}{l l l}
 \toprule
 Name & Form & Usage  \\
 \midrule
-RoboCode     & textual (Python-like) & sample solutions in task sources  \\
-MiniRoboCode & compact string & logging, storing in DB, analysis  \\
-RoboBlocks   & Blockly blocks & code editor for students  \\
-RoboJS       & textual (JavaScript) & interpretation in browser  \\
-RoboAST      & json (AST) & common intermediate representation \\
+RoboCode     & text (Python-like) & sample solutions in task sources  \\
+MiniRoboCode & text (compact) & logging, storing in DB, analysis  \\
+RoboBlocks   & blocks (Blockly) & code editor for students  \\
+RoboJS       & text (JavaScript) & interpretation in browser  \\
+RoboAST      & JSON (AST) & intermediate representation \\
 \bottomrule
 \end{tabular}
-\end{center}
-\caption{Different code representaions used within the system.}
+\caption{Different code representations used within the system.}
 \label{tbl:code-representation}
 \end{table}
 
-While Python-like RoboCode is convenient for writing sample solutions,
-more comact form would be useful for logging, storing in DB and analysis.
-Furthermore, we want a visual blocks presentation of the code for students.
-Last but not least, a JavaScript equivalent of the code is needed for
-interpreting the code in the browser.
-(Table \ref{tbl:code-representation} shows overview of all representations.)
-
+% TODO: [consider] Use "presentation" for the "fringe" representations.
+% (Because it is confusing to talk about common representation of representations.)
 To avoid implementing separate transformations between each pair of these
-presentations, we introduced a common intermediate representation,
-\emph{RoboAST}, which is a simple Abstract Syntaxt Tree in json.
-(See example of a RoboAST in figure \ref{fig:robocode-transformations-example}.)
-For each supported presenation it is enough to implement
+representations, we introduced a common intermediate representation,
+\emph{RoboAST}, which is an %simple
+\emph{Abstract Syntax Tree} (CITE) in JSON
+(\cref{fig:robocode-transformations-example}).
+For each of the four other representations, it is enough to implement
 its parser returning RoboAST object, and
-its generator from RoboAST (figure \ref{fig:robocode-transformations}).
-With one parser and one generator for each presentation,
-it is possible to transform presentation A
-into presentaion B by parsing A into RoboAST and
+its generator from RoboAST (\cref{fig:robocode-transformations}).
+With a parser and a generator for each representation,
+it is possible to transform representation A
+into representation B by parsing A into RoboAST and
 then generating B from this RoboAST.
-This mechanism also allows for switching between RoboCode and RoboBlocks
-anytime during writing a solution in the task editor.
+% "This mechanism ..."
+It also allows to switch between RoboCode and RoboBlocks
+anytime when writing a solution in the game editor.
 % TODO: mention the disadvantage - not able to use functionality provided by Blockly (code generators)
 
-\imgW[0.8]{robocode-transformations}{Transformations between RoboAST and four possible code presentations -- RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
+% TODO: fix the image (missing black line on right) (+ make it lower: tree-like
+% structure, with RoboAST as a root at the top.)
+\imgW[0.6]{robocode-transformations}{Transformations between RoboAST and four possible code presentations -- RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
 
 \imgW{robocode-transformations-example}{Example of a RoboAST with corresponding RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
 
 
-\subsection{Parsing expression grammar}
+\subsection{Parsing Expression Grammar}
 
 For parsing RoboCode into RoboAST, we use a \emph{parsing expression grammar}
-(PEG) (REF: PEG grammar).
+(PEG) (CITE).
 % TODO: verify the following statement
-PEG grammars are basically context-free grammmars with ordered rules
-and lookahead expressions (TODO: example).
-The specific implementation we used (REF) allows for specifying how should each
-parsed subexpression be transformed into a subtree of the final AST
-The specyfication can be an arbitrary JavaScript code returning the subtree.
+PEG grammars are basically context-free grammars with ordered rules
+and lookahead expressions (TODO: example).  % using our grammar - if we don't
+% use it, then don't mention it.
+% TODO: check grammar (should ... be transformed)
+The specific implementation we used (CITE) allows to define how should each
+parsed subexpression be transformed into a subtree of the final AST.
+The specification can be an arbitrary JavaScript code returning the subtree.
 % TODO: check grammar
-For illustration, there are some examples of RoboCode parsing rules:
+For illustration, there are
+two % a few
+examples of RoboCode parsing rules:
 
 \begin{lstlisting}
-CompoundStatement
-  = IfStatement
-  / WhileStatement
-  / RepeatStatement
+CompoundStatement = IfStm / WhileStm / RepeatStm
 
-WhileStatement
-  = "while" __ t:Test ":" b:Body
-    { return { head: "while", test: t, body: b } }
-
-Test
-  = CompoundTest
-  / SimpleTest
+WhileStm = "while" __ t:Test ":" b:Body
+  { return { head: "while", test: t, body: b } }
 \end{lstlisting}
+%Test
+%  = CompoundTest
+%  / SimpleTest
 
-The main advantage is that it does not require any lexer and the resulting grammar
-is still simple and readable.
-The PEG grammar for RoboCode (as described in section \ref{sec:syntax-semantic})
-has about 100 lines of code.
-However, some preprocessing of the RoboCode is needed, because
+The main advantage is that it does not require any lexer % TODO: check term
+and the resulting grammar is still readable and short;
+the PEG grammar for RoboCode % (as described in section \ref{sec:syntax-semantic})
+has about 100 lines. % of code.
+However, a preprocessing of the RoboCode is needed, because
 PEG is a context-free grammar,
-while RoboCode is a context-sensitive language
--- the context is created by indentation.
-In addition, we also want to store line numbers alongside the statements
-(useful for meta-interpreting:
-showing executed line,
-linking errors to the point in source code).
-Therefore, the preprocessing step transform the code in a context-free form,
-where each line of the code is prepended corresponding line number,
+while RoboCode is a context-sensitive language;
+the context is created by indentation.
+In addition, it is also useful to store line numbers alongside the statements
+to enable \emph{meta-interpreting},
+such as showing executed line, or linking errors to the point in the source code.
+Therefore, the preprocessing step transforms the code in a context-free form,
+in which each line of the code is prepended corresponding line number,
 and adding and removing indentation levels is denoted by ``>'' and ``<'' characters respectively.
 For example, the preprocessed code for the program shown in figure
 \ref{fig:robocode-transformations-example} would be:
-
 \begin{lstlisting}
 1| shoot()
 2| repeat 4:
@@ -484,53 +484,76 @@ For example, the preprocessed code for the program shown in figure
 4| left()
 <
 \end{lstlisting}
-
-The figure \ref{fig:robocode-transformations-example} also shows the final RoboAST object.
+% The figure \ref{fig:robocode-transformations-example} also shows the final RoboAST object.
 
 \subsection{MiniRoboCode}
 
-MiniRoboCode is a condensed form of the RoboCode
-which replaces indentation with curly brackets,
+MiniRoboCode is a condensed form of the RoboCode.
+It replaces indentation by curly brackets,
 key words and functions by their first letters,
 and removes any other whitespaces
-in order to fit programs into a single short string.
-The mapping from the RoboCode can be described by the rules
-shown in figure \ref{fig:minirobocode-transformation-rules}.
+in order to fit programs into a single short line.
+The mapping from the RoboCode is described by the following rules:
+% shown in figure \ref{fig:minirobocode-transformation-rules}.
+\smallskip
 
-\begin{figure}[h]
-\begin{subfigure}{.49\textwidth}
-{\lstset{numbers=none}
-\begin{lstlisting}
+\noindent\begin{minipage}{.49\textwidth}
+\begin{lstlisting}[numbers=none]
 repeat --> R
 while --> W
 if --> I
 else --> /
 position() --> x
 == --> =
-\end{lstlisting}}
-\end{subfigure}
-\begin{subfigure}{.49\textwidth}
-{\lstset{numbers=none}
-\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.49\textwidth}
+\begin{lstlisting}[numbers=none]
 fly() --> f
 left() --> l
 right() --> r
 shoot() --> s
 color == 'y' --> y
 color != 'y' --> !y
-\end{lstlisting}}
-\end{subfigure}
-\caption{Transformation rules from RoboCode to MiniRoboCode. (In reality, the transformations goes through RoboAST.)}
-\label{fig:minirobocode-transformation-rules}
-\end{figure}
+\end{lstlisting}
+\end{minipage}
 
-Figure \ref{fig:minirobocode-transformations} shows
-two examples of complete transformations.
+%\begin{figure}[h]
+%\begin{subfigure}{.49\textwidth}
+%{\lstset{numbers=none}
+%\begin{lstlisting}
+%repeat --> R
+%while --> W
+%if --> I
+%else --> /
+%position() --> x
+%== --> =
+%\end{lstlisting}}
+%\end{subfigure}
+%\begin{subfigure}{.49\textwidth}
+%{\lstset{numbers=none}
+%\begin{lstlisting}
+%fly() --> f
+%left() --> l
+%right() --> r
+%shoot() --> s
+%color == 'y' --> y
+%color != 'y' --> !y
+%\end{lstlisting}}
+%\end{subfigure}
+%%\caption{Transformation rules from RoboCode to MiniRoboCode. (In reality, the transformations goes through RoboAST.)}
+%%\label{fig:minirobocode-transformation-rules}
+%\end{figure}
+% Figure \ref{fig:minirobocode-transformations} shows
+\smallskip
+
+\noindent
+Two examples of complete transformations into MiniRoboCode:
+\smallskip
+
 % TODO: use the fancy arrow-split component from my bachelor thesis
-\begin{figure}[h]
-\begin{subfigure}{.49\textwidth}
-{\lstset{numbers=none}
-\begin{lstlisting}
+\noindent\begin{minipage}{.49\textwidth}
+\begin{lstlisting}[numbers=none]
 fly()
 while color() == 'b':
     left()
@@ -538,11 +561,10 @@ while color() == 'b':
 fly()
 -------------------
 fWb{lr}f
-\end{lstlisting}}
-\end{subfigure}
-\begin{subfigure}{.49\textwidth}
-{\lstset{numbers=none}
-\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.49\textwidth}
+\begin{lstlisting}[numbers=none]
 repeat 6:
     if position() > 1:
         shoot()
@@ -550,16 +572,43 @@ repeat 6:
         right()
 -------------------
 R6{Ix>1{s}/{r}}
-\end{lstlisting}}
-\end{subfigure}
-\caption{Examples of transformations of RoboCode to MiniRoboCode.}
-\label{fig:minirobocode-transformations}
-\end{figure}
+\end{lstlisting}
+\end{minipage}
+\smallskip
 
-MiniRoboCode is useful not only for logging and storing programs in DB,
-but also for many analyses,
-because it is easy to process them by counting letters or matching simple regular expressions,
-and because they are short enough to be used as labels in plots.
+%\begin{figure}[h]
+%\begin{subfigure}{.49\textwidth}
+%{\lstset{numbers=none}
+%\begin{lstlisting}
+%fly()
+%while color() == 'b':
+%    left()
+%    right()
+%fly()
+%-------------------
+%fWb{lr}f
+%\end{lstlisting}}
+%\end{subfigure}
+%\begin{subfigure}{.49\textwidth}
+%{\lstset{numbers=none}
+%\begin{lstlisting}
+%repeat 6:
+%    if position() > 1:
+%        shoot()
+%    else:
+%        right()
+%-------------------
+%R6{Ix>1{s}/{r}}
+%\end{lstlisting}}
+%\end{subfigure}
+%%\caption{Examples of transformations of RoboCode to MiniRoboCode.}
+%%\label{fig:minirobocode-transformations}
+%\end{figure}
+
+MiniRoboCode is useful not only for logging and storing programs in database,
+but also for many analyses, because it is easy to process by counting
+letters or matching simple regular expressions, and because they are short
+enough to be used as labels in plots.
 
 
 \subsection{RoboBlocks}
