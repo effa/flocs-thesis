@@ -666,18 +666,18 @@ Depending on the language domain, we initialize Blockly blocks with the correspo
 version of localized block labels.
 (See figure \ref{fig:roboblocks-english-czech} for an example of the same
 program in two languages.)
-Blockly supports its own localization mechanism that fits well
-within the localization framework used in our project.
+%Blockly supports its own localization mechanism that fits well
+%within the localization framework used in our project.
 
-\imgW[0.6]{roboblocks-english-czech}{Same program in English and Czech localizations of RoboBlocks.}
-% TODO: Fix the image so that both images are of the exectly same size and sharpness.
+\imgW[0.5]{roboblocks-english-czech}{Same program in English and Czech localizations of RoboBlocks.}
+% TODO: Fix the image so that both images are of the exactly same size and sharpness.
 
 \subsection{RoboJS}
 \label{sec:robomission-robojs}
 
 For the interpretation of the student code we need yet another representation,
-which is a JavaScipt that can be fed into the JS-interpreter.
-(See section \ref{sec:robomission-interpretation} for the details of the interpretation).
+which is a JavaScipt that can be fed into a JS interpreter.
+%(See section \ref{sec:robomission-interpretation} for the details of the interpretation).
 Figure \ref{fig:robojs-example} shows an example of a generated RoboJS.
 
 \begin{figure}[h]
@@ -711,9 +711,9 @@ for actions (\texttt{fly}, \texttt{left}, \texttt{right}, \texttt{shoot}),
 sensor functions (\texttt{color}, \texttt{position}),
 and for meta-interpreting (\texttt{highlightBlock}).
 
-We have not implemented a parser from RoboJS to RoboAST,
-simply because we do not need this tranformation;
-otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
+%We have not implemented a parser from RoboJS to RoboAST,
+%simply because we do not need this tranformation;
+%otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
 
 
 \subsection{Interpretation}
@@ -722,7 +722,7 @@ otherwise, there is no technical obstacle and the parser would be based on a sim
 Instead of implementing our own interpreter of RoboCode,
 we first transform the code through RoboAST into RoboJS
 (described in section \ref{sec:robomission-robojs})
-and then use JS-interpeter (REF) to run the code.
+and then use JS-interpeter (CITE) to run the code.
 We could use any other interpreter that would satisfy the following
 conditions:
 \begin{enumerate}
