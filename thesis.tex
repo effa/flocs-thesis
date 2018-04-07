@@ -29,7 +29,8 @@
     advisor       = {doc. Mgr. Radek Pelánek, Ph.D},
     title         = {Adaptive System for Learning Programming},
     TeXtitle      = {Adaptive System for\\Learning Programming},
-    keywords      = {adaptive learning, intelligent tutoring system, student modeling, learning programming},
+    keywords      = {learning programming, domain modeling, student modeling,
+                     tutor modeling, programming game, adaptive learning system},
 }
 %% Bibliography.
 \usepackage[backend=biber, 		% use biber as backend instead of BiBTeX
@@ -96,8 +97,13 @@ TBA: thanks, TBA: mention RH and MU projects
 %% Include shared macros used across chapters.
 \include{utils}
 
+% Load fithesis prematuraly to allow custom changes.
+\thesisload
+%% Limit depth in Table of Contents.
+\setcounter{tocdepth}{1}
 % Shrink space between figure and caption
 %\setlength{\abovecaptionskip}{3pt plus 3pt minus 2pt}
+
 \begin{document}
 
 \include{01-introduction}
