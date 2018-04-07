@@ -2,7 +2,7 @@
 \label{chap:implementation-of-robomission}
 
 This chapter describes general architecture of the RoboMission application,
-together with a few specific aspects, such as representation of task sources,
+together with a few specific aspects, such as representation of tasks,
 and transformation between programming blocks and code.
 
 \section{System Architecture}
@@ -30,7 +30,7 @@ The state cannot be mutated directly; a new state can be created only
 %from the old one
 by dispatching actions.
 Each part of the state then defines its \emph{reducer},
-which is a pure function that takes previous state and action, and returns a new state.
+which is a pure function that takes a state and an action, and returns a new state.
 % ... and the only way the state can be changed is by dispatching actions.
 % ... dispatcher then takes dispatched actions one by one and reduce them (notifying
 %     connected containers about the new state)
@@ -38,11 +38,10 @@ which is a pure function that takes previous state and action, and returns a new
 % "unidirectional UI" (as opposed to MVC and similar architectures)
 The view is then assembled using declarative reusable components, that can
 be either \emph{presentational} (e.g. describing how the game world should be
-rendered), or \emph{behavioral}, selecting data from the state to use for
-the rendering, and defining actions to dispatch and their triggers.
-The application also defines a few asynchronous workflows called \emph{sagas},
-e.g. for program interpretation, for task solving proces, or for sending events to
-Google Analytics.  % better examples?
+rendered), or \emph{behavioral}, selecting data from the state, % to use for the rendering,
+and defining actions to dispatch. %  and their triggers.
+The application also defines asynchronous workflows called \emph{sagas},
+e.g. for program interpretation, or task solving process. %, or sending events to Google Analytics.  % better examples?
 %% TODO: at least one sentence about React components?
 %\subsection{React Components}
 %
@@ -138,16 +137,18 @@ Google Analytics.  % better examples?
 %serializers, models, core (actions, credits, recommendation)
 %\end{itemize}
 
+% TODO?: more about the relationship between the backend and ALS components
+% (domain, student, tutor, UI, analysis layer)
 Backend is decomposed into modules defining database entities,
-their serializers (JSON for sending to frontend and CSV for exports),
+their serializers (JSON for sending to frontend, CSV for exports),
 \emph{ViewSets} (CITE) describing REST API,
 and core modules with pure functions
-for computing performance, skills, and recommendation.
+for computing performance, skills, and recommendations.
 % TODO: + domain parsing, monitoring.
 %Technologies are becoming obsolete soon,
 %so will not discuss them in the text.
 An overview of technologies used currently in the project
-is included in \cref{chap:technologies}.
+is included as \cref{chap:technologies}.
 
 \section{Domain Representation}
 
@@ -158,7 +159,7 @@ Each task is then described in its own file (\cref{sec:impl.task-sources}).
 Furthermore, there is a separate JSON file containing values for parameters
 of domain entities (e.g. a time threshold for good performance for each task).
 It is convenient to have the relationships and the parameters in different files,
-because the former is currently edited by people, while the latter is
+because the former is (currently) edited by people, while the latter is
 a result of a computation.
 
 \subsection{Task Sources}
@@ -174,7 +175,7 @@ The high-level grammar for task descreption and an example is shown in
 \centering
 \begin{subfigure}{.49\textwidth}
 {\lstset{numbers=none, showlines=true}
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 # <name>
 
 ## Setting
@@ -195,7 +196,7 @@ The high-level grammar for task descreption and an example is shown in
 \end{subfigure}
 \begin{subfigure}{.49\textwidth}
 {\lstset{numbers=none}
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 # turning-left
 
 ## Setting
@@ -217,7 +218,7 @@ fly()
 \caption{%
   Left: High-level task source grammar.
   Right: An example of a task source
-  (task Turning Left, rendered in \cref{fig:robomission-task1}).}
+  (for task Turning Left, which is rendered in \cref{fig:robomission-task1}).}
 \label{fig:task-source}
 \end{figure}
 
@@ -233,26 +234,24 @@ Currently, there are only two setting options: length and energy limits.
 % because all localized messages live on the same place in a single file on FE.
 % - PEG grammar for parsing
 % - internal represenation (DB model and its serializers for FE and for CSV exports)
-
-
 Task sources in markdown files have several advantages:
 % as opposed to have them in DB
 they are human readable,  % + rendered by GH to a nicer presentation
 each change is version-controlled,
 and the task can be edited easily in any text editor.
-However, it is still more convenient to edit tasks in the online game editor
-(\cref{sec:robomission.task-editor}),
-unless it is a minor modification,
-or unless one wants to change multiple tasks at once by a batch command.
+%However, it is still more convenient to edit tasks in the online game editor
+%(\cref{sec:robomission.task-editor}),
+%unless it is a minor modification,
+%or unless one wants to change multiple tasks at once by a batch command.
 
 \subsection{SpaceWorld Description}
 \label{sec:impl.spaceworld}
 
-% TODO: Unify "game world" -- "space world"
+% TODO: Unify "game world" -- "space world
 Each SpaceWorld (\cref{sec:robomission.game-world}) is described by a simple
 human-readable string.
 See figure \ref{fig:spaceworld-in-editor} for an example and descripton.
-Set of valid SpaceWorld descriptions can be described by the
+Set of valid SpaceWorld descriptions is given by the
 following context-free grammar:
 
 \begin{lstlisting}
@@ -306,19 +305,21 @@ For example, ``rD'' is a red field with a diamond.}
 \section{RoboCode}
 \label{sec:robocode}
 
-\emph{RoboCode} is a language based on Python,
-that is used for representing solutions in task sources.
-It closely corresponds to the text written on Blockly blocks;
-with just a few exceptions, such as added parentheses
-(e.g. ``fly()'' instead of ``fly'')
-and shortened literals (e.g. ``b'' instead of ``blue'').
+\emph{RoboCode} is Python-like programming language
+used to represent solutions in task sources.
+It closely corresponds to the text written on Blockly blocks
+with a few exceptions, such as %added parentheses
+shorter function names with added parentheses
+(e.g. ``left()'' instead of ``fly left'').
+% also: fly right -vs- fly()
+% and abbreviated literals (e.g. ``b'' instead of ``blue'').
 % difference: parenthesis (color() vs. color) and literals ('b' vs. blue)
 % TODO: check the statement above
 It is also intended to be used in more advanced problem sets as the
 transitional phase from block-based to text-based programming.
-The language was designed in the following requirements in mind:
-simplicity for beginners, understandable even without its previous knowledge,
-conciseness (short, but readable programs),
+The language was designed % with the following requirements in mind:
+to be simple for beginners, understandable without its previous knowledge,
+concise (short, but readable programs),
 and matching Python closely (for easy transition to Python).
 
 %\subsection{Syntax and Semantic}
@@ -418,17 +419,17 @@ For each of the four other representations, it is enough to implement
 its parser returning RoboAST object, and
 its generator from RoboAST (\cref{fig:robocode-transformations}).
 With a parser and a generator for each representation,
-it is possible to transform representation A
-into representation B by parsing A into RoboAST and
-then generating B from this RoboAST.
+%it is possible to transform representation A
+%into representation B by parsing A into RoboAST and
+%then generating B from this RoboAST.
+any representation A can be transformed into any representation B
+by first parsing A into RoboAST and then generating B from this RoboAST.
 % "This mechanism ..."
-It also allows to switch between RoboCode and RoboBlocks
-anytime when writing a solution in the game editor.
 % TODO: mention the disadvantage - not able to use functionality provided by Blockly (code generators)
 
 % TODO: fix the image (missing black line on right) (+ make it lower: tree-like
 % structure, with RoboAST as a root at the top.)
-\imgW[0.6]{robocode-transformations}{Transformations between RoboAST and four possible code presentations -- RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
+\imgW[0.6]{robocode-transformations}{Transformations between RoboAST and other representations.}
 
 \imgW{robocode-transformations-example}{Example of a RoboAST with corresponding RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
 
@@ -442,7 +443,7 @@ PEG grammars are basically context-free grammars with ordered rules
 and lookahead expressions (TODO: example).  % using our grammar - if we don't
 % use it, then don't mention it.
 % TODO: check grammar (should ... be transformed)
-The specific implementation we used (CITE) allows to define how should each
+The specific implementation we use (CITE) allows to define how should each
 parsed subexpression be transformed into a subtree of the final AST.
 The specification can be an arbitrary JavaScript code returning the subtree.
 % TODO: check grammar
@@ -451,17 +452,16 @@ two % a few
 examples of RoboCode parsing rules:
 
 \begin{lstlisting}
-CompoundStatement = IfStm / WhileStm / RepeatStm
-
-WhileStm = "while" __ t:Test ":" b:Body
+CompoundStatement = IfStmt / WhileStmt / RepeatStmt
+WhileStmt = "while" __ t:Test ":" b:Body
   { return { head: "while", test: t, body: b } }
 \end{lstlisting}
 %Test
 %  = CompoundTest
 %  / SimpleTest
 
-The main advantage is that it does not require any lexer % TODO: check term
-and the resulting grammar is still readable and short;
+The main advantage of PEG is that they do not require any lexer % TODO: check term
+and the resulting grammar is still concise; %readable and short;
 the PEG grammar for RoboCode % (as described in section \ref{sec:syntax-semantic})
 has about 100 lines. % of code.
 However, a preprocessing of the RoboCode is needed, because
@@ -613,7 +613,7 @@ enough to be used as labels in plots.
 
 \subsection{RoboBlocks}
 
-Blockly (REF: blockly) is an implementation of block-based programming
+Blockly (CITE) is an implementation of block-based programming
 environment from Google,
 which we use in the code editor for students
 (shown e.g. in figure \ref{fig:robomission-task1}).
@@ -622,35 +622,32 @@ which we use in the code editor for students
 % (and disadvantage: don't play nicely with modern JS workflow; sometimes needs
 % awful hacks to digging in the source code to achieve a desiered behavior
 Blockly allows to import and export the currently assembled program in
-an XML format, that we call \emph{RoboBlocksXML}.
-(See figure \ref{fig:roboblocks-xml} for an example of the XML.)
+an XML format, that we call \emph{RoboBlocksXML}
+%(See figure \ref{fig:roboblocks-xml} for an example of the XML.)
+(\cref{fig:roboblocks-xml}).
 Both transformations between RoboBlocksXML and RoboAST are straightforward.
 
-% TODO(opt): some details about Blocly? (definition of blocks, localization)
+% TODO(opt): some details about Blocly? (definition of blocks)
+%  (or just overview of currently used blocks (in a row "toolbox" to save space)
 
+% TODO: make it just refferable listing, instead of figure
 \begin{figure}[h]
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
 <xml xmlns="http://www.w3.org/1999/xhtml">
  <block type="start">
-  <next>
-   <block type="shoot">
-    <next>
-     <block type="repeat">
-      <field name="count">4</field>
-      <statement name="body">
-       <block type="fly">
-        <field name="direction">right</field>
-        <next>
-         <block type="fly">
-          <field name="direction">left</field>
-         </block>
-        </next>
-       </block>
-      </statement>
+  <next><block type="shoot">
+   <next><block type="repeat">
+    <field name="count">4</field>
+    <statement name="body">
+     <block type="fly">
+      <field name="direction">right</field>
+      <next><block type="fly">
+       <field name="direction">left</field>
+      </block></next>
      </block>
-    </next>
-   </block>
-  </next>
+    </statement>
+   </block></next>
+  </block></next>
  </block>
 </xml>
 \end{lstlisting}
@@ -663,34 +660,78 @@ Both transformations between RoboBlocksXML and RoboAST are straightforward.
 As the RoboBlocks are used by children, it is important to use localized labels
 on the blocks.
 Depending on the language domain, we initialize Blockly blocks with the corresponding
-version of localized block labels.
-(See figure \ref{fig:roboblocks-english-czech} for an example of the same
-program in two languages.)
+version of localized block labels
+(\cref{fig:roboblocks-english-czech}).
+%(See figure \ref{fig:roboblocks-english-czech} for an example of the same program in two languages.)
 %Blockly supports its own localization mechanism that fits well
 %within the localization framework used in our project.
 
 \imgW[0.5]{roboblocks-english-czech}{Same program in English and Czech localizations of RoboBlocks.}
 % TODO: Fix the image so that both images are of the exactly same size and sharpness.
 
-\subsection{RoboJS}
+\subsection{RoboJS and Interpretation}
 \label{sec:robomission-robojs}
 
-For the interpretation of the student code we need yet another representation,
-which is a JavaScipt that can be fed into a JS interpreter.
+Instead of implementing our own interpreter of RoboCode,
+we transform the code through RoboAST into JavaScript
+%(described in section \ref{sec:robomission-robojs})
+and then use a JavaScript interpeter %(CITE)
+to run the code.
+The generated \emph{RoboJS} % is just a JavaScript that
+assumes to be executed within a
+context providing hooks for functions corresponding to actions (\texttt{fly}, \texttt{left}, \texttt{right}, \texttt{shoot}),
+sensors (\texttt{color}, \texttt{position}),
+and meta-interpreting (\texttt{isStopped}, \texttt{highlightBlock})
+(\cref{fig:robojs-example}).
+
+The interpreter would not have to be necessary be a JavaScript interpreter,
+since it is easy to transfrom RoboAST to any common imperative language.
+% (at least to the common imperative languages).
+However, the interpreter must satisify the following conditions:
+% TODO: check grammar: "to be implemented ... to allow ..."?
+be implemented in JavaScript (to run in the browser),
+allow to define custom asynchronous hooks
+(e.g. to perform actions),
+%(in order to perform actions, sensor measurements, and block highligting),
+and allow to step the code, or at least to impose a limit on
+the number of steps % or time
+(to break infinite loops).
+%(in order to break infinite loops).
+% interprets a language that can be generated easily from the RoboAST (which includes most languages),
+%There is nothing special about using JavaScript as the language being interpreted,
+%other that the JS-interpreter satisfies all our requirements
+%and is relatively simple to use.
+
+% We could use any interpreter that would satisfy the following conditions:
+%\begin{enumerate}
+%\item is implemented in JavaScript (in order to run in the browser),
+%\item interprets a language that can be generated easily from the RoboAST
+%  (which includes most languages),
+%\item allows to define custom asynchronous hooks
+%  (needed for actions, sensors, and block highligting),
+%\item allows to step the code, or at least to impose a step or time limit
+%  (in order to break infinite loops).
+%\end{enumerate}
+% TODO(opt): why not to use JS interpreter in browser: safety (sandbox requirement)
+% + probably also not able to step the code or set the time limit, but I haven't verified this
+
+
+%For the interpretation of the student code yet another representation is needed,
+%a JavaScipt code that can be fed into a JS interpreter.
 %(See section \ref{sec:robomission-interpretation} for the details of the interpretation).
-Figure \ref{fig:robojs-example} shows an example of a generated RoboJS.
+
 
 \begin{figure}[h]
-\begin{subfigure}{.36\textwidth}
+\begin{subfigure}{.28\textwidth}
 \centering\includegraphics[width=.8\textwidth]{img/roboblocks-english}
 \end{subfigure}
-\begin{subfigure}{.62\textwidth}
+\begin{subfigure}{.7\textwidth}
 {\lstset{numbers=none}
 \begin{lstlisting}
 highlightBlock(1);
 shoot();
 highlightBlock(2);
-for (var i1_=0; i1_<4; i1_++) {
+for (var i1_ = 0; i1_ < 4; i1_++) {
   highlightBlock(3);
   right();
   highlightBlock(4);
@@ -706,42 +747,16 @@ for (var i1_=0; i1_<4; i1_++) {
 \label{fig:robojs-example}
 \end{figure}
 
-The generated JavaScript assumes to be executed within the context providing hooks
-for actions (\texttt{fly}, \texttt{left}, \texttt{right}, \texttt{shoot}),
-sensor functions (\texttt{color}, \texttt{position}),
-and for meta-interpreting (\texttt{highlightBlock}).
-
 %We have not implemented a parser from RoboJS to RoboAST,
 %simply because we do not need this tranformation;
 %otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
 
-
-\subsection{Interpretation}
-\label{sec:robomission-interpretation}
-
-Instead of implementing our own interpreter of RoboCode,
-we first transform the code through RoboAST into RoboJS
-(described in section \ref{sec:robomission-robojs})
-and then use JS-interpeter (CITE) to run the code.
-We could use any other interpreter that would satisfy the following
-conditions:
-\begin{enumerate}
-\item is implemented in JavaScript (in order to run in the browser),
-\item interprets a language that can be generated easily from the RoboAST
-  (which includes most languages),
-\item allows to define custom asynchronous hooks
-  (needed for actions, sensors, and block highligting),
-\item allows to step the code, or at least to impose a step or time limit
-  (in order to break infinite loops).
-\end{enumerate}
-% TODO(opt): why not to use JS interpreter in browser: safety (sandbox requirement)
-% + probably also not able to step the code or set the time limit, but I haven't verified this
-There is nothing special about using JavaScript as the language being interpreted,
-other that the JS-interpreter satisfies all our requirements
-and is relatively simple to use.
-
-The interpreter itself is a generator that yields actions, sensor requests and
-meta-interpreting effects (block highlighting, checking for interruption).
-The generator is wrapped into a saga
-(see section \ref{sec:robomission-asynchronous-side-effects})
+We use an existing JavaScript interpreter (CITE) and wrap it into two
+additional layers: the first is a generator
+that yields actions, sensor requests and
+meta-interpreting effects (e.g. block highlighting), % checking for interruption).
+and the second is a saga
+%(see section \ref{sec:robomission-asynchronous-side-effects})
 that handles all these asynchronous effects.
+The separation into these two layers allows to test the interpreter logic
+easily without dealing with asynchronous effects.
