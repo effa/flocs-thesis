@@ -1049,7 +1049,7 @@ P(s, d) = \frac{1}{1 + e^{-(s - d)}}
 \end{figure}
 
 
-Elo model \cite{alg.elo, irt-elo-math} extends the logistic model
+Elo model \cite{alg.elo, mathsgarden} extends the logistic model
   to capture changing knowledge.
 Inspired by the rating of chess players \cite{elo-rating},
   the model interprets each attempt  to solve a task
@@ -1715,13 +1715,18 @@ select the task with the smallest error.
 % to evalute long-term metric (or using RL approach) , which is possibly doable
 % at least as a simulated experiment.
 
-To balance exploration and epxloitation, the system can either select tasks at random
+To balance exploration and exploitation, the system can either select tasks at random
 with the probability proportional to its preference (inversed and normalized error),
 % NOTE: either directly or with exponential weighting (ie. using softmax)
 or it can choose a random task with probability $\epsilon$, and the best task otherwise,
 which is call \emph{$\epsilon$-greedy strategy}.
 % NOTE: the second approach complicates the selection, it makes it more explicit, how much
 % random choices are there and which of them they are (which simplifies evaluation).
+
+
+% TODO: mention programming-related: \cite{proso}: 2 tasks based of similar
+% difficulty as the one just solved
+
 
 %In principle, the weights could be learned to optimize a desired metric, but the
 %learning process is more difficult than for student models,
