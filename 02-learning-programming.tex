@@ -7,35 +7,36 @@ This chapter describes the current state of the art of teaching programming, bot
 \section{Existing Systems for Learning Programming}
 \label{sec:existing-systems}
 
-There are many systems for learning programming.
-These systems can be categorized by several criteria:
+There are many systems for learning programming and they differ from each other
+in several significant aspects (\cref{tbl:existing-systems-categorization}).
 
 \begin{table}[htb]
 \centering
 \begin{tabular}{l l}
 \toprule
-Criterion & Examples \\
+Aspect & Examples \\
 \midrule
 Tangibility & computer applications, physical toys \\
 %Target group & primary school, high school students \\
-  % Target group interacts with prerequisities
-Prerequisities & reading, writing, mathematics \\
-Content & loops, conditions, variables \\
+  % Target group interacts with prerequisites
+Prerequisites & reading, typing, mathematics \\
+Content & loops, variables, functions \\
 Form & tasks, videos, texts \\ % worked-out examples,
-Tasks & robot on grid, turtle graphics \\
+Tasks & robot on grid, drawing with turtle \\
 % Playing-learning ratio & mostly playing, mostly learning \\
 Programming language & block-based, textual \\
 Adaptivity & task recommendation, mastery learning \\
 %Price & free, paid
 \bottomrule
 \end{tabular}
+\caption{Differentiating aspects of systems for learning programming.}
 \label{tbl:existing-systems-categorization}
 \end{table}
 
 
-The rest of this section describes the most notable systems.
+The rest of this section describes the most notable existing systems.
 Section \ref{sec:strategies-for-easier-learning} then extrapolates useful
-strategies for teaching introductory programming.
+strategies for teaching programming.
 
 
 \subsection{LightBot}
@@ -44,11 +45,11 @@ LightBot%
 \footnote{Available at \url{http://lightbot.com/}.}
 is a mobile and web application with a fixed sequence of tasks solved by
 a block-based programming language
-(figure \ref{fig:lightbot-robotanist}).
+(figure \ref{fig:lightbot-robotanist} left).
 %(figure \ref{fig:lightbot-instruction}).
-Students create simple programs to control a robot living in a grid world.
-The robot can not only walk and turn left and right, but also jump and turn on lights.
-Having five different basic commands is useful for diversity of elementary tasks.
+Students create short programs to control a robot living in a grid world.
+The robot can not only walk and turn left or right, but also jump and turn on lights.
+Having five different basic actions is useful for diversity of elementary tasks.
 The system covers sequences of commands, procedures, and simple loops via tail-recursion.
 
 %\subsection{Robozzle}
@@ -75,13 +76,14 @@ such as Interactive Python, Karel the Robot, or Robotanist
 % TODO: more precise description of the tasks instead of e.g. "Inter. Python",
 % see the reffed paper for inspiration.
 \cite{proso}.
-Robotanist (figure \ref{fig:lightbot-robotanist}) is similar to LightBot
+Robotanist (figure \ref{fig:lightbot-robotanist}) is similar to LightBot,
 with an addition of colored fields.
 Colors can be used in conditional commands, which allows for diverse tasks,
-including difficult tasks with sophisticated recursion.  After
+including difficult problems with sophisticated recursion.  After
 each solved task, Problem Solving Tutor shows a recommendation for two next
 tasks, with predicted solving times.
-Showing predicted time to the user serves as a motivational element -- it poses
+Showing predicted time % to the user
+serves as a motivational element, posing
 a suitable challenge to overcome oneself
 \cite{pelanek-student-modeling-times}.
 
@@ -90,10 +92,9 @@ a suitable challenge to overcome oneself
 %\imgW[0.6]{robotanist}{Robotanist in Problem Solving Tutor, Detour task.}
 
 \begin{figure}[htb]
-\begin{center}
-  \includegraphics[width=0.485\textwidth]{img/lightbot-instruction}
-  \includegraphics[width=0.47\textwidth]{img/robotanist}
-\end{center}
+\centering
+\includegraphics[width=0.485\textwidth]{img/lightbot-instruction}
+\includegraphics[width=0.47\textwidth]{img/robotanist}
 \caption{%
   Left: Ligtbot.
   Right: Robotanist (Problem Solving Tutor).}
