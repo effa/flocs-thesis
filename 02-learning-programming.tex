@@ -1,14 +1,15 @@
 \chapter{Learning Programming}
 \label{chap:learning-programming}
 
-% TODO: move the chapter descripton into intro/thesis-structure
-This chapter describes the current state of the art of teaching programming, both from the view of successful learning systems and from the view of a research on learning programming.
+% TODO: Rephrase (avoid "this chapter describes")
+This chapter describes the current state of the art of teaching programming, both from the view of successful learning systems and from the view of the research on learning programming.
 
 \section{Existing Systems for Learning Programming}
 \label{sec:existing-systems}
 
+% TODO: Rephrase (avoid "presented"?)
 There are many systems for learning programming and they differ from each other
-in several significant aspects (\cref{tbl:existing-systems-categorization}).
+in several significant aspects, which are presented in \cref{tbl:existing-systems-categorization}.
 
 \begin{table}[htb]
 \centering
@@ -34,7 +35,12 @@ Adaptivity & task recommendation, mastery learning \\
 \end{table}
 
 
-The rest of this section describes the most notable existing systems.
+% TODO: Consider to add an interesting fact/observation after the table,
+% (or possibly citation pointing to some more broad overviews);
+% (linking the table to the rest of the section)
+% and consider to move the following "meta-information" to the chapter intro.
+The rest of this section briefly describes the most notable existing systems,
+focusing on their features that improve learning or engagement.
 Section \ref{sec:strategies-for-easier-learning} then extrapolates useful
 strategies for teaching programming.
 
@@ -43,9 +49,9 @@ strategies for teaching programming.
 \label{sec:lightbot}
 LightBot%
 \footnote{Available at \url{http://lightbot.com/}.}
-is a mobile and web application with a fixed sequence of tasks solved by
+is a mobile and web application offering a fixed sequence of tasks solved by
 a block-based programming language
-(figure \ref{fig:lightbot-robotanist} left).
+(\cref{fig:lightbot}).
 %(figure \ref{fig:lightbot-instruction}).
 Students create short programs to control a robot living in a grid world.
 The robot can not only walk and turn left or right, but also jump and turn on lights.
@@ -76,12 +82,13 @@ such as Interactive Python, Karel the Robot, or Robotanist
 % TODO: more precise description of the tasks instead of e.g. "Inter. Python",
 % see the reffed paper for inspiration.
 \cite{proso}.
-Robotanist (figure \ref{fig:lightbot-robotanist}) is similar to LightBot,
+Robotanist (\cref{fig:robotanist}) is similar to LightBot,
 with an addition of colored fields.
 Colors can be used in conditional commands, which allows for diverse tasks,
-including difficult problems with sophisticated recursion.  After
+including difficult problems with complex recursion.  After
 each solved task, Problem Solving Tutor shows a recommendation for two next
-tasks, with predicted solving times.
+tasks %(one easier, on more difficult),
+with predicted solving times.
 Showing predicted time % to the user
 serves as a motivational element, posing
 a suitable challenge to overcome oneself
@@ -91,16 +98,24 @@ a suitable challenge to overcome oneself
 %\imgW{lightbot-instruction}{LightBot provides clear and simple interactive instructions.}
 %\imgW[0.6]{robotanist}{Robotanist in Problem Solving Tutor, Detour task.}
 
+
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.485\textwidth]{img/lightbot-instruction}
-\includegraphics[width=0.47\textwidth]{img/robotanist}
-\caption{%
-  Left: Ligtbot.
-  Right: Robotanist (Problem Solving Tutor).}
+\begin{subfigure}[t]{0.5\textwidth}
+\centering
+\includegraphics[height=4cm]{img/lightbot-instruction}
+\caption{LightBot}
+\label{fig:lightbot}
+\end{subfigure}%
+\begin{subfigure}[t]{0.5\textwidth}
+\centering
+\includegraphics[height=4cm]{img/robotanist}
+\caption{Robotanist}
+\label{fig:robotanist}
+\end{subfigure}
+\caption{LightBot and Robotanist provide square grids for commands.}
 \label{fig:lightbot-robotanist}
 \end{figure}
-
 
 
 
@@ -109,7 +124,7 @@ a suitable challenge to overcome oneself
 Blockly is a popular block-based programming interface.
 In contrast to the blocks in LightBot,
 Blockly blocks can be assembled in nested control structures
-(figure \ref{fig:blockly-hoc}, left).
+(\cref{fig:blockly-games}).
 Blockly Games%
 \footnote{Available at \url{https://blockly-games.appspot.com/}.}
 % TODO: Replace by figure using nested control structures
@@ -124,7 +139,7 @@ programming to textual programming in JavaScript.
 Each level consists of 5-10 tasks, again ordered by increasing difficulty. %, with no personalization.
 The fixed order enables to build on the program from the previous task,
 thus gradually leading to more complex programs,
-resulting for example in sophisticated images in turtle graphics
+resulting for example in sophisticated images in turtle graphics.
 Blockly Games includes non-ignorable interactive instructions,
 which require to take a described action before they disappear
 \cite{blockly-10-things}.
@@ -139,28 +154,42 @@ Hour of Code%
 \footnote{Available at \url{https://hourofcode.com}.}
 %(figure \ref{fig:hour-of-code-sw})
 provides many one-hour tutorials, each containing about 15 tasks in fixed order,
-and using Blockly-based language
-(figure \ref{fig:blockly-hoc}, right).
+using Blockly-based language
+(\cref{fig:hoc}).
 These tutorials focus on motivation, using themes from popular movies and
 games, and providing videos with famous people explaining programming concepts.
 The tutorials use high-level theme-specific blocks, such as ``set droid to a
-[random] speed``, and they are restricted to only one or two programming
-concepts, e.g. sequences and events.
-Sometimes, the built program is not a direct solution for a robot,
+random speed``, and they are restricted to only one or two programming
+concepts, e.g. sequences of commands and events.
+In some tasks, the built program is not a direct solution for a robot,
 but rather a game, in which the code specifies actions triggered on events.
+% TODO: There is some space to include more info about HoC.
 
 %\imgW[0.7]{hour-of-code-sw}{Hour of Code, Star Wars tutorial.}
 
+
 \begin{figure}[htb]
-\begin{center}
-  \includegraphics[width=0.45\textwidth]{img/blockly-nested}
-  \includegraphics[width=0.52\textwidth]{img/hour-of-code-sw}
-\end{center}
-\caption{%
-  Left: Blockly Games.
-  Right: Hour of Code (Star Wars theme).}
+\centering
+\begin{subfigure}[t]{0.43\textwidth}
+\centering
+\includegraphics[height=33mm]{img/blockly-nested}
+\caption{Blockly Games (Maze level)}
+\label{fig:blockly-games}
+\end{subfigure}%
+~
+\begin{subfigure}[t]{0.57\textwidth}
+\centering
+\includegraphics[height=33mm]{img/hour-of-code-sw}
+\caption{Hour of Code (Star Wars theme)}
+\label{fig:hoc}
+\end{subfigure}
+\caption{Two programming games using nested blocks.}
 \label{fig:blockly-hoc}
 \end{figure}
+
+
+
+
 
 \subsection{Human Resource Machine}
 \label{sec:human-resource-machine}
@@ -170,17 +199,21 @@ Human Resource Machine%
 is an example of an offline computer game for learning programming.
 %Although it is presented as a game,
 %the player spends nearly all the time solving tasks similar to those in the previously mentioned learning systems.
-%The sequence of tasks is non-personalized and nearly linear,
-%with only a few short side branches.
-It also uses block-based programming, but in a different domain:
+% Removal candidate (1 sentence):
+The sequence of tasks is non-personalized and nearly linear,
+with a few short side branches.
+Similarly to the systems above, it also uses block-based programming,
+but now in a different domain:
 it offers low-level programming commands, such as
 input, output, move-from, move-to, add, or jump
 %(figure \ref{fig:human-resource-machine}).
-(figure \ref{fig:hrm-ka}, left).
+(\cref{fig:hrm}).
 % input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
-The game comes with a debugger, giving a possibility to step through the program.
-All elements are explained when they first appear, and programming blocks can
-be explained again simply by dragging the block onto a field with a question
+The programming environment includes a debugger,
+providing a possibility to step through the program.
+All concepts are explained when they first appear in the game,
+and programming blocks can
+be explained again simply by dragging the block onto a dedicated field with a question
 mark.
 
 %\imgWithFootnote[0.7]{human-resource-machine}{Human Resource Machine}%
@@ -193,7 +226,7 @@ Khan Academy has a computer programming curriculum%
 \footnote{Available at \url{https://www.khanacademy.org/computing/computer-programming}.}
 that uses textual programming in JavaScript with functions for drawing shapes
 in absolute coordinates %(figure \ref{fig:khan-academy}).
-(figure \ref{fig:hrm-ka} right).
+(\cref{fig:ka}).
 In addition to programming tasks, it contains text and video explanations, and
 projects. Some videos are in the form of interactive \emph{talk-throughs},
 in which the student can fiddle with the explained code at any moment to understand
@@ -202,16 +235,30 @@ how it works.
 %\imgW[0.8]{khan-academy}%
 %  {Parting Clouds programming task on Khan Academy.}
 
+
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.46\textwidth]{img/human-resource-machine}
-\includegraphics[width=0.515\textwidth]{img/khan-academy}
-\caption{%
-  Left: Human Resource Machine.\protect\footnotemark~%
-  Right: Khan Academy.}
+\begin{subfigure}[t]{0.48\textwidth}
+\centering
+\includegraphics[height=30mm]{img/human-resource-machine}
+\caption{Human Resource Machine\protect\footnotemark}
+\label{fig:hrm}
+\end{subfigure}%
+\begin{subfigure}[t]{0.52\textwidth}
+\centering
+\includegraphics[height=30mm]{img/khan-academy}
+\caption{Khan Academy}
+\label{fig:ka}
+\end{subfigure}
+\caption{Tasks using Assembly-based and JavaScript-based languages.}
 \label{fig:hrm-ka}
 \end{figure}
 \footnotetext{Source: \url{https://tomorrowcorporation.com/humanresourcemachine}.}
+
+
+
+
+
 
 %\subsection{We Can Code}
 %\label{sec:umime}
@@ -295,7 +342,7 @@ Learning programming is difficult,
   because it requires
   to adopt algorithmic thinking,
   understand program execution,
-  and remember formal syntax of a programming language,
+  and remember formal syntax of a programming language;
   all these three skills at once. % at the same time.
 To make learning easier,
   the systems presented in the previous section use diverse strategies,
@@ -316,16 +363,16 @@ with drag-and-drop block-based programming.
 There are two basic types of block-based interfaces:
   either with a square grid defining the program shape,
   often one row per function
-  (figure \ref{fig:lightbot-robotanist}),
-  or the blocks can be nested and assembled arbitrary,
+  (\cref{fig:lightbot-robotanist}),
+  or the blocks can be nested and assembled arbitrarily,
   with no limit on maximum program length,
   often one vertical stack per function
-  (figure \ref{fig:blockly-hoc}).
-Fixed grid is simpler to understand and manipulate,
+  (\cref{fig:blockly-hoc}).
+The fixed square grid is simpler to understand and manipulate with,
   but it does not allow for nesting,
   which is a fundamental feature of computer programs.
 This restriction is usually overcome by
-  combining condition and a command into a single block,
+  combining condition and commands into a single block,
   by using recursion instead of loops,
   and by replacing nested sequences of commands by a new function.
 
@@ -345,9 +392,9 @@ Several controlled experiments were performed to test a hypothesis
   with a block-based programming,
   even when the students will be writing textual code later in the course
   \cite{comparing-blocks-text-price2015, comparing-blocks-text-weintrop2017}.
-Results suggest that block-base interfaces lead to increased learning and
+Results suggest that block-base interfaces indeed lead to increased learning and
 motivation; however, the evidence is not fully convincing. For example, in
-some of these studies the programming interfaces differed in more aspects than
+some of these studies, the programming interfaces differed in more aspects than
 just in using blocks instead of text. Furthermore, these studies do not
 answer when it is the right moment to switch from block-based to textual
 programming.
@@ -363,9 +410,9 @@ However, resemblance to a programming language sometimes
   conflicts with the readability of the blocks for novices.
 Instead of making compromises,
   the system can progressively change the available set of blocks in each level,
-  making them more similar to a textual programming language.
+  making them more and more similar to a textual programming language.
 In the last level of Blockly Games, which employ this strategy,
-  the text on the blocks matches the generated JavaScript completely
+  the text on the blocks matches the generated JavaScript exactly
   \cite{blockly-10-things}.
 
 %TODO:
@@ -382,9 +429,9 @@ Learning systems can help students to track program execution
   and effects performed by the program.
 This can be achieved naturally for turtle graphics,
   where the whole state is just a position and orientation of the turtle,
-  and effects are drawn lines.
-Similarly, in simple games such as those described in
-  \cref{sec:lightbot,sec:problem-solving-tutor,sec:blockly-games,sec:hoc}.
+  and effects are the drawn lines.
+Similarly, in simple games, such as those described in
+  \cref{sec:lightbot,sec:problem-solving-tutor,sec:blockly-games,sec:hoc},
   the grid world visualization contains complete information about the current
   state (\cref{fig:lightbot-robotanist,fig:blockly-hoc}).
 For the simplicity of their visual output,
@@ -397,19 +444,19 @@ For the simplicity of their visual output,
 Most educational systems include instructions
   to explain new concepts such as loops and conditions.
 %However, Neil Fraser explains that students ignore instructions,
-However, students ignore instructions,
+However, many students ignore instructions,
   no matter how prominent they are \cite{blockly-10-things}.
 A solution to this problem are actionable non-ignorable instructions,
   which cannot be closed manually by the student, and disappear only once the
-  student perform the action described in the instruction
-  (\cref{fig:blockly-hoc} left).
+  student performs the action described in the instruction
+  (\cref{fig:blockly-games}).
 
-In additon to the instructions, some systems offer hints, which appear either
+In addition to the instructions, some systems offer hints, which appear either
   upon a student request, or automatically after a certain time of unsuccessful
   solving. Although it is possible to generate a hint in any state,
   using data of students which have successfully solved the task before
   \cite{generating-hints}, the existing systems use a few manually prepared
-  hints, intstead of relying on the automatic approaches.
+  hints, instead of relying on the automatic approaches.
 
 \section{Strategies to Support Motivation}
 %\section{Strategies for Motivation}
@@ -420,7 +467,7 @@ In addition to strategies for easier learning presented in section
 \ref{sec:strategies-for-easier-learning}, it is equally important to create an
 engaging environment supporting students’ motivation.
 All strategies for supporting motivation are based on fulfilling some human
-nees \cite{nvc}. % TODO: cite specific page
+needs \cite{nvc}. % TODO: cite specific page
 \Cref{tbl:motivation-strategies} links needs to common strategies.
 % TODO? related: flow, happiness, switch-elephant (prev. section: path)
 
@@ -456,12 +503,12 @@ even without tasks to solve,
   it should be an interesting toy to play with \cite{book-of-lenses}.
 That is why all Hour of Code tutorials are based on movies and games
   popular among children, such as Angry Brids, Frozen, or Star Wars
-  (\cref{fig:blockly-hoc} right).
+  (\cref{fig:hoc}).
 In such environments, it is possible to assign open-ended tasks,
   or even let the students create whatever they want,
   which works well especially for creative students seeking for self-expression.
 For example, Khan Academy programming curriculum contains many several
-open-ended drawing projects (\cref{fig:hrm-ka} right).
+open-ended drawing projects (\cref{fig:ka}).
 %\cref{sec:robomission.game-world}
 
 \subsection{Entertaining Tasks}
