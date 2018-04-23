@@ -4,7 +4,7 @@
 In the last chapter, we have mentioned how we incorporated many of the
 strategies to support learning and motivation into the game.
 In this chapter, we discuss another strategy which helps to achieve the state of
-flow, the one that is special to ALS  % TODO:reformulate
+flow, the one that is specific to ALS  % TODO:reformulate
 -- recommending tasks of optimal difficulty.
 % ... "which is the secret sauce of adaptive learning systems"
 % ... "which is powered by the AI"
@@ -240,7 +240,7 @@ For each student we keep track of her skill for each problem set. % phase and mi
 The skill $s \in [0, 1]$ represents manifested ability to solve tasks in
 a given problem set. The initial skill is 0, it is increased after each solved
 task from the problem set, and once the skill reaches 1 the problem set is solved.
-The model is decsriptive, because it does not model the probability of
+The model is descriptive, because it does not model the probability of
 a student solving a task (with some performance), but rather an amount
 of verified skill.
 An advantage is that this skill can be shown directly to the student
@@ -259,13 +259,13 @@ considered as good or excellent
 After each solved task session, the corresponding skill is increased by
 an amount $p \in [0, 1]$ which depends on the performance.
 For each performance level, we set the increment such that $1/p$ tasks solved
-with such performance are enough for manifesting mastery in this phase.
-The increment does not depend on the task, because we assume homogeneous
-phases.  %, and it does not depend on our previous estimate
+with such performance are enough to manifest mastery in this phase.
+The increment does not depend on the task (we assume homogeneous phases).
+%, and it does not depend on our previous estimate
 Either a single task solved with an excellent performance, or two
 tasks solved with a good performance are enough to solve the phase,
 translating into $p_{excellent} = 1$ and $p_{good} = 0.5$.
-Furhtermore, solving all tasks in a phase (even if with a poor performance),
+Furthermore, solving all tasks in a phase (even if with a poor performance),
 should be always enough to solve the phase.
 %(this is a technical requirement, stemming from the fact that we do not want
 %to present students with the same task they already solved again)
@@ -274,10 +274,11 @@ $s \leftarrow \min(1, s + \max(p, \frac{1}{n}))$,
 where $n$ is the number of tasks in the phase.
 % The $1/n$ term ensures that the student eventually masters the phase.
 % NOTE: we never want to decrease skill of a student
+% TODO: link to the student model described in theory part
 
 To aggregate the skills of the phases into the skill of the mission,
 we simply take average of the phase skills.
-In future, we would like to use more sohpisticated aggregation,
+In future, we would like to use more sophisticated aggregation,
 which would allow to compensate unsolved tasks in the first phase
 by more difficult tasks in the later phases.
 % TODO: reformulate

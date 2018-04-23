@@ -2,25 +2,26 @@
 \label{chap:adaptive-learning}
 
 % TODO: check terminonogly ALS vs. ITS, citation for ALS
-\emph{Adaptive Learning Systems} (ALS),
-(often called \emph{Intelligent Tutoring Systems}), \cite{its-overview}
+\emph{Adaptive Learning Systems} (ALS)%
+\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}. We prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
 are educational systems that optimize efficiency of the learning process
 using techniques of artificial intelligence.
-Examples of using artificial intelligence to improve a learning system include:
-\begin{itemize}
-\item personalization of the sequence of tasks (CITE), %  for every student,
+For example, artificial intelligence can be used to
+personalize the sequence of tasks (CITE), %  for every student,
 % OR: "choosing the most suitable task for given student"
 %By giving the student a suitable task -- neither too easy, nor too difficult --
 %  it can help the student to achieve the state of flow (\ref{sec:motivation.challenge}).
-\item automatic hints generation \cite{generating-hints},
-\item (automatic feedback generation) (CITE),
-\item skills visualization (CITE),
-\item offline analyses leading to content improvements (CITE). % "actionable insight"
+to visualize skills (CITE),
+and
+to automatically generate hints \cite{generating-hints}. % TODO: and feedback (CITE)
+Techniques from artificial intelligence are also frequently used in
+offline analyses for actionable insight (CITE).
   % (e.g. detection of problematic tasks,
   % or suggestion how to group tasks into problem sets (CITE))
 % TODO: more examples?
 %\item cheating detection (CITE),
 \end{itemize}
+% TODO: consider to remove itemizing.
 
 
 Adaptive learning systems have been already successful in some domains.
@@ -81,7 +82,7 @@ Typical ALS consists of the following components
   monitors and evaluates system behavior,
   allows to perform AB experiments,
   and manages online training of model parameters.
-  In addition to this online (inside-the-system) analyses,
+  In addition to these online (inside-the-system) analyses,
   offline (outside-the-sytem) analyses are often performed as well
   to discover useful interventions to the system  % actionable insight
   (\cref{sec:metrics-and-evaluation}).
@@ -141,8 +142,8 @@ between them
 % with the short definition in the chapter intro
 It is used in the student model to provide structure
 for student skills, in the tutor model to select tasks containing chosen
-concept, in the user interface to group tasks into problem sets, an in the
-analyses to compare each task to the other tasks in the same problem set.
+concept, in the user interface to group tasks into problem sets, an in
+analyses for example to compare each task to the other tasks in the same problem set.
 
 %\begin{itemize}
 %\item Usage:
@@ -170,12 +171,13 @@ analyses to compare each task to the other tasks in the same problem set.
 \subsection{Data and Algorithms}
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
-Entities in the domain (called \emph{chunks}) include tasks
-and other learning content (texts, videos, interactive visualizations),
-problem sets, concepts, and misconceptions.
+Entities in the domain, \emph{learning objects} (CITE),
+include not only tasks, texts, videos, interactive visualizations,
+and other educational content,
+but also problem sets, concepts, and misconceptions.
 In addition to content attributes (e.g. task setting), parameters computed
-from performance data can be associated with chunks (e.g. median solving time).
-Typical modeled relationships between chunks are
+from performance data can be associated with them (e.g. median solving time).
+Typical modeled relationships between learning objects are
 generalization (e.g. programming is a more general concept than loops),
 inclusion (e.g. a problem set contains tasks),
 prerequisities (e.g. single loops are prerequisity for nested loops),
@@ -239,21 +241,24 @@ and similarities (e.g. how similar are tasks with respect to the difficulty).
 
 %\subsection{Algorithms}
 
-In addition to the data, domain models include algorithms. Domain algorithms can be
-divided into three categories: learning, inference, and insight.
+%In addition to the data, domain models include algorithms.
+%Domain algorithms can be divided into three categories:
+%learning, inference, and insight.
+Domain models include algorithms for learning from data, inference, and insight.
 Learning algorithms combine content data (e.g. task statements and solutions)
-and collected historical performance data into a compact domain representation.
-Typically, performance data are used only to learn parameters
+and %collected
+historical performance data into a compact domain representation.
+Performance data are often used only to learn parameters
 (e.g. task difficulties, similarities), while the structure of the domain is
 specified by the content creator.
 %, but structure of the domain can be learned or improved as well (but that requires much more data) (CITE).
 Domain representation can be learned offline, but if new tasks are introduced
 often into the system, then online update of some parameters may be preferred.
 %, but that is usually not the case in the systems for learning programming.
-The second group, inference algorithms, extend interpretation of the domain data.
+The second category, inference algorithms, extend interpretation of the domain data.
 For example, hierarchical domain model may include an algorithm for
 aggregating skills into a parent concept skill. % TODO: another examples
-The third group, insight algorithms, include various visualizations,
+The third category, insight algorithms, include various visualizations,
 such as projection of all tasks to a plane. % TODO:REF:example
 
 
@@ -308,16 +313,17 @@ such as projection of all tasks to a plane. % TODO:REF:example
 
 \emph{Concepts}, or \emph{knowledge components} \cite{knowledge-components},
 are features of tasks that correspond to learnable skills % or "skills that students can learn"
-that are required for solving the task.
+required to solve the task.
 % NOTE: Examples of concepts of different granularity are programming, loops, and while loops.
 % TODO: improve/cite definition of a concept (see e.g. KLI paper -> KC)
 \emph{Concept-free} models assume that all
-tasks belong to a single undivisible concept. While this assumption is
-reasonable for many logic puzzles, it does not hold for introductory programming.
-For example, it is possible to master loops while not knowing functions,
+tasks belong to a single undivisible concept.
+%While this assumption is reasonable for many logic puzzles, it does not hold for introductory programming.
+In introductory programming, this assumption does not hold;
+for example, it is possible to master loops while not knowing functions,
 and vice versa.
 \emph{Concept-aware} domain models
-enable to build richer and more accurate student models.
+enable to build richer, more accurate student models.
 % they describe relationships between tasks, which can help student models to
 % better estimate performance on future tasks.
 
@@ -325,49 +331,58 @@ enable to build richer and more accurate student models.
 
 Depending on the multiplicity of the concept-task relationship,
 concepts are called either \emph{disjoint} (1:m) or \emph{overlapping} (n:m)
-(\cref{fig:concepts-disjoint-overlapping}).
+(\cref{fig:concepts-tasks-relationships} a, b).
 % NOTE: disjoint model = flat clusters of tasks; aka "concept model", "flat
 % concepts" (concepts are flat clusters of tasks, but this name stress that
 % there is no hierarchy).
 % Single programming task may require multiple skills at once, e.g. both loops
 % and conditional commands.
 Overlapping concepts can be represented as sets of tasks, bipartitie graph,
-or a feature matrix (\emph{Q-matrix}), where rows correspond to tasks, columns to concepts,
-and values denote whether given task contains given concept (1), or not (0)
-(\cref{fig:qmatrix}).
+or a feature matrix (\emph{Q-matrix}), where rows correspond to tasks, columns
+to concepts,
+and binary values denote whether given task contains given concept. % or not
 In case of \emph{soft membership}, the sets are fuzzy, the bipartite graph has
 edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
+% (\cref{fig:concepts-tasks-relationship}).
 
-\imgW[0.8]{concepts-disjoint-overlapping}{%
+\imgW[0.9]{concepts-tasks-relationships}{%
   %Comparison of disjoint and overlapping concepts.
-  In the disjoint model (left), each task belong to one concept,
-  while in the overlapping model (right), single task can contain multiple concepts.}
+  In the disjoint model (a), each task (light squares) belong to one concept
+  (dark rectangles).
+  In the overlapping model (b), each task can contain multiple concepts.
+  Membership in concepts can be soft, described by a continuous value
+  (shade of gray in (c)).}
 
-\vspace{-25pt}
+%\imgW[0.8]{concepts-disjoint-overlapping}{%
+%  %Comparison of disjoint and overlapping concepts.
+%  In the disjoint model (left), each task belong to one concept,
+%  while in the overlapping model (right), single task can contain multiple concepts.}
+%
+%\vspace{-25pt}
+%
+%\begin{figure}[htb]
+%\centering
+%\begin{subfigure}{.48\textwidth}
+%\centering
+%\includegraphics[width=0.65\textwidth]{img/qmatrix-binary}
+%\end{subfigure}
+%\begin{subfigure}{.48\textwidth}
+%\centering
+%\includegraphics[width=0.65\textwidth]{img/qmatrix-continuous}
+%\end{subfigure}
+%\caption{%
+%  Binary and continuous Q-matrices corresponding to the
+%  bipartite graph of overlapping concepts from figure \ref{fig:concepts-disjoint-overlapping}.}
+%\label{fig:qmatrix}
+%\end{figure}
 
-\begin{figure}[htb]
-\centering
-\begin{subfigure}{.48\textwidth}
-\centering
-\includegraphics[width=0.65\textwidth]{img/qmatrix-binary}
-\end{subfigure}
-\begin{subfigure}{.48\textwidth}
-\centering
-\includegraphics[width=0.65\textwidth]{img/qmatrix-continuous}
-\end{subfigure}
-\caption{%
-  Binary and continuous Q-matrices corresponding to the
-  bipartite graph of overlapping concepts from figure \ref{fig:concepts-disjoint-overlapping}.}
-\label{fig:qmatrix}
-\end{figure}
 
-
-Concepts can be either defined manually, or detected automatically
+Concepts can be either set manually, or detected automatically
 % NOTE: Automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
 % operating on task-features or task-task similarity matrix
 % (REF: our paper about similarity of programming problems)
 \cite{niznan-thesis, rihak-phd}. % TODO: spec.pages
-Manually selected concepts are interpretable and do not require collected data,
+Manually defined concepts are interpretable and do not require collected data,
 but may be suboptimal for the the intended usage of the domain model.
 %  so they can be used for skills visualizations in the user interface
 %  to provide students with the information about their learning progress.
@@ -513,15 +528,15 @@ Hierachy can be modeled either as a rooted tree (single parent concept allowed),
 or as a directed acyclic graph (DAG) (\cref{fig:concepts-hierarchical}).
 Although hierarchical concepts can be used without modeling the hierarchy
 (using overlapping concepts, e.g. a task can contain while loops and
-a more general loops concept), \cite{learner-models-integration-skills} shows
-that explicitly modeling the hierarchy of concepts in the introductory
-programming can improve accuracy of the overlaying student model.
+a more general loops concept), explicitly modeling the hierarchy of concepts in
+the introductory programming can improve accuracy of the overlaying student model
+\cite{learner-models-integration-skills}.
 % NOTE: paper: they model domain as BN with 4
 %types of nodes: observations, base concepts, integration concepts (TODO:
 %example), cognitive load node; they show that it's important to have also
 %tasks linked directly to these integration concepts.
 
-\imgW{concepts-hierarchical}{Hierarchial concepts -- tree (left), DAG (right).}
+\imgW{concepts-hierarchical}{Hierarchial concepts as a tree (left), or a DAG (right).}
 
 %\begin{itemize}
 %\item in addition to the relationships between tasks and concepts,
@@ -554,16 +569,19 @@ programming can improve accuracy of the overlaying student model.
 
 \subsection{Prerequisities}
 
-Another relationship between chunks are prerequisites. They specify chunks
-that have to be mastered prior to tackling given chunk.  % TODO: grammar?
+Prerequisities specify which learning objects need to mastered prior to
+tackling a given learning object.
 For example, single loop is a prerequisity for nested loops.
-If chunks has multiple prerequisities, there are two common interpretations:
+If learning objects has multiple prerequisities, there are two common interpretations:
 all of the \emph{conjunctive prerequisities} must be mastered,
 while only a single from the set \emph{disjunctive prerequisities} is enough.
-We can describe both of these types in an \emph{and-or graph} (\cref{fig:chunks-prerequisites}).
-However, if only conjunctive prerequisites are needed, then it is enough to represent
-prerequisities by a DAG, called \emph{Partial Order Knowledge Structure} (POKS) (CITE).
-More genererally, each chunk can specify a function from skills of its prerequisities
+Both conjuctive and disjunctive prerequisites can be represented by a single
+\emph{and-or graph} (\cref{fig:chunks-prerequisites}).
+If only conjunctive prerequisites are needed, then it is enough to represent
+prerequisities by a DAG, called \emph{Partial Order Knowledge Structure}
+(POKS) (CITE).
+More genererally, each learning object can specify a function from skills of
+its prerequisities
 into a prior skill (and leave the \emph{ready-to-tackle decision} on a tutor model).
 If the skills can be interpreted as probabilities, then the resulting prerequisity structure
 is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
