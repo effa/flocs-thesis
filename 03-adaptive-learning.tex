@@ -536,7 +536,25 @@ the introductory programming can improve accuracy of the overlaying student mode
 %example), cognitive load node; they show that it's important to have also
 %tasks linked directly to these integration concepts.
 
-\imgW{concepts-hierarchical}{Hierarchial concepts as a tree (a), or a DAG (b).}
+%\imgW{concepts-hierarchical}{Hierarchial concepts as a tree (a), or a DAG (b).}
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[t]{0.4\textwidth}
+\centering
+\includegraphics[height=45mm]{img/concepts-hierarchical-tree}
+\caption{Tree of concepts}
+\label{fig:concepts-hierarchical-tree}
+\end{subfigure}%
+\begin{subfigure}[t]{0.6\textwidth}
+\centering
+\includegraphics[height=45mm]{img/concepts-hierarchical-dag}
+\caption{DAG of concepts}
+\label{fig:concepts-hierarchical-dag}
+\end{subfigure}
+\caption{Hierarchical domain models.}
+\label{fig:concepts-hierarchical}
+\end{figure}
 
 %\begin{itemize}
 %\item in addition to the relationships between tasks and concepts,
@@ -574,7 +592,7 @@ tackling a given learning object.
 For example, single loop is a prerequisity for nested loops.
 If learning objects has multiple prerequisities, there are two common interpretations:
 all of the \emph{conjunctive prerequisities} must be mastered,
-while only a single from the set \emph{disjunctive prerequisities} is enough.
+while only a single from all \emph{disjunctive prerequisities} is enough.
 Conjuctive and disjunctive prerequisites can be represented together by
 \emph{and-or graph} (\cref{fig:chunks-prerequisites}).
 If only conjunctive prerequisites are needed, then it is enough to represent
@@ -589,10 +607,29 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 % NOTE: its-programming: prerequ. between concepts interpreted as BN (params
 % computed from historical data);
 
-\imgW[0.9]{chunks-prerequisites}{%
-  Left: prerequisites between first-level concepts (AND);
-  right: prerequisites between tasks (AND-OR).
-  TODO: "while+if-else"; add separate and-nodes and use arc for ANDs instead of ORs}
+%\imgW[0.9]{chunks-prerequisites}{%
+%  Left: prerequisites between first-level concepts (AND);
+%  right: prerequisites between tasks (AND-OR).
+%  TODO: "while+if-else"; add separate and-nodes and use arc for ANDs instead of ORs}
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[height=45mm]{img/prerequisites-poks}
+\caption{DAG of prerequisites}
+\label{fig:concepts-hierarchical-tree}
+\end{subfigure}%
+\begin{subfigure}[t]{0.55\textwidth}
+\centering
+\includegraphics[height=45mm]{img/prerequisites-and-or}
+\caption{And-or task graph}
+\label{fig:concepts-hierarchical-dag}
+\end{subfigure}
+\caption{Domain models with prerequisites.}
+\label{fig:chunks-prerequisites}
+\end{figure}
+% TODO: fix OR nodes
 
 %\begin{itemize}
 %\item multiple edges -- multiple interpretations: e.g.:
