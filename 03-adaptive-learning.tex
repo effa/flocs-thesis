@@ -180,9 +180,10 @@ from performance data can be associated with them (e.g. median solving time).
 Typical modeled relationships between learning objects are
 generalization (e.g. programming is a more general concept than loops),
 inclusion (e.g. a problem set contains tasks),
-prerequisities (e.g. single loops are prerequisity for nested loops),
+prerequisites (e.g. single loops are prerequisite for nested loops),
 and similarities (e.g. how similar are tasks with respect to the difficulty).
 % NOTE: Relationships can be either hard (binary) or soft (continuous).
+
 
 %\begin{itemize}
 %\item Input data (vs. model data) -- content + collected (historical) data.
@@ -317,7 +318,7 @@ required to solve the task.
 % NOTE: Examples of concepts of different granularity are programming, loops, and while loops.
 % TODO: improve/cite definition of a concept (see e.g. KLI paper -> KC)
 \emph{Concept-free} models assume that all
-tasks belong to a single undivisible concept.
+tasks belong to a single indivisible concept.
 %While this assumption is reasonable for many logic puzzles, it does not hold for introductory programming.
 In introductory programming, this assumption does not hold;
 for example, it is possible to master loops while not knowing functions,
@@ -331,27 +332,47 @@ enable to build richer, more accurate student models.
 
 Depending on the multiplicity of the concept-task relationship,
 concepts are either \emph{disjoint} (1:m) or \emph{overlapping} (n:m)
-(\cref{fig:concepts-tasks-relationships} a, b).
+(\cref{fig:concepts-tasks-disjoint,fig:concepts-tasks-overlapping}).
 % NOTE: disjoint model = flat clusters of tasks; aka "concept model", "flat
 % concepts" (concepts are flat clusters of tasks, but this name stress that
 % there is no hierarchy).
 % Single programming task may require multiple skills at once, e.g. both loops
 % and conditional commands.
-Overlapping concepts can be represented as sets of tasks, bipartitie graph,
-or a feature matrix (\emph{Q-matrix}), where rows correspond to tasks, columns
-to concepts,
+Overlapping concepts can be represented as sets of tasks, bipartite graph,
+or a feature matrix (\emph{Q-matrix}, \cref{fig:concepts-tasks-qmatrix}),
+where rows correspond to tasks, columns to concepts,
 and binary values denote whether given task contains given concept. % or not
 In case of \emph{soft membership}, the sets are fuzzy, the bipartite graph has
 edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
 % (\cref{fig:concepts-tasks-relationship}).
 
-\imgW[0.8]{concepts-tasks-relationships}{%
-  %Comparison of disjoint and overlapping concepts.
-  In the disjoint model (a), each task (light squares) belong to one concept
-  (dark rectangles).
-  In the overlapping model (b), each task can contain multiple concepts.
-  Membership in concepts can be soft, described by a continuous value
-  (shade of gray in (c)).}
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[t]{0.25\textwidth}
+\centering
+\includegraphics[height=45mm]{img/concepts-tasks-disjoint}
+\caption{Disjoint sets}
+\label{fig:concepts-tasks-disjoint}
+\end{subfigure}%
+\begin{subfigure}[t]{0.44\textwidth}
+\centering
+\includegraphics[height=45mm]{img/concepts-tasks-overlapping}
+\caption{Overlapping concepts}
+\label{fig:concepts-tasks-overlapping}
+\end{subfigure}
+\begin{subfigure}[t]{0.3\textwidth}
+\centering
+\includegraphics[height=45mm]{img/concepts-tasks-qmatrix}
+\caption{Q-matrix}
+\label{fig:concepts-tasks-qmatrix}
+\end{subfigure}
+\caption{%
+  Relationship between tasks (light squares) and concepts (dark rectangles).
+  Darkness in the Q-matrix shows strength of the relationship.} % TODO: grammar
+\label{fig:concepts-tasks-relationships}
+\end{figure}
+
+
 
 %\imgW[0.8]{concepts-disjoint-overlapping}{%
 %  %Comparison of disjoint and overlapping concepts.
@@ -524,7 +545,7 @@ Concepts vary in granularity and create hierarchies.
 For example, programming concept include loops, loops include while loops,
 and while loops include programs with a single while-not-end loop.
 % TODO: CITE \cite{kli-framework}?
-Hierachy can be modeled either as a rooted tree (single parent concept allowed),
+Hierarchy can be modeled either as a rooted tree (single parent concept allowed),
 or as a directed acyclic graph (DAG) (\cref{fig:concepts-hierarchical}).
 Although hierarchical concepts can be used without modeling the hierarchy
 (using overlapping concepts, e.g. a task can contain while loops and
@@ -585,23 +606,24 @@ the introductory programming can improve accuracy of the overlaying student mode
 %\end{itemize}
 
 
-\subsection{Prerequisities}
+\subsection{Prerequisites}
 
-Prerequisities specify which learning objects need to mastered prior to
+Prerequisites specify which learning objects need to mastered prior to
 tackling a given learning object.
-For example, single loop is a prerequisity for nested loops.
-If learning objects has multiple prerequisities, there are two common interpretations:
-all of the \emph{conjunctive prerequisities} must be mastered,
-while only a single from all \emph{disjunctive prerequisities} is enough.
-Conjuctive and disjunctive prerequisites can be represented together by
-\emph{and-or graph} (\cref{fig:chunks-prerequisites}).
+For example, single loop is a prerequisite for nested loops.
+% If learning objects has multiple prerequisites, there are two common interpretations:
+There are two common interpretations of multiple prerequisites:
+\emph{conjunctive prerequisites} (all must be be mastered)
+and \emph{disjunctive prerequisites} (one mastered is enough).
+Conjunctive and disjunctive prerequisites can be represented together by
+\emph{and-or graph} (\cref{fig:prerequisites-and-or}).
 If only conjunctive prerequisites are needed, then it is enough to represent
-prerequisities by a DAG, called \emph{Partial Order Knowledge Structure}
-(POKS) (CITE).
-More genererally, each learning object can specify a function from skills of
-its prerequisities
+prerequisites by a DAG, called \emph{Partial Order Knowledge Structure}
+(POKS, \cref{fig:prerequisites-poks}) (CITE).
+More generally, each learning object can specify a function from skills of
+its prerequisites
 into a prior skill (and leave the \emph{ready-to-tackle decision} on a tutor model).
-If the skills can be interpreted as probabilities, then the resulting prerequisity structure
+If the skills can be interpreted as probabilities, then the resulting prerequisite structure
 is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 % TODO: CITE BN.
 % NOTE: its-programming: prerequ. between concepts interpreted as BN (params
@@ -616,15 +638,15 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 \centering
 \begin{subfigure}[t]{0.45\textwidth}
 \centering
-\includegraphics[height=45mm]{img/prerequisites-poks}
+\includegraphics[height=40mm]{img/prerequisites-poks}
 \caption{DAG of prerequisites}
-\label{fig:concepts-hierarchical-tree}
+\label{fig:prerequisites-poks}
 \end{subfigure}%
 \begin{subfigure}[t]{0.55\textwidth}
 \centering
-\includegraphics[height=45mm]{img/prerequisites-and-or}
+\includegraphics[height=40mm]{img/prerequisites-and-or}
 \caption{And-or task graph}
-\label{fig:concepts-hierarchical-dag}
+\label{fig:prerequisites-and-or}
 \end{subfigure}
 \caption{Domain models with prerequisites.}
 \label{fig:chunks-prerequisites}
@@ -661,18 +683,20 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 
 \subsection{Similarities}
 
-Similarity is a symetric relationship between chunks of the same type, for example tasks.
-It can be represented either as a matrix of soft similarities, or as a graph with
-edges between the most similar chunks (\cref{fig:similarities-tasks}).
+%Similarity is a symmetric relationship between learning objects of the same type, for example tasks.
+Similarities can be represented either as a matrix of values from range $[0, 1]$
+(the higher number, the more similar objects),
+or as a graph with edges between the most similar learning objects
+(\cref{fig:similarities-tasks}).
 In the \emph{network model} \cite{rihak-phd}, task similarities are used to propagate
 knowledge about one task (observed performance) to another tasks (estimated performance)
 directly, without using concepts.
 % example: if student solves a task -> update our performance estimates on all other tasks
-The most important decision when computing similarities is what data to use,
-and it depends both on the intended usage and on the amount of collected data
-available (e.g. performance data are useful if the similarities are used in the student
-model to predict future performance; however, it requires that enough performance
-data is collected so that the computed similarities are stable).
+The most important decision when computing similarities is what data to use.
+The decision depends both on the intended usage and on the amount of collected data
+available. For example, performance data are useful if the similarities are used in a
+student model to predict future performance; however, it requires that enough
+performance data is collected in order for the computed similarities to be stable.
 %Similarities between tasks, can be computed from either a feature matrix using task settings and solutions,
 % NOTE: 2nd level of similarity - often helps (when using performance data) \cite{rihak-phd}
 % REF: to our research on item similarity in introductory programming
