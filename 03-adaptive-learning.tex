@@ -917,7 +917,7 @@ families of predictive models of a student between tasks,
 focusing on their versions % suitable for ALS for learning programming,
 that can incorporate multiple concepts, learning and allow for online update. % of parameters.
 
-\subsection{Skill and Performance}
+\subsection{Skills and Performance}
 %\subsection{Data and Algorithms}
 
 Student model use a domain model as an underlying structure,
@@ -1151,7 +1151,7 @@ Inspired by the rating of chess players \cite{elo-rating},
   the model interprets each attempt  to solve a task
   as a match between the student and the task.
 After this match ends, skill and difficulty estimates are revised.
-Depedning on whether the student solves the task better or worse than expected
+Depending on whether the student solves the task better or worse than expected
   by the model, her skill is increased or decreased.
 The size of the change is proportional to the prediction error, which is the difference
   between the predicted and the actual performance ($p_{ij} - \hat{p}_{ij}$). % (``surprise'').
@@ -1242,13 +1242,13 @@ The size of the change is proportional to the prediction error, which is the dif
 \label{sec:dbn}
 
 Another family of student models is based on \emph{Bayesian networks} (CITE),
-where nodes correspond to either hidden or observed skills and performances,
+where nodes correspond to either skills and performances,
 and edges are given by the underlying domain (e.g. prerequisites).
 % (inclusion, prerequisites, and generalization).  % TODO:check.
 % BN estimates probability distribution of possible values of the hidden nodes.
 % Structure of a BN is a DAG, in which edges encode conditional dependencies between nodes.
-In \emph{Dynamic Bayesian Networks} (DBN) (CITE) each node also depends
-on its own value before the last observation.
+In \emph{dynamic Bayesian networks} (DBN) (CITE) nodes also depend
+on their own previous value. % before the last observation.
 Each node is assigned a \emph{state function} mapping possible states of the nodes it
 depends on to the probability distribution of its values.  % TODO: check
 
@@ -1284,17 +1284,16 @@ depends on to the probability distribution of its values.  % TODO: check
 %\label{sec:bkt}
 
 \emph{Bayesian Knowledge Tracing} (BKT) \cite{bkt} % TODO: check the paper
-is a widely used special case of DBN, which makes a few assumptions to allow
-for fast update of hidden skills. % and prediction of performances.
-It assumes flat disjoint concepts, binary skills (i.e. each skill is either
-known or not known), and constant rate of learning (after each task session, there
-is a constant probability of learning that skill, independently of the
-performance).
-With these assumption, each skill can be tracked by a separate simple
+is a widely used special case of DBN, which makes several assumptions to allow
+for simple online update: % of hidden skills: % and prediction of performances.
+disjoint concepts, binary skills, and constant rate of learning.
+%It assumes flat disjoint concepts, binary skills (i.e. each skill is either
+%known or not known), and constant rate of learning (after each task session, there
+%is a constant probability of learning that skill, independently of the
+%performance).
+With these assumptions, each skill can be tracked by a separate
 \emph{Hidden Markov Model} (CITE).
-
 % TODO: figure (for programming example) + formulas for prediction and update
-
 %\begin{itemize}
 %\item special case of DBN, assuming single or disjoint concepts (REF: relevant domain section)
 %\item (for single skill, it is even a special case of HMM)
@@ -1307,26 +1306,35 @@ With these assumption, each skill can be tracked by a separate simple
 %\item TODO: formulas for prediction and update; figure / or just REF
 %\item TODO: relevant extension: BKT with hiearchical model of skills
 %\end{itemize}
-
-BKT is too restricted for the domain of introductory programming, where skills are
+However, BKT is too restricted for the domain of introductory programming,
+where skills are
 overlapping and not binary. Other models try to find a balance
-between too restricted BKT and general, but intractable DBN.
+between BKT and general DBN.
+% between too restricted BKT and general, but intractable DBN.
 % "BKT can be extended in several ways to relaxing some of its assumptions, while..."
-Typical strategy is to restrict the form of the state function in DBN.
-For example, conjunctive and disjunctive prerequisites can be allowed,
-leading to \emph{And-Or DBN}, where each node is either AND or OR type, which
-determines the form of its state function
-\cite[section 5.1.2]{student-models-review-2012}. % TODO? elaborate/example
-Another strategy is to restrict domain of each node to a small number values,
-(e.g. learned, ready to learn, not ready to learn),
-which then allows to model general prerequisites %between concepts
-\cite{its-programming}.
+For example, the state function in DBN can be restricted to a specific form
+\cite[section 5.1.2]{student-models-review-2012},
+domain of each node can be restricted to a small number of values
+(e.g. learned, ready to learn, not ready to learn) \cite{its-programming},
+or BKT can be combined with logistic regression to estimate contribution
+of multiple skills \cite{bn-logreg}.
+
+
+%Typical strategy is to restrict the form of the state function in DBN.
+%For example, conjunctive and disjunctive prerequisites can be allowed,
+%leading to \emph{And-Or DBN}, where each node is either AND or OR type, which
+%determines the form of its state function
+%\cite[section 5.1.2]{student-models-review-2012}. % TODO? elaborate/example
+%Another strategy is to restrict domain of each node to a small number values,
+%(e.g. learned, ready to learn, not ready to learn),
+%which then allows to model general prerequisites %between concepts
+%\cite{its-programming}.
 %(e.g. easy, just right, difficult) \cite{its-programming}
 % NOTE: Can be also used for hierarchies (probably).
 % NOTE: In this work, some of the concepts are self declared, other inferred; so there
 % is no inclusion-relationship, I'm not sure if that is also important factor (?)
-Overlapping skills can be tracked by an extension of BKT, where contribution
-of each skill is estimated using logistic regression \cite{bn-logreg}.
+%Overlapping skills can be tracked by an extension of BKT, where contribution
+%of each skill is estimated using logistic regression \cite{bn-logreg}.
 % TODO: check and extend
 % TODO: explore another relevant BKT extensions
 
@@ -1357,7 +1365,7 @@ of each skill is estimated using logistic regression \cite{bn-logreg}.
 %\end{itemize}
 
 
-\subsection{Evaluation}
+\subsection{Evaluation of Student Models}
 \label{sec:student-model-evaluation}
 
 Ideally, student models should be evaluated with respect to their intended usage.
@@ -1439,7 +1447,7 @@ instead of blindly maximizing one of them. % predictive accuracy,
 are used to help students with learning.
 %They either substitute a teacher
 %(e.g. for learning at home), or support them by making some decisions ...
-They support teachers by making the decisions that are difficult for people
+They support teachers by making decisions that are difficult for people
 to do optimally, % "that require data analysis,"
 such as assigning the most suitable task to each student individually.
 % NOTE: enabling her to concentrate on the tasks for which the people are better
@@ -1637,15 +1645,14 @@ to the next topic.  % TODO: concept / topic / PS?
 % NOTE: "fixed outcome, varied time" (vs. classical education: fixed time, varied outcome)
 % NOTE: Study on how the mastery learning helps (or rather how the violations
 % of mastery learning lead to worse results): \cite{mastery-learning-scale}.
-Mastery decision % or \emph{mastery criterion}?
-is an algorithm that returns a binary information about whether the student
-(represented by a student model) already mastered a problem set or not.
+%Mastery decision % or \emph{mastery criterion}?
+%is an algorithm that returns a binary information about whether the student
+%(represented by a student model) already mastered a problem set or not.
 % TODO: check
-
-Typically, mastery is decided by comparing skill estimated by the student
-model to a threshold. % "calibrated threshold"
-If the student model is predictive, then the probability that the current problem
-set is mastered can be used for comparison instead of the skill.
+Typically, mastery is decided by comparing skill estimated by a student model
+(or predicted probability of good performance) to a threshold. % "calibrated threshold"
+%If the student model is predictive, then the probability that the current problem
+%set is mastered can be used for comparison instead of the skill.
 If the practiced problem set is homogeneous (all tasks have approximately same difficulty
 and cover the same concepts), than it is sufficient to use a concept-free
 single-difficulty descriptive student model,  % TODO: make sure the terms are defined
@@ -2016,7 +2023,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy}).
 %\end{itemize}
 
 
-\subsection{Evaluation}
+\subsection{Evaluation of Tutor Models}
 \label{tutors.evaluation}
 
 Tutor models can be evaluated either online (in a running system using that model),
@@ -2046,13 +2053,14 @@ e.g. to limit the number of models to evaluate online to just a few.
 %long-term impact (reinforcement learning view).
 %Supervise learning
 Evaluation of accuracy of recommendations requires to define which
-recommendations are correct, e.g. if the observed performance was neither too
-low, nor too high.
+recommendations are correct. For example, a \emph{suitable task} should
+result in neither too low, nor too high performance.
 %(TODO:check)
 A \emph{confusion matrix} can be computed for a series of events,
-based on the correctness of the followed recommendation and on whether the
+based on the suitability of the item and whether the
 evaluated algorithm would recommend the same item
-(either within top $N$ items, or with a probability above given threshold).
+with a probability above given threshold.
+%(either within top $N$ items, or with a probability above given threshold).
 % The resulting \emph{confusion matrix} can be summarized by metrics such as
 % accuracy, precision, and recall (CITE).
 %Depending on the user interface, fixed $N$ might or might not make sense. If not,...
@@ -2060,7 +2068,7 @@ There are metrics that avoid dependency on a specific threshold, such as
 AUC (Area Under Curve), or MAP (Mean Average Precision) (CITE).  % TODO: or DCG?
 
 Unfortunately, collected data are highly biased, either by the
-adaptive behavior of the system, or by the self-selection bias. % TODO:CITE
+adaptive behavior of the system, or by the self-selection bias (CITE). % TODO:CITE
 % (REF to the section on feedback loops for how to partially deal with this issue).
 % It's possible to use only a ranodmly recommended tasks, but then it limits
 % the amount of evaluation data.
@@ -2080,10 +2088,11 @@ or evaluation using simulated students (requires strong assumptions).
 In addition to the accuracy of recommendations, % (how likely they are good / lead to flow)
 further properties of tutor models can be also explored,
 e.g. robustness, diversity, % TODO:CITE
-or composition (balance between introduction of new concepts and practicing the old ones)
-\cite{progression-analysis}.  % balanced progression, balanced composition.
-It is also possible to measure metrics that quantify the amount of effort needed
-to learn some concepts , e.g. \emph{WHITE} (Whole Intelligent Tutoring System Empirical Evaluation) \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
+composition (balance between introduction of new concepts and practicing the old ones)
+\cite{progression-analysis},  % balanced progression, balanced composition.
+or the amount of effort needed to learn new concepts \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
+%It is also possible to measure metrics that quantify the amount of effort needed
+%to learn some concepts , e.g. \emph{WHITE} (Whole Intelligent Tutoring System Empirical Evaluation) \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
 
 Another evaluation strategy is to measure agreement between recommendations
 produced by two tutor models. If the correlation is high, then it is not
@@ -2382,9 +2391,9 @@ and measure the average performance.
 % too difficult and frustrate students for a long time (as opposed to geography,
 % where each question is fast.
 To avoid frustrating by too difficult tasks, only tasks that the student already have
-skills for can be considered for the random selection; the observed performance
-then need to be weighted by the difficulty of the chosen task.
-This combined metric has an advantage of incorporating both learning and engagement.
+skills for can be considered for the random selection,
+weighting the observed performance by the difficulty of the chosen task.
+% This combined metric has an advantage of incorporating both learning and engagement.
 % TODO: elaborate
 % TODO: check/discuss if this combined metric makes sense.
 % TODO: think of a metric that would combine learning and engagement.
@@ -2461,14 +2470,14 @@ This combined metric has an advantage of incorporating both learning and engagem
 % NOTE: Terminology: online evaluation / monitoring = AB experiemnts
 % (long-term) + live evaluation (short-term)
 
-In ALS, new versions of models are deployed from time to time
+New versions of models are deployed from time to time
   with parameters learned from the recent data.
-The behavior of the new models must be carefully monitored
+The behavior of the new models is monitored
   to detect problems as soon as possible,
-  without waiting a few weeks to evaluate an AB experiment.
-For this purpose, metrics that can be linked immediately
-  to the tutor model actions are needed.
-These metrics are called \emph{online attributable metrics}.  % TODO: find used terminology
+  without waiting to evaluate an AB experiment.
+For this purpose, \emph{online attributable metrics} that can be linked
+  immediately to the tutor model actions are needed.
+  % TODO: find used terminology
 %and this type of evaluation as \emph{live evaluation}
 % OR "short term metrics"
 
