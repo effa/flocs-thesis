@@ -29,8 +29,8 @@ For instance, Map Outlines%
   \footnote{Available at \url{https://outlinemaps.org}.},
   developed by Adaptive Learning research group at Masaryk University,
   is an intelligent web application for learning geography.
-It has been used by tens of thousands of students
-  and online experiments have confirmed
+It has been used by tens of thousands of students and
+  online experiments have confirmed
   that the adaptivity of the system helps to improve the learning outcome
   \cite{alg.evaluation-geography}.
 %In addition to geography, similar adaptive web applications
@@ -50,6 +50,7 @@ Problem Solving Tutor (\cref{sec:problem-solving-tutor}) can be considered
 as ALS, since it recommends next tasks to solve after completion of a task.
 % TODO: mention Umime programovat (mastery for the decision-making game)
 
+\smallskip
 Typical ALS consists of the following components
 \cite{its-learner-models}:
 %(extended version of \cite{its-learner-models})
@@ -69,12 +70,12 @@ Typical ALS consists of the following components
   (instructional policy)
   %(instructional policy, instructional strategy, pedagogical module) --
   decides what should given student do next
-  (e.g. which topic to pratice, which task to solve)
+  (e.g. which topic to practice, which task to solve)
   (\cref{sec:tutor-modeling}).
 \item \emph{User interface model} %(tutor-student interface) --
   describes how the domain, student, and tutor models are presented to
-  the student (e.g., task environment, overview of tasks and
-  topics, achieved skills, recommended tasks)
+  the student (e.g., task environment, overview of problem sets, achieved
+  skills, recommended tasks)
   (\cref{sec:user-interface}).
 %\item \emph{Sensor model} - collecting data from the interactions with the system
 %  (includes monitoring?).
@@ -134,15 +135,15 @@ Typical ALS consists of the following components
 \section{Domain Modeling}
 \label{sec:domain-modeling}
 
-Domain model captures educational content, covered concepts, and relationships
+Domain model describes educational content, concepts, and relationships
 between them
 %together with an algorithm to lear parameters such as streghts of the relationships from data
 \cite{its-domain-models}.
 % (TODO: improve the definition, REF to examples), make sure it's consistent
 % with the short definition in the chapter intro
-It is used in the student model to provide structure
-for student skills, in the tutor model to select tasks containing chosen
-concept, in the user interface to group tasks into problem sets, an in
+It is used in student models to provide structure
+for student skills, in tutor models to filter tasks containing chosen
+concept, in the user interface to group tasks into problem sets, and in
 analyses for example to compare each task to the other tasks in the same problem set.
 
 %\begin{itemize}
@@ -168,20 +169,21 @@ analyses for example to compare each task to the other tasks in the same problem
 %\end{itemize}
 
 
-\subsection{Data and Algorithms}
+\subsection{Learning Objects}
+%\subsection{Data and Algorithms}
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
 Entities in the domain, \emph{learning objects} (CITE),
 include not only tasks, texts, videos, interactive visualizations,
 and other educational content,
 but also problem sets, concepts, and misconceptions.
-In addition to content attributes (e.g. task setting), parameters computed
-from performance data can be associated with them (e.g. median solving time).
+Learning objects are associated with content attributes (e.g. task setting)
+and parameters computed from performance data (e.g. median solving time).
 Typical modeled relationships between learning objects are
 generalization (e.g. programming is a more general concept than loops),
 inclusion (e.g. a problem set contains tasks),
 prerequisites (e.g. single loops are prerequisite for nested loops),
-and similarities (e.g. how similar are tasks with respect to the difficulty).
+and similarities (e.g. how similar are tasks with respect to their difficulty).
 % NOTE: Relationships can be either hard (binary) or soft (continuous).
 
 
@@ -242,25 +244,26 @@ and similarities (e.g. how similar are tasks with respect to the difficulty).
 
 %\subsection{Algorithms}
 
-%In addition to the data, domain models include algorithms.
-%Domain algorithms can be divided into three categories:
-%learning, inference, and insight.
-Domain models include algorithms for learning from data, inference, and insight.
-Learning algorithms combine content data (e.g. task statements and solutions)
-and %collected
-historical performance data into a compact domain representation.
-Performance data are often used only to learn parameters
-(e.g. task difficulties, similarities), while the structure of the domain is
-specified by the content creator.
-%, but structure of the domain can be learned or improved as well (but that requires much more data) (CITE).
-Domain representation can be learned offline, but if new tasks are introduced
-often into the system, then online update of some parameters may be preferred.
-%, but that is usually not the case in the systems for learning programming.
-The second category, inference algorithms, extend interpretation of the domain data.
-For example, hierarchical domain model may include an algorithm for
-aggregating skills into a parent concept skill. % TODO: another examples
-The third category, insight algorithms, include various visualizations,
-such as projection of all tasks to a plane. % TODO:REF:example
+%% EXT:
+%%In addition to the data, domain models include algorithms.
+%%Domain algorithms can be divided into three categories:
+%%learning, inference, and insight.
+%Domain models include algorithms for learning from data, inference, and insight.
+%Learning algorithms combine content data (e.g. task statements and solutions)
+%and %collected
+%historical performance data into a compact domain representation.
+%Performance data are often used only to learn parameters
+%(e.g. task difficulties, similarities), while the structure of the domain is
+%specified by the content creator.
+%%, but structure of the domain can be learned or improved as well (but that requires much more data) (CITE).
+%% EXT: Domain representation can be learned offline, but if new tasks are introduced
+%%often into the system, then online update of some parameters may be preferred.
+%%, but that is usually not the case in the systems for learning programming.
+%The second category, inference algorithms, extend interpretation of the domain data.
+%For example, hierarchical domain model may include an algorithm for
+%aggregating skills into a parent concept skill. % TODO: another examples
+%The third category, insight algorithms, include various visualizations,
+%such as projection of all tasks to a plane. % TODO:REF:example
 
 
 %\begin{itemize}
@@ -403,13 +406,18 @@ Concepts can be either set manually, or detected automatically
 % operating on task-features or task-task similarity matrix
 % (REF: our paper about similarity of programming problems)
 \cite{niznan-thesis, rihak-phd}. % TODO: spec.pages
-Manually defined concepts are interpretable and do not require collected data,
-but may be suboptimal for the the intended usage of the domain model.
-%  so they can be used for skills visualizations in the user interface
-%  to provide students with the information about their learning progress.
-To combine advantages of both approaches, ALS can start with expert-provided
-concepts and later use automatic techniques to suggest how to improve
-the mapping from tasks to concepts \cite[chapter 3]{its-domain-models}.
+To use collected data while keeping the interpretability of manually defined
+concepts, automatic techniques can be used to suggest small improvements to the
+current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
+
+
+%Manually defined concepts are interpretable and do not require collected data,
+%but may be suboptimal for the intended usage of the domain model.
+%%  so they can be used for skills visualizations in the user interface
+%%  to provide students with the information about their learning progress.
+%To combine advantages of both approaches, ALS can start with expert-provided
+%concepts and later use automatic techniques to suggest how to improve
+%the mapping from tasks to concepts \cite[chapter 3]{its-domain-models}.
 
 %TODO: note on more complicated semantics of edges in the overlapping model,
 %and assumptions leading to reduction of number of modeled parameters
@@ -755,7 +763,7 @@ performance data is collected in order for the computed similarities to be stabl
 \label{sec:student-modeling}
 
 Student model captures state of the student (e.g. skills) estimated from the
-past performance and typically enables to predict future performance
+past performance. Usually, it enables to predict future performance
 %Comprehensive overviews of student modeling:
 \cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}.
 It is used in tutor models to detect mastery, or to select tasks matching
@@ -822,21 +830,21 @@ and in the analyses to get insight into how the students are learning.  % TODO: 
 
 \begin{itemize}
 \item \emph{Modeled components.}
-The most explored area is skill modeling, but broader student models may also
+The most explored area is skill modeling; broader student models may also
 include emotions (e.g. frustration, boredom), needs, preferences, motivation,
 and metacognition (CITE).
 %(knowledge about their knowledge) (REF).
 % NOTE: + preferences, e.g. about ideal challenge level, amount of text, theme,
 % e.g. prefer tasks with a shooting spaceship or with ice-skating princesses
 \item \emph{Underlying domain model.}
-The simplest models assume either a single concept,
-or each task as separete concept. %(REF: slepe-mapy).
-More complex models can include multiple concepts,
-hierarchies, prerequisities, or similarities.
+The simplest models assume a single concept,
+% or each task as separate concept. %(REF: slepe-mapy).
+more complex models can include multiple concepts,
+hierarchies, prerequisites, or similarities (\cref{sec:domain-modeling}).
 \item \emph{Granularity of modeled events.}
 Some models track the state of the student during solving a task
 (CITE), % TODO:CITE: rule-based models, constraint based models),
-while others only describe the state of the student between task sessions
+while others only describe the state of the student between tasks %sessions
 \cite{kli-framework}. % TODO: check
 % or even only between finished problem sets.
 \item \emph{Discrete or continuous skills.}
@@ -855,7 +863,7 @@ most models track only a single point estimate
 %a few numbers (e.g. mean and standard deviation for normal distribution).
 \item \emph{Representation of performance}.
   Binary correctness (solved or failed),
-  discrete performance levels (poor, good, excellent),
+  discrete performance levels (e.g., poor, good, and excellent),
   continuous performance (in range $[0, 1]$),
   %(\emph{partial credit} CITE) ($p_{ij} \in [0, 1]$)
   or solving time.
@@ -866,11 +874,11 @@ most models track only a single point estimate
 %  (?? and/or represent skill as probabilist distributions?)
 \item \emph{Predictive or descriptive}.
 Predictive models can predict the performance of the student on a given task,
-while descritive models only summarize the past performance of the student.
+while descriptive models only summarize the past performance of the student.
 % TODO:CITE/example (NCC)
 \item \emph{Online or offline.}
 In online models, parameters can be updated gradually after each task session
-(i.e. there exist an efficent online algorithm for learnining model parameters).
+(i.e. there exist an efficient online algorithm for learning model parameters).
 % CITE: online algorithms.
 \item \emph{Assumptions about learning.}
 Models used in adaptive testing (CITE), assume no learning.
@@ -878,9 +886,9 @@ Models used in adaptive testing (CITE), assume no learning.
 %They can be reduced to models with
 %learning by reestimating skills from the full student history after each task
 %session, but this leads to offline models.
-Some models that contain learning include additional assumptions
-about how the learning happens, e.g. a constant increase of skill
-after each attempted task (CITE:PFA?).
+Models that contain learning include additional assumptions
+about how the learning happens. % CITE:examples
+% e.g. a constant increase of skill after each attempted task (CITE:PFA?).
 %For example, BKT (\cref{sec:bkt}) assumes a discrete transtion from unknown
 %state to the known state.
 %\item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
@@ -904,10 +912,15 @@ after each attempted task (CITE:PFA?).
 %allow for multiple skills per task,
 %assume learning and can be updated online.
 
+In \cref{sec:logistic-models,sec:dbn}, we describe two broad
+families of predictive models of a student between tasks,
+focusing on their versions % suitable for ALS for learning programming,
+that can incorporate multiple concepts, learning and allow for online update. % of parameters.
 
-\subsection{Data and Algorithms}
+\subsection{Skill and Performance}
+%\subsection{Data and Algorithms}
 
-Student model use a domain model as an underlaying structure,
+Student model use a domain model as an underlying structure,
 assigning estimated \emph{skills} to each concept, % either estimated or self-declared
 and \emph{performances} (either observed or predicted) to each task.
 % NOTE: space-time tradeoof: Typically, all but the predicted performances are stored.
@@ -915,29 +928,33 @@ and \emph{performances} (either observed or predicted) to each task.
 %  or even full distribution of the estimated skill.
 Similarly as skills summarize all previous task sessions of the student,
 performance is a compressed information about the series of
-interactions with the task (code edits, executions, taken hings, provided rating).
-Simple performance compression can only consider solving times and specify two
-thresholds (for excelllent and good performance).
-The compression algorithm can be more complex,
-such as a trained recurrent neural network reading a series
+interactions with the task (code edits, executions, taken hints, user rating). %self-evaluation).
+Performance compression can range from simple heuristics based on summary statistics
+(e.g. specifying solving time thresholds for excellent and for good performance),
+through more complex algorithms that would consider all interactions with the task,
+to a recurrent neural network reading the series
 of program snapshots embeddings  % AST transformed to vectors of floats
 \cite{student-models-deep-learning}.
 % NOTE: Sweat spot: somewhere in between these two rather extreme approaches.
 
 While the compression causes a loss of information, it also reduces noise
-present in the raw data. Most importantly, it helps to avoid a combinatoric
+present in the raw data. Moreover, it helps to avoid a combinatoric
 explosion of considering each type of model with multiple different types of
-input data or their combination.
+input data and their combinations.
+The most important consideration for performance compression is what data
+(correctness, solving time, etc.) to use \cite{alg.mastery}.
+%Used data play an important role, e.g. in \cite{alg.mastery}
 %Having a unified simple performance input makes the models simpler and easier to interpret.
-Used data play an important role, e.g. in \cite{alg.mastery} they achieved
-better results in mastery learning by incorporating solving times into the
-performance instead of using just binary correctness (TODO: domains? math,
-czech).
+%Used data play an important role, e.g. in \cite{alg.mastery} they achieved
+%better results in mastery learning by incorporating solving times into the
+%performance instead of using just binary correctness (TODO: domains? math,
+%czech).
 
-There are three types of algorithms connected to student models: online update
-of skills after a new task session, prediction of performance on given task,
-and insight algorithms that work either with a single student (e.g. skills
-visualization), or a population (e.g. learning and engagement curves).
+% EXT:
+%There are three types of algorithms linked to student models: online update
+%of skills after a new task session, prediction of performance on given task,
+%and insight algorithms that work either with a single student (e.g. skills
+%visualization), or a population (e.g. plotting learning curves).
 
 
 
@@ -1094,12 +1111,12 @@ visualization), or a population (e.g. learning and engagement curves).
 
 
 \subsection{Logistic Models}  % OR "Elo models"
-\label{sec:elo}  % TODO: rename label
+\label{sec:logistic-models}
 
-Logistic models \cite{irt-visual-guide}  % TODO:check-cite
-are a family of student models that predict performance $P(s, d)$
+Logistic model \cite{irt-visual-guide}  % TODO:check-cite
+predicts performance $P(s, d)$
 of a student with skill $s$ on a task with difficulty $d$
-using a logistic function applied to the difference between the skill and the difficulty:
+using a logistic function applied to the difference between the skill and the difficulty (\cref{fig:logistic-model}).
 
 \begin{figure}[htb]
 \centering
@@ -1123,7 +1140,7 @@ using a logistic function applied to the difference between the skill and the di
 P(s, d) = \frac{1}{1 + e^{-(s - d)}}
 \end{equation}
 \end{subfigure}
-\caption{One-parameter Unidimensional Logistic Model}
+\caption{One-parameter unidimensional logistic model.}
 \label{fig:logistic-model}
 \end{figure}
 
@@ -1138,13 +1155,23 @@ Depedning on whether the student solves the task better or worse than expected
   by the model, her skill is increased or decreased.
 The size of the change is proportional to the prediction error, which is the difference
   between the predicted and the actual performance ($p_{ij} - \hat{p}_{ij}$). % (``surprise'').
+  Elo can be further extended to utilize more complex domain models,
+  such as multiple concepts with a hierarchy,
+  or similarities between tasks \cite{rihak-phd}.
+% TODO: explore and cite more extensions
+%There are variants of Elo that work with more complex domain models,
+%such as \emph{Multiple Skills Elo} for multiple disjoint concepts,
+%\emph{Hierarchical Elo} for tree hierarchical model,
+%and \emph{Network Elo} that utilize task similarities of the network domain model
+%\cite{rihak-phd}.
 
-There are variants of Elo that work with more complex domain models,
-such as \emph{Multiple Skills Elo} for multiple disjoint concepts,
-\emph{Hierarchical Elo} for tree hierarchical model,
-and \emph{Network Elo} that utilize task similarities of the network domain model
-\cite{rihak-phd}.
-(TODO: what about overlapping concepts, which we are most interested in?)
+
+%There are variants of Elo that work with more complex domain models,
+%such as \emph{Multiple Skills Elo} for multiple disjoint concepts,
+%\emph{Hierarchical Elo} for tree hierarchical model,
+%and \emph{Network Elo} that utilize task similarities of the network domain model
+%\cite{rihak-phd}.
+%(TODO: what about overlapping concepts, which we are most interested in?)
 
 
 %\begin{itemize}
@@ -1212,13 +1239,14 @@ and \emph{Network Elo} that utilize task similarities of the network domain mode
 
 
 \subsection{Dynamic Bayesian Networks}
+\label{sec:dbn}
 
-Another family of student models is based on \emph{Bayesian networks} (BN) (CITE).
-Nodes in a BN correspond to either hidden or observed skills and performances.
-BN estimates probability distribution of possible values of the hidden nodes.
-Structure of a BN is a DAG, in which edges encode conditional dependencies between nodes.
-Edges are given by the
-underlaying domain (inclusion, prerequisities, and generalization).  % TODO:check.
+Another family of student models is based on \emph{Bayesian networks} (CITE),
+where nodes correspond to either hidden or observed skills and performances,
+and edges are given by the underlying domain (e.g. prerequisites).
+% (inclusion, prerequisites, and generalization).  % TODO:check.
+% BN estimates probability distribution of possible values of the hidden nodes.
+% Structure of a BN is a DAG, in which edges encode conditional dependencies between nodes.
 In \emph{Dynamic Bayesian Networks} (DBN) (CITE) each node also depends
 on its own value before the last observation.
 Each node is assigned a \emph{state function} mapping possible states of the nodes it
@@ -1263,7 +1291,7 @@ known or not known), and constant rate of learning (after each task session, the
 is a constant probability of learning that skill, independently of the
 performance).
 With these assumption, each skill can be tracked by a separate simple
-\emph{Hidden Markov Model} (HMM) (CITE).
+\emph{Hidden Markov Model} (CITE).
 
 % TODO: figure (for programming example) + formulas for prediction and update
 
@@ -1285,7 +1313,7 @@ overlapping and not binary. Other models try to find a balance
 between too restricted BKT and general, but intractable DBN.
 % "BKT can be extended in several ways to relaxing some of its assumptions, while..."
 Typical strategy is to restrict the form of the state function in DBN.
-For example, conjunctive and disjunctive prerequisities can be allowed,
+For example, conjunctive and disjunctive prerequisites can be allowed,
 leading to \emph{And-Or DBN}, where each node is either AND or OR type, which
 determines the form of its state function
 \cite[section 5.1.2]{student-models-review-2012}. % TODO? elaborate/example
@@ -1341,14 +1369,14 @@ so proxy quality measures are used instead,
 such as \emph{predictive accuracy}, % \cite{pelanek-evaluation-student-models} %(TODO:+page),
 \emph{reliability and resolution} %of predictions
 \cite{pelanek-evaluation-student-models}, %(TODO:+page),
-and \emph{plausability} of parameters \cite{learner-models-integration-skills}.
+and \emph{plausibility} of parameters \cite{learner-models-integration-skills}.
+Although better predictions often have a positive impact on the application,
+it is not guaranteed \cite{evaluation-leopard}.
 % and stability of parameters (CITE).
 % TODO: (all above) briefly describe
 % TODO: another proxies? e.g. reread \cite{pelanek-evaluation-student-models}
-Although better predictions often have a positive impact on the application,
-it is not guaranteed \cite{evaluation-leopard},
-so it is important not to blindly maximize predictive accuracy,
-and to use several proxy quality measures.  % or "evaluation approaches"
+Therefore, it is safer to observe several proxy quality measures,
+instead of blindly maximizing one of them. % predictive accuracy,
 % NOTE: If online experiments show that the more accurate predictions would
 % actually lead to decrease of the long-term objectives, then these
 % improvements in the predictive power should not by applied.
@@ -1427,11 +1455,11 @@ into
 \emph{mastery decision} (Continue to practice the current topic?),
 \emph{curriculum sequencing} (Which topic to learn next?),
 and \emph{task recommendation} (Which task to solve next?).
-Inner-loop tutors decide when and which hint to show to the
+Problem solving tutors decide when and which hint to show to the
 student. % "to help them to solve the task."
 Currently, the inner loop decisions are better performed by people,
 % given they can afford 1:1 interactions (and given there even is a teacher...)
-so ALS should primarily focus on the outer loop decisions \cite{als-future}.
+so ALS often focus only on the outer loop decisions \cite{als-future}.
 % TODO: think over (e.g. it's also clear that teachers/students usually want
 % to control curriculum loop themselves, so only the mastery decision
 % and task recommendation within given problem set is left for the ALS.)
@@ -1611,16 +1639,16 @@ to the next topic.  % TODO: concept / topic / PS?
 % of mastery learning lead to worse results): \cite{mastery-learning-scale}.
 Mastery decision % or \emph{mastery criterion}?
 is an algorithm that returns a binary information about whether the student
-(represented by a student model) already mastered the topic or not.
+(represented by a student model) already mastered a problem set or not.
 % TODO: check
 
 Typically, mastery is decided by comparing skill estimated by the student
 model to a threshold. % "calibrated threshold"
-If the student model is predictive, then the threshold can be compared directly
-to the probability that the current topic is mastered.
+If the student model is predictive, then the probability that the current problem
+set is mastered can be used for comparison instead of the skill.
 If the practiced problem set is homogeneous (all tasks have approximately same difficulty
-and cover the same concepts), than it is enough to use a simple concept-free
-single-difficulty descriptive student models,  % TODO: make sure the terms are defined
+and cover the same concepts), than it is sufficient to use a concept-free
+single-difficulty descriptive student model,  % TODO: make sure the terms are defined
 such as \emph{Exponential Moving Average} (EMA) of past performances
 \cite{alg.mastery}.
 % TODO: It would be maybe better to define EMA in Student models section
@@ -1632,8 +1660,8 @@ balance between overpractice and underpactice (CITE).
 \emph{Effort-score} plot and metrics
 \cite{alg.mastery, evaluation-leopard, learner-models-integration-skills} % TODO: check
 help to choose the threshold.
-Alternatively, the theshold can be calibrated by requiring a specific time or
-number of tasks for specific students (e.g. exactly five tasks for a genius who
+Alternatively, the threshold can be calibrated by requiring a specific time or
+number of tasks for specific students (e.g. exactly three tasks for a genius who
 solves each task with a high performance). % TODO:CITE
 
 
@@ -1720,30 +1748,31 @@ of problem sets that lead to acquiring of a requested knowledge
 % small PS (then we dont' want the student to solve all PS and they probably
 % want to solve all tasks in the selected PS.
 
-Problem set selection focuses on the prerequisity structure.
+Problem set selection focuses on the prerequisite structure.
 % NOTE: Often there even exists a reasonable total ordering of problem sets.
 %  (consider units in a textbook).
 % Especially, if the UI shows which PS are solved and which not.
-If the number of problem sets is reasonably small, we can assume that the student
-wants to solve all of them, in which case it make sense to recommend the problem
+If the number of problem sets is reasonably small, students often want
+want to solve all of them, in which case it make sense to recommend the problem
 sets from the easiest to the most difficult.
-If the ordering is not total, one of the problem sets with satisfied prerequisties
+If the ordering is not total, one of the problem sets with satisfied prerequistes
 can be recommended.
 % NOTE: even safe to omit and leave decison on the student/teacher
 If the number of problem sets is large, it may be useful to use a complex student model
 and choose a problem set with difficulty matching student's skills.
 %that can predict performance on all problem sets and select the problem set
 %that the student is likely to solve, but not too easily.
-Alternative approach is to describe which problem sets naturally \emph{follow} after another,
-and recommend those that follow after the one which was just solved .
-% NOTE: used in UmimeX
-% ?? usually: "follow" = reversed-OR-prerequisity,
-Both for the prerequisities and the follow relation, it is important that the
-domain model maches reality.  % TODO: isn't it too strong requirement to "mach
-% the reality"?
-To some extent, offline analysis can be used to either verify, improve or even
-discover the structure. To overcome limitations of the offline evaluation,
-a few competing domain models can be compared in an online experiment.
+An alternative approach is to describe which problem sets naturally \emph{follow} after another,
+and recommend those that follow after the one which was just solved.
+% NOTE: Extension candidate:
+%% NOTE: used in UmimeX
+%% ?? usually: "follow" = reversed-OR-prerequisity,
+%Both for the prerequisites and the follow relation, it is important that the
+%domain model matches reality.  % TODO: isn't it too strong requirement to "mach
+%% the reality"?
+%To some extent, offline analysis can be used to either verify, improve or even
+%discover the structure. To overcome limitations of the offline evaluation,
+%a few competing domain models can be compared in an online experiment.
 
 
 \subsection{Task Recommendation}  % ?? "task selection"
@@ -1756,21 +1785,21 @@ from a given problem set for a given student.
 The problem is usually solved in two phases:
 First, filters (\emph{hard constraints}) are applied,
 such as avoiding already solved
-tasks, avoiding the task which was just given up by the student,
-and following prerequisities.  % prerequisities are more suited for PS
+tasks, avoiding the task which was just given up, % by the student,
+and not violating prerequisites.  % prerequisites are more suited for PS
 Second, for all remaining tasks a preference is computed based on several criteria
 (\emph{soft constraints}), such as
 optimal difficulty (how well does the task matches student skills),
 balance between diversity and coherence
 (avoiding too similar tasks as the previous one, especially if the student
 solved the task easily, but also avoiding too large changes),
-and exploration (value of information received by observing the student solving this task).
+and exploration (value of information gained by observing the student solving this task).
 % TODO: Rewrite to avoit too long sentences.
 
-If the problem set is homogeneous, than the criteria should have similar values
-for all tasks, and therefore it is safe to select the task \emph{uniformly at random},
-which maximizes exploration.
-Otherwise, the typical approach is to manually select an error function for each
+If the problem set is homogeneous, than all tasks should have similar preferences,
+in which case it is safe to select the task \emph{uniformly at random},
+maximizing exploration.
+Otherwise, a typical approach is to manually select an error function for each
 soft constraint, compute \emph{weighted sum of errors} for each task and
 select the task with the smallest error.
 % TODO:CITE
@@ -1794,11 +1823,14 @@ select the task with the smallest error.
 % to evalute long-term metric (or using RL approach) , which is possibly doable
 % at least as a simulated experiment.
 
-To balance exploration and exploitation, the system can either select tasks at random
-with the probability proportional to its preference (inversed and normalized error),
+There are three common ways how to balance exploration and exploitation.
+First approach is to incorporate the uncertainty about the task into the selection
+preference, % = prefer unexplored tasks, "UCB"
+second is to select the task at random with the probability proportional to its
+preference, %  (inverted and normalized error),
 % NOTE: either directly or with exponential weighting (ie. using softmax)
-or it can choose a random task with probability $\epsilon$, and the best task otherwise,
-which is call \emph{$\epsilon$-greedy strategy}.
+and third is to choose the best task with probability $\epsilon$, and
+a random task otherwise (\emph{$\epsilon$-greedy strategy}).
 % NOTE: the second approach complicates the selection, it makes it more explicit, how much
 % random choices are there and which of them they are (which simplifies evaluation).
 
@@ -1991,12 +2023,12 @@ Tutor models can be evaluated either online (in a running system using that mode
 or offline (using collected data from a system using a different model).
 % NOTE: Terminology: Online (on-policy) vs. offline (off-policy).
 Offline evaluation of tutor models is difficult due to missing data.
-If the evaluated algorithm recommends a different task then the student attempted
+If the evaluated algorithm recommends a different task than the student attempted
 at that point, there is no easy way to tell if the recommendation is correct. % "is good or not."
 The extremeness of data sparsity makes offline evaluation so challenging,
 that many ALS completely skip this type of evaluation, % TODO: ALS or ALSs?
 apply offline evaluation only to student models (\cref{sec:student-model-evaluation}),
-and check quality of tutor models only on the live traffic
+and check quality of the deployed tutor model on the live traffic
 (\cref{sec:live-evaluation}).
 % (possible paragraph split)
 Nevertheless, realizing that the offline evaluation serves just as
@@ -2018,9 +2050,9 @@ recommendations are correct, e.g. if the observed performance was neither too
 low, nor too high.
 %(TODO:check)
 A \emph{confusion matrix} can be computed for a series of events,
-based on the correctness of the followed recommendation and on whether, the
+based on the correctness of the followed recommendation and on whether the
 evaluated algorithm would recommend the same item
-(either within top $N$ items, or with a probality above given threshold).
+(either within top $N$ items, or with a probability above given threshold).
 % The resulting \emph{confusion matrix} can be summarized by metrics such as
 % accuracy, precision, and recall (CITE).
 %Depending on the user interface, fixed $N$ might or might not make sense. If not,...
@@ -2038,7 +2070,7 @@ evaluation on only random recommendations (decreases the amount of data),
 % data to be uniform (or rather to match expected distribution when the evaluated
 % model would be used?)
 online evaluation (time-consuming),
-or evalution using simulated students (requires assumptions).
+or evaluation using simulated students (requires strong assumptions).
 % TODO: REF/CITE (all above).
 % TODO: (check and REF for online experiments of tutor models,
 %  hub: \cite[p.2/138]{rl-for-tutors-evaluation})
@@ -2128,16 +2160,17 @@ User interface (UI) is also a common subject of personalization (CITE).
 % Not only in ALS, generally in HCI research.
 % NOTE: also called "tutor-student interface"
 UI provides visualizations that are based on
-the domain model (e.g. overview of tasks and problem sets),
+the domain model (e.g. overview of problem sets),
 the student model (e.g. visualization of skills CITE),
 or the tutor model (e.g. displaying recommendations).
 % progress towards mastery (= tutor+student model) (progressbar)
 All these visualizations can be personalized using
-preferences or other information from the student model
+% preferences or other
+information from the student model
 \cite[chapter 9]{its-domain-models}.
 For example,
 %explanations of concepts can include student's name, and
-tasks can use student's favourite characters and colors.
+task stories can use student's favourite characters. % and colors.
 % NOTE: Reference to self has been shown to improve retention.
 % TODO: better examples? (favourite colors, favourite music, sound volume,
 % possibly even theme if it doesn't change semantics of the task, e.g.
@@ -2172,17 +2205,16 @@ or using text instead of blocks % (everything else being equal).
 
 
 Analysis layer allows for \emph{iterative improvement} of ALS.
-To decide which interventions improves the quality of ALS,
+To decide which interventions has improved the quality of ALS,
   suitable metrics must be measured. %chosen and evaluated.
-Metrics are also used for optimizing models,
-  from fitting parameters % and (choosing) hyperparameters
-  to selecting the best model from a set of candidates.
-
-ALS cannot be perfect from its fist deployment,
+%Metrics are also used for optimizing models,
+%  from fitting parameters % and (choosing) hyperparameters
+%  to selecting the best model from a set of candidates.
+ALS cannot be perfect from its first deployment,
 and its quality increases with the number of small
 incremental improvements performed, so it is beneficial to
 evaluate and update the system frequently.
-This \emph{rule of the loop} \cite{book-of-lenses},
+This \emph{rule of the loop} \cite{book-of-lenses}
 %\emph{``Plan to launch and iterate''}
 was observed to hold for ALS \cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}, % TODO: better resource?
 as well as for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
@@ -2192,7 +2224,7 @@ as well as for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
 % perfect final definition. (...) Facilitate iterative improvement of domain models."
 % NOTE: Example: - start with the initial ("expert-provided") domain model ->
 % collect data -> analyse -> refine -> iterate (\cite[chapter 10]{its-domain-models})
-Frequent high-quality evalution is achieved by a combination of
+Frequent high-quality evaluation is achieved by a combination of
   online AB experiments, live monitoring, and offline analyses.
   % \cite{stupid-tutoring-systems-intelligent-humans}
 %- offline analyses -- the term ``human in the loop''
@@ -2240,12 +2272,12 @@ Frequent high-quality evalution is achieved by a combination of
 %% TODO: Without going into further philosophical discussions or attempts for precise definitions,
 %%       ... we will just adopt this paradigm for the rest of this thesis.
 
-At first sight, a reasonable mission of a system for learning programming
-  is a long-term increase in algorithmic-problem solving skill in the population.
+At first sight, the mission of a system for learning programming is clear:
+  long-term increase in algorithmic problem solving skill in the population.
 However, other factors than the skill should be considered as well.
 For example, how much students enjoy the time in the system,
   how they are satisfied with their accomplishments,
-  or if they are motivated for further learning of programming.
+  and if they are motivated for further learning of programming.
 %;  all of these may play an important role for the overall happiness in the population.
 %In the \emph{Rules of Machine Learning}, Martin Zinkevich
 %  points out that there is no single best objective \cite[][Rule \#39]{google-ml-rules}.
@@ -2262,19 +2294,19 @@ Such formulation reminds developers of the system not to overfocus on one factor
 % TODO: Term AB experiments should be explained in this section!
 
 Mission statements are not measurable.
-Measurable metrics are needed to make informed decisions,
+However, measurable metrics are needed to make informed decisions,
 such as which of two recommendation algorithms to prefer.
 While being precise and measurable, these proxy metrics
 should still be related to the mission as much as possible.
 
-First, the mission statement can be refined into the following
-  long term objective: ``maximizing the number of students
+The mission statement can be refined into the following
+  long term objective: ``maximize the number of students
   who mastered elementary programming while having fun''.  % + "quickly"?
-Second, we need to define terms used in this objective in a measurable way.
+Next, we need to define terms used in this objective in a measurable way.
   %terms ``mastering elementary programming'', ``quickly'', and ``having fun''
 While ``achieving mastery in elementary programming'' can be
   formulated as an objective criterion
-  (e.g. the student solved at least 5 tasks for each concept with at least good performance),
+  (e.g. the student solved at least 3 tasks for each concept with at least good performance),
   ``having fun'' requires the system to ask students about their subjective feelings.
 % NOTE: Terminology: objective = metric that we know we want to either maximize/minimize
 % TODO: note that looking at the mission statement above,
@@ -2285,8 +2317,9 @@ While ``achieving mastery in elementary programming'' can be
 %the period must be long enough to collect enough data for statistical significant results
 %and to avoid seasonality effects (such as different user behavior during weekends).
 %% NOTE + to allow for more exploration, which improves long-term performance of the system.
-To avoid subjective ratings, ALS can start with simpler long-term objectives
-(which are also easier to measure and interpret), such as the following:
+To avoid subjective ratings, ALS can start with simpler long-term objectives,
+which are also easier to measure and interpret
+(examples in \cref{tbl:long-term-metrics}).
 
 % TODO: consider: Users --> Students
 \begin{table}[htb]
@@ -2301,22 +2334,23 @@ Returning Users & students who solved a task in 2 different days \\
 % Learning Users ? & students who solved $\geq$ 10 tasks in last 30 days \\
 Converted Users & students who finished all levels in the system \\
 % (or just the last one, or have solve at least one task from each level) \\
-Daily Solved Tasks & tasks solved by all students \\
+Daily Solved Tasks & tasks solved in total by all students \\
 Daily Flow Tasks & tasks solved with not too low/high performance \\
 % "Flow-minutes" & Total time spent on tasks with good performance. \\
 % "Solving hours"
 \bottomrule
 \end{tabular}
+\caption{Examples of long term objectives.}
 \label{tbl:long-term-metrics}
 \end{table}
 
 It is not clear which of these metrics is the best proxy for the mission.
-Fortunately, at the beginning of optimization process all the metrics
+Fortunately, at the beginning of optimization process, all the metrics
 which reflect the mission tend to improve simultaneously, no matter which one
 is chosen to be directly optimized.
 %\cite[][Rule \#12]{google-ml-rules}.
-To understand how their values are influenced by changes in the learning system,
-it is useful to measure and report all of them from the beginning
+Nevertheless, it is useful to measure and report all of them from the beginning,
+to understand how their values are influenced by changes in the learning system
 %\cite[][Rule \#2]{google-ml-rules}.
 \cite[][Rule 2, 12]{google-ml-rules}.
 
@@ -2459,15 +2493,13 @@ Finally, individual errors are aggregated, and the average error is reported.
 
 \subsection{Offline Evaluation}
 
-Offline experiments use historical collected data
-  to avoid the cost of live evaluation.
+Offline experiments use historical data to avoid the cost of live evaluation.
 They allow to reuse the same data to evaluate several models,
   to obtain the results quickly,
-  and to avoid potential negative impact on students if the evaluated model is poor.
-Offline evaluation is typically used as a check before pushing
-  a new model online.
-It can be also used for model selection,
-  including hyperparameters search.
+  and to avoid negative impact on students if the evaluated model is poor.
+Offline evaluation is typically used
+for model selection (e.g. hyperparameters search),
+and as a check before deploying a new model. % online.
 %Finally, offline learning algorithms typically use
 %  a metric to guide them
 %  (these are discussed in section \ref{sec:metrics-to-guide-learning}).
@@ -2477,18 +2509,18 @@ It can be also used for model selection,
 %  same distribution of events as will occur in the live system,
 %  which limits generalization guarantees of such evaluation.
 
-The specific approaches to evalution of student and tutor models and related challenges
-were already discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
+The specific approaches to evaluation of student and tutor models and related challenges
+were discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
 A common consideration for an unbiased offline evaluation is to ensure that
 the model is tested on different data then it was trained on.
 Unlike in many supervised learning problems, events from ALS
-cannot be divided into train and test group randomly, because that would lead
+cannot be divided into train and test set randomly, since that would lead
 to predicting past from the future. % optimistic bias
-The evaluation should mimic as close as possible the real scenario of how will be
-the trained models used, which leads to a methodology called \emph{online
+The evaluation should mimic as close as possible the real scenario of how the
+trained model will be used, which leads to a methodology called \emph{online
 evaluation with generalization to new learners} \cite{pelanek-learner-modeling}.
-If generalization to new tasks, problem sets, or populations (e.g. schools)
-is also desirable, then the data should be split accordingly \cite{student-models-review-2012}.
+If generalization to new tasks or problem sets %, or user populations (e.g. schools)
+is desirable, then the data should be split accordingly \cite{student-models-review-2012}.
 
 
 %TODO: comparing to other (e.g. currently used) model (e.g. correlation between predictions, delta between recommendations):
@@ -2587,33 +2619,26 @@ Online experiments relies on live data,
 while offline experiments use historical data.
 Simulated experiments provide a third alternative,
   which does not require any collected data at all.
-
 % TODO: make the text more specific for programming
 Not needing collected data makes simulations widely and easily applicable.
 On the other hand, researchers must be careful when interpreting
   the results of a simulation, as the simulation results are % nothing more than
   just consequences of used assumptions.
-Nevertheless, simulation is perfect for models debugging,
-  for example to find fatal errors in the implementation.
-Simulations can aslo suggest
-how much data at least is needed for robust estimation of parameters (CITE),
-what is the best performance that can be achieved with such model (CITE),
-or which parameters of the model which parameters of the model are important
-and should be learned, and which can be safely set manually (CITE). % without frequent retraining.
+Nevertheless, simulation is perfect for model debugging,
+%  for example to find fatal errors in the implementation.
+% understanding its behavior in controlled scenarios,
+finding the best possible performance achievable by a model,
+or understanding which parameters are sensitive and should be learned from data,
+and which can be safely set manually (CITE). % without frequent retraining.
 % the last technique is called \emph{Sensitivity analysis}
 % TODO: CITE examples (e.g. in thran-thesis)
-
-%In practice, simulations can also take advantage of collected data
-%  if they are available -- to estimate some of the model parameters
-%  or to evaluate how much the model predictions agree with
-%  what was observed in the reality.
+Simulations can take advantage of historical data that are available.
+For example, in \cite{instructor-dashboard-realtime} an instructor dashboard is
+evaluated by combining collected performance data % TODO:check
+with simulated instructors interacting with the dashboard.
 
 %NOTE: - view on the simulation experiments as the 3rd way between deduction (mathematical models) and induction (statistics, machine learning)
 
-Simulations can take advantage of collected data that are available.
-For example, in \cite{instructor-dashboard-realtime} an instructor dashboard is evaluated
-by combining collected performance data % TODO:check
-with simulated instructors interacting with the dashboard.
 
 %\subsection{Data Collection}
 %
