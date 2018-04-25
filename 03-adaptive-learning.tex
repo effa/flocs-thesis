@@ -3,7 +3,7 @@
 
 % TODO: check terminonogly ALS vs. ITS, citation for ALS
 \emph{Adaptive Learning Systems} (ALS)%
-\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}. We prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
+\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}, but we prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
 are educational systems that optimize efficiency of the learning process
 using techniques of artificial intelligence.
 For example, artificial intelligence can be used to
@@ -651,7 +651,6 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 \caption{Domain models with prerequisites.}
 \label{fig:chunks-prerequisites}
 \end{figure}
-% TODO: fix OR nodes
 
 %\begin{itemize}
 %\item multiple edges -- multiple interpretations: e.g.:
@@ -706,20 +705,21 @@ performance data is collected in order for the computed similarities to be stabl
 
 \begin{figure}[htb]
 \centering
-\begin{subfigure}{.48\textwidth}
+\begin{subfigure}[t]{.48\textwidth}
 \centering
-\includegraphics[width=0.78\textwidth]{img/similarities-tasks}
+\includegraphics[width=0.7\textwidth]{img/similarity-matrix}
+\caption{Similarity matrix}
 \end{subfigure}
-\begin{subfigure}{.48\textwidth}
+\begin{subfigure}[t]{.48\textwidth}
 \centering
-\includegraphics[width=0.78\textwidth]{img/similarities-graph}
+\includegraphics[width=0.8\textwidth]{img/similarity-graph}
+\caption{Similarity graph}
 \end{subfigure}
 \caption{%
-  Left: Similarity matrix between tasks;
-  right: Similarity graph with edges between tasks with high similarity.
-  TODO: make it readable}
+  Representation of soft and hard similarities between tasks.}
 \label{fig:similarities-tasks}
 \end{figure}
+
 
 %\subsection{Evaluation}
 %
