@@ -7,15 +7,16 @@
 are educational systems that optimize efficiency of the learning process
 using techniques of artificial intelligence.
 For example, artificial intelligence can be used to
-personalize the sequence of tasks (CITE), %  for every student,
+personalize the sequence of tasks \cite{proso}, %  for every student,
+% TODO: better citation?
 % OR: "choosing the most suitable task for given student"
 %By giving the student a suitable task -- neither too easy, nor too difficult --
 %  it can help the student to achieve the state of flow (\ref{sec:motivation.challenge}).
-to visualize skills (CITE),
+to visualize skills \cite{open-learner-model},
 and
 to automatically generate hints \cite{generating-hints}. % TODO: and feedback (CITE)
 Techniques from artificial intelligence are also frequently used in
-offline analyses for actionable insight (CITE).
+offline analyses for actionable insight \cite{alg.mastery}.
   % (e.g. detection of problematic tasks,
   % or suggestion how to group tasks into problem sets (CITE))
 % TODO: more examples?
@@ -173,7 +174,7 @@ analyses for example to compare each task to the other tasks in the same problem
 %\subsection{Data and Algorithms}
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
-Entities in the domain, \emph{learning objects} (CITE),
+Entities in the domain, \emph{learning objects} \cite{learning-objects} % TODO:reread
 include not only tasks, texts, videos, interactive visualizations,
 and other educational content,
 but also problem sets, concepts, and misconceptions.
@@ -342,7 +343,8 @@ concepts are either \emph{disjoint} (1:m) or \emph{overlapping} (n:m)
 % Single programming task may require multiple skills at once, e.g. both loops
 % and conditional commands.
 Overlapping concepts can be represented as sets of tasks, bipartite graph,
-or a feature matrix (\emph{Q-matrix}, \cref{fig:concepts-tasks-qmatrix}),
+or a feature matrix
+(\emph{Q-matrix} \cite{qmatrix}, \cref{fig:concepts-tasks-qmatrix}),
 where rows correspond to tasks, columns to concepts,
 and binary values denote whether given task contains given concept. % or not
 In case of \emph{soft membership}, the sets are fuzzy, the bipartite graph has
@@ -1241,16 +1243,16 @@ The size of the change is proportional to the prediction error, which is the dif
 \subsection{Dynamic Bayesian Networks}
 \label{sec:dbn}
 
-Another family of student models is based on \emph{Bayesian networks} (CITE),
-where nodes correspond to either skills and performances,
+Another family of student models is based on \emph{Bayesian networks} \cite{probabilistic-ai},
+in which nodes correspond to skills and performances,
 and edges are given by the underlying domain (e.g. prerequisites).
 % (inclusion, prerequisites, and generalization).  % TODO:check.
 % BN estimates probability distribution of possible values of the hidden nodes.
 % Structure of a BN is a DAG, in which edges encode conditional dependencies between nodes.
-In \emph{dynamic Bayesian networks} (DBN) (CITE) nodes also depend
+In \emph{dynamic Bayesian networks} (DBN) \cite{dbn} nodes also depend
 on their own previous value. % before the last observation.
-Each node is assigned a \emph{state function} mapping possible states of the nodes it
-depends on to the probability distribution of its values.  % TODO: check
+Each node is assigned a \emph{state function} mapping possible states of its
+parents to the probability distribution of its values.  % TODO: check
 
 
 %\begin{itemize}
@@ -1292,7 +1294,7 @@ disjoint concepts, binary skills, and constant rate of learning.
 %is a constant probability of learning that skill, independently of the
 %performance).
 With these assumptions, each skill can be tracked by a separate
-\emph{Hidden Markov Model} (CITE).
+\emph{Hidden Markov Model} \cite{hmm}.
 % TODO: figure (for programming example) + formulas for prediction and update
 %\begin{itemize}
 %\item special case of DBN, assuming single or disjoint concepts (REF: relevant domain section)
@@ -2068,7 +2070,7 @@ There are metrics that avoid dependency on a specific threshold, such as
 AUC (Area Under Curve), or MAP (Mean Average Precision) (CITE).  % TODO: or DCG?
 
 Unfortunately, collected data are highly biased, either by the
-adaptive behavior of the system, or by the self-selection bias (CITE). % TODO:CITE
+adaptive behavior of the system, or by the self-selection bias \cite{data-collection-bias}.
 % (REF to the section on feedback loops for how to partially deal with this issue).
 % It's possible to use only a ranodmly recommended tasks, but then it limits
 % the amount of evaluation data.
