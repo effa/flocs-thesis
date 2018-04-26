@@ -2066,20 +2066,25 @@ e.g. to limit the number of models to evaluate online to just a few.
 %each recommendation (supervised learning view), or it can consider its
 %long-term impact (reinforcement learning view).
 %Supervise learning
-Evaluation of accuracy of recommendations requires to define which
+Evaluation of recommendations accuracy requires to define which
 recommendations are correct. For example, a \emph{suitable task} should
 result in neither too low, nor too high performance.
 %(TODO:check)
-A \emph{confusion matrix} can be computed for a series of events,
-based on the suitability of the item and whether the
-evaluated algorithm would recommend the same item
-with a probability above given threshold.
+An ideal recommender would recommend all of the suitable tasks and none of
+the unsuitable tasks.
+The error can be quantified in many ways, e.g. by \emph{RMSE} or \emph{AUC}
+\cite[section\,8.3.2]{recsys}.
+%A \emph{confusion matrix} can be computed for a series of events,
+%based on the suitability of the item and whether the
+%evaluated algorithm would recommend the same item
+%with a probability above given threshold.
 %(either within top $N$ items, or with a probability above given threshold).
 % The resulting \emph{confusion matrix} can be summarized by metrics such as
 % accuracy, precision, and recall (CITE).
 %Depending on the user interface, fixed $N$ might or might not make sense. If not,...
-There are metrics that avoid dependency on a specific threshold, such as
-AUC (Area Under Curve), or MAP (Mean Average Precision) (CITE).  % TODO: or DCG?
+%There are metrics that avoid dependency on a specific threshold, such as
+%AUC (Area Under Curve), or MAP (Mean Average Precision) (CITE).  % TODO: or DCG?
+% TODO: explore, check (with reffed book) -> elaborate/delete
 
 Unfortunately, collected data are highly biased, either by the
 adaptive behavior of the system, or by the self-selection bias \cite{data-collection-bias}.
@@ -2117,9 +2122,10 @@ In this case, low agreement would indicate a bug in the model
 or data pipeline \cite[][Rule 24]{google-ml-rules}.
 To compare agreement between two recommendation algorithms, we can use
 \emph{ranking metrics}, such as \emph{Spearman's correlation coefficient},
+over complete lists of ordered items
+\cite[section\,8.3.2.3]{recsys}.
 % \emph{Kendall's rank correlation coefficient}, or ??Discounted cumulative gain (REF).
 % TODO: other ranking metrics (average precision, lift index)?
-that use complete lists of ordered items.
 
 
 
@@ -2179,13 +2185,15 @@ that use complete lists of ordered items.
 \section{User Interface}
 \label{sec:user-interface}
 
-User interface (UI) is also a common subject of personalization (CITE).
+% TODO: citations to relevant research
+
+User interface (UI) is also a common subject of personalization. % (TODO:CITE).
 % Not only in ALS, generally in HCI research.
 % NOTE: also called "tutor-student interface"
 UI provides visualizations that are based on
 the domain model (e.g. overview of problem sets),
-the student model (e.g. visualization of skills CITE),
-or the tutor model (e.g. displaying recommendations).
+the student model (e.g. visualization of skills \cite{open-learner-model}),
+or the tutor model (e.g. displaying recommendations). % TODO: citations
 % progress towards mastery (= tutor+student model) (progressbar)
 All these visualizations can be personalized using
 % preferences or other
@@ -2318,7 +2326,8 @@ Such formulation reminds developers of the system not to overfocus on one factor
 
 Mission statements are not measurable.
 However, measurable metrics are needed to make informed decisions,
-such as which of two recommendation algorithms to prefer.
+such as which of two recommendation algorithms to prefer
+(e.g. after conducting an A/B test). % TODO: cite A/B tests, in the context of ALS or RecSys
 While being precise and measurable, these proxy metrics
 should still be related to the mission as much as possible.
 
@@ -2643,22 +2652,30 @@ while offline experiments use historical data.
 Simulated experiments provide a third alternative,
   which does not require any collected data at all.
 % TODO: make the text more specific for programming
-Not needing collected data makes simulations widely and easily applicable.
+Not needing collected data makes simulations widely applicable.
 On the other hand, researchers must be careful when interpreting
   the results of a simulation, as the simulation results are % nothing more than
   just consequences of used assumptions.
-Nevertheless, simulation is perfect for model debugging,
+
+Nevertheless, simulations are perfect for model debugging,
 %  for example to find fatal errors in the implementation.
 % understanding its behavior in controlled scenarios,
 finding the best possible performance achievable by a model,
+exploring hypothetical scenarios where the collected data would be too biased
+and for which the ground truth does not exist
+(e.g. clustering of tasks into concepts \cite[section\,3.3]{rihak-phd}),
 or understanding which parameters are sensitive and should be learned from data,
-and which can be safely set manually (CITE). % without frequent retraining.
+and which can be safely set manually
+(e.g. role of threshold and used student model in mastery learning
+\cite{alg.mastery}). % without frequent retraining.
 % the last technique is called \emph{Sensitivity analysis}
 % TODO: CITE examples (e.g. in thran-thesis)
 Simulations can take advantage of historical data that are available.
 For example, in \cite{instructor-dashboard-realtime} an instructor dashboard is
 evaluated by combining collected performance data % TODO:check
 with simulated instructors interacting with the dashboard.
+% TODO: cite relevant research - examples, e.g. thran-thesis, papi-thesis,
+% Radek-mastery papers
 
 %NOTE: - view on the simulation experiments as the 3rd way between deduction (mathematical models) and induction (statistics, machine learning)
 
