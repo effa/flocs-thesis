@@ -48,7 +48,7 @@ and recommending tasks of optimal difficulty
 %  between 10-15 years? (or simply primary school)
 
 % TODO: Img: English localization.
-\imgW[0.9]{robomission-task2}{RoboMission, Zig-zag task.}
+\imgW[0.8]{robomission-task2}{RoboMission, Zig-zag task.}
 
 % NOTE: rule of the loop \cite{book-of-lenses}
 
@@ -76,8 +76,9 @@ and wormholes that serves as teleports.
 The spaceship start on the bottom row and it always moves one row forward
 after any action. % towards its final destination (the last row).
 % TODO: elaborate / illustrative figure showing a step and a path
-In addition to flying and turning, the spaceship can also shoot small meteoroids.
-Having these four basic actions (fly, left, right, shoot) already allows for a
+In addition to flying and turning, the spaceship can also shoot small meteoroids
+(\cref{fig:spaceworld-meteoroids}).
+Four basic actions (fly, left, right, shoot) already allows for a
 diversity of simple tasks which only practice sequence of commands.
 % TODO: limited energy, in order to force thinking about whether to fly or shoot
 The spaceship has two sensors, one for the color under the spaceship, and
@@ -85,20 +86,21 @@ second for its horizontal position (column index). Having two different sensors 
 for diverse tasks practicing conditions, including testing inequalities, and
 potentially also compound conditions.
 
-An innovative feature of the game is the default forward movement,
+A novel feature of the game is the default forward movement,
 %where turning results in a shift to a neighboring column
 %and each action (including turning) are linked with a forward movement.
 which results in significantly shorter programs.
 For example, to fly around a stone, only two commands are needed % (left, right),
 instead of 8 (or 4 if the available commands include
 movement in any of the four directions without turning)
-(REF:figB).
+(\cref{fig:spaceworld-path}).
 % 4: LFFR (e.g. in StarWars game), 8: LFRFFRFL
 % TODO: or 4 as a semi-step (single direction OR default movement)
 Furthermore, as the spaceship is always facing up, a common left-right
 confusion \cite{blockly-10-things} is mitigated.
-To avoid too long worlds, we introduced wormholes that teleport the
-spaceship back to reuse rows multiple times (REF:figC).
+To avoid too long worlds, we introduced wormholes, that teleport the
+spaceship back to reuse rows multiple times
+(\cref{fig:spaceworld-wormholes}).
 % (more possible remedies available options available)
 
 
@@ -138,8 +140,30 @@ spaceship back to reuse rows multiple times (REF:figC).
 %%\item REF to formal grammar for the space world in the next chapter
 %\end{itemize}
 
-% TODO: use different spaceworld than in Imlementation chapter.
-\imgW[0.28]{spaceworld}{Examples of Space World. TODO: add more spaceworlds}
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[t]{0.35\textwidth}
+\centering
+\includegraphics[height=49mm]{img/spaceworld-path}
+\caption{Path around asteroids}
+\label{fig:spaceworld-path}
+\end{subfigure}%
+\begin{subfigure}[t]{0.33\textwidth}
+\centering
+\includegraphics[height=49mm]{img/spaceworld-wormholes}
+\caption{Diamonds, wormholes}
+\label{fig:spaceworld-wormholes}
+\end{subfigure}
+\begin{subfigure}[t]{0.3\textwidth}
+\centering
+\includegraphics[height=49mm]{img/spaceworld-meteoroids}
+\caption{Shootable meteoroids}
+\label{fig:spaceworld-meteoroids}
+\end{subfigure}
+\caption{Examples of Space Worlds.}
+\label{fig:spaceworld}
+\end{figure}
 
 
 %\imgW{prototype-pits}{Lesson from the first prototype: world must contain
@@ -232,7 +256,7 @@ students earn credits for each solved task and they progress to
 next level when they receive a sufficient number of them
 (\cref{fig:robomission-levels-credits}).
 
-\imgW[0.75]{robomission-levels-credits}{Students earn credits after each solved task.}
+\imgW[0.75]{robomission-levels-credits}{Students earn credits for each solved task.}
 
 
 \section{Instructions and Explanations}
