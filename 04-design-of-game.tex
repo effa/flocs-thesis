@@ -5,10 +5,10 @@
 Students learn programming by solving programming tasks.
 % and students spent nearly all the time in the system by solving them.
 Therefore, tasks are the key component of a system for learning introductory
-programming and the design of a programming game deserves a careful attention.
+programming, and the design of a programming game deserves a careful attention.
 Similarly to the design of adaptive behavior, design of game is also an iterative
 process of prototyping and testing new ideas.
-Good programming games are results of many gradual improvements
+Good programming games are a result of many gradual improvements
 (\emph{rule of the loop}) \cite{book-of-lenses}.
 
 %...since...
@@ -177,14 +177,13 @@ spaceship back to reuse rows multiple times
 
 Each task asks the student to create a program in Blockly,
 that would guide the spaceship safely to the last row,
-collecting all diamonds on its way (REF:fig-below).
+collecting all diamonds on its way. % (\cref{fig:tasks-solutions}).
 % Advantage: very clear and intuitive goal
-Setting of a task consists of a space world description,
-% as described in the previous section
-optional limits (e.g. maximum length of the program), %, number of shots),
-and available programming blocks (\emph{toolbox}).
+%Setting of a task consists of a space world description, % as described in the previous section
+%optional limits (e.g. maximum length of the program), %, number of shots),
+%and available programming blocks (\emph{toolbox}).
 Students can execute their current programs as many times
-as they wish, and edit them until they solve the task.
+as they need. % wish, and edit them until they solve the task.
 
 %% Blocks.
 The set of available blocks is gradually expanding with
@@ -208,7 +207,7 @@ labels on blocks approximately match Python syntax. % translated to Czech in Cze
 The most notable exception is the repeat block (\texttt{repeat 5}),
 where the Python equivalent (\texttt{for i in range(5)}) is more difficult
 to understand for beginners.
-(For details about the blocks and code, see \cref{sec:robocode}.)
+% (For details about the blocks and code, see \cref{sec:robocode}.)
 % NOTE: in future, this allows for AB experiments
 %comparing directly the influence of the text/block environment as done e.g.
 %in the field study in \cite{comparing-blocks-text-weintrop2017}.
@@ -228,8 +227,24 @@ of performed shots. Without this limit, students could always use
 shooting without thinking when it is really needed.
 
 
-TODO: figure with a few examples of tasks and corresponding solutions
-\clearpage  % just to mark the room for the figure
+\begin{figure}[htb]
+\centering
+\begin{subfigure}[t]{0.5\textwidth}
+\centering
+\includegraphics[height=56mm]{img/robomission-task-repeat}
+%\caption{Path around asteroids}
+%\label{fig:spaceworld-path}
+\end{subfigure}%
+\begin{subfigure}[t]{0.5\textwidth}
+\centering
+\includegraphics[height=56mm]{img/robomission-task-conditions}
+%\caption{Diamonds, wormholes}
+%\label{fig:spaceworld-wormholes}
+\end{subfigure}
+\caption{Examples of tasks and corresponding solutions.}
+\label{fig:tasks-solutions}
+\end{figure}
+
 
 
 \section{Problem Sets}
@@ -248,15 +263,19 @@ difficulty for students.
 % NOTE: But the observed difficulty depends on the context, such as
 % the level, the task is presented in.
 
-\imgW[0.75]{robomission-tasks-overview}{RoboMission contains 9 levels, each with about 8-10 tasks.}
+\imgW[1.0]{robomission-tasks-overview}{%
+Tasks overview shows tasks grouped by levels. Colors: green -- solved tasks,
+orange -- recommended task.
+RoboMission contains 9 levels, each with about 9 tasks.}
 
-As a motivational element that helps to reinforce the sense of progress
+As a motivational element that helps to reinforce the sense of progress,
 % OR: to satisfy the need of progress,
-students earn credits for each solved task and they progress to
-next level when they receive a sufficient number of them
+students receive credits for each solved task
 (\cref{fig:robomission-levels-credits}).
+After earning a sufficient number of credits, students progress to next level,
+which results in increased difficulty of recommended tasks.
 
-\imgW[0.75]{robomission-levels-credits}{Students earn credits for each solved task.}
+\imgW[1.0]{robomission-levels-credits}{Students earn credits for each solved task.}
 
 
 \section{Instructions and Explanations}
