@@ -266,20 +266,25 @@ or the spaceship has not reached the final row
 \section{Game Editor}  % OR: task editor?
 \label{sec:robomission.task-editor}
 
-The online Game Editor (\cref{fig:task-editor})
+The online Game Editor (\cref{fig:game-editor})
 helps to create new tasks easily.
-In the editor, the task creator can immediately see visualization of the space world,
+In the editor, the author of a task can immediately see visualization of the
+space world,
 test a solution in either Blockly or its text-based equivalent %(\emph{RoboCode})
-(\cref{fig:task-editor-vim}),
+(\cref{fig:game-editor-vim}),
 and import or export tasks (using a custom Markdown-based format).
 %(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
 The editor is public, so even students can create their own new tasks.
-However, there is currently no support for sharing them with other students.
+However, there is currently no support for sharing the tasks with other students.
 % Which support the need of creativity; + potentially allows to get a lot of tasks into
 % the system, which is could be interesting for adaptivity.
 
 % TODO:
 %It allows to switch between RoboCode and RoboBlocks anytime. (REF:transformations)
 
-\imgW[0.8]{task-editor}{Game Editor for creating new tasks.}
-\imgW[0.8]{task-editor-vim}{Game Editor in Vim mode.}
+\imgW[0.86]{game-editor}{Game Editor includes a text editor for game world
+(bottom right), which uses an intuitive text representation described in
+\cref{sec:impl.spaceworld}.}
+\imgW[0.86]{game-editor-vim}{In Vim mode, Game Editor allows to perform some complex
+modifications, such as replacing all yellow fields on selected rows to red color,
+with a single command.}
