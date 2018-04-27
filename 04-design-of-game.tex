@@ -2,42 +2,46 @@
 \label{chap:design-of-game}
 
 %% Terminology + importance.
-Design of a programming game deserves a careful attention,
-because tasks are the most important part of a system for learning programming.
+Students learn programming by solving programming tasks.
+% and students spent nearly all the time in the system by solving them.
+Therefore, tasks are the key component of a system for learning introductory
+programming and the design of a programming game deserves a careful attention.
+Similarly to the design of adaptive behavior, design of game is also an iterative
+process of prototyping and testing new ideas.
+Good programming games are results of many gradual improvements
+(\emph{rule of the loop}) \cite{book-of-lenses}.
+
 %...since...
-They are the means for learning,
-and students spent nearly all the time in the system by solving them.
 % TODO: terminology: game, task, PS
 % NOTE: rule of the loop + strategy: prototyping several ideas, measure
 % metrics to see which games work best.
 
 %% Requirements.
-% ... "Therefore" (to link it to the importance in prev paragraph)
-To support engagement, tasks must be fun, entertaining,
-and immediately appeal to be solved.  % TODO: Fix English.
-%(TODO: mention how we underestimated the importance of the entertaining tasks in the first prototype)
-To enable learning, the game must allow for tasks requiring all basic
+The game should allow for tasks practicing all basic
 programming concepts, such as sequence of commands, loops, and conditional
 statements. % repeat, while, if, if-else, simple tests (comparing)
-To enable outer-loop adaptive behavior, multiple diverse tasks practicing same
+To enable outer-loop adaptive behavior, multiple diverse tasks practicing the same
 concepts are needed, including a lot of tasks using only sequences of commands
-without more advanced programming constructs.
+without any advanced programming construct.
+To support engagement, tasks must be fun and immediately appeal to be
+solved.  % TODO: Fix English.
+%(TODO: mention how we underestimated the importance of the entertaining tasks in the first prototype)
 % (TODO?: other requirements mentioned in the prev. chapters (+REF?)
 
 % TODO: Ideally, mimic and refer to the sections in the chapter on Learning Programming
 % (how we incorporated the strategies for easier learning and for motivation)
 
-We have designed a simple game which is a variation on a robot
+We have designed a game which is a variation on a robot
 on grid with a space theme, and which uses Blockly for building programs
 (\cref{fig:robomission-task2}).
 This choices support all main strategies for easier learning of programming
 (\cref{sec:strategies-for-easier-learning}),
 including
-avoiding syntax errors by using block-based programming,
-showing a visual output (the grid world),
-and providing short instructions and explanations. % TODO: elaborate?
+avoiding syntax errors by using block-based programming, and
+showing a visual output (the grid world).
+% and providing short instructions and explanations. % TODO: elaborate?
 We combine several strategies to support motivation (\cref{sec:motivation}),
-such as appealing game world, entertaing tasks, progress through levels,
+such as appealing game world, entertaining tasks, progressing through levels,
 and recommending tasks of optimal difficulty
 (adaptivity is discussed in \cref{chap:design-of-adaptivity}).
 % TODO: target group: Currently, the system primarily targets at children
@@ -66,13 +70,13 @@ there are the following game objects:
 %These are
 diamonds, that need to be collected,
 large asteroids, that destroy the spaceship if it hits them,
-small meteoroids, that can be shooted,
+small meteoroids, that can be shot,
 and wormholes that serves as teleports.
 
-The spaceships start on the bottom row and it always moves one row forward
+The spaceship start on the bottom row and it always moves one row forward
 after any action. % towards its final destination (the last row).
 % TODO: elaborate / illustrative figure showing a step and a path
-In addition to flying and turning, the spacehsip can also shoot small meteroids.
+In addition to flying and turning, the spaceship can also shoot small meteoroids.
 Having these four basic actions (fly, left, right, shoot) already allows for a
 diversity of simple tasks which only practice sequence of commands.
 % TODO: limited energy, in order to force thinking about whether to fly or shoot
@@ -81,19 +85,20 @@ second for its horizontal position (column index). Having two different sensors 
 for diverse tasks practicing conditions, including testing inequalities, and
 potentially also compound conditions.
 
-An inovative feature of the game is the default forward movement,
+An innovative feature of the game is the default forward movement,
 %where turning results in a shift to a neighboring column
 %and each action (including turning) are linked with a forward movement.
-which results in shorter programs.
+which results in significantly shorter programs.
 For example, to fly around a stone, only two commands are needed % (left, right),
-instead of either 4 or 8 (depending on whether the available commands include
-movement in any of the four directions, or only forward movement and turning)
-(REF:fig).
+instead of 8 (or 4 if the available commands include
+movement in any of the four directions without turning)
+(REF:figB).
 % 4: LFFR (e.g. in StarWars game), 8: LFRFFRFL
 % TODO: or 4 as a semi-step (single direction OR default movement)
 Furthermore, as the spaceship is always facing up, a common left-right
-confusion is mitigated (CITE).
-Wormholes allow to reuse rows to avoid too long worlds.  % TODO: elaborate?
+confusion \cite{blockly-10-things} is mitigated.
+To avoid too long worlds, we introduced wormholes that teleport the
+spaceship back to reuse rows multiple times (REF:figC).
 % (more possible remedies available options available)
 
 
@@ -152,21 +157,22 @@ collecting all diamonds on its way (REF:fig-below).
 % Advantage: very clear and intuitive goal
 Setting of a task consists of a space world description,
 % as described in the previous section
-limits for the length of the program and the number of shots,
-and available programming blocks. % toolbox
-The student can execute her current program as many times
-as she wish, until her program is correct.
+optional limits (e.g. maximum length of the program), %, number of shots),
+and available programming blocks (\emph{toolbox}).
+Students can execute their current programs as many times
+as they wish, and edit them until they solve the task.
 
 %% Blocks.
 The set of available blocks is gradually expanding with
 increasing level. This \emph{toolbox standardization}
 is easier for both task creators (it is enough to specify
-one of a few standard toolboxes, instead of name all available blocks
-for each task), and students (available blocks are not changing
-chaotically with easch task).
+a toolbox only once for all tasks in the same problems set,
+instead of naming all available blocks for each task),
+as well as for  students
+(available blocks are not changing chaotically with each task).
 %- available blocks: depending on the level (sweet spot between chaotically changing toolbox with each task and overloading by all commands from the beginning
 % NOTE: blocks: actions (...), sensing (...), repeat, while, if, if-else;
-The easiest tasks use only action commands (fly, left, right, shoot),
+The easiest tasks use only commands for actions (fly, left, right, shoot),
 while the more advanced tasks offer repeat loop, while loop, if and if-else statements,
 and tests for colors and position.
 No special test for the last row is needed, since all tasks follow a convention
@@ -174,10 +180,11 @@ of coloring the last row by blue color.
 
 %% Programs
 In order to simplify future learning of a textual programming language,
-we made the text on blocks match a Python syntax, % translated to Czech in Czech localization
-with the exception of the repeat block, where the Python equivalent
-(\texttt{for i in range(5)}) is more difficult to understand for beginners
-then simple \texttt{repeat 5}.
+labels on blocks approximately match Python syntax. % translated to Czech in Czech localization
+The most notable exception is the repeat block (\texttt{repeat 5}),
+where the Python equivalent (\texttt{for i in range(5)}) is more difficult
+to understand for beginners.
+(For details about the blocks and code, see \cref{sec:robocode}.)
 % NOTE: in future, this allows for AB experiments
 %comparing directly the influence of the text/block environment as done e.g.
 %in the field study in \cite{comparing-blocks-text-weintrop2017}.
@@ -186,14 +193,15 @@ then simple \texttt{repeat 5}.
 There are two limits that a task can specify.
 The \emph{length} limit defines maximum number of statements
 in the program. Limit on number of statements instead of blocks was chosen in
-order to make the limit smaller number and thus the counting easier.
-As a bonus, this definition could be used for textual programming as well.
+order to make the limit a smaller number and thus the counting easier.
+(Another advantage is that this definition could be used for textual
+programming as well.)
 % which is not case for the blocks limit
 This limit forces students to use loops instead of a long sequence of
 actions.
 The \emph{energy} limit controls for the number
 of performed shots. Without this limit, students could always use
-shooting without thinking when they really need it.
+shooting without thinking when it is really needed.
 
 
 TODO: figure with a few examples of tasks and corresponding solutions
@@ -205,22 +213,23 @@ TODO: figure with a few examples of tasks and corresponding solutions
 
 % NOTE: term ``level design''
 
-RoboMission contains over 80 tasks divided into 9 problem sets (levels)
-(\cref{fig:robomission-tasks-overview}).
-The levels were originally created manually, based on the required blocks
-and a difficulty estimated by us. Later, after some performance data
-were collected we have further decomposed the levels into two-level
-hierarchy to enforce prerequisities between them and we moved
-a few tasks into levels that better match their observed
-difficulty among students.
+RoboMission contains over 80 tasks divided into 9 problem sets (levels).
+% (\cref{fig:robomission-tasks-overview}).
+The problem sets were initially created manually, based on the required blocks
+and an estimated difficulty. Later, after some performance data
+were collected, we further decomposed the problem sets into a two-level
+hierarchy to enforce prerequisites between the tasks, and we moved
+a few tasks into problem sets that better match their observed
+difficulty for students.
 % NOTE: But the observed difficulty depends on the context, such as
 % the level, the task is presented in.
 
 \imgW[0.75]{robomission-tasks-overview}{RoboMission contains 9 levels, each with about 8-10 tasks.}
 
-As a motivational element which helps to satisfy the need of progress,
+As a motivational element that helps to reinforce the sense of progress
+% OR: to satisfy the need of progress,
 students earn credits for each solved task and they progress to
-next level when they receive a sufficient number of credits
+next level when they receive a sufficient number of them
 (\cref{fig:robomission-levels-credits}).
 
 \imgW[0.75]{robomission-levels-credits}{Students earn credits after each solved task.}
@@ -229,17 +238,20 @@ next level when they receive a sufficient number of credits
 \section{Instructions and Explanations}
 \label{sec:game.explanations}
 
-Clear instructions and hints are another strategy to make the learning easier
+Clear instructions and hints at appropriate moments
+are another strategy to support learning
+% OR: to make the learning easier
 (\cref{sec:instructions-and-hints}).
-We combine simple adaptive instructions and post-event explanations.
-When a student encounters a new programming concept or a game element,
-the system displays a short instruction (\cref{fig:robomission-mini-instruction}).
+We combine simple adaptive instructions and reflexive post-event explanations.
+When a student encounters a new programming concept or a game element
+for the first time, the system displays a short instruction
+(\cref{fig:robomission-mini-instruction}).
 % NOTE: They are adaptive in the way that they only show the first time student encounter
 % the concept.
 
 % TODO: Update text and images to match the current state and to be more readable
 % (cut out the relevant part of the screenshot).
-\imgW[0.78]{robomission-mini-instruction}{Mini instruction for a new game concept.}
+\imgW[0.74]{robomission-mini-instruction}{Mini instruction for a new game concept.}
 
 The system also provides short explanations after each unsuccessful execution,
 describing why the task was not solved,
@@ -248,7 +260,7 @@ or the spaceship has not reached the final row
 (\cref{fig:robomission-mini-explanation}).
 % NOTE: simple inner-loop reflexive agent
 
-\imgW[0.78]{robomission-mini-explanation}{Mini explanation of an unsuccessful attempt.}
+\imgW[0.74]{robomission-mini-explanation}{Mini explanation of an unsuccessful attempt.}
 %\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
 
 \section{Game Editor}  % OR: task editor?
@@ -256,12 +268,13 @@ or the spaceship has not reached the final row
 
 The online Game Editor (\cref{fig:task-editor})
 helps to create new tasks easily.
-In the editor, the task creator immediately sees visualization of the space world,
-he can test a solution in either Blockly or its text-based equivalent (\emph{RoboCode})
+In the editor, the task creator can immediately see visualization of the space world,
+test a solution in either Blockly or its text-based equivalent %(\emph{RoboCode})
 (\cref{fig:task-editor-vim}),
-and import or export tasks via a custom Markdown-based format.
+and import or export tasks (using a custom Markdown-based format).
 %(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
-The editor is a part of the public site, so even students can create their own new tasks.
+The editor is public, so even students can create their own new tasks.
+However, there is currently no support for sharing them with other students.
 % Which support the need of creativity; + potentially allows to get a lot of tasks into
 % the system, which is could be interesting for adaptivity.
 
