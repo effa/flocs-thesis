@@ -1,7 +1,7 @@
 \chapter{Design of Adaptivity}
 \label{chap:design-of-adaptivity}
 
-In the last chapter, we have mentioned how we incorporated many of the
+In the previous chapter, we have described how we incorporated many of the
 strategies to support learning and motivation into the game.
 In this chapter, we discuss another strategy which helps to achieve the state of
 flow, the one that is specific to ALS  % TODO:reformulate
@@ -31,7 +31,8 @@ Currently, the system primarily targets at children 10-15 years old.
 % "between 10 and 15 years."
 
 The main use case of the system is a 1-2 hours in-classroom tutorial
-(``Hour of Code'' style), with a possible follow-up individual practice at home.
+(Hour of Code format as described in \cref{sec:hoc}),
+with a possible follow-up individual practice at home.
 In line with the system mission (\cref{sec:mission}), goals of this tutorial
 are to teach the student basic concepts of programming,
 help them to spend most of the time in the state of flow,
@@ -41,28 +42,29 @@ and motivate them for the further learning of computer science.
 % goes fron inside)"
 % NOTE: flow is a goal; but at the same time it supports the other 2 goals
 
-After each solved task, the student is shown a dialog window with one
-recommended task, and with a link to the page with overview of all tasks.
+After each solved task, the student is shown % a dialog window with one
+one recommended task, and a link to the page with overview of all tasks.
 % Terminology: \emph{good recommendation}
-Ideally, each recommendation should lead to the state of flow.
+Ideally, each recommended task should lead to the state of flow.
 % TODO: How to measure? One way: looking ath the long-term objectives
 As we cannot directly observe whether the student is in the state of flow,
-we must rely on proxy data, which can be either subjective
-(using perceived difficulty ranking),
-or objective (using observed performance), %should be neither too low, nor too high),
+we must rely on proxy data.
+Currently, we only use objective attributable metrics based on observed performance,
+which should be neither too low, nor too high
+(details in \cref{sec:robomission.student}). % TODO: specific subsection
 % "qualitative" vs. "quantitative"
 % TODO: REF:performance
-as we have discussed in section
-on attributable metrics (\cref{sec:live-evaluation}).
+% as we have discussed in section on attributable metrics (\cref{sec:live-evaluation}).
 % long-term or attributable metrics \cref{sec:long-term-objectives,sec:live-evaluation}
 % TODO: the performance compression should be described in this chapter
 % in student modeling section, ideally with an analysis supporting the
 % decsions or sketching some possible directions.
 
-% TODO: Reformulate: (e.g. why is it useful, useful for what)
-Unfortunately, both subjective and objective approach to measure flow
-is very noisy. Therefore, it is useful to formulate weaker, but better observable
-requirements on the system behavior:
+From the general goals, we derive weaker,
+\emph{necessary, but not sufficient} requirements, that can be more reliably observed,
+% (with less noise)
+to guide us during design of the system,
+and to provide us with more specific evaluation:  % more actionable
 % NOTE: It reminds me of hypothesis testing of goodness-of-fit: there are
 % various tests (metrics we can measure), that can tell us, that the given
 % sample is definitely not from the compared distribution; some of these
@@ -71,56 +73,59 @@ requirements on the system behavior:
 % (i.e. they are often not able to reject false hypotheses).
 % TODO: shrink vertical spaces
 \begin{itemize}
-\item The student is able to solve any task recommended by the system, ideally
-  in a reasonable time (20 minutes).
-    Furthermore, the student is able to solve the first few tasks quickly
-    (in 2 minutes) and progress to the second level quickly (in at most 10
+\item The student is able to solve any task recommended by the system
+  in a reasonable time (at most 20 minutes).
+\item The student is able to solve the first few tasks quickly
+    (in 2 minutes) and progress to the second level soon (in at most 10
     minutes).
-\item The best performing students (supposedly with a prior programming skill)
-should progress through a first few levels quickly, spending at most 5 minutes
-on tasks practicing only sequences of commands, and get to the more
+\item The best performing students % (supposedly with a prior programming skill)
+progress through a first few levels quickly, spending at most 5 minutes
+on tasks with only sequences of commands, and get to the more
 challenging tasks containing both types of loops and conditional statements
 in at most 20 minutes.  % 10, 15?
 \item All students should gradually start practicing all basic programming concepts
-  (sequence, loops, conditional statements) during the first hour of the tutorial.
+  (sequence, loops, conditional statements) during the first hour. % of the tutorial.
   % TODO: check gvid
-\item Average difficulty of the recommended tasks should gradually increase.
+\item Average difficulty of the recommended tasks gradually increases.
   (Occasionally, an easy tasks might be recommended in order to improve
-  exploration, but these easy tasks should
-  not be too frequent, and they should be differentiated for the student,
-  e.g. as \emph{speed challenges} in order to explain the sudden change in
-  difficulty.)
-\item At most one new programming concept and one new game concept should appear
-  in a task. No new concept should be introduced, until the student
-  solves at least one task with the last introduced concept with a good
+  exploration, but these easy tasks should not be too frequent.)
+  %, and they should be differentiated for the student,
+  %e.g. as \emph{speed challenges} in order to explain the sudden change in
+  %difficulty.)
+\item At most one new programming concept and one new game concept appear
+  in a task. Another concept is not introduced, until the student
+  solves a task with the last introduced concept with a good
   performance. % (they must sometimes come together, it is not a problem)
 % TODO: perform analysis if it's the case in the current system.
 %Each new concept (e.g. block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
-\item If asked after each task, students should report that the task was
-  neither too easy, nor too difficult for them in at least half of the tasks
-  during the tutorial.  % or another negative tag, such as boring, weird, ...
-\item Neither task that was reported as too easy should take them
-  more than 1 minute, and there should never be more then 3 too easy tasks
-  in a row (with the exception of the first level).
-  %(Student is not bored by neither too easy task requiring many commands (i.e.
-  %taking more than 1 minute to build the streightforward solution), nor by the
-  %sequence of either too easy or too similar tasks.
-  % TODO: Maybe it would be better to state it in combined max too-easy time?
-  % NOTE: It is ok to have sometimes an easy task (esp. at the beginning), but
-  % they should be quick to solve and not too frequent
-\item If asked at the beginning and at the end of the tutorial about their
-  interest in learning computer science, the end report should be statistically
-  higher.
-% TODO: Not sure if to mention the self-report points, as they are not
-% currently used in the system.
-% TODO: (Another flow-related) If the student marks the current task as too
-% easy, the next task is strictly more difficult. If the student marks the
-% current task as too difficult, the next task is as most as difficult as the
-% current one.
 \end{itemize}
 % TODO: compare these requiremnts againts collected data and gvid-report
 
-
+%% EXT:
+%TODO: about subjective data (future)
+%which can be either subjective
+%(using perceived difficulty ranking),
+%\item If asked after each task, students should report that the task was
+%  neither too easy, nor too difficult for them in at least half of the tasks
+%  during the tutorial.  % or another negative tag, such as boring, weird, ...
+%\item Neither task that was reported as too easy should take them
+%  more than 1 minute, and there should never be more then 3 too easy tasks
+%  in a row (with the exception of the first level).
+%  %(Student is not bored by neither too easy task requiring many commands (i.e.
+%  %taking more than 1 minute to build the streightforward solution), nor by the
+%  %sequence of either too easy or too similar tasks.
+%  % TODO: Maybe it would be better to state it in combined max too-easy time?
+%  % NOTE: It is ok to have sometimes an easy task (esp. at the beginning), but
+%  % they should be quick to solve and not too frequent
+%\item If asked at the beginning and at the end of the tutorial about their
+%  interest in learning computer science, the end report should be statistically
+%  higher.
+%% TODO: Not sure if to mention the self-report points, as they are not
+%% currently used in the system.
+%% TODO: (Another flow-related) If the student marks the current task as too
+%% easy, the next task is strictly more difficult. If the student marks the
+%% current task as too difficult, the next task is as most as difficult as the
+%% current one.
 
 %\subsection{Main Use Case}
 %\label{sec:robomission.use-case}
@@ -189,47 +194,48 @@ in at most 20 minutes.  % 10, 15?
 %In this phase of development, we have decided not to model overlapping concepts,
 % NOTE: not enough data, not clear how they combine and how they relate to PS
 % which are still needed for the users
-Currently, we do not model overlapping concepts, since their use would require
-more data to analyze their interaction.
+Currently, we do not model overlapping concepts, because that would require
+more data to properly analyze their interactions.
 Instead, we devide tasks into disjoint linearly order hierarchical problem
 sets (\cref{fig:robomission.domain}). % , which are easier to handle.
 % ... We started by manually dividing tasks into 9 problem sets (levels)
-The hierarchy has two levels: the top-level problem sets are call \emph{missions},
-and they contain about 8-10 tasks, which are further split into three smaller
-problem sets called \emph{phases}.
+The hierarchy has two levels: the top-level problem sets (\emph{missions})
+contain about 9 tasks, which are further split into three smaller
+problem sets (\emph{phases}).
 Missions and phases are ordered, while tasks within a given phase are not.
 The missions were chosen primarily by the available programming blocks and
 included game elements, and secondarily by an estimated difficulty.
 % (initialy human-estimated, later refined using collected data
 % NOTE: Data collected befor division into phases (TODO: mention in the
 % analysis chapter...)
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{img/robomission-domain}
+\caption{%
+  Domain model used in RoboMission: ordered hierarchical problem sets (dark rectangles)
+  containing unordered tasks (light squares).}
+\label{fig:robomission.domain}
+\end{figure}
+
 The contribution of refining the missions into phases is threefold:
-\begin{itemize}
-\item Phases enforce important prerequisities within a mission (e.g.
+First, phases enforce important prerequisities within a mission (e.g.
 introducing wormholes before using them in more difficult tasks).
-\item Phases help to achieve a balanced composition \cite{progression-analysis},
+Second, phases are approximately homogeneous (same concepts, similar difficulty),
+which allows for simpler tutor models.
+Third, phases help to achieve a balanced composition \cite{progression-analysis};
+  many missions follow a pattern of
   introducing new concepts in the first phase,
   recombining them with previously learned concepts in the second phase,
-  and further reinforcing (practicing) of known concepts in the third phase.
+  and further reinforcing known concepts in the third phase. % OR:practicing
 % TODO: Although this division is only a guide, doesn't hold exatly...
 % TODO: elaborate on the relevance of the paper
 % TODO: check the paper (terms of the phases, their "oreder" and meaning)
 %The resulting two-level hierarchical and ordered problem set structure is shown
 %in \cref{fig:robomission.domain}.
-\item Phases are approximately homogeneous, i.e. difficulty of all tasks in a
-  given phase is similar. This allows allows for simpler tutor models.
   % and they practic similar concepts
-\end{itemize}
 % TODO: link to what presented in earlier chapters
 
-\begin{figure}[htb]
-\centering
-TODO: domain diagram\\
-(all 9 missions with labels; unlabeled nodes for phases and tasks)
-% should show covered concepts: sequences of commands, repeat, while, if, if-else, simple tests (comparing)
-\caption{Domain model used in RoboMission.}
-\label{fig:robomission.domain}
-\end{figure}
 
 
 \section{Student Model}
