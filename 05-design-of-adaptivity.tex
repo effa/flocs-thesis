@@ -242,31 +242,33 @@ Third, phases help to achieve a balanced composition \cite{progression-analysis}
 \label{sec:robomission.student}
 
 % TODO: terminology and links from \cref{sec:student-modeling}
-For each student we keep track of her skill for each problem set. % phase and mission.
+For each student, the system keeps track of her skill for each problem set. % phase and mission.
 The skill $s \in [0, 1]$ represents manifested ability to solve tasks in
-a given problem set. The initial skill is 0, it is increased after each solved
-task from the problem set, and once the skill reaches 1 the problem set is solved.
-The model is descriptive, because it does not model the probability of
-a student solving a task (with some performance), but rather an amount
-of verified skill.
-An advantage is that this skill can be shown directly to the student
-(e.g. visualized as a progressbar towards completion of the current mission).
-% E.g. at the beginning, the probability is higher than 0 for sure.
-% used directly in visualization
+a given problem set. The initial skill is 0, and it is increased after each solved
+task from the problem set. Once the skill reaches 1, the problem set is solved.
+
+While the model has a structure of a dynamic Bayesian network
+(\cref{fig:robomission.student-model}, \cref{sec:dbn}),
+it does not model the probability of the student solving a task with some performance,
+but rather an amount of verified skill;
+i.e. the model is only descriptive.
+An advantage is that this skill can be shown directly to the student,
+e.g. visualized as a progressbar towards completion of the current mission,
+since it never decreases (which would be demotivating).
 
 We use discrete representation of performance with 3 levels (poor, good,
 excellent). Currently, only solving time is considered for the performance
-compression: for each task, we set a time threshold for a solution to be
+compression: for each task, we define a threshold for a solution to be
 considered as good or excellent
 (set as 1.5 and 0.75 multiples of median time).
 % TODO: support the decision by an analysis (REF)
 % TODO: Note that it's huge simplification and a subject of future research.
 
 After each solved task session, the corresponding skill is increased by
-an amount $p \in [0, 1]$ which depends on the performance.
+an amount $p \in [0, 1]$ which depends only on the performance.
+The increment does not depend on the specific task solved, because we assume homogeneous phases.
 For each performance level, we set the increment such that $1/p$ tasks solved
 with such performance are enough to manifest mastery in this phase.
-The increment does not depend on the task (we assume homogeneous phases).
 %, and it does not depend on our previous estimate
 Either a single task solved with an excellent performance, or two
 tasks solved with a good performance are enough to solve the phase,
@@ -283,11 +285,21 @@ where $n$ is the number of tasks in the phase.
 % TODO: link to the student model described in theory part
 
 To aggregate the skills of the phases into the skill of the mission,
-we simply take average of the phase skills.
-In future, we would like to use more sophisticated aggregation,
+we simply take average of the phase skills, which means
+that all phases must be solved in order to solve the mission.
+We plan to use a more sophisticated aggregation in the future,
 which would allow to compensate unsolved tasks in the first phase
 by more difficult tasks in the later phases.
-% TODO: reformulate
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{img/robomission-student-model}
+\caption{%
+  Student model used in RoboMission includes a skill for each phase
+  (computed from the previous skill and the new observed performance),
+  and a skill for each mission (computed from skills of its phases).}
+\label{fig:robomission.student-model}
+\end{figure}
 
 \section{Tutor Model}
 \label{robomission.tutor}
