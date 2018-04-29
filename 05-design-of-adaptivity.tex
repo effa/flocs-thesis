@@ -1,11 +1,16 @@
 \chapter{Design of Adaptivity}
 \label{chap:design-of-adaptivity}
 
-In the previous chapter, we have described how we incorporated many of the
-strategies to support learning and motivation into the game.
-In this chapter, we discuss another strategy which helps to achieve the state of
-flow, the one that is specific to ALS  % TODO:reformulate
--- recommending tasks of optimal difficulty.
+Among all the strategies to support learning and motivation,
+we focus on recommending tasks of optimal difficulty
+--
+the secret sauce of ALS. %adpative learning systems.
+
+%In the previous chapter, we have described how we incorporated many of the
+%strategies to support learning and motivation into the game.
+%In this chapter, we discuss another strategy which helps to achieve the state of
+%flow, the one that is specific to ALS  % TODO:reformulate
+%-- recommending tasks of optimal difficulty.
 % ... "which is the secret sauce of adaptive learning systems"
 % ... "which is powered by the AI"
 % TODO: More links to learning/motivation \label{sec:motivation.challenge}
@@ -24,15 +29,13 @@ flow, the one that is specific to ALS  % TODO:reformulate
 % possibly also this-chapter.analysis) sections.
 
 Wide range of task difficulties, combined with the adaptive behavior,
-should make the system useful for anybody who wants to learn
-introductory programming.
+should make the system useful for anybody who wants to learn programming.
 However, this long-term goal requires many iterations and a lot of data.
-Currently, the system primarily targets at children 10-15 years old.
+Currently, the system targets at children 10-15 years old.
 % "between 10 and 15 years."
-
-The main use case of the system is a 1-2 hours in-classroom tutorial
-(Hour of Code format as described in \cref{sec:hoc}),
-with a possible follow-up individual practice at home.
+The main use case of the system is a 1-2 hours in-classroom tutorial,
+(Hour of Code format) %  as described in \cref{sec:hoc}),
+possibly followed by individual practice at home.
 In line with the system mission (\cref{sec:mission}), goals of this tutorial
 are to teach the student basic concepts of programming,
 help them to spend most of the time in the state of flow,
@@ -45,7 +48,7 @@ and motivate them for the further learning of computer science.
 After each solved task, the student is shown % a dialog window with one
 one recommended task, and a link to the page with overview of all tasks.
 % Terminology: \emph{good recommendation}
-Ideally, each recommended task should lead to the state of flow.
+Ideally, each recommended task would lead to the state of flow.
 % TODO: How to measure? One way: looking ath the long-term objectives
 As we cannot directly observe whether the student is in the state of flow,
 we must rely on proxy data.
@@ -73,29 +76,29 @@ and to provide us with more specific evaluation:  % more actionable
 % (i.e. they are often not able to reject false hypotheses).
 % TODO: shrink vertical spaces
 \begin{itemize}
-\item The student is able to solve any task recommended by the system
+\item All students are able to solve all tasks recommended by the system
   in a reasonable time (at most 20 minutes).
-\item The student is able to solve the first few tasks quickly
-    (in 2 minutes) and progress to the second level soon (in at most 10
-    minutes).
+  Furthermore, they are able to solve the first few tasks quickly
+  (each in 2 minutes), and progress to the second level in at most 10 minutes.
 \item The best performing students % (supposedly with a prior programming skill)
 progress through a first few levels quickly, spending at most 5 minutes
 on tasks with only sequences of commands, and get to the more
 challenging tasks containing both types of loops and conditional statements
 in at most 20 minutes.  % 10, 15?
-\item All students should gradually start practicing all basic programming concepts
-  (sequence, loops, conditional statements) during the first hour. % of the tutorial.
-  % TODO: check gvid
-\item Average difficulty of the recommended tasks gradually increases.
-  (Occasionally, an easy tasks might be recommended in order to improve
-  exploration, but these easy tasks should not be too frequent.)
-  %, and they should be differentiated for the student,
-  %e.g. as \emph{speed challenges} in order to explain the sudden change in
-  %difficulty.)
 \item At most one new programming concept and one new game concept appear
   in a task. Another concept is not introduced, until the student
   solves a task with the last introduced concept with a good
   performance. % (they must sometimes come together, it is not a problem)
+\item All students should gradually start practicing all basic programming concepts
+  (sequence, loop, conditional statement) during the first hour. % of the tutorial.
+  % TODO: check gvid
+% EXT:
+%\item Average difficulty of the recommended tasks gradually increases.
+%  (Occasionally, an easy tasks might be recommended in order to improve
+%  exploration, but these easy tasks should not be too frequent.)
+%  %, and they should be differentiated for the student,
+%  %e.g. as \emph{speed challenges} in order to explain the sudden change in
+%  %difficulty.)
 % TODO: perform analysis if it's the case in the current system.
 %Each new concept (e.g. block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
 \end{itemize}
@@ -191,37 +194,28 @@ in at most 20 minutes.  % 10, 15?
 
 \section{Domain Model}
 
-%In this phase of development, we have decided not to model overlapping concepts,
-% NOTE: not enough data, not clear how they combine and how they relate to PS
-% which are still needed for the users
 Currently, we do not model overlapping concepts, because that would require
 more data to properly analyze their interactions.
-Instead, we devide tasks into disjoint linearly order hierarchical problem
+Instead, we devide tasks into linearly ordered disjoint hierarchical problem
 sets (\cref{fig:robomission.domain}). % , which are easier to handle.
-% ... We started by manually dividing tasks into 9 problem sets (levels)
 The hierarchy has two levels: the top-level problem sets (\emph{missions})
 contain about 9 tasks, which are further split into three smaller
 problem sets (\emph{phases}).
-Missions and phases are ordered, while tasks within a given phase are not.
-The missions were chosen primarily by the available programming blocks and
-included game elements, and secondarily by an estimated difficulty.
+
+Missions and phases are ordered, while tasks within a given phase are not,
+since all the tasks in a single phase should be simlarly difficult.
+The first two missions gradually introduce game elements
+(e.g. diamonds, meteoroids, wormholes),
+while the later missions usually focus on practicing one new programming
+concept (e.g. repeat loop, while loop, if statement).
 % (initialy human-estimated, later refined using collected data
 % NOTE: Data collected befor division into phases (TODO: mention in the
 % analysis chapter...)
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=\textwidth]{img/robomission-domain}
-\caption{%
-  Domain model used in RoboMission: ordered hierarchical problem sets (dark rectangles)
-  containing unordered tasks (light squares).}
-\label{fig:robomission.domain}
-\end{figure}
-
 The contribution of refining the missions into phases is threefold:
 First, phases enforce important prerequisities within a mission (e.g.
 introducing wormholes before using them in more difficult tasks).
-Second, phases are approximately homogeneous (same concepts, similar difficulty),
+Second, phases are approximately homogeneous (practicing same concepts, and having similar difficulty),
 which allows for simpler tutor models.
 Third, phases help to achieve a balanced composition \cite{progression-analysis};
   many missions follow a pattern of
@@ -231,10 +225,18 @@ Third, phases help to achieve a balanced composition \cite{progression-analysis}
 % TODO: Although this division is only a guide, doesn't hold exatly...
 % TODO: elaborate on the relevance of the paper
 % TODO: check the paper (terms of the phases, their "oreder" and meaning)
-%The resulting two-level hierarchical and ordered problem set structure is shown
-%in \cref{fig:robomission.domain}.
-  % and they practic similar concepts
 % TODO: link to what presented in earlier chapters
+
+% TODO: consider to increase font of the phase names
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{img/robomission-domain}
+\caption{%
+  Domain model used in RoboMission: ordered hierarchical problem sets (dark rectangles)
+  containing unordered tasks (light squares).}
+\label{fig:robomission.domain}
+\end{figure}
+
 
 
 
@@ -248,7 +250,7 @@ a given problem set. The initial skill is 0, and it is increased after each solv
 task from the problem set. Once the skill reaches 1, the problem set is solved.
 
 While the model has a structure of a dynamic Bayesian network
-(\cref{fig:robomission.student-model}, \cref{sec:dbn}),
+(\cref{fig:robomission.student-model}) %, \cref{sec:dbn}),
 it does not model the probability of the student solving a task with some performance,
 but rather an amount of verified skill;
 i.e. the model is only descriptive.
@@ -283,20 +285,19 @@ where $n$ is the number of tasks in the phase.
 % The $1/n$ term ensures that the student eventually masters the phase.
 % NOTE: we never want to decrease skill of a student
 % TODO: link to the student model described in theory part
-
 To aggregate the skills of the phases into the skill of the mission,
-we simply take average of the phase skills, which means
+we take average of the phase skills, which means
 that all phases must be solved in order to solve the mission.
-We plan to use a more sophisticated aggregation in the future,
-which would allow to compensate unsolved tasks in the first phase
-by more difficult tasks in the later phases.
+%We plan to use a more sophisticated aggregation in the future,
+%which would allow to compensate unsolved tasks in the first phase
+%by more difficult tasks in the later phases.
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.6\textwidth]{img/robomission-student-model}
+\includegraphics[height=31mm]{img/robomission-student-model}
 \caption{%
   Student model used in RoboMission includes a skill for each phase
-  (computed from the previous skill and the new observed performance),
+  (computed from the previous skill and a newly observed performance),
   and a skill for each mission (computed from skills of its phases).}
 \label{fig:robomission.student-model}
 \end{figure}
@@ -304,9 +305,9 @@ by more difficult tasks in the later phases.
 \section{Tutor Model}
 \label{robomission.tutor}
 
-We currently focus on the outer-loop tutor modeling.
-Concerning the inner loop, the system provide only a basic
-rule-based agent for displaying instructions and explanations,
+We focus on the outer-loop tutor modeling;
+concerning the inner loop, the system provides only a basic
+rule-based tutor for displaying instructions and explanations,
 as described in \cref{sec:game.explanations}.
 
 The outer-loop tutor is hierachical;
@@ -329,32 +330,46 @@ Homogenity of phases allow to safely select a task uniformly at random from
 all unsolved tasks in that phase, which is a strategy maximizing exploration.
 % UI:
 Recommendations provided by the system are \emph{soft};
-i.e. that student can ignore them and select any task
+i.e. students can ignore them and select any task
 from the overview of all tasks.
 
-Progression through the missions and phases gradually increases the difficulty,
+Progression through the problem sets guarantees gradual increase of difficulty,
 but the increase is not monotonous.
 % TODO: Reformulate not to use so many "increase"
-Perceived difficulty increases after progess to a new phase,
+Perceived difficulty rises after progress to a new phase,
 but it decreases during solving tasks from the same phase,
-as the student's skill improves, while the objective difficulty stays
-approximately same (\cref{fig:robomission.flow}).
-On one hand, it means that the difficulty does not always match student's
+as the student's skill improves, while the objective difficulty does not change
+%stays approximately same
+(\cref{fig:robomission.flow}).
+On one hand, it means that the difficulty does not match student's
 skills perfectly, possibly slightly overshooting at the beginning of a phase,
 and undershooting at the end.
-On the other hand, it means that the perceived difficulty level is not
-same all the time, but has a wavy character, which is more interesting
-for students % \emph{dramaturgy of flow}
+On the other hand, the perceived difficulty level is not
+same all the time; instead, it has a wavy character, which creates a more
+interesting experience for students % \emph{dramaturgy of flow}
 \cite{book-of-lenses}.
 
 \begin{figure}[htb]
 \centering
-TODO: flow diagram specifically for progress through phases
-(increase of challenge with each new phase, then constant during the phase)
+\begin{tikzpicture}[font=\sffamily,scale=4.1]
+\large
+\draw [dashed] (0.1,0) -- (1,0.8);
+\draw [dashed] (0,0.1) -- (0.8,1);
+\draw [thick] (0.0,0.05) -- (0.1,0.05)
+           -- (0.1,0.15) -- (0.2,0.15)
+           -- (0.2,0.25) -- (0.3,0.25)
+           -- (0.3,0.375) -- (0.45,0.375)
+           -- (0.45,0.505) -- (0.6,0.505)
+           -- (0.6,0.7) -- (0.8,0.7)
+           -- (0.8,0.9) -- (1.0,0.9);
+\draw [thick, <->] (0,1) node [left] {$challenge$} -- (0,0) -- (1,0) node [below right] {$time$, $skill$};
+\node at (0.27,0.82) {frustration};
+%\node at (0.95,0.95) {flow};
+\node at (0.7,0.2) {boredom};
+\end{tikzpicture}
 % result: waves, but more "spiky"
 % (but the objective difficulty does not decrease, it stays constant
-% (so it's important to think what is on the y-axis!)
-\caption{Dramaturgy of flow in RoboMission.}
+\caption{Dramaturgy of task difficulty in RoboMission.}
 \label{fig:robomission.flow}
 \end{figure}
 
@@ -369,87 +384,87 @@ TODO: flow diagram specifically for progress through phases
 
 In order to iteratively improve adaptivity, as well as the programming game
 and other aspects of the ALS,
-an analysis layer (\cref{sec:metrics-and-evaluation})
+an analysis layer
 that provides several different views on the behavior of the system
-is crucial.
+is crucial (\cref{sec:metrics-and-evaluation}).
 Our analysis layer includes the following components:
+Google Analytics, monitoring dashboard, error reports, user feedback,
+data exports, and logs.
 
-% \subsection{Monitoring Components}
-%To fulfill the requirements from section \ref{sec:admin-requirements},
-%the system includes the following components:
-
-\begin{itemize}
-\item \emph{Google Analytics}
-  shows distribution of users with respect to the time and space.
-  In addition to page visits,
-  it can also process specific events sent from the frontend
-  (such as clicking on the execution button),
-  and divide them into groups, e.g. by the task being solved
-  % or group for AB experiment.
+Google Analytics
+  shows distribution of users with respect to the space and time
   (\cref{fig:google-analytics}).
-\item \emph{Monitoring Dashboard}
-  shows values of a few long-term objectives % metrics related to the long-term objectives
-  %(\ref{sec:long-term-objectives})
-  in the last month, namely daily active students, daily solved tasks, and
-  solving hours (total time spent on successful attempts)
-  (\cref{fig:monitoring-dashboard-fragment}).
-  % + "success ratio" = proportion of successful attempts,
-  The system also computes a few metrics for each task
-  (solved count, median time, and success ratio) in order to detect
-  bugs in them.
-  % These metrics are recomputed every night.
-\item \emph{Monitoring Notebook}
-  is a weekly-recomputed jupyter notebook (CITE) that performs several analyses
-  and visualizations using the latest data (\cref{fig:monitoring-notebook}).
-  It serves the similar purpose as the monitoring dashboard, but it is
-  easier to extend. It is enough to add a cell into the notebook;
-  %and test it on a collected data,
-  no change to the backend or frontend is needed.
-  %NOTE: + investigation notebook that with a command that generates exports
-  %and serves them directly as pandas data frames
-\item \emph{Error Reports and User Feedback}.
-  If an unhandled top-level error occurs on the server,
-  it is not only logged, but also sent to the administrators.
-  Administrators also receive emails with messages provided by users via
-  a feedback form that can be invoked on any page.
-\item \emph{Data Exports and Logs}.
-  All collected data are exported every week as a zip bundle containing
-  CSV files prepared for %convenient offline analysis.
-  offline analysis.
-  In addition, all requests, performed actions, and unhandled errors % and submitted feedbacks
-  are logged to text files on the server for manual inspection.
-\end{itemize}
-
+  In addition to page views,
+  it can also process events sent from the frontend
+  (such as clicking on the execution button),
+  and divide them into groups, e.g. by the task being solved.
+  % or group for AB experiment.
 
 \imgW{google-analytics}{%
   Preview from Google Analytics (January--March 2018).} % (breakdown for "execution" event).}
 
-% TODO: make it readable or remove
-\imgW{monitoring-dashboard-fragment}{%
-  Number of active students and number of solved tasks during March 2018
-  visualized in the monitoring dashboard.}
+Monitoring dashboard
+  shows several long-term objectives, % metrics related to the long-term objectives
+  %(\ref{sec:long-term-objectives})
+  namely daily active students, daily solved tasks, and
+  solving hours (total time spent on successful attempts).
+  %(\cref{fig:monitoring-dashboard-fragment}).
+  % + "success ratio" = proportion of successful attempts,
+  The system also computes a few metrics for each task
+  (solved count, median time, and success ratio) in order to detect
+  issues with tasks. % such as a misplaced task or error in task setting
+The dashboard is implemented as a weekly-recomputed jupyter notebook \cite{jupyter-notebooks},
+  that performs several analyses
+  and creates visualizations using the latest data
+  (\cref{fig:dashboard-metrics, fig:monitoring-notebook}).
+  It is easy to extend simply by adding
+  a cell into the notebook and testing it on collected data;
+  no modification to the backend or frontend is needed.
+  %NOTE: + investigation notebook that with a command that generates exports
+  %and serves them directly as pandas data frames
+
+%\emph{Error Reports and User Feedback}.
+  If an unhandled top-level error occurs on the server,
+  it is not only logged, but also sent to the administrators.
+  Administrators also receive emails with messages provided by users via
+  a feedback form that can be invoked on any page.
+%\emph{Data Exports and Logs}.
+  In addition to unhandled errors, all requests and performed actions are
+  logged to text files on the server for manual inspection.
+  Collected data are exported every week as a zip bundle containing
+  CSV files prepared for %convenient offline analysis.
+  offline analysis.
+
+\begin{figure}[htb]
+\centering
+\frame{\includegraphics[width=\textwidth]{img/dashboard-metrics}}
+\caption{%
+  Number of students (users who attempted a task), weekly averaged, visualized
+  in the monitoring dashboard (March 31, 2018)}.
+\label{fig:dashboard-metrics}
+\end{figure}
 
 % TODO: check if the table lines looks ok when printed
 \begin{figure}[htb]
 \centering
 \begin{subfigure}{.48\textwidth}
 \centering
-\includegraphics[width=0.95\textwidth]{img/monitoring-notebook-levels}
+\includegraphics[height=56mm]{img/monitoring-notebook-levels}
+\caption{Overview of all missions.}
 \end{subfigure}
 \begin{subfigure}{.51\textwidth}
 \centering
-\includegraphics[width=0.95\textwidth]{img/monitoring-notebook-repeat}
+\includegraphics[height=56mm]{img/monitoring-notebook-repeat}
+\caption{Mission 3: Repeat loop.}
 \end{subfigure}
 \caption{%
-  Mean success and median time for all missions (left),
-  and tasks in the Repeat mission (right),
-  visualized in the monitoring notebook
-  from March 31, 2018. This simple analysis reveals e.g.
-  that 7th mission (comparing) is probably more difficult than the 8th (if-else),
+  Mean success and median time visualized in the monitoring notebook
+  (March 31, 2018). This simple analysis reveals
+  that the 7th mission (Comparing) is probably more difficult than the 8th (If-else),
   % it's not clear, because the population of students is different; they
   % might already learn something important in the 7th level for the 8th
   % level
-  and that Clean Your Path task is significantly more difficult than
+  and that Clean Your Path is significantly more difficult than
   the other tasks in the mission.}
 % TODO: observation about clean-your-path
 \label{fig:monitoring-notebook}
