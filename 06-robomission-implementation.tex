@@ -2,16 +2,17 @@
 \label{chap:implementation-of-robomission}
 
 This chapter describes general architecture of the RoboMission application,
-together with a few specific aspects, such as representation of tasks,
+and a few specific aspects, such as representation of tasks,
 and transformation between programming blocks and code.
 
 \section{System Architecture}
 
-The application uses a client-server architecture,
-with a fat frontend client communicating with the server backend via REST API.
-In addition to the frontend app and backend service,
+RoboMission has a client-server architecture
+with a fat frontend client communicating with the server via REST API
+\cite{rest-api}.
+In addition to the frontend app and backend services,
 there are two other parts of the system:
-scheduled jobs, which run periodically every night (e.g. metrics computation),
+scheduled jobs, which run periodically every week (e.g. metrics computation),
 and tools for offline analysis of collected data
 (e.g. jupyter notebooks). % templates).
 % TODO: and "helper functions"
@@ -24,11 +25,12 @@ and tools for offline analysis of collected data
 %TODO: diagram of overall architecture (client-server, communication, monitoring, scheduled jobs, offline analysis)
 
 % \section{Frontend}
-Frontend is a single page application with \emph{redux architecture} (CITE),
+Frontend is a single page application with \emph{redux architecture}
+\cite[chapter\,12]{flux},
 which means that a single immutable state stores all application data.
 The state cannot be mutated directly; a new state can be created only
 %from the old one
-by dispatching actions.
+by dispatching an action.
 Each part of the state then defines its \emph{reducer},
 which is a pure function that takes a state and an action, and returns a new state.
 % ... and the only way the state can be changed is by dispatching actions.
@@ -39,8 +41,8 @@ which is a pure function that takes a state and an action, and returns a new sta
 The view is then assembled using declarative reusable components, that can
 be either \emph{presentational} (e.g. describing how the game world should be
 rendered), or \emph{behavioral}, selecting data from the state, % to use for the rendering,
-and defining actions to dispatch. %  and their triggers.
-The application also defines asynchronous workflows called \emph{sagas},
+and defining actions to dispatch \cite{react}. %  and their triggers.
+The application also defines a few asynchronous workflows (\emph{sagas}),
 e.g. for program interpretation, or task solving process. %, or sending events to Google Analytics.  % better examples?
 %% TODO: at least one sentence about React components?
 %\subsection{React Components}
@@ -140,35 +142,41 @@ e.g. for program interpretation, or task solving process. %, or sending events t
 % TODO?: more about the relationship between the backend and ALS components
 % (domain, student, tutor, UI, analysis layer)
 Backend is decomposed into modules defining database entities,
-their serializers (JSON for sending to frontend, CSV for exports),
-\emph{ViewSets} (CITE) describing REST API,
-and core modules with pure functions
+their serializers (JSON for sending data to frontend, CSV for exports),
+\emph{ViewSets} describing REST API, % TODO: cite view-sets
+and core modules with mostly pure functions
 for computing performance, skills, and recommendations.
 % TODO: + domain parsing, monitoring.
 %Technologies are becoming obsolete soon,
 %so will not discuss them in the text.
 An overview of technologies used currently in the project
 is included as \cref{chap:technologies}.
+% NOTE: It would make sense to decompose to packages corresponding to
+% the ALS components: domain, student, tutor, ui, monitoring, analysis.
 
 \section{Domain Representation}
 
-Domain is represented by a JSON file describing all problem sets %missions, phases, and
-and relationships between them, as well as their setting (e.g. toolbox to use)
-and name of tasks they contain.
-Each task is then described in its own file (\cref{sec:impl.task-sources}).
+Domain is represented by a JSON file containing all problem sets %missions, phases, and
+and relationships between them, as well as their setting (e.g. which toolbox to use)
+and names of their tasks.
+Each task is then described in a separate file (\cref{sec:impl.task-sources}).
 Furthermore, there is a separate JSON file containing values for parameters
 of domain entities (e.g. a time threshold for good performance for each task).
 It is convenient to have the relationships and the parameters in different files,
-because the former is (currently) edited by people, while the latter is
+because the former is currently edited by people, while the latter is
 a result of a computation.
 
 \subsection{Task Sources}
 \label{sec:impl.task-sources}
 
-Each task is described by a single file in a markdown-based format (CITE),
+Each task is described by a single file in a markdown-based format \cite{markdown},
 containing its name, setting, and solution.
-The high-level grammar for task descreption and an example is shown in
-\cref{fig:task-source}.
+Task sources in markdown files have several advantages: % as opposed to have them in DB
+they are human readable,  % + rendered by GH to a nicer presentation
+each change is version-controlled,
+and the task can be edited easily in any text editor.
+\Cref{fig:task-source} shows a high-level grammar for task description,
+together with an example.
 
 % There is also top-level [- option: value]*, currently not used
 \begin{figure}[htb]
@@ -193,6 +201,7 @@ The high-level grammar for task descreption and an example is shown in
 
 
 \end{lstlisting}}
+\caption{High-level grammar}
 \end{subfigure}
 \begin{subfigure}{.49\textwidth}
 {\lstset{numbers=none}
@@ -214,41 +223,27 @@ fly()
 fly()
 ```
 \end{lstlisting}}
+\caption{Turning Left (rendered in \cref{fig:robomission-task1})}
 \end{subfigure}
-\caption{%
-  Left: High-level task source grammar.
-  Right: An example of a task source
-  (for task Turning Left, which is rendered in \cref{fig:robomission-task1}).}
+\caption{Task source grammar and an example.}
 \label{fig:task-source}
 \end{figure}
 
-SpaceWorld and RoboCode fragments must follow their own grammars, which
-are described in \cref{sec:impl.spaceworld,sec:robocode}.
 Currently, there are only two setting options: length and energy limits.
-%Currently, there is one mandatory top-level option (task category)
-%and two optional setting options (length, energy).
-%(TBA: ref to example below; ref to 2 subparts - SpaceWorld grammar, RoboCode grammar)
+\texttt{SpaceWorld} and \texttt{RoboCode} fragments follow their own grammars, which
+are described in \cref{sec:impl.spaceworld,sec:robocode}.
 % [consider] Markdown files are then parsed and loaded into DB by a single command.
 % [consider]
 % - Localized task names are not part of the task source,
 % because all localized messages live on the same place in a single file on FE.
 % - PEG grammar for parsing
 % - internal represenation (DB model and its serializers for FE and for CSV exports)
-Task sources in markdown files have several advantages:
-% as opposed to have them in DB
-they are human readable,  % + rendered by GH to a nicer presentation
-each change is version-controlled,
-and the task can be edited easily in any text editor.
-%However, it is still more convenient to edit tasks in the online game editor
-%(\cref{sec:robomission.task-editor}),
-%unless it is a minor modification,
-%or unless one wants to change multiple tasks at once by a batch command.
 
-\subsection{SpaceWorld Description}
+\subsection{Space World Description}
 \label{sec:impl.spaceworld}
 
 % TODO: Unify "game world" -- "space world
-Each SpaceWorld (\cref{sec:robomission.game-world}) is described by a simple
+Each Space World (\cref{sec:robomission.game-world}) is described by a simple
 human-readable string.
 See figure \ref{fig:spaceworld-in-editor} for an example and descripton.
 Set of valid SpaceWorld descriptions is given by the
@@ -413,7 +408,7 @@ RoboAST      & JSON (AST) & intermediate representation \\
 To avoid implementing separate transformations between each pair of these
 representations, we introduced a common intermediate representation,
 \emph{RoboAST}, which is an %simple
-\emph{Abstract Syntax Tree} (CITE) in JSON
+\emph{Abstract Syntax Tree} \cite{ast} in JSON
 (\cref{fig:robocode-transformations-example}).
 For each of the four other representations, it is enough to implement
 its parser returning RoboAST object, and
