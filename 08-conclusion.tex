@@ -1,64 +1,78 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
 
-%\section{Summary}
+\section{Summary}
 %\label{sec:conclusion.summary}
 
-We have shown how a combination of several strategies for easier learning and
+This thesis describes how a combination of several strategies for easier learning and
 supporting motivation, together with the adaptivity of the system
 through techniques of artificial intelligence,
 can lead to an efficient learning of introductory programming. % too strong?
-Creating such a system is, however, not a one-shot task, but rather a series
-of small improvements of a programming game, user interface,
+Creating such a system is, however, not a one-shot task, but rather a long series
+of small iterative improvements of a programming game, user interface,
 domain, student and tutor models, and the analysis layer.
-We have already completed a few loops of improvements with
+We have already completed a few iterations of improvements with
 % our adaptive learning system for introductory programming,
 RoboMission,
-and we tested its usability not only in schools during an Hour of Code,
-but also in two competitions for primary and secondary school students. %  (Purkiada, Sob 2018)
-% Sob - consider including a photo
+tested its usability in schools during an Hour of Code,
+as well as in two competitions for primary and secondary school students,
+% (Purkiada, Sob 2018) Sob - consider including a photo
+and published our initial research on programming tasks similarities \cite{alg.similarity},
+and on the adaptive approach to learning programming \cite{robomission}.
 
-TODO: cite our research/publications here
+% \imgW[0.7]{intersob}{InterSoB ... (Photo by Vendula Němcová.}
 
 % \section{Lessons Learned}
 
-%\section{Future work}
+\section{Future Work}
 %\label{sec:conclusion.future-work}
 
-Nevertheless, many improvement loops are yet to be undertaken. By adding
+Many improvement iterations are yet to be undertaken. After adding
 new game elements and programming concepts (e.g. functions and compound
-conditions), we will enable more advanced problem sets and extend the use
+conditions), it will possible to create more advanced problem sets,
+and extend the use
 case of the system beyond the short hour motivational tutorial (\emph{Hour of Code mode}).  % grammar
 In \emph{foundations mode}, students could spend from a few days to several weeks practicing
-programming, transitioning gradually from block-based to text-based programming
+programming, transitioning gradually from block-based to textual programming
 in RoboCode.
 % missions for learning new programming elements, esp. functions and compound conditions
 % Usage: for a standard primary-secondary school programming curriculum.
 Then, in \emph{university mode} targeting at high school and university students,
-tasks would teach programming in Python.
+tasks would teach programming in Python, and possibly even advanced algorithmic
+concepts (\cref{fig:robomission-search-tree}).
 % at home / secondary schools, KSI (0th problem set), IB111 (0th/1st motivational lesson)
 Furthermore, we would like to introduce a \emph{competition mode}, for
-straightforward usage of newly created tasks in a programming contest,
+straightforward usage of new tasks in a programming contest,
 leaving these problem sets public for everybody for practice once the
 competition is over.
 % Competitions --  (both blocks and Python depending on the competition) such as Purkiada, Pevnost FI, KSI, InterLos, InterSob, new FIBot (new problem sets -> public for everybody for practice after the competition; %this also includes testing mode for RH interns
 % 5. Cooperation: multiplayer programming game
 
-In addition to new problem sets, we plan to create a real-time dashboard for teachers,
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{img/robomission-search-tree}
+\caption{%
+  Example of how the Space World can be used for learning algorithms,
+  in this case Dijkstra's shortest path algorithm
+  (used at a workshop for high school students).}
+\label{fig:robomission-search-tree}
+\end{figure}
+
+In addition to new problem sets, we plan to implement a real-time dashboard for teachers,
 which would visualize progress and estimated skills of students and suggest
 which students needs a help right now, and possibly even how to pair students
 for efficient pair programming.
 
-With growing content, it will become useful to build more complex
+With growing content, it would become useful to build more complex
 domain, student and tutor models. In order to add overlapping concepts
 into the domain and use them to more accurately predict student performance,
 we need to analyze how multiple skills interact in a single
 task to produce the final performance. %, in order to predict performance.
 % in a single task. % to produce a single performance.
-Using program snapshots from a single task session,
-we want to detect, which concepts contained in the task
+Using data from a single task session,
+we want to detect which concepts contained in the task
 is the student struggling with.
-Models might be further improved byt including uncertainty of estimates,
+Models might be further improved by including uncertainty of estimates,
 forgetting of skills, and planning of tutor actions.
 
 To evaluate which versions of models increase the quality of the system,
@@ -68,28 +82,15 @@ analysis layer should be extended to allow for AB experiments
 and a careful attention should be paid to both long-term and
 online attributable metrics.
 % TODO: Reformulate.
-Unbiased evaluation is complicated by a feedback loop caused by the fact, that
+Unbiased evaluation is complicated by feedback loops caused by the fact, that
 the collected data on which the system is evaluated are influenced by the
 adaptive behavior of the system.
 % and long-term metrics monitoring, simulated experiments
 In order to further align measured metrics with the system mission,
 we can explore how to reduce noise in flow observations
 by combining subjective user feedback with objective performance measures.
-Having a reliable flow observations would allow to optimize the total
-amount of time spent in flow.
+Having a reliable flow observations would be a great step towards optimizing
+the total amount of time spent in the state of flow.
 
 %- peer tutoring (in a classroom)
 % - if RL approaches can help
-
-
-TODO: mention our publications
-
-TODO: more difficult tasks, e.g. planing on the grid:
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=\textwidth]{img/robomission-search-tree}
-\caption{%
-  TODO: description + mention the workshop}
-\label{fig:robomission-search-tree}
-\end{figure}
