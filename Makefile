@@ -6,10 +6,10 @@
 all: pdf
 
 pdf: thesis.tex
-	latexmk -pdf -pv -pdflatex="pdflatex -interaction batchmode --shell-escape %O %S" thesis.tex
+	latexmk -pdf -pv -pdflatex="pdflatex -interaction=nonstopmode -halt-on-error -quiet --shell-escape %O %S" thesis.tex
 
 watch:
-	latexmk -pdf -pvc -pdflatex="pdflatex -interaction batchmode --shell-escape %O %S" thesis.tex
+	latexmk -pdf -pvc -pdflatex="pdflatex -interaction=nonstopmode -quiet --shell-escape %O %S" thesis.tex
 
 clean:
 	latexmk -CA

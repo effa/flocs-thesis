@@ -1,8 +1,8 @@
 \chapter{Implementation of RoboMission}
 \label{chap:implementation-of-robomission}
 
-This chapter describes general architecture of the RoboMission application,
-and a few specific aspects, such as representation of tasks,
+In the description of implementation, we focus on the aspects that are
+specific for system for learning programming, such as representation of tasks,
 and transformation between programming blocks and code.
 
 \section{System Architecture}
@@ -43,7 +43,7 @@ be either \emph{presentational} (e.g. describing how the game world should be
 rendered), or \emph{behavioral}, selecting data from the state, % to use for the rendering,
 and defining actions to dispatch \cite{react}. %  and their triggers.
 The application also defines a few asynchronous workflows (\emph{sagas}),
-e.g. for program interpretation, or task solving process. %, or sending events to Google Analytics.  % better examples?
+e.g. for program interpretation, and task solving process. %, or sending events to Google Analytics.  % better examples?
 %% TODO: at least one sentence about React components?
 %\subsection{React Components}
 %
@@ -286,7 +286,7 @@ Object -> 'S' | 'A' | 'M' | 'D' | 'W'
 
 
 \imgW[0.7]{spaceworld-in-editor}%
-{Example SpaceWorld with its description. % source code.
+{Example Space World with its description. % source code.
 Each line represents one row of the grid
 and is split by pipes (``|'') into fields.
 Each field starts with a lower-cased letter denoting color of the field
@@ -300,12 +300,12 @@ For example, ``rD'' is a red field with a diamond.}
 \section{RoboCode}
 \label{sec:robocode}
 
-\emph{RoboCode} is Python-like programming language
-used to represent solutions in task sources.
+\emph{RoboCode} is a Python-like programming language
+for representing solutions in task sources.
 It closely corresponds to the text written on Blockly blocks
 with a few exceptions, such as %added parentheses
-shorter function names with added parentheses
-(e.g. ``left()'' instead of ``fly left'').
+shorter function names and added parentheses
+(e.g. \texttt{left()} instead of \texttt{fly left}).
 % also: fly right -vs- fly()
 % and abbreviated literals (e.g. ``b'' instead of ``blue'').
 % difference: parenthesis (color() vs. color) and literals ('b' vs. blue)
@@ -426,22 +426,24 @@ by first parsing A into RoboAST and then generating B from this RoboAST.
 % structure, with RoboAST as a root at the top.)
 \imgW[0.6]{robocode-transformations}{Transformations between RoboAST and other representations.}
 
-\imgW{robocode-transformations-example}{Example of a RoboAST with corresponding RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
+\imgW{robocode-transformations-example}{Example of a RoboAST (in the middle),
+  and corresponding RoboBlocks, RoboCode, MiniRoboCode, and RoboJS.}
 
 
 \subsection{Parsing Expression Grammar}
 
 For parsing RoboCode into RoboAST, we use a \emph{parsing expression grammar}
-(PEG) (CITE).
+(PEG) \cite{peg}.
 % TODO: verify the following statement
-PEG grammars are basically context-free grammars with ordered rules
-and lookahead expressions (TODO: example).  % using our grammar - if we don't
+PEGs are essentially unambiguous context-free grammars with prioritized rules
+and more compact syntax.
+% and lookahead expressions (TODO: example).  % using our grammar - if we don't
 % use it, then don't mention it.
 % TODO: check grammar (should ... be transformed)
-The specific implementation we use (CITE) allows to define how should each
-parsed subexpression be transformed into a subtree of the final AST.
-The specification can be an arbitrary JavaScript code returning the subtree.
-% TODO: check grammar
+The PEG implementation we use%
+\footnote{PEG.js, available at \url{https://pegjs.org}.}
+allows to define a \emph{match result} for each parsed subexpression,
+using an arbitrary JavaScript code returning a subtree of the final ASt.
 For illustration, there are
 two % a few
 examples of RoboCode parsing rules:
@@ -455,12 +457,12 @@ WhileStmt = "while" __ t:Test ":" b:Body
 %  = CompoundTest
 %  / SimpleTest
 
-The main advantage of PEG is that they do not require any lexer % TODO: check term
-and the resulting grammar is still concise; %readable and short;
-the PEG grammar for RoboCode % (as described in section \ref{sec:syntax-semantic})
+PEGs can be parsed in linear time, they do not require a separate lexer,
+and the resulting grammar is readable and concise.
+The PEG for RoboCode % (as described in section \ref{sec:syntax-semantic})
 has about 100 lines. % of code.
 However, a preprocessing of the RoboCode is needed, because
-PEG is a context-free grammar,
+PEGs are context-free,
 while RoboCode is a context-sensitive language;
 the context is created by indentation.
 In addition, it is also useful to store line numbers alongside the statements
@@ -546,7 +548,6 @@ color != 'y' --> !y
 Two examples of complete transformations into MiniRoboCode:
 \smallskip
 
-% TODO: use the fancy arrow-split component from my bachelor thesis
 \noindent\begin{minipage}{.49\textwidth}
 \begin{lstlisting}[numbers=none]
 fly()
@@ -554,7 +555,7 @@ while color() == 'b':
     left()
     right()
 fly()
--------------------
+<*\arrowlinesplit*>
 fWb{lr}f
 \end{lstlisting}
 \end{minipage}\hfill
@@ -565,7 +566,7 @@ repeat 6:
         shoot()
     else:
         right()
--------------------
+<*\arrowlinesplit*>
 R6{Ix>1{s}/{r}}
 \end{lstlisting}
 \end{minipage}
@@ -608,7 +609,9 @@ enough to be used as labels in plots.
 
 \subsection{RoboBlocks}
 
-Blockly (CITE) is an implementation of block-based programming
+Blockly%
+\footnote{Available at \url{https://developers.google.com/blockly/}.}
+is an implementation of block-based programming
 environment from Google,
 which we use in the code editor for students
 (shown e.g. in figure \ref{fig:robomission-task1}).
@@ -679,14 +682,14 @@ sensors (\texttt{color}, \texttt{position}),
 and meta-interpreting (\texttt{isStopped}, \texttt{highlightBlock})
 (\cref{fig:robojs-example}).
 
-The interpreter would not have to be necessary be a JavaScript interpreter,
-since it is easy to transfrom RoboAST to any common imperative language.
+The interpreter would not have to be necessary a JavaScript interpreter,
+since it is easy to transform RoboAST to any common imperative language.
 % (at least to the common imperative languages).
-However, the interpreter must satisify the following conditions:
+However, the interpreter must satisfy the following conditions:
 % TODO: check grammar: "to be implemented ... to allow ..."?
 be implemented in JavaScript (to run in the browser),
 allow to define custom asynchronous hooks
-(e.g. to perform actions),
+(to perform actions),
 %(in order to perform actions, sensor measurements, and block highligting),
 and allow to step the code, or at least to impose a limit on
 the number of steps % or time
@@ -735,9 +738,9 @@ for (var i1_ = 0; i1_ < 4; i1_++) {
 \end{lstlisting}}
 \end{subfigure}
 \caption{%
-  Examples of a RoboJS (right) for a given RoboBlocks program (left). %
-  Repeat loops require to generate unique names for iteration variables.
-  Each original command is complemented by \texttt{highlightBlock(blockId)},
+  Example of a RoboJS (right) for given RoboBlocks program (left). %
+  % Repeat loops require to generate unique names for iteration variables.
+  Each original command is accompanied by \texttt{highlightBlock(blockId)},
   so that the meta-interpreter knows which block to highlight.}
 \label{fig:robojs-example}
 \end{figure}
@@ -746,7 +749,9 @@ for (var i1_ = 0; i1_ < 4; i1_++) {
 %simply because we do not need this tranformation;
 %otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
 
-We use an existing JavaScript interpreter (CITE) and wrap it into two
+We use an existing JavaScript interpreter%
+\footnote{JS-interpreter, available at \url{https://github.com/NeilFraser/JS-Interpreter}.}
+and wrap it into two
 additional layers: the first is a generator
 that yields actions, sensor requests and
 meta-interpreting effects (e.g. block highlighting), % checking for interruption).

@@ -27,6 +27,16 @@
 \footnotetext{#4}
 }
 
+
+%--------------------------------------------------------------------
+% Splitting listings into "from" and "to" part
+%--------------------------------------------------------------------
+\newcommand{\arrowlinesplit}{%
+  \noindent\makebox[\linewidth]{\raisebox{0.15em}{\rule{0.450\textwidth}{0.5pt}}%
+  ~$\downarrow$~%
+  \noindent\raisebox{0.15em}{\rule{0.450\textwidth}{0.5pt}}}%
+}
+
 %--------------------------------------------------------------------
 % Definition of JavaScript listing
 % Source: https://tex.stackexchange.com/questions/89574/language-option-supported-in-listings
