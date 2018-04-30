@@ -38,6 +38,35 @@
 }
 
 %--------------------------------------------------------------------
+% Quotes with italics.
+%--------------------------------------------------------------------
+%\newenvironment{itquote}
+%{\begin{quote}\itshape}
+%{\end{quote}}
+
+\newenvironment{widequote}[1]%
+  {\list{}{\leftmargin=#1\rightmargin=#1}\item[]}%
+  {\endlist}
+
+\newcommand{\itquote}[3][10mm] {
+\begin{widequote}{#1}
+\emph{#2} (#3)
+%--- #3
+\end{widequote}
+}
+
+\newcommand{\itquoteright}[3][10mm] {
+\begin{widequote}{#1}
+\emph{#2}
+\vspace{-4.5mm}
+\begin{flushright}
+(#3)
+\end{flushright}
+\end{widequote}
+}
+
+
+%--------------------------------------------------------------------
 % Definition of JavaScript listing
 % Source: https://tex.stackexchange.com/questions/89574/language-option-supported-in-listings
 % Usage: \begin{lstlisting}[language=ES6] ...

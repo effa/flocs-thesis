@@ -1,9 +1,14 @@
 \chapter{Implementation of RoboMission}
 \label{chap:implementation-of-robomission}
 
-In the description of implementation, we focus on the aspects that are
-specific for system for learning programming, such as representation of tasks,
-and transformation between programming blocks and code.
+\itquote[0mm]{
+A programmer is ideally an essayist who works with traditional aesthetic and literary forms as well as mathematical concepts, to communicate the way that an algorithm works and to convince a reader that the results will be correct.
+}{D. E. Knuth}
+
+% EXT:
+%In the description of implementation, we focus on the aspects that are
+%specific for system for learning programming, such as task representation,
+%and transformation between programming blocks and code.
 
 \section{System Architecture}
 
@@ -26,22 +31,22 @@ and tools for offline analysis of collected data
 
 % \section{Frontend}
 Frontend is a single page application with \emph{redux architecture}
-\cite[chapter\,12]{flux},
+\cite[ch.\,12]{flux},
 which means that a single immutable state stores all application data.
-The state cannot be mutated directly; a new state can be created only
-%from the old one
-by dispatching an action.
+% The state cannot be mutated directly;
+A new state can be created only by dispatching an action.
 Each part of the state then defines its \emph{reducer},
-which is a pure function that takes a state and an action, and returns a new state.
+a pure function that takes a state and an action, and returns a new state.
 % ... and the only way the state can be changed is by dispatching actions.
 % ... dispatcher then takes dispatched actions one by one and reduce them (notifying
 %     connected containers about the new state)
 % ... reducers: state, action -> new state (pure functions)
 % "unidirectional UI" (as opposed to MVC and similar architectures)
-The view is then assembled using declarative reusable components, that can
-be either \emph{presentational} (e.g. describing how the game world should be
-rendered), or \emph{behavioral}, selecting data from the state, % to use for the rendering,
-and defining actions to dispatch \cite{react}. %  and their triggers.
+The view is then assembled using declarative reusable
+components, that are
+either \emph{presentational} (e.g. describing how the game world is
+rendered), or \emph{behavioral} (selecting data from the state, % to use for the rendering,
+and dispatching actions) \cite{react}. %  and their triggers.
 The application also defines a few asynchronous workflows (\emph{sagas}),
 e.g. for program interpretation, and task solving process. %, or sending events to Google Analytics.  % better examples?
 %% TODO: at least one sentence about React components?
@@ -154,6 +159,8 @@ An overview of technologies used currently in the project
 is included as \cref{chap:technologies}.
 % NOTE: It would make sense to decompose to packages corresponding to
 % the ALS components: domain, student, tutor, ui, monitoring, analysis.
+In the rest of the chapter, we focus on aspects specific for
+system for learning programming.
 
 \section{Domain Representation}
 
