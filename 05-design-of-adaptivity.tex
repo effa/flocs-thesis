@@ -196,14 +196,14 @@ in at most 20 minutes.  % 10, 15?
 
 Currently, we do not model overlapping concepts, because that would require
 more data to properly analyze their interactions.
-Instead, we devide tasks into linearly ordered disjoint hierarchical problem
+Instead, we divide tasks into linearly ordered disjoint hierarchical problem
 sets (\cref{fig:robomission.domain}). % , which are easier to handle.
 The hierarchy has two levels: the top-level problem sets (\emph{missions})
 contain about 9 tasks, which are further split into three smaller
 problem sets (\emph{phases}).
 
 Missions and phases are ordered, while tasks within a given phase are not,
-since all the tasks in a single phase should be simlarly difficult.
+since all the tasks in a single phase should be similarly difficult.
 The first two missions gradually introduce game elements
 (e.g. diamonds, meteoroids, wormholes),
 while the later missions usually focus on practicing one new programming
@@ -213,7 +213,7 @@ concept (e.g. repeat loop, while loop, if statement).
 % analysis chapter...)
 
 The contribution of refining the missions into phases is threefold:
-First, phases enforce important prerequisities within a mission (e.g.
+First, phases enforce important prerequisites within a mission (e.g.
 introducing wormholes before using them in more difficult tasks).
 Second, phases are approximately homogeneous (practicing same concepts, and having similar difficulty),
 which allows for simpler tutor models.
@@ -255,7 +255,7 @@ it does not model the probability of the student solving a task with some perfor
 but rather an amount of verified skill;
 i.e. the model is only descriptive.
 An advantage is that this skill can be shown directly to the student,
-e.g. visualized as a progressbar towards completion of the current mission,
+e.g. visualized as a progress bar towards completion of the current mission,
 since it never decreases (which would be demotivating).
 
 We use discrete representation of performance with 3 levels (poor, good,
@@ -310,7 +310,7 @@ concerning the inner loop, the system provides only a basic
 rule-based tutor for displaying instructions and explanations,
 as described in \cref{sec:game.explanations}.
 
-The outer-loop tutor is hierachical;
+The outer-loop tutor is hierarchical;
 it first selects a problem set, then a task from this problem set.
 In order to assess if a problem set is mastered,
 the corresponding verified skill
@@ -318,8 +318,8 @@ computed by the student model described in the previous section
 is compared to the threshold of 1. % ?
 % TODO: diagram of PS, TS selection and mastery decison
 
-The tutor selects for practice the first unmastered phase of the first
-unmastered mission, using the total ordering provided by the domain model.
+The tutor selects for practice the first unsolved phase of the first
+unsolved mission, using the total ordering provided by the domain model.
 The system contains only a small number of problem sets,
 so it is reasonable to assume that the student would like to solve all of
 them,
