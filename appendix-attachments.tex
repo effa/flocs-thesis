@@ -1,0 +1,106 @@
+\chapter{Attachments}
+\label{chap:attachments}
+
+Source code, exported data and performed analyses
+are available as attachments in the \emph{Archive of Thesis}
+in the Information System of Masaryk University,
+and also in GitHub repositories of the project and the thesis.
+
+\section{Source Code}
+\label{sec:attachment.source-code}
+
+Snapshot of the source code
+(including setup instructions in \texttt{README.md})
+% documentation (\texttt{docs}),
+%and domain data (\texttt{backend/domain}),
+is attached as \texttt{code.zip}.
+The most recent version of the project is available at
+\url{https://github.com/adaptive-learning/robomission}.
+
+\section{Exported Data}
+\label{sec:attachment.collected-data}
+
+Both the domain and collected data used for analyses in this
+thesis (exported on 9th March 2018) are attached as
+\texttt{data.zip}, and they are also available at
+\url{https://github.com/effa/flocs-thesis/tree/master/data}.
+Data is exported as a few CSV tables,
+with the columns described below.
+%Columns of the CSV tables are described in
+%\cref{tbl:data.tasks,tbl:data.levels,tbl:data.task-sessions,tbl:data.program-snapshots}.
+
+\subsection{Tasks}
+
+\begin{tabular}{l l}
+\toprule
+Attribute & Description \\
+\midrule
+id & ID of the task \\
+name & text label of the task \\
+level & name of the mission \\
+setting & JSON with "fields" and optional limits ("length", "energy") \\
+solution & MiniRoboCode representation of the solution (\cref{sec:minirobocode}) \\
+\bottomrule
+\end{tabular}
+
+% TODO: consider to update to the new data export with PS (of course not only
+% description, but also the actual export and analyses)
+
+\subsection{Problem Sets}
+
+\begin{tabular}{l l}
+\toprule
+Attribute & Description \\
+\midrule
+id & ID of the problem set \\
+level & order of the problem set (by difficulty) \\
+name & text label of the problem set \\
+toolbox & name of the available toolbox \\
+tasks & list of task names contained in the problem set \\
+\bottomrule
+\end{tabular}
+
+\subsection{Task Sessions}
+
+\begin{tabular}{l l}
+\toprule
+Attribute & Description \\
+\midrule
+id & ID of the task session \\
+student & ID of the student \\
+task & ID of the task \\
+solved & whether the student solved the task (boolean) \\
+start & timestamp of opening the task \\
+end & timestamp of the last action in the task session \\
+time\_spent & length of the task session in seconds \\
+\bottomrule
+\end{tabular}
+
+
+\subsection{Program Snapshots}
+
+\begin{tabular}{l l}
+\toprule
+Attribute & Description \\
+\midrule
+id & ID of the program snapshot \\
+task\_session & ID of the task session \\
+time & timestamp of creating the snapshot \\
+program & MiniRoboCode representation of the code (\cref{sec:minirobocode}) \\
+granularity & "edit" or "execution" \\
+order & order of the snapshot of this granularity in the session \\
+correct & whether the execution was successful (empty for edits) \\
+time\_from\_start & seconds from the start of the task session \\
+time\_delta & seconds from the previous snapshot of same granularity \\
+\bottomrule
+\end{tabular}
+
+
+\section{Analyses}
+\label{sec:attachment.analyses}
+
+The last attachment (\texttt{analysis.zip})
+contains several jupyter notebooks and Python modules with the analyses
+presented in the thesis.
+Also available at
+\url{https://github.com/effa/flocs-thesis/tree/master/analysis}.
