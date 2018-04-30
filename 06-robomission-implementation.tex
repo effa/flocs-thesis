@@ -143,7 +143,7 @@ e.g. for program interpretation, and task solving process. %, or sending events 
 % (domain, student, tutor, UI, analysis layer)
 Backend is decomposed into modules defining database entities,
 their serializers (JSON for sending data to frontend, CSV for exports),
-\emph{ViewSets} describing REST API, % TODO: cite view-sets
+\emph{view sets} describing REST API, % TODO: cite view-sets
 and core modules with mostly pure functions
 for computing performance, skills, and recommendations.
 % TODO: + domain parsing, monitoring.
@@ -245,8 +245,8 @@ are described in \cref{sec:impl.spaceworld,sec:robocode}.
 % TODO: Unify "game world" -- "space world
 Each Space World (\cref{sec:robomission.game-world}) is described by a simple
 human-readable string.
-See figure \ref{fig:spaceworld-in-editor} for an example and descripton.
-Set of valid SpaceWorld descriptions is given by the
+See figure \ref{fig:spaceworld-in-editor} for an example and description.
+Set of valid Space World descriptions is given by the
 following context-free grammar:
 
 \begin{lstlisting}
@@ -351,15 +351,19 @@ to be easier to understand: % by beginners:
 repeat 4:
     fly()
 \end{lstlisting}
-Tests inside while-loops and if-statements are limited to the following forms:
+
+Conditions %inside while-loops and if-statements
+are restricted to the following forms.
+% (again in order to match the respective Blockly blocks):
+(Color codes are same as in the Space World description,
+i.e. 'r' is red, 'g' is green' etc.)
 % (again in order to match the respective Blockly blocks):
 \begin{lstlisting}
 position() [==|!=|>|<|>=|<=] [1..6]
 color() [==|!=] ['r'|'g'|'b'|'y'|'k']
 <test> [and|or] <test>
 \end{lstlisting}
-The letters in the color-test have the same meaning as in the space world
-description (e.g. 'r' for red). Control structures can be nested:
+Control structures can nest arbitrarily:
 % TODO: Program for solvint the task from the previous section
 %       (change either the program, the task, or both).
 %\begin{figure}[h]
@@ -443,7 +447,7 @@ and more compact syntax.
 The PEG implementation we use%
 \footnote{PEG.js, available at \url{https://pegjs.org}.}
 allows to define a \emph{match result} for each parsed subexpression,
-using an arbitrary JavaScript code returning a subtree of the final ASt.
+using an arbitrary JavaScript code returning a subtree of the final AST.
 For illustration, there are
 two % a few
 examples of RoboCode parsing rules:
@@ -458,28 +462,29 @@ WhileStmt = "while" __ t:Test ":" b:Body
 %  / SimpleTest
 
 PEGs can be parsed in linear time, they do not require a separate lexer,
-and the resulting grammar is readable and concise.
-The PEG for RoboCode % (as described in section \ref{sec:syntax-semantic})
-has about 100 lines. % of code.
-However, a preprocessing of the RoboCode is needed, because
+and the resulting grammar is readable and concise;
+the PEG for RoboCode % (as described in section \ref{sec:syntax-semantic})
+has only about 100 lines. % of code.
+However, a preprocessing of the RoboCode is necessary, because
 PEGs are context-free,
-while RoboCode is a context-sensitive language;
-the context is created by indentation.
+while RoboCode is a context-sensitive language
+-- the context is created by indentation.
 In addition, it is also useful to store line numbers alongside the statements
 to enable \emph{meta-interpreting},
 such as showing executed line, or linking errors to the point in the source code.
 Therefore, the preprocessing step transforms the code in a context-free form,
 in which each line of the code is prepended corresponding line number,
-and adding and removing indentation levels is denoted by ``>'' and ``<'' characters respectively.
+and adding and removing indentation levels is denoted by \texttt{\{}
+and \texttt{\}} characters respectively.
 For example, the preprocessed code for the program shown in figure
 \ref{fig:robocode-transformations-example} would be:
 \begin{lstlisting}
 1| shoot()
 2| repeat 4:
->
+{
 3| right()
 4| left()
-<
+}
 \end{lstlisting}
 % The figure \ref{fig:robocode-transformations-example} also shows the final RoboAST object.
 
@@ -488,7 +493,7 @@ For example, the preprocessed code for the program shown in figure
 MiniRoboCode is a condensed form of the RoboCode.
 It replaces indentation by curly brackets,
 key words and functions by their first letters,
-and removes any other whitespaces
+and removes whitespace characters
 in order to fit programs into a single short line.
 The mapping from the RoboCode is described by the following rules:
 % shown in figure \ref{fig:minirobocode-transformation-rules}.
@@ -671,10 +676,9 @@ version of localized block labels
 \label{sec:robomission-robojs}
 
 Instead of implementing our own interpreter of RoboCode,
-we transform the code through RoboAST into JavaScript
+we transform the code through RoboAST into JavaScript,
 %(described in section \ref{sec:robomission-robojs})
-and then use a JavaScript interpeter %(CITE)
-to run the code.
+and then use a JavaScript interpreter to run the code.
 The generated \emph{RoboJS} % is just a JavaScript that
 assumes to be executed within a
 context providing hooks for functions corresponding to actions (\texttt{fly}, \texttt{left}, \texttt{right}, \texttt{shoot}),
@@ -682,10 +686,10 @@ sensors (\texttt{color}, \texttt{position}),
 and meta-interpreting (\texttt{isStopped}, \texttt{highlightBlock})
 (\cref{fig:robojs-example}).
 
-The interpreter would not have to be necessary a JavaScript interpreter,
-since it is easy to transform RoboAST to any common imperative language.
+The interpreter does not have to be necessary a \emph{JavaScript} interpreter,
+since it is easy to transform RoboAST to any other common imperative language.
 % (at least to the common imperative languages).
-However, the interpreter must satisfy the following conditions:
+However, the interpreter must satisfy the following requirements:
 % TODO: check grammar: "to be implemented ... to allow ..."?
 be implemented in JavaScript (to run in the browser),
 allow to define custom asynchronous hooks
@@ -752,10 +756,10 @@ for (var i1_ = 0; i1_ < 4; i1_++) {
 We use an existing JavaScript interpreter%
 \footnote{JS-interpreter, available at \url{https://github.com/NeilFraser/JS-Interpreter}.}
 and wrap it into two
-additional layers: the first is a generator
+additional layers: the first layer is a generator
 that yields actions, sensor requests and
 meta-interpreting effects (e.g. block highlighting), % checking for interruption).
-and the second is a saga
+and the second layer is a saga
 %(see section \ref{sec:robomission-asynchronous-side-effects})
 that handles all these asynchronous effects.
 The separation into these two layers allows to test the interpreter logic
