@@ -10,7 +10,7 @@ and what should we focus on in next iterations,
 we analyze collected data.
 All analyses in this chapter use data collected  % avoid repeating "collected"
 during 4 months (10th November 2017 -- 9th March 2018).
-This data, as well the code performing the analyses, are available
+This data, as well as the code performing the analyses, are available
 as attachments of this thesis
 (described in \cref{sec:attachment.collected-data,sec:attachment.analyses}).
 
@@ -32,17 +32,24 @@ Nearly all users access the webpage on a desktop computer ($94\%$).
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.48\textwidth]{img/engagement-tasks}
-\includegraphics[width=0.48\textwidth]{img/engagement-days}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/engagement-tasks}
+%\caption{How many students solved given number of tasks.}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/engagement-days}
+%\caption{How many students solved a task given number of days.}
+\end{subfigure}
 \caption{%
-  Engagement curves.
-  Left: How many students solved given number of tasks.
-  Right: How many students solved a task given number of days.}
+  Engagement curves show how many students solved at least given number of task (left),
+  and how many students solved a task at least given number of days (right).}
 \label{fig:engagement-curves}
 \end{figure}
 
 
-About 11000 tasks were attempted (counting only those with at least one edit),
+About 11000 tasks were attempted (counting only those attempts with at least one edit),
 and 9600 of them were solved,
 resulting in the overall success rate $86\%$.
 The daily numbers of solved task sessions are not stable,
@@ -62,15 +69,18 @@ and 40 thousand to executions.
 %  Daily number of solved task sessions (weekly averaged).}
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.48\textwidth,trim={0 21mm 0 7mm},clip]{img/daily-task-sessions}
+%\includegraphics[width=0.48\textwidth,trim={0 21mm 0 7mm},clip]{img/daily-task-sessions}
+\includegraphics[width=0.48\textwidth]{img/daily-task-sessions}
 \caption{Daily number of solved task sessions (weekly averaged).}
 \label{fig:daily-task-sessions}
 \end{figure}
 
-Median solving time is 60 seconds (interquartile range: 24-145 seconds).
+Median solving time is 1 minute (interquartile range: 24--145 seconds).
 Solving times follow log-normal distribution (\cref{fig:solving-times}),
-so the mean solving time is much higher (even if the times are capped at one hour):
-195 seconds, with high standard deviation of nearly 500 seconds.
+so the mean solving time is much higher
+(about 3 minutes). %195 seconds, % with high standard deviation of nearly 500 seconds.
+% even if the times are capped at one hour).
+% and not very informative
 
 
 \begin{figure}[htb]
@@ -82,6 +92,33 @@ so the mean solving time is much higher (even if the times are capped at one hou
   Left: All task sessions.
   Right: For each level.}
 \label{fig:solving-times}
+\end{figure}
+
+\section{Behavior Evaluation}
+
+Checking the requirements mentioned in: \cref{sec:robomission.behavior}.
+
+Progress to 2nd level:
+73\% of students who are still learning after 10 minutes has reached 2nd level at that time
+\cref{fig:students-at-levels}.
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/students-at-levels}
+%\caption{How many students solved given number of tasks.}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/task-sessions-at-levels}
+%\caption{How many students solved a task given number of days.}
+\end{subfigure}
+\caption{%
+  Left: proportion of students in the system after some time of practicing,
+  who progressed to the 2nd, 3rd, and 6th level (sequence of commands, repeat loop, if-statements).
+  Right: how the proportion of tasks at different levels is shifting during the practice.}
+\label{fig:students-at-levels}
 \end{figure}
 
 \section{Performance Compression}
@@ -116,9 +153,12 @@ and $25\%$ of tasks have a correlation below 0.5 % check the number
 
 \section{Task Difficulties}
 
+% Reformulate to make it clear, that it is the analysis before introduction of the phases,
+% that actually leads to the refinement described in the thesis.
+
 % TODO: Resolve mission vs. level.
 Our tutor model (\cref{robomission.tutor}) assumes that difficulties of tasks
-in a phase are approximately same,
+in each phase are approximately the same,
 and that the overall difficulty is increasing as the level increases.   % even phase.
 Using collected data, we can determine whether these assumption are satisifed,
 and if not, suggest adjustments to improve their validity.
@@ -137,12 +177,11 @@ difficulty. Although in the other levels such a clear split does not exist,
 they still often contain tasks with a wide range of difficulties.
 % TODO: note/analyze robustness of these analyses (given the limited data)
 
-% TODO: only a first 6 levels or possibly devide into phases
 \begin{figure}[htb]
 \centering
 \includegraphics[width=\textwidth]{img/difficulties-tasks-levels}
 \caption{%
-  Difficulties of tasks in first 6 levels.
+  Difficulties of tasks in the first 6 levels.
   Difficulty is measured as spent time and number of edits, both log-transformed.}
 \label{fig:difficulties-tasks-levels}
 \end{figure}
