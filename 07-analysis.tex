@@ -43,7 +43,7 @@ Nearly all users access the webpage on a desktop computer ($94\%$).
 %\caption{How many students solved a task given number of days.}
 \end{subfigure}
 \caption{%
-  Engagement curves show how many students solved at least given number of task (left),
+  Engagement curves show how many students solved at least given number of tasks (left),
   and how many students solved a task at least given number of days (right).}
 \label{fig:engagement-curves}
 \end{figure}
@@ -55,7 +55,7 @@ resulting in the overall success rate $86\%$.
 The daily numbers of solved task sessions are not stable,
 with high peaks on days when the application was used
 in a competition or testing at a school
-(\cref{fig:daily-task-sessions}).
+(\cref{fig:solved-count}).
 % The following can be a separate paragraph, if another
 % analysis is performed.
 Over 180 thousand program snapshots was collected,
@@ -69,38 +69,64 @@ and 40 thousand to executions.
 %  Daily number of solved task sessions (weekly averaged).}
 \begin{figure}[htb]
 \centering
-%\includegraphics[width=0.48\textwidth,trim={0 21mm 0 7mm},clip]{img/daily-task-sessions}
-\includegraphics[width=0.48\textwidth]{img/daily-task-sessions}
-\caption{Daily number of solved task sessions (weekly averaged).}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/daily-task-sessions}
+\caption{Daily number of solved tasks.} %\\(weekly averaged).}
+\label{fig:solved-count}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/task-sessions-time-log}
+\caption{Log-transformed solving times.}
+\label{fig:solving-times-all}
+\end{subfigure}
+\caption{Task sessions.}
 \label{fig:daily-task-sessions}
 \end{figure}
 
 Median solving time is 1 minute (interquartile range: 24--145 seconds).
-Solving times follow log-normal distribution (\cref{fig:solving-times}),
+Solving times follow log-normal distribution (\cref{fig:solving-times-all}),
 so the mean solving time is much higher
 (about 3 minutes). %195 seconds, % with high standard deviation of nearly 500 seconds.
 % even if the times are capped at one hour).
 % and not very informative
 
 
+\section{System Behavior}
+
+We can use collected data to check the requirements on system behavior mentioned in
+\cref{sec:robomission.behavior}. Unfortunatelly, the system is currently not logging
+which tasks were recommended and which were self-selected, so we cannot say
+how much are the results influenced by the adaptive behavior of the system.
+From all attempts, 86\% were successful, and 84\% were solved in less than 15 minutes.
+If we look at the first 5 tasks for each student, 87\% of them are solved,
+85\% are solved in less than 15 minutes, but only 66\% in less than 2 minutes.
+The median solving time is below a minute for the first 10 practiced tasks,
+and it does not increase too much for the later attempts either (\cref{fig:solving-times}).
+
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.48\textwidth]{img/task-sessions-time-log}
-\includegraphics[width=0.48\textwidth]{img/levels-time}
-\caption{%
-  Distribution of log-transformed solving times.
-  Left: All task sessions.
-  Right: For each level.}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[height=42mm]{img/median-time-order}
+\caption{Time per task order during practice.}
+\end{subfigure}
+\begin{subfigure}{.51\textwidth}
+\centering
+\includegraphics[height=44mm]{img/levels-time}
+\caption{Log-transformed times per level.}
+\end{subfigure}
+\caption{Solving times.}
 \label{fig:solving-times}
 \end{figure}
 
-\section{Behavior Evaluation}
 
-Checking the requirements mentioned in: \cref{sec:robomission.behavior}.
-
-Progress to 2nd level:
-73\% of students who are still learning after 10 minutes has reached 2nd level at that time
-\cref{fig:students-at-levels}.
+After 10 minutes of practice, 73\% of students have reached the second level,
+and after 20 minutes, nearly 70\% of students have started practicing loops.
+Then the progress through levels slows down and only 37\% of students
+are practicing both loops and conditional statements after the first
+hour of the tutorial (\cref{fig:students-at-levels}).
 
 \begin{figure}[htb]
 \centering
@@ -116,7 +142,7 @@ Progress to 2nd level:
 \end{subfigure}
 \caption{%
   Left: proportion of students in the system after some time of practicing,
-  who progressed to the 2nd, 3rd, and 6th level (sequence of commands, repeat loop, if-statements).
+  who progressed to the 2nd, 3rd, and 6th level (sequence of commands, repeat loops, if-statements).
   Right: how the proportion of tasks at different levels is shifting during the practice.}
 \label{fig:students-at-levels}
 \end{figure}
@@ -124,20 +150,65 @@ Progress to 2nd level:
 \section{Performance Compression}
 
 % In ... we have discussed importance of a performance compression
-Our student model uses three-valued performance representation, and
-a performance compression function based purely on observed solving time
+Our student model uses %three-valued performance representation, and a
+performance compression function based purely on observed solving time
 (\cref{sec:robomission.student}).
-Would using other observational data, such as number of edits
+Could using other observational data, such as number of edits,
 bring more information about the performance?
-(TODO: Goal: find a compression function that maximizes performance of
-student model.)
-
+%(TODO: Goal: find a compression function that maximizes performance of student model.)
 Overall Pearson correlation between solving times and number of edits (both
-log-transformed) is quite high (0.73). However, if computed for individual tasks,
+log-transformed) is quite high, about 0.73 (\cref{fig:performance-corrs-ts}).
+However, if computed for individual tasks,
 median correlation drops to 0.64, % (interquartile range 0.5 -- 0.72),
 and $25\%$ of tasks have a correlation below 0.5 % check the number
-(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits
-(or executions) should be at least considered.
+(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits should be considered.
+
+We propose the following heuristic for combining solving time with the number of edits and executions: log-transformed sum of edits, executions, and \emph{thinking actions}.
+To reduce noise caused e.g. by different screens
+%and idvidiual speeds of students,
+thinking action is only assumed between two edits
+or executions, if the time interval is at least 5 seconds (which seems to be enough
+to drag and drop a block anywhere on any screen). If the interval is very long,
+we count it as multiple thinking actions (taking $log_5$ from the time interval
+and rounding it down to the closest integer).
+This heuristic retains reasonable correlation with both solving time
+and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
+
+% the same with thresholds derived from task median (computing 3-level performance)
+% -> measure agreement on all task sessions (not correlation, because specific
+%  values are now important; prabably RMSE to penalize larger discrepances severaly).
+% TODO: 3rd level of abstraction:
+% - explore influence of different aggregations, e.g. all-mean (default), min-per-task, median-per-task,
+% - explore the role of thresholds
+% - explore influence of error metrics; of number of levels
+% - explore usage in predictive models on the next performance (independent/cross)
+% - explore the action-count measure (with thresholds): e.g. how it behaves wrt. incrasing levels
+
+
+\begin{figure}[htb]
+\centering
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=45mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-ts}
+\caption{All task sessions.}
+\label{fig:performance-corrs-ts}
+\end{subfigure}
+%\begin{subfigure}{.33\textwidth}
+%\centering
+%\includegraphics[height=32mm,trim={34mm 0 0 0},clip]{img/performance-corr-tasks-med}
+%\caption{B.}
+%\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=45mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-tasks-q10}
+\caption{Per tasks, 10th percentile.}
+\label{fig:performance-corrs-p10}
+\end{subfigure}
+\caption{Correlation between performance measures:
+E = number of edits, R = number of executions, S = sum of edits, executions and thinking actions,
+T = solving time; all of them log-transformed.}
+\label{fig:performance-corrs}
+\end{figure}
 
 
 \begin{figure}[htb]
@@ -162,7 +233,6 @@ in each phase are approximately the same,
 and that the overall difficulty is increasing as the level increases.   % even phase.
 Using collected data, we can determine whether these assumption are satisifed,
 and if not, suggest adjustments to improve their validity.
-
 \Cref{fig:solving-times} (right) shows that on average the difficulty of levels
 is increasing, but it also reveals that level 7 is more difficult than level 8.
 % TODO: Elaborate on the solution to this issue.
@@ -182,7 +252,7 @@ they still often contain tasks with a wide range of difficulties.
 \includegraphics[width=\textwidth]{img/difficulties-tasks-levels}
 \caption{%
   Difficulties of tasks in the first 6 levels.
-  Difficulty is measured as spent time and number of edits, both log-transformed.}
+  Difficulty is measured as solving time and number of edits, both log-transformed.}
 \label{fig:difficulties-tasks-levels}
 \end{figure}
 
