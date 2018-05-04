@@ -14,7 +14,7 @@ personalize the sequence of tasks \cite{proso}, %  for every student,
 % TODO: better citation?
 % OR: "choosing the most suitable task for given student"
 %By giving the student a suitable task -- neither too easy, nor too difficult --
-%  it can help the student to achieve the state of flow (\ref{sec:motivation.challenge}).
+%  it can help the student to achieve the state of flow (\cref{sec:motivation.challenge}).
 to visualize skills \cite{open-learner-model},
 and
 to automatically generate hints \cite{generating-hints}. % TODO: and feedback (CITE)
@@ -89,7 +89,7 @@ Typical ALS consists of the following components
   offline (outside-the-system) analyses are often performed as well
   to discover useful interventions to the system  % actionable insight
   (\cref{sec:metrics-and-evaluation}).
-  %section \ref{sec:metrics-and-evaluation} discusses how to evaluate
+  % \cref{sec:metrics-and-evaluation} discusses how to evaluate
   % different models or even whole learning systems.
 %\item \emph{Offline analyses} (``Human in the loop'')
 \end{itemize}
@@ -309,7 +309,7 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 %\item the simplest domain model = only tasks (no other chunk types) and no relationships
 %\item oven without concepts, the models can have
 %  rich structure (e.g. prerequisities between tasks,
-%    see right figure \ref{fig:chunks-prerequisites})
+%    see right \cref{fig:chunks-prerequisites})
 %  and many parameters (e.g. similarities between tasks)
 %\item REF: usage (most of the existing systems)
 %\end{itemize}
@@ -399,7 +399,7 @@ edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
 %\end{subfigure}
 %\caption{%
 %  Binary and continuous Q-matrices corresponding to the
-%  bipartite graph of overlapping concepts from figure \ref{fig:concepts-disjoint-overlapping}.}
+%  bipartite graph of overlapping concepts from \cref{fig:concepts-disjoint-overlapping}.}
 %\label{fig:qmatrix}
 %\end{figure}
 
@@ -471,7 +471,7 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %  Furthermore, no data needs to be collected in advance,
 %  while the automatic techniques require a lot of data to provide stable results.
 %  (TODO: specify "a lot of" + REF).
-%\item example in figure \ref{fig:concepts-disjoint-overlapping} (left)
+%\item example in \cref{fig:concepts-disjoint-overlapping} (left)
 %\item REF: usage (? ProSo - single concept per problem type, e.g. all tasks in Robotanist are single concept)
 %\end{itemize}
 %
@@ -481,9 +481,9 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %  at once, e.g. both loops and conditional commands (REF to figure with such task).
 %\item task:concepts m:n (i.e. each task can contain to multiple concepts)
 %\item represenation: bipartite graph between tasks and concepts
-%  (example in right part of figure \ref{fig:concepts-disjoint-overlapping})
+%  (example in right part of \cref{fig:concepts-disjoint-overlapping})
 %\item another representation: matrix tasks x concepts -> 1 if contained, 0 if
-%  not = "Q-matrix" (see figure \ref{fig:qmatrix})
+%  not = "Q-matrix" (see \cref{fig:qmatrix})
 %\item values: binary (hard containment) / continuous (soft containment --
 %  how much is given concept important for given task; concepts are fuzzy sets of tasks)
 %\item Q-matrix is a special type of feature matrix, where all features correpond to concepts
@@ -597,7 +597,7 @@ the introductory programming can improve accuracy of the overlaying student mode
 %\item (relationship name: generalization / specialization / inclusion ?)
 %\item representation: rooted tree of chunks, inner nodes = concepts, leaves = tasks
 %\item extension: DAG instead of tree
-%  (comparision tree vs DAG in figure \ref{fig:concepts-hierarchical})
+%  (comparision tree vs DAG in \cref{fig:concepts-hierarchical})
 %\item Note that we can of course use hierarchical concepts and yet decide not to
 %  model a hiearachy (although in that case, overlapping concepts are necessary,
 %  e.g. if the task practices while loops, it also practices loops and programming concepts).
@@ -675,7 +675,7 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 %  (when working with probabilities, this leads to Bayesian networks?)
 %\item special case of only AND nodes = POKS ("Partial Order Knowledge Structure")
 %\item representation: genarally BN, restricted: AND/OR directed acyclic graph (DAG),
-%  or even just DAG for POKS (examples in figure \ref{fig:chunks-prerequisites})
+%  or even just DAG for POKS (examples in \cref{fig:chunks-prerequisites})
 %\item REF usage:
 %  (1) KSI (existing systems) -- and/or prerequisities between tasks;
 %  (2) \cite{its-programming} -- soft (continuous) prerequisities (and only?)
@@ -1685,7 +1685,7 @@ solves each task with a high performance). % TODO:CITE
 %\begin{itemize}
 %\item Problem: input: domain, student (skills), output: decision: mastered/not.
 %\item Solution: online algorithm called \emph{mastery criterion}.
-%\item Reduction to chosing a suitable student model \ref{sec:student-modeling}
+%\item Reduction to chosing a suitable student model \cref{sec:student-modeling}
 %  and a threshold $T$;
 %  update the student model after each interaction,
 %  and declare mastery when the skill
@@ -1863,7 +1863,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy}).
 %In principle, the weights could be learned to optimize a desired metric, but the
 %learning process is more difficult than for student models,
 %because it is less clear if the decison/prediction was correct
-%(section \ref{tutors.evaluation}).
+%(\cref{tutors.evaluation}).
 %(Task selection: minimizing the sum of errors / randomly-weighted)
 %(Alternative combination of errors: maximum, product/sum-logs).
 
@@ -1940,7 +1940,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy}).
 %  In principle, the weights could be learned to optimize a desired metric, but the
 %  learning process is more difficult than for student models,
 %  because it is less clear if the decison/prediction was correct
-%  (section \ref{tutors.evaluation}).
+%  (\cref{tutors.evaluation}).
 %  (Task selection: minimizing the sum of errors / randomly-weighted)
 %  (Alternative combination of errors: maximum, product/sum-logs).
 %\item Instead of manually picking the error functions, we can directly learn
@@ -2392,7 +2392,7 @@ to understand how their values are influenced by changes in the learning system
 %behavior during some period.
 %However, it is recommended to start the system optimization with a metric which is simple
 %and directly attributable to individual recommendations \cite[][Rule \#12]{google-ml-rules}.
-%The attributable metrics are presented in section \ref{sec:live-evaluation}.
+%The attributable metrics are presented in \cref{sec:live-evaluation}.
 
 % TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
 % TODO: note on AB experiments: there will be always a difference -> needs to asses statistical significance (is the difference due to changed condition or just because of random noise)
@@ -2432,7 +2432,7 @@ weighting the observed performance by the difficulty of the chosen task.
 %The tasks environment in the learning systems usually differs significantly
 %  from the real-world environment,
 %  e.g. by using block-based programming language,
-%  or by other aspects mentioned in section \ref{sec:strategies-for-easier-learning}.
+%  or by other aspects mentioned in \cref{sec:strategies-for-easier-learning}.
 %Ultimately, what matters is the performance of students in the real world,
 %  outside the simplified learning environment%
 %\footnote{%
@@ -2514,7 +2514,7 @@ Each recommendation can be then attributed an error, which is either 0 or 1, dep
 on whether the statement is true or false.
 Finally, individual errors are aggregated, and the average error is reported.
 
-% TODO: relationship to metrics defined in section \ref{sec:metrics-for-recommendation}
+% TODO: relationship to metrics defined in \cref{sec:metrics-for-recommendation}
 
 % TODO: note on online models (and relation to RL), these needs continuous online evaluation
 
@@ -2535,7 +2535,7 @@ for model selection (e.g. hyperparameters search),
 and as a check before deploying a new model. % online.
 %Finally, offline learning algorithms typically use
 %  a metric to guide them
-%  (these are discussed in section \ref{sec:metrics-to-guide-learning}).
+%  (these are discussed in \cref{sec:metrics-to-guide-learning}).
 
 %Another disadvantage of offline evaluation compared to live evaluation
 %  is that the data used for evaluation does not come from the completely

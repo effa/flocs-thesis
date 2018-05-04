@@ -253,7 +253,7 @@ are described in \cref{sec:impl.spaceworld,sec:robocode}.
 % TODO: Unify "game world" -- "space world
 Each Space World (\cref{sec:robomission.game-world}) is described by a simple
 human-readable string.
-See figure \ref{fig:spaceworld-in-editor} for an example and description.
+See \cref{fig:spaceworld-in-editor} for an example and description.
 Set of valid Space World descriptions is given by the
 following context-free grammar:
 
@@ -471,7 +471,7 @@ WhileStmt = "while" __ t:Test ":" b:Body
 
 PEGs can be parsed in linear time, they do not require a separate lexer,
 and the resulting grammar is readable and concise;
-the PEG for RoboCode % (as described in section \ref{sec:syntax-semantic})
+the PEG for RoboCode % (as described in \cref{sec:syntax-semantic})
 has only about 100 lines. % of code.
 However, a preprocessing of the RoboCode is necessary, because
 PEGs are context-free,
@@ -484,8 +484,8 @@ Therefore, the preprocessing step transforms the code in a context-free form,
 in which each line of the code is prepended corresponding line number,
 and adding and removing indentation levels is denoted by \texttt{\{}
 and \texttt{\}} characters respectively.
-For example, the preprocessed code for the program shown in figure
-\ref{fig:robocode-transformations-example} would be:
+For example, the preprocessed code for the program shown in
+\cref{fig:robocode-transformations-example} would be:
 \begin{lstlisting}
 1| shoot()
 2| repeat 4:
@@ -494,7 +494,7 @@ For example, the preprocessed code for the program shown in figure
 4| left()
 }
 \end{lstlisting}
-% The figure \ref{fig:robocode-transformations-example} also shows the final RoboAST object.
+% The \cref{fig:robocode-transformations-example} also shows the final RoboAST object.
 
 \subsection{MiniRoboCode}
 \label{sec:minirobocode}
@@ -505,7 +505,7 @@ key words and functions by their first letters,
 and removes whitespace characters
 in order to fit programs into a single short line.
 The mapping from the RoboCode is described by the following rules:
-% shown in figure \ref{fig:minirobocode-transformation-rules}.
+% shown in \cref{fig:minirobocode-transformation-rules}.
 \smallskip
 
 \noindent\begin{minipage}{.49\textwidth}
@@ -555,7 +555,7 @@ color != 'y' --> !y
 %%\caption{Transformation rules from RoboCode to MiniRoboCode. (In reality, the transformations goes through RoboAST.)}
 %%\label{fig:minirobocode-transformation-rules}
 %\end{figure}
-% Figure \ref{fig:minirobocode-transformations} shows
+% \Cref{fig:minirobocode-transformations} shows
 \smallskip
 
 \noindent
@@ -628,14 +628,14 @@ Blockly%
 is an implementation of block-based programming
 environment from Google,
 which we use in the code editor for students
-(shown e.g. in figure \ref{fig:robomission-task1}).
+(shown e.g. in \cref{fig:robomission-task1}).
 % TODO: ref to section about block-base programming envs and their pros/cons
 % TODO: mention advnatages of using Blockly from Google: well-tested, widely-used
 % (and disadvantage: don't play nicely with modern JS workflow; sometimes needs
 % awful hacks to digging in the source code to achieve a desiered behavior
 Blockly allows to import and export the currently assembled program in
 an XML format, that we call \emph{RoboBlocksXML}
-%(See figure \ref{fig:roboblocks-xml} for an example of the XML.)
+%(See \cref{fig:roboblocks-xml} for an example of the XML.)
 (\cref{fig:roboblocks-xml}).
 Both transformations between RoboBlocksXML and RoboAST are straightforward.
 
@@ -664,8 +664,8 @@ Both transformations between RoboBlocksXML and RoboAST are straightforward.
 </xml>
 \end{lstlisting}
   \caption{%
-    RoboBlocksXML for the program shown in figure %
-    \ref{fig:robocode-transformations-example}.}
+    RoboBlocksXML for the program shown in %
+    \cref{fig:robocode-transformations-example}.}
 \label{fig:roboblocks-xml}
 \end{figure}
 
@@ -674,7 +674,7 @@ on the blocks.
 Depending on the language domain, we initialize Blockly blocks with the corresponding
 version of localized block labels
 (\cref{fig:roboblocks-english-czech}).
-%(See figure \ref{fig:roboblocks-english-czech} for an example of the same program in two languages.)
+%(See \cref{fig:roboblocks-english-czech} for an example of the same program in two languages.)
 %Blockly supports its own localization mechanism that fits well
 %within the localization framework used in our project.
 
@@ -686,7 +686,7 @@ version of localized block labels
 
 Instead of implementing our own interpreter of RoboCode,
 we transform the code through RoboAST into JavaScript,
-%(described in section \ref{sec:robomission-robojs})
+%(described in \cref{sec:robomission-robojs})
 and then use a JavaScript interpreter to run the code.
 The generated \emph{RoboJS} % is just a JavaScript that
 assumes to be executed within a
@@ -729,7 +729,7 @@ the number of steps % or time
 
 %For the interpretation of the student code yet another representation is needed,
 %a JavaScipt code that can be fed into a JS interpreter.
-%(See section \ref{sec:robomission-interpretation} for the details of the interpretation).
+%(See \cref{sec:robomission-interpretation} for the details of the interpretation).
 
 
 \begin{figure}[h]
@@ -769,7 +769,7 @@ additional layers: the first layer is a generator
 that yields actions, sensor requests and
 meta-interpreting effects (e.g. block highlighting), % checking for interruption).
 and the second layer is a saga
-%(see section \ref{sec:robomission-asynchronous-side-effects})
+%(see \cref{sec:robomission-asynchronous-side-effects})
 that handles all these asynchronous effects.
 The separation into these two layers allows to test the interpreter logic
 easily without dealing with asynchronous effects.
