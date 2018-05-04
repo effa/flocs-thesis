@@ -10,22 +10,39 @@
 To prepare humanity for the next 100 years, we need more of our children to learn computer programming skills, regardless of their future profession. Along with reading and writing, the ability to program is going to define what an educated person is.}
 {S. Khan}
 
+Programming is becoming an essential skill to learn.
+Not only is it useful in increasing number of professions,
+but also it develops abstract thinking and problem solving ability. % cite
+Our mission is to help children to learn basic programming efficiently,
+while supporting their motivation for further learning.
+For this purpose, we build a personalized system for learning introductory
+programming, RoboMission\footnote{\url{en.robomise.cz}},
+that aims to adapt to the skills of the student
+to provide an optimal learning experience.
+
+How to build such a system? (make this paragraph an outline)
+- use strategies for easier learning and for supporint motivation
+  (inspiry by existing system, understand human limitations and needs)
+- use AI techniques (inspired by the AL systems in other domain)
+- improve iteratively
+
+Can we use the artificial intelligence to optimize learning of programming?
+
 Artificial intelligence proved to be a powerful tool for tackling difficult problems,
 from playing chess to driving autonomous cars. % TODO: references
-Can we use the artificial intelligence to optimize learning of programming?
 %This thesis explores how we can use artificial intelligence to optimize
 %learning of introductory programming.
 %This thesis explores how can be artificial intelligence used to optimize
 %learning of introductory programming.
 Adaptive learning systems have been already successfully used in many domains
-\cite{alg.evaluation-geography,
-matmat.response-times, mathsgarden, sqltutor}.
+\cite{mathsgarden, alg.evaluation-geography, matmat.response-times}
+%, sqltutor}.
 % maths += Cognitive Tutor (?mastery-learning-scale), ASSiSTments (Koedinger
 % 2010), ALEKS
-% TODO: the last 3 are all maths -> find another domain
+% TODO: find another domain (avoid another math)
 Nevertheless, the most popular introductory programming tutorials,
 Hours of Code \cite{hour-of-code},
-offer the same fixed sequence of tasks for everybody,
+offer the same sequence of tasks for everybody,
 leading to a suboptimal experience.
 Artificial intelligence can be used to personalize the sequence of tasks.
 % for each student.
@@ -36,6 +53,20 @@ activity (\cref{fig:flow}).
 This \emph{state of flow} \cite{flow}
 is essential for the optimal learning experience
 \cite{adaptive-practice}.
+
+
+
+\imgW[0.9]{robomission-task1}%
+  {RoboMission is a web application for learning introductory programming.
+   The left panel displays a space themed grid world. In the workspace on
+   the right, students build programs using blocks describing actions
+   such as \texttt{fly left} and \texttt{fly right}.
+   The task is to create a program that would lead the spaceshipt to the last row.}
+%  {RoboMission is a web application for learning introductory programming %
+%   using space themed grid world and block-based programming.}
+
+
+
 
 \begin{figure}[htb]
   \centering
@@ -77,10 +108,6 @@ and allow us to collect data that we need to support or reject our hypotheses.
 % NOTE: RoboMission = app for efficient and engaging learning of introductory
 % programming for children (= mission)
 
-% TODO: English screenshot.
-\imgW[0.9]{robomission-task1}%
-  {RoboMission is a web application for learning introductory programming %
-   using space themed grid world and block-based programming.}
 
 We first look at how the introductory programming is taught
 in existing online learning systems
