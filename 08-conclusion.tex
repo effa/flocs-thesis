@@ -5,50 +5,68 @@
 Shoot for the moon. Even if you miss, you'll land among the stars.
 }{B. Littrell}
 
-\section{Summary}
+%\section{Summary}
 %\label{sec:conclusion.summary}
 
-This thesis describes how a combination of several strategies for easier learning and
-supporting motivation, together with the adaptivity of the system
+This thesis describes how a combination of several strategies to support
+learning and motivation, together with the adaptivity of the system
 through techniques of artificial intelligence,
 can lead to an efficient learning of introductory programming. % too strong?
 Creating such a system is, however, not a one-shot task, but rather a long series
-of small iterative improvements of a programming game, user interface,
-domain, student and tutor models, and the analysis layer.
-We have already completed a few iterations of improvements with
+of small iterative improvements of a programming game,
+models of domain, student and tutor, user interface, and the analysis layer.
+
+With our adaptive system for learning programming, RoboMission,
+we have already completed a few iterations of improvements.
 % our adaptive learning system for introductory programming,
-RoboMission,
-tested its usability in schools during an Hour of Code,
+Since its first prototype, which was implemented in 2015,
+%we use the feedback from users (as well as collected data?)
+we have completely changed both the programming game and the adaptive behavior.
+The version deployed in November 2017 was used during the following 4 months
+by about 1000 users, who solved about 10000 tasks.
+We tested its usability at schools during Hours of Code,
 as well as in two competitions for primary and secondary school students,
+Purkiáda\footnote{\url{http://purkiada.sspbrno.cz}} and
+InterSoB\footnote{\url{https://intersob.math.muni.cz/2018/}}.
 % (Purkiada, Sob 2018) Sob - consider including a photo
-and published our initial research on programming tasks similarities \cite{alg.similarity},
+We have published  our initial research on programming tasks similarities \cite{alg.similarity},
 and on the adaptive approach to learning programming \cite{robomission}.
 
 % \imgW[0.7]{intersob}{InterSoB ... (Photo by Vendula Němcová.}
 
 % \section{Lessons Learned}
 
-\section{Future Work}
+%\section{Future Work}
 %\label{sec:conclusion.future-work}
 
 Many improvement iterations are yet to be undertaken. After adding
 new game elements and programming concepts (e.g. functions and compound
-conditions), it will possible to create more advanced problem sets,
-and extend the use
-case of the system beyond the short hour motivational tutorial (\emph{Hour of Code mode}).  % grammar
-In \emph{foundations mode}, students could spend from a few days to several weeks practicing
-programming, transitioning gradually from block-based to textual programming
-in RoboCode.
-% missions for learning new programming elements, esp. functions and compound conditions
-% Usage: for a standard primary-secondary school programming curriculum.
-Then, in \emph{university mode} targeting at high school and university students,
-tasks would teach programming in Python, and possibly even advanced algorithmic
-concepts (\cref{fig:robomission-search-tree}).
-% at home / secondary schools, KSI (0th problem set), IB111 (0th/1st motivational lesson)
-Furthermore, we would like to introduce a \emph{competition mode}, for
-straightforward usage of new tasks in a programming contest,
-leaving these problem sets public for everybody for practice once the
-competition is over.
+conditions), it will be possible to create more advanced problem sets,
+and extend the use case of the system beyond the short motivational tutorial.
+% (\emph{Hour of Code mode}).  % grammar
+Tasks could gradually transition from block-based to Python programming,
+and teach even advanced algorithmic concepts (\cref{fig:robomission-search-tree}).
+Next, we plan to implement a real-time dashboard for teachers,
+which would visualize progress %and skills
+of students and suggest
+which students need a help right now, and possibly even how to pair students
+for efficient pair programming.
+
+% EXT:
+% ... (\emph{Hour of Code mode}).
+%In \emph{foundations mode}, students could spend from a few days to several weeks practicing
+%programming, transitioning gradually from block-based to textual programming
+%in RoboCode.
+%% missions for learning new programming elements, esp. functions and compound conditions
+%% Usage: for a standard primary-secondary school programming curriculum.
+%Then, in \emph{university mode} targeting at high school and university students,
+%tasks would teach programming in Python, and possibly even advanced algorithmic
+%concepts (\cref{fig:robomission-search-tree}).
+%% at home / secondary schools, KSI (0th problem set), IB111 (0th/1st motivational lesson)
+%Furthermore, we would like to introduce a \emph{competition mode}, for
+%straightforward usage of new tasks in a programming contest,
+%leaving these problem sets public for everybody for practice once the
+%competition is over.
 % Competitions --  (both blocks and Python depending on the competition) such as Purkiada, Pevnost FI, KSI, InterLos, InterSob, new FIBot (new problem sets -> public for everybody for practice after the competition; %this also includes testing mode for RH interns
 % 5. Cooperation: multiplayer programming game
 
@@ -62,10 +80,6 @@ competition is over.
 \label{fig:robomission-search-tree}
 \end{figure}
 
-In addition to new problem sets, we plan to implement a real-time dashboard for teachers,
-which would visualize progress and estimated skills of students and suggest
-which students needs a help right now, and possibly even how to pair students
-for efficient pair programming.
 
 With growing content, it would become useful to build more complex
 domain, student and tutor models. In order to add overlapping concepts
@@ -79,16 +93,16 @@ is the student struggling with.
 Models might be further improved by including uncertainty of estimates,
 forgetting of skills, and planning of tutor actions.
 
-To evaluate which versions of models increase the quality of the system,
+To evaluate which versions of models improve the learning and motivation, %increase the learquality of the system,
 analysis layer should be extended to allow for AB experiments
 % In addition to compare several versions of student or tutor models,
 % ... experiment on block-based vs text-based programming
 and a careful attention should be paid to both long-term and
 online attributable metrics.
-% TODO: Reformulate.
-Unbiased evaluation is complicated by feedback loops caused by the fact, that
-the collected data on which the system is evaluated are influenced by the
-adaptive behavior of the system.
+We need to make sure that we collect enough data for reliable unbiased evaluation,
+which is complicated by feedback loops caused by the fact that
+the collected data which the system is evaluated on are influenced by the
+adaptive behavior of the system itself.
 % and long-term metrics monitoring, simulated experiments
 In order to further align measured metrics with the system mission,
 we can explore how to reduce noise in flow observations
