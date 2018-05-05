@@ -18,6 +18,15 @@ is attached as \texttt{code.zip}.
 The most recent version of the project is available at
 \url{https://github.com/adaptive-learning/robomission}.
 
+\section{Analyses}
+\label{sec:attachment.analyses}
+
+Attachment (\texttt{analysis.zip})
+contains several Jupyter Notebooks and Python modules with the analyses
+presented in the thesis.
+Also available at
+\url{https://github.com/effa/flocs-thesis/tree/master/analysis}.
+
 \section{Exported Data}
 \label{sec:attachment.collected-data}
 
@@ -30,8 +39,9 @@ with the columns described below.
 %Columns of the CSV tables are described in
 %\cref{tbl:data.tasks,tbl:data.levels,tbl:data.task-sessions,tbl:data.program-snapshots}.
 
-\subsection{Tasks}
-
+\begin{table}[htb]
+\centering
+\caption{Tasks.}
 \begin{tabular}{l l}
 \toprule
 Attribute & Description \\
@@ -43,12 +53,14 @@ setting & JSON with "fields" and optional limits ("length", "energy") \\
 solution & MiniRoboCode representation of the solution (\cref{sec:minirobocode}) \\
 \bottomrule
 \end{tabular}
+\end{table}
 
 % TODO: consider to update to the new data export with PS (of course not only
 % description, but also the actual export and analyses)
 
-\subsection{Problem Sets}
-
+\begin{table}[htb]
+\centering
+\caption{Problem sets.}
 \begin{tabular}{l l}
 \toprule
 Attribute & Description \\
@@ -60,9 +72,12 @@ toolbox & name of the available toolbox \\
 tasks & list of task names contained in the problem set \\
 \bottomrule
 \end{tabular}
+\end{table}
 
-\subsection{Task Sessions}
 
+\begin{table}[htb]
+\centering
+\caption{Task sessions.}
 \begin{tabular}{l l}
 \toprule
 Attribute & Description \\
@@ -76,10 +91,13 @@ end & timestamp of the last action in the task session \\
 time\_spent & length of the task session in seconds \\
 \bottomrule
 \end{tabular}
+\end{table}
 
 
-\subsection{Program Snapshots}
 
+\begin{table}[htb]
+\centering
+\caption{Program snapshots.}
 \begin{tabular}{l l}
 \toprule
 Attribute & Description \\
@@ -95,13 +113,4 @@ time\_from\_start & seconds from the start of the task session \\
 time\_delta & seconds from the previous snapshot of same granularity \\
 \bottomrule
 \end{tabular}
-
-
-\section{Analyses}
-\label{sec:attachment.analyses}
-
-The last attachment (\texttt{analysis.zip})
-contains several Jupyter Notebooks and Python modules with the analyses
-presented in the thesis.
-Also available at
-\url{https://github.com/effa/flocs-thesis/tree/master/analysis}.
+\end{table}
