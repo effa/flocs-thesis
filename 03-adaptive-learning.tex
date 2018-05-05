@@ -5,8 +5,8 @@
 If it is possible that a student can effectively learn something in 10 seconds, it shouldn’t take 11.}{T. Butt}
 
 % TODO: check terminonogly ALS vs. ITS, citation for ALS
-\emph{Adaptive Learning Systems} (ALS)%
-\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}, but we prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
+\emph{Adaptive Learning Systems}
+%ALS\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}, but we prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
 are educational systems that optimize efficiency of the learning process
 using techniques of artificial intelligence.
 For example, artificial intelligence can be used to
@@ -49,11 +49,11 @@ It has been used by tens of thousands of students and
 % TODO: examples of ALS for programming?
 From the existing systems for learning introductory programming,
 Problem Solving Tutor (\cref{sec:problem-solving-tutor}) can be considered
-as ALS, since it recommends next tasks to solve after completion of a task.
+as adaptive learning system, since it recommends next tasks to solve after completion of a task.
 % TODO: mention Umime programovat (mastery for the decision-making game)
 
 \smallskip
-Typical ALS consists of the following components
+Typical adaptive learning system consists of the following components
 \cite{its-learner-models}:
 %(extended version of \cite{its-learner-models})
 \begin{itemize}
@@ -1475,7 +1475,7 @@ Problem solving tutors decide when and which hint to show to the
 student. % "to help them to solve the task."
 Currently, the inner loop decisions are better performed by people,
 % given they can afford 1:1 interactions (and given there even is a teacher...)
-so ALS often focus only on the outer loop decisions \cite{als-future}.
+so adaptive learning systems often focus only on the outer loop decisions \cite{als-future}.
 % TODO: think over (e.g. it's also clear that teachers/students usually want
 % to control curriculum loop themselves, so only the mastery decision
 % and task recommendation within given problem set is left for the ALS.)
@@ -2049,7 +2049,7 @@ Offline evaluation of tutor models is difficult due to missing data.
 If the evaluated algorithm recommends a different task than the student attempted
 at that point, there is no easy way to tell if the recommendation is correct. % "is good or not."
 The extremeness of data sparsity makes offline evaluation so challenging,
-that many ALS completely skip this type of evaluation, % TODO: ALS or ALSs?
+that many adaptive learning systems completely skip this type of evaluation,
 apply offline evaluation only to student models (\cref{sec:student-model-evaluation}),
 and check quality of the deployed tutor model on the live traffic
 (\cref{sec:live-evaluation}).
@@ -2216,7 +2216,7 @@ different if instead of a single enforced task,
 all tasks in the current problem set are displayed ordered by their score.
 % TODO: more about soft/hard rcm (see above, task rcm section)
 
-ALS can model UI explicitly in order to compare different versions
+Adaptive learning systems can model UI explicitly in order to compare different versions
 of UI in an online AB experiment,
 which allows to investigate influence of various aspects of
 the UI, such as that different types of programming blocks are colored differently,
@@ -2237,19 +2237,19 @@ or using text instead of blocks % (everything else being equal).
 % TODO: mention and cite "AB experiments" (used in latex chapters)
 
 
-Analysis layer allows for \emph{iterative improvement} of ALS.
-To decide which interventions has improved the quality of ALS,
+Analysis layer allows for \emph{iterative improvement} of the adaptive learning system.
+To decide which interventions improve learning and motivation, % the quality of the system,
   suitable metrics must be measured. %chosen and evaluated.
 %Metrics are also used for optimizing models,
 %  from fitting parameters % and (choosing) hyperparameters
 %  to selecting the best model from a set of candidates.
-ALS cannot be perfect from its first deployment,
+The system cannot be perfect from its first deployment,
 and its quality increases with the number of small
 incremental improvements performed, so it is beneficial to
 evaluate and update the system frequently.
 This \emph{rule of the loop} \cite{book-of-lenses}
 %\emph{``Plan to launch and iterate''}
-was observed to hold for ALS \cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}, % TODO: better resource?
+was observed to hold for adaptive learning systems \cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}, % TODO: better resource?
 as well as for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
 % TODO and for SW development (SCRUM); and for games (Book of lenses)
 % - our project includes all these elements (game design, SW devel., RecSys, ALS)
@@ -2351,7 +2351,7 @@ While ``achieving mastery in elementary programming'' can be
 %the period must be long enough to collect enough data for statistical significant results
 %and to avoid seasonality effects (such as different user behavior during weekends).
 %% NOTE + to allow for more exploration, which improves long-term performance of the system.
-To avoid subjective ratings, ALS can start with simpler long-term objectives,
+To avoid subjective ratings, the system can initialy use simpler long-term objectives,
 which are also easier to measure and interpret
 (examples in \cref{tbl:long-term-metrics}).
 
@@ -2407,10 +2407,10 @@ but not learning.
 In experiments, learning is measured by a programming post-test,
 % Ideally, we would like the students to fill a post-test also after
 % some time (for example in 1 month, 1 year, 5 years, ... but that is not realistic).
-but ALS need to evaluate students continuously to collect data about
+but adaptive learning systems need to evaluate students continuously to collect data about
 all students and not only those that stay in the system and are willing
 to take a post-test.
-ALS can assign a randomly selected task after each 20 minutes of practice,
+For example, the system can assign a randomly selected task after each 20 minutes of practice,
 and measure the average performance.
 % TODO: it's not really possible to select any tasks from the system, they may be
 % too difficult and frustrate students for a long time (as opposed to geography,
@@ -2546,7 +2546,7 @@ The specific approaches to evaluation of student and tutor models and related ch
 were discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
 A common consideration for an unbiased offline evaluation is to ensure that
 the model is tested on different data then it was trained on.
-Unlike in many supervised learning problems, events from ALS
+Unlike in many supervised learning problems, events from learning systems
 cannot be divided into train and test set randomly, since that would lead
 to predicting past from the future. % optimistic bias
 The evaluation should mimic as close as possible the real scenario of how the
