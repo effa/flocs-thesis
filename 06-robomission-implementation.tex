@@ -10,6 +10,12 @@ A programmer is ideally an essayist who works with traditional aesthetic and lit
 %specific for system for learning programming, such as task representation,
 %and transformation between programming blocks and code.
 
+We present the overall architecture of RoboMission,
+and describe aspects specific for system for learning programming.
+We intentionally avoid discussing details of used technologies,
+which would make the text obsole soon.
+An overview of technologies used in the project is included as \cref{chap:technologies}.
+
 \section{System Architecture}
 
 RoboMission has a client-server architecture
@@ -19,7 +25,7 @@ In addition to the frontend app and backend services,
 there are two other parts of the system:
 scheduled jobs, which run periodically every week (e.g. metrics computation),
 and tools for offline analysis of collected data
-(e.g. jupyter notebooks). % templates).
+(e.g. Jupyter Notebooks). % templates).
 % TODO: and "helper functions"
 % TODO: ref/cite human-in-the-loop principle
 % TODO: consider: list the parts in itemize
@@ -151,16 +157,12 @@ their serializers (JSON for sending data to frontend, CSV for exports),
 \emph{view sets} describing REST API, % TODO: cite view-sets
 and core modules with mostly pure functions
 for computing performance, skills, and recommendations.
+% NOTE: It would make sense to decompose to packages corresponding to
+% the ALS components: domain, student, tutor, ui, monitoring, analysis.
 % TODO: + domain parsing, monitoring.
 %Technologies are becoming obsolete soon,
 %so will not discuss them in the text.
 % Source code of the project attached ... \cref{sec:attachment.source-code}
-An overview of technologies used currently in the project
-is included as \cref{chap:technologies}.
-% NOTE: It would make sense to decompose to packages corresponding to
-% the ALS components: domain, student, tutor, ui, monitoring, analysis.
-In the rest of the chapter, we focus on aspects specific for
-system for learning programming.
 
 \section{Domain Representation}
 
@@ -170,9 +172,10 @@ and names of their tasks.
 Each task is then described in a separate file (\cref{sec:impl.task-sources}).
 Furthermore, there is a separate JSON file containing values for parameters
 of domain entities (e.g. a time threshold for good performance for each task).
-It is convenient to have the relationships and the parameters in different files,
-because the former is currently edited by people, while the latter is
-a result of a computation.
+%EXT:
+%It is convenient to have the relationships and the parameters in different files,
+%because the former is currently edited by people, while the latter is
+%a result of a computation.
 
 \subsection{Task Sources}
 \label{sec:impl.task-sources}
