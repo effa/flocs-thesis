@@ -36,9 +36,10 @@ solved.  % TODO: Fix English.
 % (how we incorporated the strategies for easier learning and for motivation)
 
 We have designed a game which is a variation on a robot
-on grid with a space theme, and which uses Blockly for building programs
+on grid with a space theme, and which uses Blockly (\cref{sec:blockly-games})
+for building programs
 (\cref{fig:robomission-task2}).
-This choices support all main strategies for easier learning of programming
+These choices support all main strategies for easier learning of programming
 (\cref{sec:strategies-for-easier-learning}),
 including
 avoiding syntax errors by using block-based programming, and
@@ -47,12 +48,12 @@ showing a visual output (the grid world).
 We combine several strategies to support motivation (\cref{sec:motivation}),
 such as appealing game world, entertaining tasks, progressing through levels,
 and recommending tasks of optimal difficulty
-(adaptivity is discussed in \cref{chap:design-of-adaptivity}).
+(adaptivity discussed in \cref{chap:design-of-adaptivity}).
 % TODO: target group: Currently, the system primarily targets at children
 %  between 10-15 years? (or simply primary school)
 
-% TODO: Img: English localization.
-\imgW[0.73]{robomission-task2}{RoboMission, Zig-zag task.}
+\imgW[0.73]{robomission-task2}{%
+  Example of a task with the space themed grid world.}
 
 % NOTE: rule of the loop \cite{book-of-lenses}
 
@@ -74,7 +75,7 @@ there are the following game objects:
 %These are
 diamonds, that need to be collected,
 large asteroids, that destroy the spaceship if it hits them,
-small meteoroids, that can be shot,
+small meteoroids, that can be destroyed,
 and wormholes that serves as teleports.
 
 The spaceship start on the bottom row and it always moves one row forward
@@ -103,7 +104,7 @@ movement in any of the four directions without turning)
 Furthermore, as the spaceship is always facing up, a common left-right
 confusion \cite{blockly-10-things} is mitigated.
 To avoid too long worlds, we introduced wormholes, that teleport the
-spaceship back to reuse rows multiple times
+spaceship back, to reuse rows multiple times
 (\cref{fig:spaceworld-wormholes}).
 % (more possible remedies available options available)
 
@@ -147,6 +148,12 @@ spaceship back to reuse rows multiple times
 
 \begin{figure}[htb]
 \centering
+\begin{subfigure}[t]{0.3\textwidth}
+\centering
+\includegraphics[height=49mm]{img/spaceworld-meteoroids}
+\caption{Shootable meteoroids}
+\label{fig:spaceworld-meteoroids}
+\end{subfigure}
 \begin{subfigure}[t]{0.35\textwidth}
 \centering
 \includegraphics[height=49mm]{img/spaceworld-path}
@@ -158,12 +165,6 @@ spaceship back to reuse rows multiple times
 \includegraphics[height=49mm]{img/spaceworld-wormholes}
 \caption{Diamonds, wormholes}
 \label{fig:spaceworld-wormholes}
-\end{subfigure}
-\begin{subfigure}[t]{0.3\textwidth}
-\centering
-\includegraphics[height=49mm]{img/spaceworld-meteoroids}
-\caption{Shootable meteoroids}
-\label{fig:spaceworld-meteoroids}
 \end{subfigure}
 \caption{Examples of Space Worlds.}
 \label{fig:spaceworld}
@@ -217,31 +218,42 @@ to understand for beginners.
 %in the field study in \cite{comparing-blocks-text-weintrop2017}.
 
 %% Limits.
-There are two limits that a task can specify.
-The \emph{length} limit defines maximum number of statements
-in the program. Limit on number of statements instead of blocks was chosen in
+To force students to use loops instead of a long sequence of actions,
+a task can specify \emph{length limit}
+on the maximum number of statements in the program.
+Limit on the number of statements rather than blocks was chosen in
 order to make the limit a smaller number and thus the counting easier.
 (Another advantage is that this definition could be used for textual
 programming as well.)
-% which is not case for the blocks limit
-This limit forces students to use loops instead of a long sequence of
-actions.
-The \emph{energy} limit controls for the number
-of performed shots. Without this limit, students could always use
-shooting without thinking when it is really needed.
+To force students to think when they need to shoot, a task can specify
+\emph{energy limit} on the number of shots.
+
+%%% Limits.
+%There are two limits that a task can specify.
+%The \emph{length} limit defines maximum number of statements
+%in the program. Limit on number of statements instead of blocks was chosen in
+%order to make the limit a smaller number and thus the counting easier.
+%(Another advantage is that this definition could be used for textual
+%programming as well.)
+%% which is not case for the blocks limit
+%This limit forces students to use loops instead of a long sequence of
+%actions.
+%The \emph{energy} limit controls for the number
+%of performed shots. Without this limit, students could always use
+%shooting without thinking when it is really needed.
 
 
 \begin{figure}[htb]
 \centering
 \begin{subfigure}[t]{0.5\textwidth}
 \centering
-\includegraphics[height=56mm]{img/robomission-task-repeat}
+\includegraphics[height=60mm]{img/robomission-task-repeat}
 %\caption{Path around asteroids}
 %\label{fig:spaceworld-path}
 \end{subfigure}%
 \begin{subfigure}[t]{0.5\textwidth}
 \centering
-\includegraphics[height=56mm]{img/robomission-task-conditions}
+\includegraphics[height=60mm]{img/robomission-task-conditions}
 %\caption{Diamonds, wormholes}
 %\label{fig:spaceworld-wormholes}
 \end{subfigure}
@@ -320,7 +332,7 @@ test a solution in either Blockly or its text-based equivalent %(\emph{RoboCode}
 and import or export tasks (using a custom Markdown-based format).
 %(TODO: mention how inconvenient it was in the first prototype, especially the tokens...)
 The editor is public, so even students can create their own new tasks.
-However, there is currently no support for sharing the tasks with other students.
+%However, there is currently no support for sharing the tasks with other students.
 % Which support the need of creativity; + potentially allows to get a lot of tasks into
 % the system, which is could be interesting for adaptivity.
 
