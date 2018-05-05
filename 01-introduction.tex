@@ -13,52 +13,41 @@ To prepare humanity for the next 100 years, we need more of our children to lear
 Programming is becoming an essential skill to learn.
 Not only is it useful in increasing number of professions,
 but also it develops abstract thinking and problem solving ability. % cite
+% + divergent thinking
 Our mission is to help children to learn basic programming efficiently,
 while supporting their motivation for further learning.
 For this purpose, we build a personalized system for learning introductory
-programming, RoboMission\footnote{\url{en.robomise.cz}},
-that aims to adapt to the skills of the student
+programming, RoboMission%
+\footnote{English localization available at \url{en.robomise.cz}.}
+(\cref{fig:robomission-task1}),
+that aims to adapt to the skills of the students
 to create an optimal learning experience.
 
 %How to build such a system? (make this paragraph an outline)
 Many tutorials for introductory programming already exists,
-including popular Hour of Code \cite{hour-of-code} with XY students...
-They combine several strategies for supporting learning and motivation,
-that are based on human needs, strengths, weaknesses and needs.
+including popular Hour of Code used by millions of students \cite{hour-of-code}.
+These tutorials combine several strategies to support learning and motivation,
+that are based on human needs, strengths, and weaknesses
+\cite{lowering-barriers}.
 However, they are not personalized and offer the same sequence of tasks
-for everybody.
+to everybody.
 RoboMission improves upon the existing systems by adapting to the
-students using techniques of artificial intelligence.
-In addition to the time-tested strategies and artificial intelligence,
-it also employs iterative design and improvements based on analyses.
-
-%Artificial intelligence proved to be a powerful tool for tackling difficult problems, from playing chess to driving autonomous cars. % TODO: references
-%This thesis explores how we can use artificial intelligence to optimize
-%learning of introductory programming.
-%This thesis explores how can be artificial intelligence used to optimize
-%learning of introductory programming.
-Adaptive learning systems have been already successfully used in many domains
+students, using techniques of artificial intelligence,
+which were already successfully used in other domains
 \cite{mathsgarden, alg.evaluation-geography, matmat.response-times}
 %, sqltutor}.
 % maths += Cognitive Tutor (?mastery-learning-scale), ASSiSTments (Koedinger
 % 2010), ALEKS
 % TODO: find another domain (avoid another math)
-TODO....
-Nevertheless, the most popular introductory programming tutorials,
-Hours of Code \cite{hour-of-code},
-offer the same sequence of tasks for everybody,
-leading to a suboptimal experience.
-Artificial intelligence can be used to personalize the sequence of tasks.
-% for each student.
-By giving students tasks of difficulty matching their skill,
-%neither too easy, nor too difficult,
-we help them to achieve complete immersion into the problem solving
-activity (\cref{fig:flow}).
-This \emph{state of flow} \cite{flow}
-is essential for the optimal learning experience
-\cite{adaptive-practice}.
+%Artificial intelligence proved to be a powerful tool for tackling difficult problems, from playing chess to driving autonomous cars. % TODO: references
+%This thesis explores how we can use artificial intelligence to optimize
+%learning of introductory programming.
+%This thesis explores how can be artificial intelligence used to optimize
+%learning of introductory programming.
 
 
+%In addition to the time-tested strategies and artificial intelligence,
+%it also employs iterative design and improvements based on analyses.
 
 \imgW[0.9]{robomission-task1}%
   {RoboMission is a web application for learning introductory programming.
@@ -69,22 +58,41 @@ is essential for the optimal learning experience
 %  {RoboMission is a web application for learning introductory programming %
 %   using space themed grid world and block-based programming.}
 
-
+The adaptation is performed on two levels. % -- single student and the whole system.
+First, the system estimates skills of the students as they solve the tasks,
+so that it can recommend them optimally difficult tasks to practice next.
+By giving students tasks of difficulty matching their skill,
+%neither too easy, nor too difficult,
+we help them to achieve complete immersion into the problem solving
+activity (\cref{fig:flow}).
+This \emph{state of flow} \cite{flow}
+is essential for the optimal learning experience
+\cite{adaptive-practice}.
+Second, using insight from analysis of collected data,
+we iteratively improve behavior of the system,
+e.g. moving tasks to more appropriate problem sets,
+removing problematic tasks,
+or adding new tasks practicing concepts that students often struggle with.
 
 
 \begin{figure}[htb]
   \centering
-  \begin{tikzpicture}[font=\sffamily,xscale=5, yscale=5]
+  \begin{tikzpicture}[font=\sffamily,scale=5]
   \large
   %\draw [lightgray, fill=gray] (0,0) -- (0.1,0) -- (1,0.8) -- (0.8,1) -- (0,0.1) -- (0,0);
   \draw (0.1,0) -- (1,0.8);
   \draw (0,0.1) -- (0.8,1);
-  \draw [thick, <->] (0,1) node [left] {$challenge$} -- (0,0) -- (1,0) node [below right] {$skill$};
+  \draw [thick, <->] (0,1) node [left] {\emph{difficulty}} -- (0,0) -- (1,0) node [below right] {\emph{skill}};
   \node at (0.27,0.82) {frustration};
   \node at (0.6,0.6) {flow};
   \node at (0.7,0.2) {boredom};
   \end{tikzpicture}
-  \caption{Relationship between challenge and skill.}
+  \caption{
+    Relationship between difficulty and skill.
+    Too easy tasks bore students, too difficult frustrate them.
+    For efficient learning, the difficulty of the task
+    and the skill of the student should be in balance.
+  }
   \label{fig:flow}
 \end{figure}
 
@@ -95,22 +103,23 @@ is essential for the optimal learning experience
 %- HCI, (software learnability)
 %- games design \cite{book-of-lenses}
 
-How to design a programming game that supports both learning and motivation?
-How to model the domain and students of introductory programming?
-% OR: How to estimate skills of the students and how to model learning of IP?
-Which algorithms to use for task recommendation and mastery learning?
-How to evaluate and iteratively improve components of the adaptive learning system?
-%How to evaluate if the adaptivity of the system helps to improve learning and engagement?
-% TODO: Make sure these questions are answered in the text (or remove them).
-To answer these questions, we not only look at the existing systems
-and research, but we also develop our own adaptive learning system for
-introductory programming, RoboMission\footnote{Available at \url{en.robomise.cz}}
-(\cref{fig:robomission-task1}).
-Development of this system helps us to better understand related challenges
-and allow us to collect data that we need to support or reject our hypotheses.
-% TODO: And are there such hypotheses in the thesis?
-% NOTE: RoboMission = app for efficient and engaging learning of introductory
-% programming for children (= mission)
+% EXT: Questions
+%How to design a programming game that supports both learning and motivation?
+%How to model the domain and students of introductory programming?
+%% OR: How to estimate skills of the students and how to model learning of IP?
+%Which algorithms to use for task recommendation and mastery learning?
+%How to evaluate and iteratively improve components of the adaptive learning system?
+%%How to evaluate if the adaptivity of the system helps to improve learning and engagement?
+%% TODO: Make sure these questions are answered in the text (or remove them).
+%To answer these questions, we not only look at the existing systems
+%and research, but we also develop our own adaptive learning system for
+%introductory programming, RoboMission\footnote{Available at \url{en.robomise.cz}}
+%(\cref{fig:robomission-task1}).
+%Development of this system helps us to better understand related challenges
+%and allow us to collect data that we need to support or reject our hypotheses.
+%% TODO: And are there such hypotheses in the thesis?
+%% NOTE: RoboMission = app for efficient and engaging learning of introductory
+%% programming for children (= mission)
 
 
 We first look at how the introductory programming is taught
