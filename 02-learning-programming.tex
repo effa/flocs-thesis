@@ -11,9 +11,26 @@ This chapter describes the current state of the art of teaching programming, bot
 \section{Existing Systems for Learning Programming}
 \label{sec:existing-systems}
 
-% TODO: Rephrase (avoid "presented"?)
 There are many systems for learning programming and they differ from each other
-in several significant aspects, which are presented in \Cref{tbl:existing-systems-categorization}.
+in several significant aspects, which are summarized in \Cref{tbl:existing-systems-categorization}.
+In order to be widely available, most of the systems for learning introductory programming
+are web applications and do not require any prerequisity other than reading
+and using mouse.
+The systems % do not attemp to cover all basic concepts;
+often teach only a small subset of programming concepts,
+and there is no consensus on which concepts should be practiced first. % and no research
+Students usually spend most time by solving tasks, rather than
+by reading texts and watching videos.
+Most systems focus primarily on motivation, and less on efficient learning,
+e.g. the sequence of tasks in the tutorials is usually same for every student.
+
+In \cref{sec:lightbot,sec:problem-solving-tutor,sec:blockly-games,sec:hoc,sec:khan-academy},
+we briefly present the most notable existing systems,
+focusing on their features that support learning or motivation,
+which includes tasks with a visual output (e.g. turtle graphics),
+and block-based programming to avoid syntax erros.
+These successful strategies for teaching programming are described in
+more detail in \Cref{sec:strategies-for-easier-learning}.
 
 \begin{table}[htb]
 \centering
@@ -43,16 +60,13 @@ Adaptivity & task recommendation, mastery learning \\
 % (or possibly citation pointing to some more broad overviews);
 % (linking the table to the rest of the section)
 % and consider to move the following "meta-information" to the chapter intro.
-The rest of this section briefly describes the most notable existing systems,
-focusing on their features that improve learning or engagement.
-\Cref{sec:strategies-for-easier-learning} then extrapolates useful
-strategies for teaching programming.
+
 
 
 \subsection{LightBot}
 \label{sec:lightbot}
 LightBot%
-\footnote{Available at \url{http://lightbot.com/}.}
+\footnote{\url{http://lightbot.com}}
 is a mobile and web application offering a fixed sequence of tasks solved by
 a block-based programming language
 (\Cref{fig:lightbot}).
@@ -80,9 +94,9 @@ and conditional commands.
 \subsection{Problem Solving Tutor}
 \label{sec:problem-solving-tutor}
 Problem Solving Tutor%
-\footnote{Available at \url{tutor.fi.muni.cz}.}
+\footnote{\url{https://tutor.fi.muni.cz}}
 includes a few problem sets for practicing programming,
-such as Interactive Python, Karel the Robot, or Robotanist
+such as Interactive Python, Turtle Graphics, or Robotanist
 % TODO: more precise description of the tasks instead of e.g. "Inter. Python",
 % see the reffed paper for inspiration.
 \cite{proso}.
@@ -97,6 +111,9 @@ Showing predicted time % to the user
 serves as a motivational element, posing
 a suitable challenge to overcome oneself
 \cite{pelanek-student-modeling-times}.
+New version of the system, Umíme programovat%
+\footnote{\url{https://umimeprogramovat.cz} (in Czech only)},
+uses mastery learning for practicing basics of Python through multiple choice questions.
 
 %\imgW[0.6]{lightbot}{LightBot.}
 %\imgW{lightbot-instruction}{LightBot provides clear and simple interactive instructions.}
@@ -130,7 +147,7 @@ In contrast to the blocks in LightBot,
 Blockly blocks can be assembled in nested control structures
 (\cref{fig:blockly-games}).
 Blockly Games%
-\footnote{Available at \url{https://blockly-games.appspot.com/}.}
+\footnote{\url{https://blockly-games.appspot.com/}}
 consist of several problem sets with Blockly, ordered by increasing difficulty.
 For example, in the first level, students learn how to compose blocks together
 as a puzzle, and in the second level they learn loops and conditions by solving
@@ -151,15 +168,16 @@ which require to take a described action before they disappear
 \subsection{Hour of Code}
 \label{sec:hoc}
 Hour of Code%
-\footnote{Available at \url{https://hourofcode.com}.}
+\footnote{\url{https://hourofcode.com}}
 provides many one-hour tutorials, each containing about 15 tasks in fixed order,
 using Blockly-based language
-(\cref{fig:hoc}).
+(\cref{fig:hoc,fig:turtle}).
 These tutorials focus on motivation, using themes from popular movies and
 games, and providing videos with famous people explaining programming concepts.
 The tutorials use high-level theme-specific blocks, such as ``set droid to a
-random speed``, and they are restricted to only one or two programming
-concepts, e.g. sequences of commands and events.
+random speed``, or ``create a snowflake branch'',
+and they are restricted to only one or two programming
+concepts, e.g. sequences of commands and repeat loops. % events.
 In some tasks, the built program is not a direct solution for a robot,
 but rather a game, in which the code specifies actions triggered on events.
 % TODO: There is some space to include more info about HoC.
@@ -187,32 +205,29 @@ but rather a game, in which the code specifies actions triggered on events.
 \end{figure}
 
 
-
-
-
-\subsection{Human Resource Machine}
-\label{sec:human-resource-machine}
-Human Resource Machine%
-\footnote{\url{http://tomorrowcorporation.com/human-resource-machine-hour-of-code-edition}}
-%\footnote{Free Hour of Code edition available at \url{http://tomorrowcorporation.com/human-resource-machine-hour-of-code-edition}.}
-is an example of an offline computer game for learning programming.
-%Although it is presented as a game,
-%the player spends nearly all the time solving tasks similar to those in the previously mentioned learning systems.
-% Removal candidate (1 sentence):
-The sequence of tasks is non-personalized and nearly linear,
-with a few short side branches.
-Similarly to the systems above, it also uses block-based programming,
-but now in a different domain:
-it offers low-level programming commands, such as
-input, output, move-from, move-to, add, or jump
-(\cref{fig:hrm}).
-% input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
-The programming environment includes a debugger,
-providing a possibility to step through the program.
-All concepts are explained when they first appear in the game,
-and programming blocks can
-be explained again simply by dragging the block onto a dedicated field with a question
-mark.
+%\subsection{Human Resource Machine}
+%\label{sec:human-resource-machine}
+%Human Resource Machine%
+%\footnote{\url{http://tomorrowcorporation.com/human-resource-machine-hour-of-code-edition}}
+%%\footnote{Free Hour of Code edition available at \url{http://tomorrowcorporation.com/human-resource-machine-hour-of-code-edition}.}
+%is an example of an offline computer game for learning programming.
+%%Although it is presented as a game,
+%%the player spends nearly all the time solving tasks similar to those in the previously mentioned learning systems.
+%% Removal candidate (1 sentence):
+%The sequence of tasks is non-personalized and nearly linear,
+%with a few short side branches.
+%Similarly to the systems above, it also uses block-based programming,
+%but now in a different domain:
+%it offers low-level programming commands, such as
+%input, output, move-from, move-to, add, or jump
+%(\cref{fig:hrm}).
+%% input, output, move-to, move-from, add, sub, jump, jump-nonzero, jump-negative.
+%The programming environment includes a debugger,
+%providing a possibility to step through the program.
+%All concepts are explained when they first appear in the game,
+%and programming blocks can
+%be explained again simply by dragging the block onto a dedicated field with a question
+%mark.
 
 %\imgWithFootnote[0.7]{human-resource-machine}{Human Resource Machine}%
 %{Source: \url{https://tomorrowcorporation.com/humanresourcemachine}}
@@ -221,7 +236,7 @@ mark.
 \subsection{Khan Academy}
 \label{sec:khan-academy}
 Khan Academy has a computer programming curriculum%
-\footnote{Available at \url{https://www.khanacademy.org/computing/computer-programming}.}
+\footnote{\url{https://www.khanacademy.org/computing/computer-programming}}
 that uses textual programming in JavaScript with functions for drawing shapes
 in absolute coordinates
 (\cref{fig:ka}).
@@ -236,11 +251,19 @@ how it works.
 
 \begin{figure}[htb]
 \centering
+%\begin{subfigure}[t]{0.48\textwidth}
+%\centering
+%\includegraphics[height=30mm]{img/human-resource-machine}
+%\caption{Human Resource Machine\protect\footnotemark}
+%\label{fig:hrm}
+%\end{subfigure}%
+
 \begin{subfigure}[t]{0.48\textwidth}
 \centering
-\includegraphics[height=30mm]{img/human-resource-machine}
-\caption{Human Resource Machine\protect\footnotemark}
-\label{fig:hrm}
+%\includegraphics[height=30mm]{img/turtle-umime}
+\includegraphics[height=30mm]{img/hoc-turtle2}
+\caption{Turtle graphics (Hour of Code)}
+\label{fig:turtle}
 \end{subfigure}%
 \begin{subfigure}[t]{0.52\textwidth}
 \centering
@@ -248,10 +271,11 @@ how it works.
 \caption{Khan Academy}
 \label{fig:ka}
 \end{subfigure}
-\caption{Tasks using Assembly-based and JavaScript-based languages.}
+\caption{Drawing tasks in relative and absolute coordinates.}
+%\caption{Tasks using Assembly-based and JavaScript-based languages.}
 \label{fig:hrm-ka}
 \end{figure}
-\footnotetext{Source: \url{https://tomorrowcorporation.com/humanresourcemachine}.}
+%\footnotetext{Source: \url{https://tomorrowcorporation.com/humanresourcemachine}.}
 
 
 
@@ -362,12 +386,16 @@ There are two basic types of block-based interfaces:
   either with a square grid defining the program shape,
   often one row per function
   (\cref{fig:lightbot-robotanist}),
-  or the blocks can be nested and assembled arbitrarily,
+  or the blocks are interlocking and can be assembled and nested arbitrarily,
   with no limit on maximum program length,
   often one vertical stack per function
   (\cref{fig:blockly-hoc}).
-The fixed square grid is simpler to understand and manipulate with,
-  but it does not allow for nesting,
+
+The interlocking blocks are more difficult to understand and manipulate with
+  than the square grid.
+On the other hand, they are more flexible
+  and correspond more closely to the usual textual programming.
+The square grid does not allow for nesting,
   which is a fundamental feature of computer programs.
 This restriction is usually overcome by
   combining condition and commands into a single block,
@@ -453,7 +481,7 @@ In addition to the instructions, some systems offer hints, which appear either
   upon a student request, or automatically after a certain time of unsuccessful
   solving. Although it is possible to generate a hint in any state,
   using data of students which have successfully solved the task before
-  \cite{generating-hints}, the existing systems use a few manually prepared
+  \cite{generating-hints}, most existing systems use a few manually prepared
   hints, instead of relying on the automatic approaches.
 
 \section{Strategies to Support Motivation}
@@ -505,7 +533,7 @@ That is why all Hour of Code tutorials are based on movies and games
 In such environments, it is possible to assign open-ended tasks,
   or even let the students create whatever they want,
   which works well especially for creative students seeking for self-expression.
-For example, Khan Academy programming curriculum contains many several
+For example, Khan Academy programming curriculum contains many
 open-ended drawing projects (\cref{fig:ka}).
 %\cref{sec:robomission.game-world}
 
@@ -568,29 +596,33 @@ or acquired skills.
 
 \begin{figure}[htb]
 \centering
-\begin{subfigure}{.48 \textwidth}
-  \centering
-  \includegraphics[width=.9\textwidth]{img/ka-skills}
+\begin{subfigure}{.48\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{img/ka-skills}
+\caption{Khan Academy}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
-  \centering
-  \includegraphics[width=.9\textwidth]{img/hour-of-code-progress}
-  \bigskip
-  \vspace{1mm}
-  \includegraphics[width=.9\textwidth]{img/umime-progressbar}
+\centering
+\begin{subfigure}{\textwidth}
+\includegraphics[width=.9\textwidth]{img/hour-of-code-progress}
+\caption{Hour of Code}
 \end{subfigure}
-\caption{%
-  Progress bars: Khan Academy topics, Hour of Code tutorial,
-  and mastery progress bar in Umíme Programovat (``We Can Code'').}
+\bigskip
+\vspace{1mm}
+\begin{subfigure}{\textwidth}
+\includegraphics[width=.9\textwidth]{img/umime-progressbar-green}
+\caption{Umíme Programovat} %\ (``We Can Code'').}
+\end{subfigure}
+\end{subfigure}
+\caption{A few possible forms of a progress bar.}
 \label{fig:progress-visualization}
 \end{figure}
 
 
 %\subsection{Gamification}
 
-Although the programming tasks themselves can be considered as a game
-(e.g. Human Resource Machine from \cref{sec:human-resource-machine} is
-presented purely as a game),
+Although the programming tasks themselves can be considered as a game,
+%(e.g. Human Resource Machine from \cref{sec:human-resource-machine} is presented purely as a game),
 most learning systems add further gamification elements to increase the sense
 of progress.
 Common gamification elements include points, levels, badges, and leaderboards.
