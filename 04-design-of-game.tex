@@ -192,7 +192,7 @@ as they need. % wish, and edit them until they solve the task.
 
 %% Blocks.
 The set of available blocks is gradually expanding with
-increasing level. This \emph{toolbox standardization}
+increasing level (\cref{sec:level-design}). This \emph{toolbox standardization}
 is easier for both task creators (it is enough to specify
 a toolbox only once for all tasks in the same problems set,
 instead of naming all available blocks for each task),
@@ -262,27 +262,27 @@ To force students to think when they need to shoot, a task can specify
 \end{figure}
 
 
+\section{Level Design}
+\label{sec:level-design}
 
-\section{Problem Sets}
+% TODO: explore and cite: ``level design''
 
-
-% NOTE: term ``level design''
-
-RoboMission contains over 80 tasks divided into 9 problem sets (levels).
+RoboMission contains over 80 tasks divided into 9 levels.
 % (\cref{fig:robomission-tasks-overview}).
-The problem sets were initially created manually, based on the required blocks
+The levels were initially created manually, based on the required blocks
 and an estimated difficulty. Later, after some performance data
-were collected, we further decomposed the problem sets into a two-level
-hierarchy to enforce prerequisites between the tasks, and we moved
-a few tasks into problem sets that better match their observed
+were collected, we further decomposed them into a two-level
+hierarchy to enforce prerequisites between tasks, and we moved
+a few tasks into levels that better match their observed
 difficulty for students.
 % NOTE: But the observed difficulty depends on the context, such as
 % the level, the task is presented in.
 
 \imgW[1.0]{robomission-tasks-overview}{%
-Tasks overview shows tasks grouped by levels. Colors: green -- solved tasks,
-orange -- recommended task.
-RoboMission contains 9 levels, each with about 9 tasks.}
+Tasks overview shows tasks grouped by levels.
+RoboMission contains 9 levels, each with about 9 tasks.
+Colors: green tasks are solved, the orange task is recommended.
+}
 
 As a motivational element that helps to reinforce the sense of progress,
 % OR: to satisfy the need of progress,
