@@ -7,19 +7,20 @@ If it is possible that a student can effectively learn something in 10 seconds, 
 % TODO: check terminonogly ALS vs. ITS, citation for ALS
 \emph{Adaptive Learning Systems}
 %ALS\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}, but we prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
-are educational systems that optimize efficiency of the learning process
+optimize efficiency of the learning process
 using techniques of artificial intelligence.
-For example, artificial intelligence can be used to
+Adaptivity is not necessary for a learning system to be useful%
+\footnote{Indeed, most of the systems presented in \cref{sec:existing-systems} are not adaptive.};
+however, it can greatly improve the learning effiency.
+Artificial intelligence can be used, for example, to
 personalize the sequence of tasks \cite{proso}, %  for every student,
 % TODO: better citation?
 % OR: "choosing the most suitable task for given student"
 %By giving the student a suitable task -- neither too easy, nor too difficult --
 %  it can help the student to achieve the state of flow (\cref{sec:motivation.challenge}).
 to visualize skills \cite{open-learner-model},
-and
 to automatically generate hints \cite{generating-hints}. % TODO: and feedback (CITE)
-Techniques from artificial intelligence are also frequently used in
-offline analyses for actionable insight \cite{alg.mastery}.
+or to analyze collected data and get an actionable insight \cite{alg.mastery}.
   % (e.g. detection of problematic tasks,
   % or suggestion how to group tasks into problem sets (CITE))
 % TODO: more examples?
@@ -53,7 +54,7 @@ as adaptive learning system, since it recommends next tasks to solve after compl
 % TODO: mention Umime programovat (mastery for the decision-making game)
 
 \smallskip
-Typical adaptive learning system consists of the following components
+Typical adaptive learning system consists of the following parts % five components
 \cite{its-learner-models}:
 %(extended version of \cite{its-learner-models})
 \begin{itemize}
@@ -702,7 +703,8 @@ In the \emph{network model} \cite{rihak-phd}, task similarities are used to prop
 knowledge about one task (observed performance) to another tasks (estimated performance)
 directly, without using concepts.
 % example: if student solves a task -> update our performance estimates on all other tasks
-The most important decision when computing similarities is what data to use.
+The most important decision when computing similarities is what data to use
+\cite{alg.similarity}.
 The decision depends both on the intended usage and on the amount of collected data
 available. For example, performance data are useful if the similarities are used in a
 student model to predict future performance; however, it requires that enough
@@ -712,7 +714,7 @@ performance data is collected in order for the computed similarities to be stabl
 % REF: to our research on item similarity in introductory programming
 %(TODO: mention the most relevant results from the paper:
 % which data to use -- important, which metric -- less important; recommended transformations)
-% TODO: CITE some papers on computing similarities (e.g. our paper)
+% TODO: CITE relevant papers on computing similarities
 
 \begin{figure}[htb]
 \centering
@@ -768,7 +770,7 @@ performance data is collected in order for the computed similarities to be stabl
 Student model captures state of the student (e.g. skills) estimated from the
 past performance. Usually, it enables to predict future performance
 %Comprehensive overviews of student modeling:
-\cite{its-learner-models, student-models-review-2012, pelanek-learner-modeling}.
+\cite{student-models-review-2012, pelanek-learner-modeling,its-learner-models}.
 It is used in tutor models to detect mastery, or to select tasks matching
 student's skills, in the user interface to visualize skills \cite{instructor-dashboard-realtime},
 and in the analyses to get insight into how the students are learning.  % TODO: elaborate
@@ -832,11 +834,16 @@ and in the analyses to get insight into how the students are learning.  % TODO: 
 
 \subsection{Classification of Student Models}
 
+A lot of diverse student models were proposed, to cover many possible scenarios
+based on the available data and usage of the model. The following
+are the main properties that differentiate different models.
+
 \begin{itemize}
 \item \emph{Modeled components.}
-In addition to modeling skills, broader student models can also
-include emotions (e.g. frustration, boredom), needs, preferences, motivation,
+In addition to modeling skills, broader student models can
+include also emotions (e.g. frustration, boredom), needs, preferences, motivation,
 and metacognition \cite[ch.\,10]{affect-sensor-free,its-review-2010}.
+In this thesis, we restrict our attention to the models of skill.
 %(knowledge about their knowledge) (REF).
 % NOTE: + preferences, e.g. about ideal challenge level, amount of text, theme,
 % e.g. prefer tasks with a shooting spaceship or with ice-skating princesses
@@ -852,7 +859,7 @@ while others describe the state of the student only between tasks %sessions
 \cite{kli-framework}. % TODO: check, add citation
 % or even only between finished problem sets.
 \item \emph{Discrete or continuous skills.}
-Some models assume discrete skills (e.g. known, or now know, or with multiple levels),
+Some models assume discrete skills (e.g. known/unknow, or with multiple levels),
 % e.g. unknown -> known -> fluent; or LogisticHMM
 %(CITE/REF:BKT)
 while others assume continuous skill
@@ -866,11 +873,11 @@ most models track only a single point estimate
 %?? or they assume a specific shape of the distribution that can be described by
 %a few numbers (e.g. mean and standard deviation for normal distribution).
 \item \emph{Representation of performance}.
-  Binary correctness (solved or failed),
+  Performance can be represented as a binary correctness (solved or failed),
   discrete performance levels (e.g., poor, good, and excellent),
   continuous performance (in range $[0, 1]$),
   %(\emph{partial credit} CITE) ($p_{ij} \in [0, 1]$)
-  or solving time.
+  or (log-transformed) solving time.
   %log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
 % NOTE:score combining time and correctness \cite[p.106]{rihak-phd} -- not relevant for use
 %\item ?? \emph{probabilistic models} (vs. deterministic)
@@ -878,7 +885,8 @@ most models track only a single point estimate
 %  (?? and/or represent skill as probabilist distributions?)
 \item \emph{Predictive or descriptive}.
 Predictive models can predict the performance of the student on a given task,
-while descriptive models only summarize the past performance of the student.
+while descriptive models only summarize the past performance of the student
+(e.g. a model can count the number of consecutive tasks solved with good performance).
 % TODO:CITE/example (NCC)
 \item \emph{Online or offline.}
 In online models, parameters can be updated gradually after each task session
@@ -886,12 +894,14 @@ In online models, parameters can be updated gradually after each task session
 % CITE: online algorithms.
 \item \emph{Assumptions about learning.}
 Models used in \emph{adaptive testing} \cite{cat} assume no learning.
-%during interaction with the system.
+% that no learning occurs during interaction of the student with the system.
 %They can be reduced to models with
 %learning by reestimating skills from the full student history after each task
 %session, but this leads to offline models.
 Models that include learning use additional assumptions
 about how the learning happens. % TODO:CITE:examples
+For example, some models assume constant skill increase after each solved task.
+% TODO: cite (PFA / Rash?)
 % e.g. a constant increase of skill after each attempted task (CITE:PFA?).
 %For example, BKT (\cref{sec:bkt}) assumes a discrete transtion from unknown
 %state to the known state.
@@ -917,7 +927,7 @@ about how the learning happens. % TODO:CITE:examples
 %assume learning and can be updated online.
 
 In \cref{sec:logistic-models,sec:dbn}, we describe two broad
-families of predictive models of a student between tasks,
+families of predictive models of student's skills between tasks,
 focusing on their versions % suitable for ALS for learning programming,
 that can incorporate multiple concepts, learning and allow for online update. % of parameters.
 
@@ -933,19 +943,19 @@ and \emph{performances} (either observed or predicted) to each task.
 Similarly as skills summarize all previous task sessions of the student,
 performance is a compressed information about the series of
 interactions with the task (code edits, executions, taken hints, user rating). %self-evaluation).
-Performance compression can range from simple heuristics based on summary statistics
+
+Performance measurement can range from simple heuristics based on summary statistics
 (e.g. specifying solving time thresholds for excellent and for good performance),
-through more complex algorithms that would consider all interactions with the task,
+through more complex algorithms that consider all interactions with the task,
 to a recurrent neural network reading the series
 of program snapshots embeddings  % AST transformed to vectors of floats
 \cite{student-models-deep-learning}.
 % NOTE: Sweat spot: somewhere in between these two rather extreme approaches.
-
 While the compression causes a loss of information, it also reduces noise
 present in the raw data. Moreover, it helps to avoid a combinatoric
 explosion of considering each type of model with multiple different types of
 input data and their combinations.
-The most important consideration for performance compression is what data
+The most important consideration for performance measurement is what data
 (correctness, solving time, etc.) to use \cite{alg.mastery}.
 %Used data play an important role, e.g. in \cite{alg.mastery}
 %Having a unified simple performance input makes the models simpler and easier to interpret.
@@ -1117,10 +1127,12 @@ The most important consideration for performance compression is what data
 \subsection{Logistic Models}  % OR "Elo models"
 \label{sec:logistic-models}
 
-Logistic model \cite{irt-visual-guide}  % TODO:check-cite
-predicts performance $P(s, d)$
+Logistic models \cite{irt-visual-guide}  % TODO:check-cite
+predict performance $P(s, d)$
 of a student with skill $s$ on a task with difficulty $d$
-using a logistic function applied to the difference between the skill and the difficulty (\cref{fig:logistic-model}).
+using a logistic function applied to the difference between the skill and the difficulty%
+\footnote{Some logistic models do not model difficulties (i.e. $d = 0$).}
+(\cref{fig:logistic-model}).
 
 \begin{figure}[htb]
 \centering
@@ -1371,6 +1383,7 @@ of multiple skills \cite{bn-logreg}.
 
 \subsection{Evaluation of Student Models}
 \label{sec:student-model-evaluation}
+% TODO: Fix: assymetric text - should include a section on evaluation of domain models
 
 Ideally, student models should be evaluated with respect to their intended usage.
 For example, if the student model is used as a component for task recommendation,
@@ -1471,17 +1484,19 @@ into
 \emph{mastery decision} (Continue to practice the current topic?),
 \emph{curriculum sequencing} (Which topic to learn next?),
 and \emph{task recommendation} (Which task to solve next?).
-Problem solving tutors decide when and which hint to show to the
-student. % "to help them to solve the task."
-Currently, the inner loop decisions are better performed by people,
-% given they can afford 1:1 interactions (and given there even is a teacher...)
-so adaptive learning systems often focus only on the outer loop decisions \cite{als-future}.
+Problem solving tutors decide when and which hint to show to the student.
+In this thesis, we restrict our attention to the outer loop decisions,
+which is the area where the computers perform best \cite{als-future}.
+% ... which are currently better performed by people than by computers \cite{als-future}.
+% ... "so adaptive learning systems often focus only on the outer loop decisions"
+% Of course, human instructors are not always available, so it make sense
+% to develop an inner loop tutor as well.
 % TODO: think over (e.g. it's also clear that teachers/students usually want
 % to control curriculum loop themselves, so only the mastery decision
 % and task recommendation within given problem set is left for the ALS.)
 % - it also mixes two possible arguments: are people better in inner-loop
 % then people in outer loop; OR are people better in inner loop then
-% computers in inner loop? (or both)
+% computers in inner loop (or both) (in the cited paper, they state the 2nd one)
 % TODO: figure: diagram of tutor problems
 
 %% Reflexive vs. planning agents
@@ -1772,7 +1787,7 @@ Problem set selection focuses on the prerequisite structure.
 %  (consider units in a textbook).
 % Especially, if the UI shows which PS are solved and which not.
 If the number of problem sets is reasonably small, students often want
-want to solve all of them, in which case it make sense to recommend the problem
+to solve all of them, in which case it make sense to recommend the problem
 sets from the easiest to the most difficult.
 If the ordering is not total, one of the problem sets with satisfied prerequisites
 can be recommended.
@@ -1822,8 +1837,8 @@ in which case it is safe to select the task \emph{uniformly at random},
 maximizing exploration.
 Otherwise, a typical approach is to manually select an error function for each
 soft constraint, compute \emph{weighted sum of errors} for each task and
-select the task with the smallest error.
-% TODO:CITE
+select the task with the smallest error \cite{alg.geography}.
+% TODO:+CITE
 
 % NOTE: The following doesn't make sense, becouse that would only lead to maximizing
 % the error imposed on the optimal difficulty. It would require to observe long-term
@@ -1851,7 +1866,8 @@ second is to select the task at random with the probability proportional to its
 preference, %  (inverted and normalized error),
 % NOTE: either directly or with exponential weighting (ie. using softmax)
 and third is to choose the best task with probability $\epsilon$, and
-a random task otherwise (\emph{$\epsilon$-greedy strategy}).
+a random task otherwise (\emph{$\epsilon$-greedy strategy})
+\cite{rl}.
 % NOTE: the second approach complicates the selection, it makes it more explicit, how much
 % random choices are there and which of them they are (which simplifies evaluation).
 
@@ -2048,7 +2064,7 @@ or offline (using collected data from a system using a different model).
 Offline evaluation of tutor models is difficult due to missing data.
 If the evaluated algorithm recommends a different task than the student attempted
 at that point, there is no easy way to tell if the recommendation is correct. % "is good or not."
-The extremeness of data sparsity makes offline evaluation so challenging,
+The degree of data sparsity makes offline evaluation so challenging,
 that many adaptive learning systems completely skip this type of evaluation,
 apply offline evaluation only to student models (\cref{sec:student-model-evaluation}),
 and check quality of the deployed tutor model on the live traffic
@@ -2115,19 +2131,20 @@ or the amount of effort needed to learn new concepts \cite{evaluation-leopard}. 
 %It is also possible to measure metrics that quantify the amount of effort needed
 %to learn some concepts , e.g. \emph{WHITE} (Whole Intelligent Tutoring System Empirical Evaluation) \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
 
-Another evaluation strategy is to measure agreement between recommendations
-produced by two tutor models. If the correlation is high, then it is not
-necessary to consider both of these models. This strategy can be also useful
-for incremental deployment, where an already used model is compared to its
-new version, which only differs by parameters recomputed on fresh data.
-In this case, low agreement would indicate a bug in the model
-or data pipeline \cite[][Rule 24]{google-ml-rules}.
-To compare agreement between two recommendation algorithms, we can use
-\emph{ranking metrics}, such as \emph{Spearman's correlation coefficient},
-over complete lists of ordered items
-\cite[section\,8.3.2.3]{recsys}.
-% \emph{Kendall's rank correlation coefficient}, or ??Discounted cumulative gain (REF).
-% TODO: other ranking metrics (average precision, lift index)?
+%% EXT (removed to make the thesis shorter; but it is highly relevant)
+%Another evaluation strategy is to measure agreement between recommendations
+%produced by two tutor models. If the correlation is high, then it is not
+%necessary to consider both of these models. This strategy can be also useful
+%for incremental deployment, where an already used model is compared to its
+%new version, which only differs by parameters recomputed on fresh data.
+%In this case, low agreement would indicate a bug in the model
+%or data pipeline \cite[][Rule 24]{google-ml-rules}.
+%To compare agreement between two recommendation algorithms, we can use
+%\emph{ranking metrics}, such as \emph{Spearman's correlation coefficient},
+%over complete lists of ordered items
+%\cite[section\,8.3.2.3]{recsys}.
+%% \emph{Kendall's rank correlation coefficient}, or ??Discounted cumulative gain (REF).
+%% TODO: other ranking metrics (average precision, lift index)?
 
 
 
@@ -2215,7 +2232,6 @@ For example, optimal task recommendation algorithm can be
 different if instead of a single enforced task,
 all tasks in the current problem set are displayed ordered by their score.
 % TODO: more about soft/hard rcm (see above, task rcm section)
-
 Adaptive learning systems can model UI explicitly in order to compare different versions
 of UI in an online AB experiment,
 which allows to investigate influence of various aspects of
@@ -2381,12 +2397,13 @@ Daily Flow Tasks & tasks solved with not too low/high performance \\
 It is not clear which of these metrics is the best proxy for the mission.
 Fortunately, at the beginning of optimization process, all the metrics
 which reflect the mission tend to improve simultaneously, no matter which one
-is chosen to be directly optimized.
+is chosen to be directly optimized
+\cite[][Rule 12]{google-ml-rules}.
 %\cite[][Rule \#12]{google-ml-rules}.
 Nevertheless, it is useful to measure and report all of them from the beginning,
 to understand how their values are influenced by changes in the learning system
 %\cite[][Rule \#2]{google-ml-rules}.
-\cite[][Rule 2, 12]{google-ml-rules}.
+\cite[][Rule 2]{google-ml-rules}.
 
 %All of these suggested metrics measure a complex aggreage effect of the system
 %behavior during some period.
@@ -2400,11 +2417,12 @@ to understand how their values are influenced by changes in the learning system
 % -> add error bars to measured metrics: e.g. 95% confidence interval / standard error / standard deviation / range (+ effect size)
 
 
-Limitation of these simple metrics is that they only measure \emph{engagement},
-but not learning.
+Limitation of these simple metrics is that they only capture \emph{engagement},
+not learning.
 % NOTE: so they could be improved by simply easier tasks (possibly even tasks
 % not related to programming!).
-In experiments, learning is measured by a programming post-test,
+In experiments, learning is measured by a % programming post-test,
+post-test,
 % Ideally, we would like the students to fill a post-test also after
 % some time (for example in 1 month, 1 year, 5 years, ... but that is not realistic).
 but adaptive learning systems need to evaluate students continuously to collect data about
