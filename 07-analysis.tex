@@ -120,8 +120,8 @@ and it does not increase too much for the later attempts either (\cref{fig:solvi
 \begin{subfigure}{.51\textwidth}
 \centering
 \includegraphics[height=42mm]{img/levels-time}
-\caption{Distribution of log-transformed solving times for each level,
-         with highlighted median and interquartile range.}
+\caption{Distributions of log-transformed solving times for levels
+         (with highlighted median and interquartile range).}
 \end{subfigure}
 \caption{Solving times.}
 \label{fig:solving-times}
@@ -156,21 +156,28 @@ hour of the tutorial (\cref{fig:students-at-levels}).
 \section{Performance Measurement}
 
 % In ... we have discussed importance of a performance compression
-Our student model measure %three-valued performance representation, and a
+Measurement of performance has a huge impact on the estimated skills in the student model,
+and transitively on the behavior of the tutor model, e.g. which task is recommended
+to the student.
+Currently, we measure %three-valued performance representation, and a
 performance using only observed solving time
 (\cref{sec:robomission.student}).
+However, due to variations in speeds of different students
+(which are even partially influenced by external factors, such as used device),
+solving time is rather noisy approximation of the true performance.
 Could using other observational data, such as number of edits,
 bring more information about the performance?
+
 %(TODO: Goal: find a compression function that maximizes performance of student model.)
 Overall Pearson correlation between solving times and number of edits (both
 log-transformed) is quite high, about 0.73 (\cref{fig:performance-corrs-ts}).
 However, if computed for individual tasks,
 median correlation drops to 0.64, % (interquartile range 0.5 -- 0.72),
 and $25\%$ of tasks have a correlation below 0.5 % check the number
-(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits should be
-at least considered.
+(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits into the
+measurement should be at least considered.
 
-We propose the following heuristic for combining solving time with the number of edits and runs: log-transformed sum of edits, runs, and \emph{thinking actions}.
+We propose the following heuristic for combining solving times with the number of edits and runs: log-transformed sum of edits, runs, and \emph{thinking actions}.
 To reduce noise caused e.g. by different screen sizes,
 %and idvidiual speeds of students,
 thinking action is only assumed between two edits
@@ -194,10 +201,11 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 
 \begin{figure}[htb]
 \centering
+%\captionsetup[subfigure]{width=0.90\textwidth,justification=raggedright}%
 \begin{subfigure}{.49\textwidth}
 \centering
 \includegraphics[height=45mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-ts}
-\caption{All task sessions.}
+\caption{Pearson correlation between performance measures computed\\over all task sessions.}
 \label{fig:performance-corrs-ts}
 \end{subfigure}
 %\begin{subfigure}{.33\textwidth}
@@ -208,10 +216,11 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 \begin{subfigure}{.49\textwidth}
 \centering
 \includegraphics[height=45mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-tasks-q10}
-\caption{Per tasks, 10th percentile.}
+\caption{Aggregated per task, bottom 10th percentile
+  (i.e., for 10\% of tasks the correlation is below the shown value).}
 \label{fig:performance-corrs-p10}
 \end{subfigure}
-\caption{Correlation between performance measures:
+\caption{Correlation between four performance measures:
 E = number of edits, R = number of runs, S = sum of edits, runs and thinking actions,
 T = solving time; all of them log-transformed.}
 \label{fig:performance-corrs}
@@ -242,6 +251,9 @@ Using collected data, we can determine whether these assumption are satisifed,
 and if not, suggest adjustments to improve their validity.
 \Cref{fig:solving-times} (right) shows that on average the difficulty of levels
 is increasing, but it also reveals that level 7 is more difficult than level 8.
+Levels 3 and 4 have similar difficulty, which is expected because they practice
+two similar concepts, repeat and while loops.
+
 % TODO: Elaborate on the solution to this issue.
 % (TODO?: phases instead of missions, and select only a few to save space)
 Looking at the difficulty of individual tasks (\cref{fig:difficulties-tasks-levels})
@@ -251,7 +263,7 @@ The \cref{fig:difficulties-tasks-levels} also suggests that dividing levels
 into phases is necessary to achieve reasonable homogenity. For example, in the 2nd
 level (World), there are two clear groups of tasks with significantly different
 difficulty. Although in the other levels such a clear split does not exist,
-they still often contain tasks with a wide range of difficulties.
+they still contain tasks with a wide range of difficulties. %, so the refinement into phases seems appropriate.
 % TODO: note/analyze robustness of these analyses (given the limited data)
 
 \begin{figure}[htb]
@@ -259,7 +271,7 @@ they still often contain tasks with a wide range of difficulties.
 \includegraphics[width=\textwidth]{img/difficulties-tasks-levels}
 \caption{%
   Difficulties of tasks in the first 6 levels.
-  Difficulty is measured as solving time and number of edits, both log-transformed.}
+  Difficulty is measured as success rate and median solving time.}
 \label{fig:difficulties-tasks-levels}
 \end{figure}
 
