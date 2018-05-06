@@ -103,19 +103,25 @@ From all attempts, 86\% were successful, and 84\% were solved in less than 15 mi
 If we look at the first 5 tasks for each student, 87\% of them are solved,
 85\% are solved in less than 15 minutes, but only 66\% in less than 2 minutes.
 The median solving time is below a minute for the first 10 practiced tasks,
-and it does not increase too much for the later attempts either (\cref{fig:solving-times}).
+and it does not increase too much for the later attempts either (\cref{fig:solving-times}),
+% TODO: comment this observation: ... because most of the students are in the first 4 levels
+% + possibly amplified by attrition bias (worst students drops out)
+% + random recommendation of tasks from lower level + learning
 
+% TODO: how to create horizontal space between them?
 \begin{figure}[htb]
 \centering
 \begin{subfigure}{.48\textwidth}
 \centering
 \includegraphics[height=42mm]{img/median-time-order}
-\caption{Time per task order during practice.}
+\caption{Median solving time per task order during practice.
+  The median is below one minute for first 10 tasks.}
 \end{subfigure}
 \begin{subfigure}{.51\textwidth}
 \centering
-\includegraphics[height=44mm]{img/levels-time}
-\caption{Log-transformed times per level.}
+\includegraphics[height=42mm]{img/levels-time}
+\caption{Distribution of log-transformed solving times for each level,
+         with highlighted median and interquartile range.}
 \end{subfigure}
 \caption{Solving times.}
 \label{fig:solving-times}
@@ -147,11 +153,11 @@ hour of the tutorial (\cref{fig:students-at-levels}).
 \label{fig:students-at-levels}
 \end{figure}
 
-\section{Performance Compression}
+\section{Performance Measurement}
 
 % In ... we have discussed importance of a performance compression
-Our student model uses %three-valued performance representation, and a
-performance compression function based purely on observed solving time
+Our student model measure %three-valued performance representation, and a
+performance using only observed solving time
 (\cref{sec:robomission.student}).
 Could using other observational data, such as number of edits,
 bring more information about the performance?
@@ -161,13 +167,14 @@ log-transformed) is quite high, about 0.73 (\cref{fig:performance-corrs-ts}).
 However, if computed for individual tasks,
 median correlation drops to 0.64, % (interquartile range 0.5 -- 0.72),
 and $25\%$ of tasks have a correlation below 0.5 % check the number
-(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits should be considered.
+(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits should be
+at least considered.
 
-We propose the following heuristic for combining solving time with the number of edits and executions: log-transformed sum of edits, executions, and \emph{thinking actions}.
-To reduce noise caused e.g. by different screens
+We propose the following heuristic for combining solving time with the number of edits and runs: log-transformed sum of edits, runs, and \emph{thinking actions}.
+To reduce noise caused e.g. by different screen sizes,
 %and idvidiual speeds of students,
 thinking action is only assumed between two edits
-or executions, if the time interval is at least 5 seconds (which seems to be enough
+or runs, if the time interval is at least 5 seconds (which seems to be enough
 to drag and drop a block anywhere on any screen). If the interval is very long,
 we count it as multiple thinking actions (taking $log_5$ from the time interval
 and rounding it down to the closest integer).
@@ -205,7 +212,7 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 \label{fig:performance-corrs-p10}
 \end{subfigure}
 \caption{Correlation between performance measures:
-E = number of edits, R = number of executions, S = sum of edits, executions and thinking actions,
+E = number of edits, R = number of runs, S = sum of edits, runs and thinking actions,
 T = solving time; all of them log-transformed.}
 \label{fig:performance-corrs}
 \end{figure}
