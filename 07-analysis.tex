@@ -190,18 +190,25 @@ Overall Pearson correlation between solving times and number of edits (both
 log-transformed) is quite high, about 0.73 (\cref{fig:performance-corrs-ts}).
 However, if computed for individual tasks,
 median correlation drops to 0.64, % (interquartile range 0.5 -- 0.72),
-and $25\%$ of tasks have a correlation below 0.5 % check the number
+and $25\%$ of tasks have correlation below 0.5 % check the number
 (\cref{fig:time-vs-edits}), which suggests that incorporating number of edits into the
 measurement should be at least considered.
 
-We propose the following heuristic for combining solving times with the number of edits and runs: log-transformed sum of edits, runs, and \emph{thinking actions}.
-To reduce noise caused e.g. by different screen sizes,
-%and idvidiual speeds of students,
-thinking action is only assumed between two edits
-or runs, if the time interval is at least 5 seconds (which seems to be enough
-to drag and drop a block anywhere on any screen). If the interval is very long,
+We propose the following heuristic for combining solving times with the number
+of edits and runs (executions): log-transformed sum of edits, runs, and \emph{thinking
+actions}.
+Thinking action is only assumed to be between two edits or runs, if the time interval
+is at least 5 seconds long, in order to reduce the noise caused e.g. by
+different screen sizes
+(5 seconds seems to be enough to drag and drop a block anywhere on any screen).
+If the interval is very long,
 we count it as multiple thinking actions (taking $log_5$ from the time interval
 and rounding it down to the closest integer).
+
+With this definition, an average student performs about 5 thinking actions
+in the first two levels (practicing only sequences of commands),
+and about 10 thinking actions in the 3rd and 4th level (practicing repeat and while loops)
+(\cref{fig:actions-thinkings}).
 This heuristic retains reasonable correlation with both solving time
 and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 
@@ -221,7 +228,7 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 %\captionsetup[subfigure]{width=0.90\textwidth,justification=raggedright}%
 \begin{subfigure}{.49\textwidth}
 \centering
-\includegraphics[height=45mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-ts}
+\includegraphics[height=49mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-ts}
 \caption{Pearson correlation between performance measures computed\\over all task sessions.}
 \label{fig:performance-corrs-ts}
 \end{subfigure}
@@ -232,27 +239,51 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 %\end{subfigure}
 \begin{subfigure}{.49\textwidth}
 \centering
-\includegraphics[height=45mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-tasks-q10}
+\includegraphics[height=49mm,trim={34mm 0 11mm 0},clip]{img/performance-corr-tasks-q10}
 \caption{Aggregated per task, bottom 10th percentile
   (i.e., for 10\% of tasks the correlation is below the shown value).}
 \label{fig:performance-corrs-p10}
 \end{subfigure}
-\caption{Correlation between four performance measures:
+\caption{Correlation between four performance measures
+(all of them log-transformed):
 E = number of edits, R = number of runs, S = sum of edits, runs and thinking actions,
-T = solving time; all of them log-transformed.}
+T = solving time.}
 \label{fig:performance-corrs}
 \end{figure}
 
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.48\textwidth]{img/time-edits-corr}
-%\includegraphics[width=0.48\textwidth]{img/levels-time}
-\caption{%
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=39mm]{img/time-edits-corr}
+\caption{
   Distribution of Pearson correlations between median solving times and number
-  of edits (both log-transformed) for individual tasks.} %  TODO: another plot on the right.}
+  of edits (both log-transformed) for individual tasks.}
 \label{fig:time-vs-edits}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\centering
+\includegraphics[height=42mm]{img/actions-thinkings}
+\caption{Median number of actions (edits, runs, and thinking actions)
+  with the increasing level.\\~}
+\label{fig:actions-thinkings}
+% TODO: add interquartile ranges
+\end{subfigure}
+\caption{Analysis of performance measures.}
 \end{figure}
+
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{img/difficulties-tasks-levels}
+\caption{%
+  Difficulties of tasks in the first 6 levels.
+  Difficulty is measured as success rate and median solving time.}
+\label{fig:difficulties-tasks-levels}
+\end{figure}
+
+
 
 
 \section{Task Difficulties}
@@ -282,15 +313,6 @@ level (World), there are two clear groups of tasks with significantly different
 difficulty. Although in the other levels such a clear split does not exist,
 they still contain tasks with a wide range of difficulties. %, so the refinement into phases seems appropriate.
 % TODO: note/analyze robustness of these analyses (given the limited data)
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=\textwidth]{img/difficulties-tasks-levels}
-\caption{%
-  Difficulties of tasks in the first 6 levels.
-  Difficulty is measured as success rate and median solving time.}
-\label{fig:difficulties-tasks-levels}
-\end{figure}
 
 %\imgW{difficulties-tasks-levels}{%
 %  Difficulties (spent times and number of edits, both log-transformed)
