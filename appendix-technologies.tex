@@ -3,14 +3,8 @@
 
 Technolgoies used in the project change quite quickly in order to meet new requirements,
 especially on frontend, where the tools and best practices are evolving rapidly.
-The following table shows the technologies in spring 2018.
+The following tables show the overview of technologies used in the project in spring 2018.
 
-%\Cref{tbl:technologies} shows overview of the technologies used
-%in the project in spring 2018.
-%Note that they are gradually evolving, either to meet new requirements,
-%or simply to replace old technologies with newer ones.
-%This is especially true for frontend, where the tools and best practices
-%are evolving rapidly.
 %When this project started in 2015,
 %we used several at that time popular technologies
 %(AngularJS, Bootstrap, bower, grunt)
@@ -21,28 +15,50 @@ The following table shows the technologies in spring 2018.
 %or redux-saga for cleaner handling of asynchronous side-effects
 %(instead of the originally used redux-thunk).
 
-\begin{center}
+\begin{table}[htb]
+\centering
+\caption{Project Management.}
 \begin{tabular}{l l l}
 \toprule
 Area & Technology & Main Reason  \\
 \midrule
-\textbf{Project management} & GitHub & easy to use \\  % "Project management"
-% Version control & git & easy to use \\
-Commands & make, django, npm & easy to use \\
-% Monitoring & Google Analytics & widely-used \\
-\hline
-\textbf{Backend} & Python 3 & concise, high-level \\
-%Dependencies & pip & easy to use \\
-%Environment & virtualenv[wrapper] & easy to use \\
+Version control & git, GitHub & features \\
+% Online repository & GitHub & easy to use \\
+Custom commands & make, django, npm & easy to use \\
+Monitoring & Google Analytics & easy to use \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htb]
+\centering
+\caption{Backend.}
+\begin{tabular}{l l l}
+\toprule
+Area & Technology & Main Reason  \\
+\midrule
+Language & Python 3 & concise, high-level \\
+Dependencies & pip & standard tool, easy to use \\
+Environment & virtualenvwrapper & easy to use \\
 Unit tests & pytest & concise, readable \\
-Web framework & Django & feature-complete \\ %, well-documented \\
-REST API & DRF & feature-complete \\ %, well-documented \\
+Web framework & Django & features, well-documented \\
+REST API & DRF & features, well-documented \\
 Database & PostgreSQL & widely used \\
-Web server & Nginx + Gunicorn & widely used \\
+Web server & Nginx, Gunicorn & widely used \\
 Scheduled jobs & cron, django-crontab & standard tool \\
-Data export & Django Rest Pandas & tranformations \\ % before export \\
-\hline
-\textbf{Frontend} & ES6 & concise, readable \\
+Data export & Django Rest Pandas & DataFrame tranformations \\ % before export \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htb]
+\centering
+\caption{Frontend.}
+\begin{tabular}{l l l}
+\toprule
+Area & Technology & Main Reason  \\
+\midrule
+Language & ES6 & concise, readable \\
 Dependencies & npm & easy to use \\
 Bundling & webpack & feature-complete \\ %, widely used \\
 Compiling & babel & feature-complete \\ % , widely used \\
@@ -50,21 +66,27 @@ State & redux  & predictability, testability \\  % behavior, testability \\
 Side effects & redux-sagas  & readability, testability \\
 Views & React & declarative, reausable \\
 Design (UI) & Material-UI & good appearence \\
-HTTP client & axios & promises \\
+HTTP client & axios & Promises API\\
 Code blocks & Blockly & well-tested \\
 Parsing & PEG JS & declarative rules \\  %(Parsing expression grammar) \\
 Interpretation & JS-interpreter & stepping, custom hooks \\
 Localization & react-intl & one place for all messages \\
-\hline
-\textbf{Analysis} & jupyter, pandas, sklearn & interactive, high-level \\
-Plotting & matplotlib, seaborn & features; nice plots \\
-%Machine learning & sklearn & powerful \\
-%\hline
-%\textbf{Analysis} & Python 3 & high-level, widely used \\
-%Documents & jupyter notebook & interactivity \\
-%DataFrames & pandas & feature-complete, well-documented \\
-%Plotting & matplotlib, seaborn & powerful, looks good \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htb]
+\centering
+\caption{Analysis.}
+\begin{tabular}{l l l}
+\toprule
+Area & Technology & Main Reason  \\
+\midrule
+Language & Python 3 & concise, high-level \\
+Documents & Jupyter Notebook & interactivity \\
+DataFrames & pandas & features, well-documented \\
+Plotting & matplotlib, seaborn & features, nice plots \\
 %Machine learning & sklearn & powerful \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
