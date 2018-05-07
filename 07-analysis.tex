@@ -49,12 +49,12 @@ Nearly all users access the webpage on a desktop computer ($94\%$).
 \end{figure}
 
 
-About 11000 tasks were attempted (counting only those attempts with at least one edit),
+About 11000 tasks were attempted (counting only attempts with at least one edit),
 and 9600 of them were solved,
 resulting in the overall success rate $86\%$.
 The daily numbers of solved task sessions are not stable,
-with high peaks on days when the application was used
-in a competition or testing at a school
+with high peaks on days when RoboMission was used
+in a programming competition or Hour of Code session at a school
 (\cref{fig:solved-count}).
 % The following can be a separate paragraph, if another
 % analysis is performed.
@@ -95,18 +95,15 @@ so the mean solving time is much higher
 
 \section{System Behavior}
 
-We can use collected data to check the requirements on system behavior mentioned in
+We can use the collected data to check the requirements on system behavior mentioned in
 \cref{sec:robomission.behavior}. Unfortunatelly, the system is currently not logging
-which tasks were recommended and which were self-selected, so we cannot say
-how much are the results influenced by the adaptive behavior of the system.
-From all attempts, 86\% were successful, and 84\% were solved in less than 15 minutes.
-If we look at the first 5 tasks for each student, 87\% of them are solved,
-85\% are solved in less than 15 minutes, but only 66\% in less than 2 minutes.
-The median solving time is below a minute for the first 10 practiced tasks,
-and it does not increase too much for the later attempts either (\cref{fig:solving-times}),
-% TODO: comment this observation: ... because most of the students are in the first 4 levels
-% + possibly amplified by attrition bias (worst students drops out)
-% + random recommendation of tasks from lower level + learning
+which tasks were recommended and which were self-selected, so we cannot determine
+how much are the results influenced by the adaptive behavior. % of the system.
+
+From all attempts, 86\% are successful, and 84\% are solved in less than 15 minutes.
+If we look at the first 5 practiced tasks for each student, 87\% of them are solved,
+85\% are solved in less than 15 minutes, but only 66\% are solved in less than 2 minutes.
+
 
 % TODO: how to create horizontal space between them?
 \begin{figure}[htb]
@@ -117,16 +114,35 @@ and it does not increase too much for the later attempts either (\cref{fig:solvi
 \caption{Median solving time and average level per task order during practice.
   First 10 tasks have the median solving time below 1 minute.}
   % The median is below one minute for first 10 tasks.}
+\label{fig:solving-times-per-order}
 \end{subfigure}
 \begin{subfigure}{.51\textwidth}
 \centering
 \includegraphics[height=42mm]{img/levels-time}
 \caption{Distributions of log-transformed solving times for all levels,\\
          with highlighted medians and interquartile ranges.}
+\label{fig:levels-time}
 \end{subfigure}
 \caption{Levels and solving times.}
 \label{fig:solving-times}
 \end{figure}
+
+
+
+The median solving time of the first 10 practiced tasks is below 1 minute.
+Surprisingly, the median time does not increase too much even for the later
+attempts during practice (\cref{fig:solving-times-per-order}).
+The curve of median times stays similar
+if only students with at least 40 task sessions are used for the computation,
+which rules out the possibility that this behavior is caused by \emph{attrition bias}
+(only better students staying in the system, making the later tasks seem easier than they are).
+The plot of average level per task order during practice
+(\cref{fig:solving-times-per-order} bottom) reveals a possible explanation:
+an average student is still in the 4th level after 30 tasks,
+and the 3rd and 4th level have similar difficulty with a median solving time below 90 seconds
+(\cref{fig:levels-time}).
+% + random recommendation of tasks from lower level + learning
+
 
 
 After 10 minutes of practice, 73\% of students have reached the second level,
@@ -157,9 +173,9 @@ hour of the tutorial (\cref{fig:students-at-levels}).
 \section{Performance Measurement}
 
 % In ... we have discussed importance of a performance compression
-Measurement of performance has a huge impact on the estimated skills in the student model,
-and transitively on the behavior of the tutor model, e.g. which task is recommended
-to the student.
+Measurement of performance has a huge impact on the estimated skills, %in the student model,
+and transitively on %the behavior of the tutor model. %, e.g.
+the task recommendations. % to the student.
 Currently, we measure %three-valued performance representation, and a
 performance using only observed solving time
 (\cref{sec:robomission.student}).
