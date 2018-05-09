@@ -54,24 +54,33 @@ which were already successfully used in other domains
    The left panel displays a space themed grid world. In the workspace on
    the right, students build programs using blocks describing actions
    such as \texttt{fly left} and \texttt{fly right}.
-   The task is to create a program that would lead the spaceshipt to the last row.}
+   The task is to create a program that would lead the spaceship to the last row.}
 %  {RoboMission is a web application for learning introductory programming %
 %   using space themed grid world and block-based programming.}
 
-The adaptation is performed on two levels. % -- single student and the whole system.
+The adaptation can be performed at different time scales,
+ranging from offline design loop adaptation of the system using
+collected data, to online adaptation to each individual student during practice,
+either between tasks, or even after each step of the student
+\cite{adaptive-learning-grid}.
+Learning systems can adapt to skills of the students, preferred learning styles,
+emotions (e.g. frustration, boredom), needs, motivation, and metacognition
+\cite[ch.\,10]{affect-sensor-free,its-review-2010}.
+
+In RoboMission, we perform adaptation to skills at two time scales.
 First, the system estimates skills of the students as they solve tasks,
 so that it can recommend them optimally difficult tasks to practice next.
 By giving students tasks of difficulty matching their skill,
 %neither too easy, nor too difficult,
 we help them to achieve complete immersion into the problem solving
-activity. % (\cref{fig:flow}).
-This \emph{state of flow} \cite{flow}
-is essential for the optimal learning experience
+activity, known as  % (\cref{fig:flow}).
+the \emph{state of flow} \cite{flow},
+which is essential for the optimal learning experience
 \cite{adaptive-practice}.
 Second, using insight from analysis of collected data,
 we iteratively improve behavior of the system,
 e.g. moving tasks to more appropriate problem sets,
-removing problematic tasks,
+% removing problematic tasks,
 or adding new tasks practicing concepts that students often struggle with.
 
 
