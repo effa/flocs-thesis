@@ -583,6 +583,28 @@ Achieving the state of flow maximizes the learning outcome \cite{adaptive-practi
 and recommending tasks of optimal difficulty.
 % for estimating student’s skill and show how to use that estimate for task recommendation and mastery learning.
 
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[font=\sffamily,scale=5]
+  \large
+  %\draw [lightgray, fill=gray] (0,0) -- (0.1,0) -- (1,0.8) -- (0.8,1) -- (0,0.1) -- (0,0);
+  \draw (0.1,0) -- (1,0.8);
+  \draw (0,0.1) -- (0.8,1);
+  \draw [thick, <->] (0,1) node [left] {\emph{difficulty}} -- (0,0) -- (1,0) node [below right] {\emph{skill}};
+  \node at (0.27,0.82) {frustration};
+  \node at (0.6,0.6) {flow};
+  \node at (0.7,0.2) {boredom};
+  \end{tikzpicture}
+  \caption{
+    Relationship between difficulty and skill.
+    Too easy tasks bore students, too difficult frustrate them.
+    For efficient learning, the difficulty of the task
+    and the skill of the student should be in balance.
+  }
+  \label{fig:flow}
+\end{figure}
+
+
 
 \subsection{Gamification and Progress Visualization}
 
