@@ -10,7 +10,7 @@ A programmer is ideally an essayist who works with traditional aesthetic and lit
 %specific for system for learning programming, such as task representation,
 %and transformation between programming blocks and code.
 
-We present the overall architecture of RoboMission,
+We present the overall architecture of RoboMission
 and describe aspects specific to the system for learning programming.
 We intentionally avoid discussing details of used technologies,
 which would make the text obsolete soon.
@@ -23,9 +23,9 @@ with a fat frontend client communicating with the server via REST API
 \cite{rest-api}.
 In addition to the frontend app and backend services,
 there are two other parts of the system:
-scheduled jobs, which run periodically every week (e.g. metrics computation),
+scheduled jobs, which run periodically every week (e.g., metrics computation),
 and tools for offline analysis of collected data
-(e.g. Jupyter Notebooks). % templates).
+(e.g., Jupyter Notebooks). % templates).
 % TODO: and "helper functions"
 % TODO: ref/cite human-in-the-loop principle
 % TODO: consider: list the parts in itemize
@@ -49,12 +49,12 @@ a pure function that takes a state and an action, and returns a new state.
 % ... reducers: state, action -> new state (pure functions)
 % "unidirectional UI" (as opposed to MVC and similar architectures)
 The view is then assembled using declarative reusable
-components, that are
-either \emph{presentational} (e.g. describing how the game world is
+components, which are
+either \emph{presentational} (e.g., describing how the game world is
 rendered), or \emph{behavioral} (selecting data from the state, % to use for the rendering,
 and dispatching actions) \cite{react}. %  and their triggers.
 The application also defines a few asynchronous workflows (\emph{sagas}),
-e.g. for program interpretation, and task solving process. %, or sending events to Google Analytics.  % better examples?
+e.g., for program interpretation, and task solving process. %, or sending events to Google Analytics.  % better examples?
 %% TODO: at least one sentence about React components?
 %\subsection{React Components}
 %
@@ -89,7 +89,7 @@ e.g. for program interpretation, and task solving process. %, or sending events 
 %\label{sec:robomission-asynchronous-side-effects}
 %
 %Frontend applications are usually full of asynchronous side effects
-%(e.g. fetching data from server, wating for user actions).
+%(e.g., fetching data from server, wating for user actions).
 %Many ways to handle them were proposed,
 %such as callbacks (REF) or promises (REF).
 %%The most basic one are callbacks --
@@ -145,7 +145,7 @@ e.g. for program interpretation, and task solving process. %, or sending events 
 %\item models (...), serializers, views, services/use cases/core
 %\item data export
 %\item monitoring app, metrics computation
-%\item generators (e.g. metric computation)
+%\item generators (e.g., metric computation)
 %\item architecture (of individual apps): viewsets/management, services,
 %serializers, models, core (actions, credits, recommendation)
 %\end{itemize}
@@ -167,11 +167,11 @@ for computing performance, skills, and recommendations.
 \section{Domain Representation}
 
 The domain is represented by a JSON file containing all problem sets %missions, phases, and
-and relationships between them, as well as their setting (e.g. which toolbox to use)
+and relationships between them, as well as their setting (e.g., which toolbox to use)
 and names of their tasks.
 Each task is then described in a separate file (\cref{sec:impl.task-sources}).
 Furthermore, there is a separate JSON file containing values for parameters
-of domain entities (e.g. a time threshold for good performance for each task).
+of domain entities (e.g., a time threshold for good performance for each task).
 %EXT:
 %It is convenient to have the relationships and the parameters in different files,
 %because the former is currently edited by people, while the latter is
@@ -301,7 +301,7 @@ Object -> 'S' | 'A' | 'M' | 'D' | 'W'
 Each line represents one row of the grid
 and is split by pipes (``|'') into fields.
 Each field starts with a lower-case letter denoting color of the field
-(e.g. b = blue, k = black),
+(e.g., b = blue, k = black),
 followed by an optional upper-case letter denoting an object
 (A = asteroid, S = spaceship, etc.).
 For example, ``rD'' is a red field with a diamond.}
@@ -316,9 +316,9 @@ for representing solutions in task sources.
 It closely corresponds to the text written on Blockly blocks
 with a few exceptions, such as %added parentheses
 shorter function names and added parentheses
-(e.g. \texttt{left()} instead of \texttt{fly left}).
+(e.g., \texttt{left()} instead of \texttt{fly left}).
 % also: fly right -vs- fly()
-% and abbreviated literals (e.g. ``b'' instead of ``blue'').
+% and abbreviated literals (e.g., ``b'' instead of ``blue'').
 % difference: parenthesis (color() vs. color) and literals ('b' vs. blue)
 % TODO: check the statement above
 It is also intended to be used in more advanced problem sets as the
@@ -346,8 +346,8 @@ There are four basic commands: % for performing actions:
 %shoot()
 %\end{lstlisting}
 Each action is combined with moving one row forward.
-The movement takes place after the action, with the exception of left and right turning actions, where the movement and the action happen simultaneously,
-i.e. the spaceship flies diagonally to the left or to the right.
+The movement takes place after the action, except for left and right turning actions, where the movement and the action happen simultaneously,
+i.e., the spaceship flies diagonally to the left or right.
 % TODO: Rephrase. Is confusing, because the general statement ("movement takes
 % place after the action") is only relevant for shoot(), and all the other
 % commands are special cases.
@@ -480,7 +480,7 @@ However, a preprocessing of the RoboCode is necessary, because
 PEGs are context-free,
 while RoboCode is a context-sensitive language
 -- the context is created by indentation.
-In addition, it is also useful to store line numbers alongside the statements
+In addition, it is useful to store line numbers alongside the statements
 to enable \emph{meta-interpreting},
 such as showing executed line, or linking errors to the point in the source code.
 Therefore, the preprocessing step transforms the code in a context-free form,
@@ -618,9 +618,9 @@ R6{Ix>1{s}/{r}}
 %%\label{fig:minirobocode-transformations}
 %\end{figure}
 
-MiniRoboCode is useful not only for logging and storing programs in the database,
-but also for many analyses, because it is easy to process by counting
-letters or matching simple regular expressions, and because they are short
+MiniRoboCode is useful not only for logging and storing programs in the database
+but also for many analyses because it is easy to process by counting
+letters or matching simple regular expressions, and because the codes are short
 enough to be used as labels in plots.
 
 
@@ -628,10 +628,10 @@ enough to be used as labels in plots.
 
 Blockly%
 \footnote{Available at \url{https://developers.google.com/blockly/}.}
-is an implementation of block-based programming
+is an implementation of a block-based programming
 environment from Google,
 which we use in the code editor for students
-(shown e.g. in \cref{fig:robomission-task1}).
+(shown, e.g., in \cref{fig:robomission-task1}).
 % TODO: ref to section about block-base programming envs and their pros/cons
 % TODO: mention advnatages of using Blockly from Google: well-tested, widely-used
 % (and disadvantage: don't play nicely with modern JS workflow; sometimes needs
@@ -688,7 +688,7 @@ version of localized block labels
 \label{sec:robomission-robojs}
 
 Instead of implementing our own interpreter of RoboCode,
-we transform the code through RoboAST into JavaScript,
+we transform the code through RoboAST into JavaScript
 %(described in \cref{sec:robomission-robojs})
 and then use a JavaScript interpreter to run the code.
 The generated \emph{RoboJS} % is just a JavaScript that
@@ -698,7 +698,7 @@ sensors (\texttt{color}, \texttt{position}),
 and meta-interpreting (\texttt{isStopped}, \texttt{highlightBlock})
 (\cref{fig:robojs-example}).
 
-The interpreter does not have to be necessary a \emph{JavaScript} interpreter,
+The interpreter does not have to be necessary a \emph{JavaScript} interpreter
 since it is easy to transform RoboAST to any other common imperative language.
 % (at least to the common imperative languages).
 However, the interpreter must satisfy the following requirements:
@@ -756,7 +756,7 @@ for (var i1_ = 0; i1_ < 4; i1_++) {
 \caption{%
   Example of a RoboJS (right) for given RoboBlocks program (left). %
   % Repeat loops require to generate unique names for iteration variables.
-  Each original command is accompanied by \texttt{highlightBlock(blockId)},
+  Each original command is accompanied by \texttt{highlightBlock(blockId)}
   so that the meta-interpreter knows which block to highlight.}
 \label{fig:robojs-example}
 \end{figure}
@@ -770,7 +770,7 @@ We use an existing JavaScript interpreter%
 and wrap it into two
 additional layers: the first layer is a generator
 that yields actions, sensor requests and
-meta-interpreting effects (e.g. block highlighting), % checking for interruption).
+meta-interpreting effects (e.g., block highlighting), % checking for interruption).
 and the second layer is a saga
 %(see \cref{sec:robomission-asynchronous-side-effects})
 that handles all these asynchronous effects.

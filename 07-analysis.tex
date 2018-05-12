@@ -9,7 +9,7 @@ In order to get insight into how the deployed system works
 and what should we focus on in next iterations,
 we analyze collected data.
 All analyses in this chapter use data collected  % avoid repeating "collected"
-during 4 months (10th November 2017 -- 9th March 2018).
+during four months (10th November 2017 -- 9th March 2018).
 This data, as well as the code performing the analyses, are available
 as attachments of this thesis
 (described in \cref{sec:attachment.collected-data,sec:attachment.analyses}).
@@ -17,7 +17,7 @@ as attachments of this thesis
 
 \section{Data Description}
 
-During the 4 months, about 1000 users tackled at least one task,
+During the four months, about 1000 users tackled at least one task,
 %\footnote{The true number of unique users might be lower, because a single user
 %may be counted multiple times if he had not signed up and used the system again
 %after a session cookie had expired. However, the Google Analytics suggests
@@ -59,11 +59,11 @@ in a programming competition or Hour of Code session at a school
 % The following can be a separate paragraph, if another
 % analysis is performed.
 Over 180 thousand program snapshots was collected,
-from which 140 thousand corresponds to edits,
+of which 140 thousand corresponds to edits
 and 40 thousand to executions.
 
 % TODO: join with another plot (-> two plots on a single line).
-% (e.g. a metric mentioned at the theory part)
+% (e.g., a metric mentioned at the theory part)
 % TODO: crop/tighten margings (esp. the bottom one)
 %\imgW[0.3]{daily-task-sessions}{%
 %  Daily number of solved task sessions (weekly averaged).}
@@ -147,7 +147,7 @@ and the 3rd and 4th level have similar difficulty with a median solving time bel
 
 After 10 minutes of practice, 73\% of students have reached the second level,
 and after 20 minutes, nearly 70\% of students have started practicing loops.
-Then the progress through levels slows down and only 37\% of students
+Then the progress through levels slows down, and only 37\% of students
 are practicing both loops and conditional statements after the first
 hour of the tutorial (\cref{fig:students-at-levels}).
 
@@ -164,7 +164,7 @@ hour of the tutorial (\cref{fig:students-at-levels}).
 %\caption{How many students solved a task given number of days.}
 \end{subfigure}
 \caption{%
-  Left: proportion of students in the system after some time of practicing,
+  Left: the proportion of students in the system after some time of practicing,
   who progressed to the 2nd, 3rd, and 6th level (sequence of commands, repeat loops, if-statements).
   Right: how the proportion of tasks at different levels is shifting during the practice.}
 \label{fig:students-at-levels}
@@ -173,8 +173,8 @@ hour of the tutorial (\cref{fig:students-at-levels}).
 \section{Performance Measurement}
 
 % In ... we have discussed importance of a performance compression
-Measurement of performance has a huge impact on the estimated skills, %in the student model,
-and transitively on %the behavior of the tutor model. %, e.g.
+Measurement of performance has an enormous impact on the estimated skills, %in the student model,
+and transitively on %the behavior of the tutor model. %, e.g.,
 the task recommendations. % to the student.
 Currently, we measure %three-valued performance representation, and a
 performance using only observed solving time
@@ -198,7 +198,7 @@ We propose the following heuristic for combining solving times with the number
 of edits and runs (executions): a log-transformed sum of edits, runs, and \emph{thinking
 actions}.
 Thinking action is only assumed to be between two edits or runs if the time interval
-is at least 5 seconds long, in order to reduce the noise caused e.g. by
+is at least 5 seconds long, in order to reduce the noise caused, e.g., by
 different screen sizes
 (5 seconds seems to be enough to drag and drop a block anywhere on any screen).
 If the interval is very long,
@@ -220,7 +220,7 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 % - explore the role of thresholds
 % - explore influence of error metrics; of number of levels
 % - explore usage in predictive models on the next performance (independent/cross)
-% - explore the action-count measure (with thresholds): e.g. how it behaves wrt. incrasing levels
+% - explore the action-count measure (with thresholds): e.g., how it behaves wrt. incrasing levels
 
 
 \begin{figure}[htb]
@@ -246,7 +246,7 @@ and number of edits for all tasks (\cref{fig:performance-corrs-p10}).
 \end{subfigure}
 \caption{Correlation between four performance measures
 (all of them log-transformed):
-E = number of edits, R = number of runs, S = sum of edits, runs and thinking actions,
+E = number of edits, R = number of runs, S = sum of edits, runs, and thinking actions,
 T = solving time.}
 \label{fig:performance-corrs}
 \end{figure}
@@ -279,7 +279,7 @@ T = solving time.}
 \includegraphics[width=\textwidth]{img/difficulties-tasks-levels}
 \caption{%
   Difficulties of tasks in the first 6 levels.
-  Difficulty is measured as success rate and median solving time.}
+  The difficulty is measured as success rate and median solving time.}
 \label{fig:difficulties-tasks-levels}
 \end{figure}
 

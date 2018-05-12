@@ -955,8 +955,8 @@ While the compression causes a loss of information, it also reduces noise
 present in the raw data. Moreover, it helps to avoid a combinatoric
 explosion of considering each type of model with multiple different types of
 input data and their combinations.
-The most important consideration for performance measurement is what data
-(correctness, solving time, etc.) to use \cite{alg.mastery}.
+The most important consideration for performance measurement is which data to use
+(e.g., correctness, solving time) \cite{alg.mastery}.
 %Used data play an important role, e.g., in \cite{alg.mastery}
 %Having a unified simple performance input makes the models simpler and easier to interpret.
 %Used data play an important role, e.g., in \cite{alg.mastery} they achieved
@@ -1131,7 +1131,7 @@ Logistic models \cite{irt-visual-guide}  % TODO:check-cite
 predict performance $P(s, d)$
 of a student with skill $s$ on a task with difficulty $d$
 using a logistic function applied to the difference between the skill and the difficulty%
-\footnote{Some logistic models do not model difficulties (i.e. $d = 0$).}
+\footnote{Some logistic models do not model difficulties (i.e., $d = 0$).}
 (\cref{fig:logistic-model}).
 
 \begin{figure}[htb]
@@ -1520,7 +1520,7 @@ obtaining labeled training data is not straightforward.
 \emph{Reinforcement learning}  \cite{rl}
 % (with actions being either problem sets, tasks, or hints)
 allows learning of action preferences using future rewards
-(derived e.g., from the estimated time spent in flow)
+(derived, e.g., from the estimated time spent in flow)
 \cite{rl-for-tutors-evaluation}.
 % TODO: Explore->cite.
 % TODO: Cite/elaborate. Rethink/explore: other paradigms?
@@ -1761,10 +1761,10 @@ solves each task with a high performance). % TODO:CITE
 Selecting the best task from the pool of all tasks in the system
 can be decomposed into two subproblems: (1) selecting a problem set,
 and (2) selecting a task from this problem set.
-This decomposition makes the problem easier to handle, because
+This decomposition makes the problem easier to handle because
 both subproblems can be solved reasonably well even by simple heuristics.
 Furthermore, it ensures coherence of recommended tasks;
-students know what they are learning and they do not need to adjust to a very
+students know what they are learning, and they do not need to adjust to a very
 different setting (e.g., toolbox) with every task.
 
 Instead of selecting a single recommended problem set, some systems may
@@ -1796,8 +1796,8 @@ If the number of problem sets is large, it may be useful to use a complex studen
 and choose a problem set with difficulty matching student's skills.
 %that can predict performance on all problem sets and select the problem set
 %that the student is likely to solve, but not too easily.
-An alternative approach is to describe which problem sets naturally \emph{follow} after another,
-and recommend those that follow after the one which was just solved.
+An alternative approach is to describe which problem sets naturally \emph{follow} another
+and recommend those that follow the one which was just solved.
 % NOTE: Extension candidate:
 %% NOTE: used in UmimeX
 %% ?? usually: "follow" = reversed-OR-prerequisity,
@@ -1826,7 +1826,7 @@ and not violating prerequisites.  % prerequisites are more suited for PS
 Second, for all remaining tasks, a preference is computed based on several criteria
 (\emph{soft constraints}), such as
 optimal difficulty (how well does the task match student skills),
-balance between diversity and coherence
+a balance between diversity and coherence
 (avoiding too similar tasks as the previous one, especially if the student
 solved the task easily, but also avoiding too large changes),
 and exploration (value of information gained by observing the student solving this task).
@@ -2065,7 +2065,7 @@ Offline evaluation of tutor models is difficult due to missing data.
 If the evaluated algorithm recommends a different task than the student attempted
 at that point, there is no easy way to tell if the recommendation is correct. % "is good or not."
 The degree of data sparsity makes offline evaluation so challenging,
-that many adaptive learning systems completely skip this type of evaluation,
+that many adaptive learning systems skip this type of evaluation entirely,
 apply offline evaluation only to student models (\cref{sec:student-model-evaluation}),
 and check the quality of the deployed tutor model on the live traffic
 (\cref{sec:live-evaluation}).
@@ -2105,7 +2105,7 @@ The error can be quantified in many ways, e.g., by \emph{RMSE} or \emph{AUC}
 % TODO: explore, check (with reffed book) -> elaborate/delete
 
 Unfortunately, collected data are highly biased, either by the
-adaptive behavior of the system, or by the self-selection bias \cite{data-collection-bias}.
+adaptive behavior of the system or by the self-selection bias \cite{data-collection-bias}.
 % (REF to the section on feedback loops for how to partially deal with this issue).
 % It's possible to use only a ranodmly recommended tasks, but then it limits
 % the amount of evaluation data.
@@ -2206,11 +2206,11 @@ or the amount of effort needed to learn new concepts \cite{evaluation-leopard}. 
 
 % TODO: citations to relevant research
 
-User interface (UI) is also a common subject of personalization. % (TODO:CITE).
+The user interface (UI) is also a common subject of personalization. % (TODO:CITE).
 % Not only in ALS, generally in HCI research.
 % NOTE: also called "tutor-student interface"
 UI provides visualizations that are based on
-the domain model (e.g., overview of problem sets),
+the domain model (e.g., an overview of problem sets),
 the student model (e.g., visualization of skills \cite{open-learner-model}),
 or the tutor model (e.g., displaying recommendations). % TODO: citations
 % progress towards mastery (= tutor+student model) (progressbar)
@@ -2273,7 +2273,7 @@ as well as for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
 % perfect final definition. (...) Facilitate iterative improvement of domain models."
 % NOTE: Example: - start with the initial ("expert-provided") domain model ->
 % collect data -> analyse -> refine -> iterate (\cite[chapter 10]{its-domain-models})
-Frequent high-quality evaluation is achieved by a combination of
+Frequent, high-quality evaluation is achieved by a combination of
   online AB experiments, live monitoring, and offline analyses.
   % \cite{stupid-tutoring-systems-intelligent-humans}
 %- offline analyses -- the term ``human in the loop''
@@ -2351,12 +2351,12 @@ should still be related to the mission as much as possible.
 
 The mission statement can be refined into the following
   long-term objective: ``maximize the number of students
-  who mastered elementary programming while having fun''.  % + "quickly"?
-Next, we need to define terms used in this objective in a measurable way.
+  who mastered elementary programming while having fun.''  % + "quickly"?
+Next, we need to define terms used in this objective in such a way that they can be measured.
   %terms ``mastering elementary programming'', ``quickly'', and ``having fun''
 While ``achieving mastery in elementary programming'' can be
   formulated as an objective criterion
-  (e.g., the student solved at least 3 tasks for each concept with at least good performance),
+  (e.g., the student solved at least three tasks for each concept with at least good performance),
   ``having fun'' requires the system to ask students about their subjective feelings.
 % NOTE: Terminology: objective = metric that we know we want to either maximize/minimize
 % TODO: note that looking at the mission statement above,
@@ -2391,7 +2391,7 @@ Daily Flow Tasks & tasks solved with not too low/high performance \\
 % "Solving hours"
 \bottomrule
 \end{tabular}
-\caption{Examples of long term objectives.}
+\caption{Examples of long-term objectives.}
 \end{table}
 
 It is not clear which of these metrics is the best proxy for the mission.
@@ -2562,8 +2562,8 @@ and as a check before deploying a new model. % online.
 
 The specific approaches to evaluation of student and tutor models and related challenges
 were discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
-A common consideration for an unbiased offline evaluation is to ensure that
-the model is tested on different data then it was trained on.
+A common consideration for an unbiased offline evaluation is to ensure that the model is
+tested on different data than on which it was trained.
 Unlike in many supervised learning problems, events from learning systems
 cannot be divided into train and test set randomly since that would lead
 to predicting past from the future. % optimistic bias

@@ -9,7 +9,7 @@ A game is a problem-solving activity, approached with a playful attitude.
 Students learn programming by solving programming tasks.
 % and students spent nearly all the time in the system by solving them.
 Therefore, tasks are the key component of a system for learning introductory
-programming, and the design of a programming game deserves a careful attention.
+programming, and the design of a programming game deserves careful attention.
 Similarly to the design of adaptive behavior, a design of a game is also an iterative
 process of prototyping and testing new ideas.
 Good programming games are a result of many gradual improvements
@@ -25,7 +25,7 @@ The game should allow for tasks practicing all basic
 programming concepts, such as sequences of commands, loops, and conditional
 statements. % repeat, while, if, if-else, simple tests (comparing)
 To enable outer-loop adaptive behavior, multiple diverse tasks practicing the same
-concepts are needed, including a lot of tasks using only sequences of commands
+concepts are needed, including many tasks using only sequences of commands
 without any advanced programming construct.
 To support engagement, tasks must be fun and immediately appeal to be
 solved.  % TODO: Fix English.
@@ -42,7 +42,7 @@ for building programs
 These choices support all main strategies for easier learning of programming
 (\cref{sec:strategies-for-easier-learning}),
 including
-avoiding syntax errors by using block-based programming, and
+avoiding syntax errors by using block-based programming and
 showing a visual output (the grid world).
 % and providing short instructions and explanations. % TODO: elaborate?
 We combine several strategies to support motivation (\cref{sec:motivation}),
@@ -68,7 +68,7 @@ using a theme of a spaceship flying through space and collecting diamonds
 % TODO: better word than "popular"?
 %% Game elements.
 Each field in the \emph{space world} has a background color, which
-the spaceship can read and use for decisions (e.g. turning left on red fields).
+the spaceship can read and use for decisions (e.g., turning left on red fields).
 In addition to the spaceship controlled by the student,
 there are the following game objects:
 % there are a few other game objects: %, that can reside on one of the fields.
@@ -78,7 +78,7 @@ large asteroids, that destroy the spaceship if it hits them,
 small meteoroids, that can be destroyed,
 and wormholes that serve as teleports.
 
-The spaceship start on the bottom row and it always moves one row forward
+The spaceship starts on the bottom row, and it always moves one row forward
 after any action. % towards its final destination (the last row).
 % TODO: elaborate / illustrative figure showing a step and a path
 In addition to flying and turning, the spaceship can also shoot small meteoroids
@@ -99,7 +99,7 @@ For example, to fly around a stone, only two commands are needed % (left, right)
 instead of 8 (or 4 if the available commands include
 movement in any of the four directions without turning)
 (\cref{fig:spaceworld-path}).
-% 4: LFFR (e.g. in StarWars game), 8: LFRFFRFL
+% 4: LFFR (e.g., in StarWars game), 8: LFRFFRFL
 % TODO: or 4 as a semi-step (single direction OR default movement)
 Furthermore, as the spaceship is always facing up, a common left-right
 confusion \cite{blockly-10-things} is mitigated.
@@ -135,7 +135,7 @@ spaceship back, to reuse rows multiple times
 %  \item entertaining for children
 %  \item allowing to create plenty of diverse (and entertaining) tasks, inluding very simple ones
 %  \item programs should be not too verbose
-%  \item not limiting adaptability (e.g. story requring a fixed sequence of tasks would be a problem)
+%  \item not limiting adaptability (e.g., story requring a fixed sequence of tasks would be a problem)
 %  \item (not limiting another topics later)
 %  \end{itemize}
 %\item fully observable world
@@ -185,7 +185,7 @@ that would guide the spaceship safely to the last row,
 collecting all diamonds on its way. % (\cref{fig:tasks-solutions}).
 % Advantage: very clear and intuitive goal
 %Setting of a task consists of a space world description, % as described in the previous section
-%optional limits (e.g. maximum length of the program), %, number of shots),
+%optional limits (e.g., maximum length of the program), %, number of shots),
 %and available programming blocks (\emph{toolbox}).
 Students can execute their current programs as many times
 as they need. % wish, and edit them until they solve the task.
@@ -193,14 +193,14 @@ as they need. % wish, and edit them until they solve the task.
 %% Blocks.
 The set of available blocks is gradually expanding with
 increasing level (\cref{sec:level-design}). This \emph{toolbox standardization}
-is easier for both task creators (it is enough to specify
+is more comfortable for both task creators (it is enough to specify
 a toolbox only once for all tasks in the same problem set,
 instead of naming all available blocks for each task),
-as well as for  students
+as well as for students
 (available blocks are not changing chaotically with each task).
 %- available blocks: depending on the level (sweet spot between chaotically changing toolbox with each task and overloading by all commands from the beginning
 % NOTE: blocks: actions (...), sensing (...), repeat, while, if, if-else;
-The easiest tasks use only commands for actions (fly, left, right, shoot),
+The elementary tasks use only commands for actions (fly, left, right, shoot),
 while the more advanced tasks offer \emph{repeat} loop, \emph{while} loop,
 \emph{if} and \emph{if-else} statements,
 and tests for colors and position.
@@ -208,14 +208,14 @@ No special test for the last row is needed since all tasks follow a convention
 of coloring the last row by blue color.
 
 %% Programs
-In order to simplify the future learning of a textual programming language,
+To simplify the future learning of a textual programming language,
 labels on blocks approximately match Python syntax. % translated to Czech in Czech localization
 The most notable exception is the repeat block (\texttt{repeat 5}),
 where the Python equivalent (\texttt{for i in range(5)}) is more difficult
 to understand for beginners.
 % (For details about the blocks and code, see \cref{sec:robocode}.)
 % NOTE: in future, this allows for AB experiments
-%comparing directly the influence of the text/block environment as done e.g.
+%comparing directly the influence of the text/block environment as done e.g.,
 %in the field study in \cite{comparing-blocks-text-weintrop2017}.
 
 %% Limits.
@@ -268,7 +268,7 @@ an \emph{energy limit} on the number of shots.
 
 % TODO: explore and cite: ``level design''
 
-RoboMission contains over 80 tasks divided into 9 levels.
+RoboMission contains over 80 tasks divided into nine levels.
 % (\cref{fig:robomission-tasks-overview}).
 The levels were initially created manually, based on the required blocks
 and an estimated difficulty. Later, after some performance data
@@ -282,7 +282,7 @@ difficulty for students.
 \imgW[1.0]{robomission-tasks-overview}{%
 Tasks overview shows tasks grouped by levels.
 The green tasks are solved, the orange task is recommended.
-RoboMission contains 9 levels, each with about 10 tasks.
+RoboMission contains nine levels, each with about ten tasks.
 }
 
 
@@ -299,8 +299,8 @@ which results in increased difficulty of recommended tasks.
 \section{Instructions and Explanations}
 \label{sec:game.explanations}
 
-Clear instructions and hints at appropriate moments
-are another strategy to support learning
+Clear hints at appropriate moments
+is another strategy to support learning
 % OR: to make the learning easier
 (\cref{sec:instructions-and-hints}).
 We combine simple adaptive instructions and reflexive post-event explanations.
@@ -310,16 +310,16 @@ for the first time, the system displays a short instruction
 % NOTE: They are adaptive in the way that they only show the first time student encounter
 % the concept.
 
-\imgW[0.81]{robomission-mini-instruction}{Mini instruction for a new game concept.}
+\imgW[0.81]{robomission-mini-instruction}{A mini-instruction for a new game concept.}
 
 The system also provides short explanations after each unsuccessful execution,
 describing why the task was not solved,
-e.g. some diamonds were not collected,
+e.g., some diamonds were not collected,
 or the spaceship has not reached the final row
 (\cref{fig:robomission-mini-explanation}).
 % NOTE: simple inner-loop reflexive agent
 
-\imgW[0.81]{robomission-mini-explanation}{Mini explanation of an unsuccessful attempt.}
+\imgW[0.81]{robomission-mini-explanation}{A mini-explanation of an unsuccessful attempt.}
 %\imgW{prototype-instructions}{Instructions in the first prototype. Nobody was reading them. Most people even did not notice there are any instructions.}
 
 \section{Game Editor}  % OR: task editor?

@@ -50,7 +50,7 @@ and motivate them for the further learning of programming. %computer science.
 % NOTE: flow is a goal; but at the same time it supports the other 2 goals
 
 After each solved task, the student is shown % a dialog window with one
-one recommended task, and a link to the page with an overview of all tasks.
+one recommended task and a link to the page with an overview of all tasks.
 % Terminology: \emph{good recommendation}
 Ideally, each recommended task would lead to the state of flow.
 % TODO: How to measure? One way: looking ath the long-term objectives
@@ -74,7 +74,7 @@ and to provide us with more specific evaluation:  % more actionable
 % NOTE: It reminds me of hypothesis testing of goodness-of-fit: there are
 % various tests (metrics we can measure), that can tell us, that the given
 % sample is definitely not from the compared distribution; some of these
-% tests are very simple and intuitive (e.g. for exp. distribution, ratio
+% tests are very simple and intuitive (e.g., for exp. distribution, ratio
 % of mean and stdev^2 should be 1), but they also have quite small power
 % (i.e. they are often not able to reject false hypotheses).
 % TODO: shrink vertical spaces
@@ -88,8 +88,8 @@ progress through initial levels quickly, spending at most 5 minutes
 on tasks with only sequences of commands, and get to the more
 challenging tasks containing both types of loops and conditional statements
 in at most 20 minutes.  % 10, 15?
-\item At most 1 new programming concept and 1 new game concept appear
-  in a task. Another concept is not introduced, until the student
+\item At most one new programming concept and one new game concept appear
+  in a task. Another concept is not introduced until the student
   solves a task with the last introduced concept with a good
   performance. % (they must sometimes come together, it is not a problem)
 \item All students should gradually start practicing all basic programming concepts
@@ -100,10 +100,10 @@ in at most 20 minutes.  % 10, 15?
 %  (Occasionally, an easy tasks might be recommended in order to improve
 %  exploration, but these easy tasks should not be too frequent.)
 %  %, and they should be differentiated for the student,
-%  %e.g. as \emph{speed challenges} in order to explain the sudden change in
+%  %e.g., as \emph{speed challenges} in order to explain the sudden change in
 %  %difficulty.)
 % TODO: perform analysis if it's the case in the current system.
-%Each new concept (e.g. block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
+%Each new concept (e.g., block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
 \end{itemize}
 % TODO: compare these requiremnts againts collected data and gvid-report
 
@@ -140,12 +140,12 @@ in at most 20 minutes.  % 10, 15?
 %\item Student visits the home page of the project, reads the "promotional slides" and tries the game with manual controls. On the last slide, they click on the recommended task from the 1st level.
 %(REF: img)
 %\item Student creates the program using Blockly blocks and can run the program as many times as needed. (REF: img) Program execution is visualized. Student can change the speed of the execution.
-%\item After each unsuccessful execution, a short message explaining why the task was not solved is shown (e.g. "The spaceship must reach the final row.") (REF: img)
+%\item After each unsuccessful execution, a short message explaining why the task was not solved is shown (e.g., "The spaceship must reach the final row.") (REF: img)
 %\item Student is able to solve the first few tasks quickly (within 2 minutes).
 %\item After solving each task, student is shown a visualization of obtaining points (called credits) (REF: printscreen). After a few solved tasks, student progresses to next level.
 %\item After each solved task, student is shown a dialog with one recommended task, and also a link to the page with overview of all tasks (REF: img).
 %\item Student is able to solve any task recommended by the system (within 15 minutes).
-%\item Each new concept (e.g. block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
+%\item Each new concept (e.g., block) is explained in the task where it appears for the first time. (REF: img), so the student understands all elements in the game world and blocks available in the toolbox.
 %\item Students with some prior programming skill should progress through first few levels quickly (within 10 minutes) and get to the more challenging tasks containing both types of loops, conditionals etc.
 %\item Student is not bored by neither too easy task requiring many commands (i.e. taking more than 1 minute to build the streightforward solution), nor by the sequence of either too easy or too similar tasks.
 %\item Student can sign up (or log in without registration through their social accounts) at any moment to save their progress. Even without singing up, the system can associate the student with its progress using session cookie (but also provides a button to clear the history).
@@ -166,7 +166,7 @@ in at most 20 minutes.  % 10, 15?
 %\label{sec:robomission.use-cases}
 %
 %In addition to the main use case described in the previous section,
-%which assumes a new student without any context (e.g. a classroom),
+%which assumes a new student without any context (e.g., a classroom),
 %the system can be potentially used in other (or more specific) ways.
 %
 %\begin{itemize}
@@ -202,21 +202,21 @@ more data to properly analyze their interactions.
 Instead, we divide tasks into linearly ordered disjoint hierarchical problem
 sets (\cref{fig:robomission.domain}). % , which are easier to handle.
 The hierarchy has two levels: the top-level problem sets (\emph{levels})  % "missions?"
-contain about 10 tasks, which are further split into three smaller
+contain about ten tasks, which are further split into three smaller
 problem sets (\emph{phases}).
 
 Levels and phases are ordered, while tasks within a given phase are not,
 since all the tasks in a single phase should be similarly difficult.
 The first two levels gradually introduce game elements
-(e.g. diamonds, meteoroids, wormholes),
+(e.g., diamonds, meteoroids, wormholes),
 while the later levels usually focus on practicing one new programming
-concept (e.g. repeat loop, while loop, if statement).
+concept (e.g., repeat loop, while loop, if statement).
 % (initialy human-estimated, later refined using collected data
 % NOTE: Data collected befor division into phases (TODO: mention in the
 % analysis chapter...)
 
 The contribution of refining the levels into phases is threefold:
-First, phases enforce important prerequisites within a level (e.g.
+First, phases enforce critical prerequisites within a level (e.g.,
 introducing wormholes before using them in more difficult tasks).
 Second, phases are approximately homogeneous (practicing same concepts, and having similar difficulty),
 which allows for simpler tutor models.
@@ -253,15 +253,15 @@ a given problem set. The initial skill is 0, and it is increased after each solv
 task from the problem set. Once the skill reaches 1, the problem set is solved.
 
 While the model has a structure of a dynamic Bayesian network
-(\cref{fig:robomission.student-model}) %, \cref{sec:dbn}),
+(\cref{fig:robomission.student-model}), %, \cref{sec:dbn}),
 it does not model the probability of the student solving a task with some performance,
 but rather an amount of verified skill;
-i.e. the model is only descriptive.
+i.e., the model is only descriptive.
 An advantage is that this skill can be shown directly to the student,
-e.g. visualized as a progress bar towards completion of the current level,
+e.g., visualized as a progress bar towards completion of the current level,
 since it never decreases (which would be demotivating).
 
-We use a discrete representation of performance with 3 levels (poor, good,
+We use a discrete representation of performance with three levels (poor, good,
 excellent). Currently, only solving time is considered for the performance
 compression: for each task, we define a threshold for a solution to be
 considered as good or excellent
@@ -299,9 +299,9 @@ that all phases must be solved in order to solve the level.
 \centering
 \includegraphics[height=31mm]{img/robomission-student-model}
 \caption{%
-  Student model used in RoboMission includes a skill for each phase
-  (computed from the previous skill and a newly observed performance),
-  and a skill for each level (computed from skills of its phases).}
+  Student model used in RoboMission includes skill for each phase
+  (computed from the previous skill and a newly observed performance)
+  and skill for each level (computed from skills of its phases).}
 \label{fig:robomission.student-model}
 \end{figure}
 
@@ -329,11 +329,11 @@ them,
 % TODO: further increased by the tendency to "get everything green"
 in which case it is preferable to solve them in the order from the
 easiest to the most difficult.
-Homogeneity of phases allow to safely select a task uniformly at random from
+Homogeneity of phases allows to safely select a task uniformly at random from
 all unsolved tasks in that phase, which is a strategy maximizing exploration.
 % UI:
 Recommendations provided by the system are \emph{soft};
-i.e. students can ignore them and select any task
+i.e., students can ignore them and select any task
 from the overview of all tasks.
 
 Progression through the problem sets guarantees a gradual increase of difficulty,
@@ -344,12 +344,12 @@ but it decreases during solving tasks from the same phase,
 as the student's skill improves, while the objective difficulty does not change
 %stays approximately same
 (\cref{fig:robomission.flow}).
-On one hand, it means that the difficulty does not match student's
+On the one hand, it means that the difficulty does not match student's
 skills perfectly, possibly slightly overshooting at the beginning of a phase,
 and undershooting at the end.
 On the other hand, the perceived difficulty level is not
 same all the time; instead, it has a wavy character, which creates a more
-interesting experience for students % \emph{dramaturgy of flow}
+engaging experience for students % \emph{dramaturgy of flow}
 \cite{book-of-lenses}.
 
 \begin{figure}[htb]
@@ -400,7 +400,7 @@ Google Analytics
   In addition to page views,
   it can also process events sent from the frontend
   (such as clicking on the execution button),
-  and divide them into groups, e.g. by the task being solved.
+  and divide them into groups, e.g., by the task being solved.
   % or group for AB experiment.
 
 \imgW{google-analytics}{%
@@ -423,7 +423,7 @@ The dashboard is implemented as a weekly-recomputed Jupyter Notebook \cite{jupyt
   and creates visualizations using the latest data
   (\cref{fig:dashboard-metrics,fig:monitoring-notebook}).
   It is easy to extend the dashboard simply by adding
-  a cell into the notebook and testing it on historical data;
+  a cell in the notebook and testing it on historical data;
   no other modification to the backend or frontend is needed.
   %NOTE: + investigation notebook that with a command that generates exports
   %and serves them directly as pandas data frames
@@ -466,7 +466,7 @@ The dashboard is implemented as a weekly-recomputed Jupyter Notebook \cite{jupyt
 \caption{%
   Mean success and median time visualized in the monitoring notebook
   (March 31, 2018). This simple analysis reveals
-  that the 7th level (Comparing) is probably more difficult than the 8th (If-else),
+  that the 7th level (Comparing) is probably more difficult than the 8th (If-else)
   % it's not clear, because the population of students is different; they
   % might already learn something important in the 7th level for the 8th
   % level
