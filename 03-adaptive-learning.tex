@@ -11,7 +11,7 @@ optimize the efficiency of the learning process
 using techniques of artificial intelligence.
 Adaptivity is not necessary for a learning system to be useful%
 \footnote{Indeed, most of the systems presented in \cref{sec:existing-systems} are not adaptive.};
-however, it can greatly improve the learning.
+however, it can significantly improve the learning.
 Artificial intelligence can be used, for example, to
 personalize the sequence of tasks \cite{proso}, %  for every student,
 % TODO: better citation?
@@ -32,7 +32,7 @@ For instance, Map Outlines%
   \footnote{Available at \url{https://outlinemaps.org}.},
   developed by Adaptive Learning research group at Masaryk University,
   is an intelligent web application for learning geography.
-It has been used by tens of thousands of students and
+It has been used by tens of thousands of students, and
   online experiments have confirmed
   that the adaptivity of the system helps to improve the learning outcome
   \cite{alg.evaluation-geography}.
@@ -73,7 +73,7 @@ Typical adaptive learning system consists of the following parts % five componen
   (instructional policy)
   %(instructional policy, instructional strategy, pedagogical module) --
   decides what should the student do next
-  (e.g. which topic to practice, which task to solve)
+  (e.g., which topic to practice, which task to solve)
   (\cref{sec:tutor-modeling}).
 \item \emph{User interface model} %(tutor-student interface) --
   describes how the domain, student, and tutor models are presented to
@@ -138,7 +138,7 @@ Typical adaptive learning system consists of the following parts % five componen
 \section{Domain Modeling}
 \label{sec:domain-modeling}
 
-Domain model describes educational content, concepts, and relationships
+The domain model describes educational content, concepts, and relationships
 between them
 %together with an algorithm to lear parameters such as streghts of the relationships from data
 \cite{its-domain-models}.
@@ -180,13 +180,13 @@ Entities in the domain, \emph{learning objects} \cite{learning-objects} % TODO:r
 include not only tasks, texts, videos, interactive visualizations,
 and other educational content,
 but also problem sets, concepts, and misconceptions.
-Learning objects are associated with content attributes (e.g. task setting)
-and parameters computed from performance data (e.g. median solving time).
-Typical modeled relationships between learning objects are
-generalization (e.g. programming is a more general concept than loops),
-inclusion (e.g. a problem set contains tasks),
-prerequisites (e.g. single loops are prerequisite for nested loops),
-and similarities (e.g. how similar are tasks with respect to their difficulty).
+Learning objects are associated with content attributes (e.g., task setting)
+and parameters computed from performance data (e.g., median solving time).
+Typically modeled relationships between learning objects are
+generalization (e.g., programming is a more general concept than loops),
+inclusion (e.g., a problem set contains tasks),
+prerequisites (e.g., single loops are prerequisite for nested loops),
+and similarities (e.g., how similar are tasks with respect to their difficulty).
 % NOTE: Relationships can be either hard (binary) or soft (continuous).
 
 
@@ -214,10 +214,10 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 %\end{itemize}
 %\item Furthermore, relationships between chunks can be me modeled:
 %\begin{itemize}
-%\item inclusion/part-of (e.g. problem set contains tasks, tasks contain
+%\item inclusion/part-of (e.g., problem set contains tasks, tasks contain
 %  concepts (Q: direction?))
-%\item generalization/subclass (e.g. programming is a more general concept than loops),
-%\item prerequisiites (e.g. single loops are prerequisity for nested loops).
+%\item generalization/subclass (e.g., programming is a more general concept than loops),
+%\item prerequisiites (e.g., single loops are prerequisity for nested loops).
 %\item TODO: Q: what is the interpretation of the edges in BN
 %  (vaguely it's something like "influence", or "directly depend on";
 %   missing edges encodes conditional independence (given the parents))
@@ -233,7 +233,7 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 %    it can override the default toolbox.
 %\item All of these relationships can be either hard (binary) or soft (continuous).
 %\item Modeling decisions: which type of chunks, (which parameters of chunks),
-%  which relationships, how to set/compute the values (e.g. structure between
+%  which relationships, how to set/compute the values (e.g., structure between
 %  chunks, values of similarities between tasks), (interpretation/semantics?).
 %\end{itemize}
 %
@@ -252,11 +252,11 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 %%Domain algorithms can be divided into three categories:
 %%learning, inference, and insight.
 %Domain models include algorithms for learning from data, inference, and insight.
-%Learning algorithms combine content data (e.g. task statements and solutions)
+%Learning algorithms combine content data (e.g., task statements and solutions)
 %and %collected
 %historical performance data into a compact domain representation.
 %Performance data are often used only to learn parameters
-%(e.g. task difficulties, similarities), while the structure of the domain is
+%(e.g., task difficulties, similarities), while the structure of the domain is
 %specified by the content creator.
 %%, but structure of the domain can be learned or improved as well (but that requires much more data) (CITE).
 %% EXT: Domain representation can be learned offline, but if new tasks are introduced
@@ -283,12 +283,12 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 %    for mapping task performances to a concept skill/mastery,
 %    for aggregating skills to a parent concept skill in a hierarchical model)
 %\item ? getting \emph{insight} through visualization techniques
-%    (e.g. projections to plane, TODO: add t-sne example)
+%    (e.g., projections to plane, TODO: add t-sne example)
 %\end{enumerate}
 %\item inference must be fast (in our case the domain is small, having tens or
 %  hundreds of chunks, then linear complexity wrt. to the domain size is ok),
 %    learning and insight algorihtms can be slower
-%    (e.g. linear wrt. to the size of historical data)
+%    (e.g., linear wrt. to the size of historical data)
 %\end{itemize}
 
 
@@ -298,20 +298,20 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 %\item aka problems, items
 %\item name, setting, and solution
 %\item parameters (features) --
-%  computed from setting (e.g. size of the grid),
-%  solution (e.g. length of the solution),
-%  and performance data (e.g. median time).
+%  computed from setting (e.g., size of the grid),
+%  solution (e.g., length of the solution),
+%  and performance data (e.g., median time).
 %\item TODO: tasks pool visualization (projection) -- add plot
 %\end{itemize}
 %
 %\subsubsection{\textbf{Concept-free Models}}
 %\begin{itemize}
-%\item = all task are assumed to cover a single indivisible concept (e.g. "programming")
+%\item = all task are assumed to cover a single indivisible concept (e.g., "programming")
 %\item the simplest domain model = only tasks (no other chunk types) and no relationships
 %\item oven without concepts, the models can have
-%  rich structure (e.g. prerequisities between tasks,
+%  rich structure (e.g., prerequisities between tasks,
 %    see right \cref{fig:chunks-prerequisites})
-%  and many parameters (e.g. similarities between tasks)
+%  and many parameters (e.g., similarities between tasks)
 %\item REF: usage (most of the existing systems)
 %\end{itemize}
 
@@ -322,12 +322,12 @@ and similarities (e.g. how similar are tasks with respect to their difficulty).
 are features of tasks that correspond to learnable skills % or "skills that students can learn"
 required to solve the task.
 % NOTE: Examples of concepts of different granularity are programming, loops, and while loops.
-% TODO: improve/cite definition of a concept (see e.g. KLI paper -> KC)
+% TODO: improve/cite definition of a concept (see e.g., KLI paper -> KC)
 \emph{Concept-free} models assume that all
 tasks belong to a single indivisible concept.
 %While this assumption is reasonable for many logic puzzles, it does not hold for introductory programming.
 In introductory programming, this assumption does not hold;
-for example, it is possible to master loops while not knowing functions,
+for example, it is possible to master loops while not knowing functions
 and vice versa.
 \emph{Concept-aware} domain models
 enable to build richer, more accurate student models.
@@ -342,7 +342,7 @@ concepts are either \emph{disjoint} (1:m) or \emph{overlapping} (n:m)
 % NOTE: disjoint model = flat clusters of tasks; aka "concept model", "flat
 % concepts" (concepts are flat clusters of tasks, but this name stress that
 % there is no hierarchy).
-% Single programming task may require multiple skills at once, e.g. both loops
+% Single programming task may require multiple skills at once, e.g., both loops
 % and conditional commands.
 Overlapping concepts can be represented as sets of tasks, bipartite graph,
 or a feature matrix
@@ -350,7 +350,7 @@ or a feature matrix
 where rows correspond to tasks, columns to concepts,
 and binary values denote whether given task contains given concept. % or not
 In case of \emph{soft membership}, the sets are fuzzy, the bipartite graph has
-edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
+edge weights, and the values in Q-matrix are continuous from the range $[0, 1]$.
 % (\cref{fig:concepts-tasks-relationship}).
 
 \begin{figure}[htb]
@@ -375,7 +375,7 @@ edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
 \end{subfigure}
 \caption{%
   Relationship between tasks (light squares) and concepts (dark rectangles).
-  Darkness in the Q-matrix shows strength of the relationship.} % TODO: grammar
+  Darkness in the Q-matrix shows the strength of the relationship.} % TODO: grammar
 \label{fig:concepts-tasks-relationships}
 \end{figure}
 
@@ -406,7 +406,7 @@ edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
 
 
 Concepts can be either set manually or detected automatically
-% NOTE: Automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
+% NOTE: Automatically: a clustering algoritm (e.g., k-means, k-medoids, spectral clustering)
 % operating on task-features or task-task similarity matrix
 % (REF: our paper about similarity of programming problems)
 \cite{niznan-thesis, rihak-phd}. % TODO: spec.pages
@@ -425,12 +425,12 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 
 %TODO: note on more complicated semantics of edges in the overlapping model,
 %and assumptions leading to reduction of number of modeled parameters
-%(e.g. conjunctive or conmpensatory concepts).
+%(e.g., conjunctive or conmpensatory concepts).
 
 
 %\begin{itemize}
 %\item (motivation) The assumption of a single concept for all tasks is
-%  reasonable for many logic puzzles (e.g. sudoku), but not in programming.
+%  reasonable for many logic puzzles (e.g., sudoku), but not in programming.
 %  For example, it is possible to master loops while struggling with functions,
 %  and vice versa.
 %\item TODO: define/REF
@@ -452,7 +452,7 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %  - fine: ?
 %- constant-constant (fact):
 %  (names of game elements / names of parts of the environemnt / names of programming blocks),
-%  (behavior of game elements, e.g. what happend when you hit the asteroid)
+%  (behavior of game elements, e.g., what happend when you hit the asteroid)
 
 %\subsubsection{\textbf{Disjoint Concepts}}
 %\begin{itemize}
@@ -460,7 +460,7 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %\item aka "concept model", "flat concepts" (concepts are flat clusters of tasks)
 %\item Concepts can be either defined manually or detected automatically
 %  (REF: \cite{niznan-thesis, rihak-phd}, spec.pages),
-%\item automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
+%\item automatically: a clustering algoritm (e.g., k-means, k-medoids, spectral clustering)
 %  operating on task-features or task-task similarity matrix
 %  (REF: our paper about similarity of programming problems)
 %\item or semiautomatically, improving upon a mapping from tasks to concepts
@@ -473,13 +473,13 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %  while the automatic techniques require a lot of data to provide stable results.
 %  (TODO: specify "a lot of" + REF).
 %\item example in \cref{fig:concepts-disjoint-overlapping} (left)
-%\item REF: usage (? ProSo - single concept per problem type, e.g. all tasks in Robotanist are single concept)
+%\item REF: usage (? ProSo - single concept per problem type, e.g., all tasks in Robotanist are single concept)
 %\end{itemize}
 %
 %\subsubsection{\textbf{Overlapping Concepts}}
 %\begin{itemize}
 %\item (motivation) Single programming task may require multiple skills
-%  at once, e.g. both loops and conditional commands (REF to figure with such task).
+%  at once, e.g., both loops and conditional commands (REF to figure with such task).
 %\item task:concepts m:n (i.e. each task can contain to multiple concepts)
 %\item represenation: bipartite graph between tasks and concepts
 %  (example in right part of \cref{fig:concepts-disjoint-overlapping})
@@ -504,7 +504,7 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %  and skills in these concepts may interact in diverse ways,
 %  (?) generally: any function mapping the skills (or their probability
 %    distributions) of the parent concepts to the predicted performance (or its
-%    probability distribution) (e.g. in general BN);
+%    probability distribution) (e.g., in general BN);
 %\item usually, some assumptions are made to decrease the number of modeled parameters;
 %  for example:
 %    additive model (skills are added, so a higher skill can compensate for a lower skill),
@@ -515,7 +515,7 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %    probability to the events such as when a student solves a task without
 %    having mastered all required skills).
 %    \cite[chapter 3]{its-domain-models}.
-%\item Additive models can also include a normalization of the sum, e.g.:
+%\item Additive models can also include a normalization of the sum, e.g.,:
 %  $\hat{p}_{ij} = \sigma(s_j \cdot t_i)$, where
 %  $\hat{p}_{ij}$ is the predicted (continuous) performance of student $j$ on task $i$,
 %  $s_j$ is the vector of skills, $t_i$ is the row in Q-matrix for the task $i$,
@@ -543,7 +543,7 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 %\item can be ordered (and the ordering should follow the prerequisity structure
 %  of corresponding concepts)
 %\item single concept can be practiced by multiple problem sets
-%  (e.g. loops in robot on grid and in turtle graphics)
+%  (e.g., loops in robot on grid and in turtle graphics)
 %\item usually presented in the UI (? so it can be viewed as a part of the UI model instead)
 %\item REF usage: everywhere (Umime programovat, Tutor -> Robotanist is a single PS)
 %\item TODO: discuss example of Umime programovat (tree of concepts, problem
@@ -554,13 +554,13 @@ current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
 \subsection{Hierarchical Models}
 
 Concepts vary in granularity and create hierarchies.
-For example, programming concept include loops, loops include while loops,
+For example, programming concept includes loops, loops include while loops,
 and while loops include programs with a single while-not-end loop.
 % TODO: CITE \cite{kli-framework}?
-The hierarchy can be modeled either as a rooted tree (single parent concept allowed),
+The hierarchy can be modeled either as a rooted tree (single parent concept allowed)
 or as a directed acyclic graph (DAG) (\cref{fig:concepts-hierarchical}).
 Although hierarchical concepts can be used without modeling the hierarchy
-(using overlapping concepts, e.g. a task can contain while loops and
+(using overlapping concepts, e.g., a task can contain while loops and
 a more general loops concept), explicitly modeling the hierarchy of concepts in
 the introductory programming can improve the accuracy of the overlaying student model
 \cite{learner-models-integration-skills}.
@@ -601,7 +601,7 @@ the introductory programming can improve the accuracy of the overlaying student 
 %  (comparision tree vs DAG in \cref{fig:concepts-hierarchical})
 %\item Note that we can of course use hierarchical concepts and yet decide not to
 %  model a hiearachy (although in that case, overlapping concepts are necessary,
-%  e.g. if the task practices while loops, it also practices loops and programming concepts).
+%  e.g., if the task practices while loops, it also practices loops and programming concepts).
 %\item construction: manually/automatically (hierarchical clustering?)
 %\item TODO: discuss relationship between inclusion and prerequisities
 %  (Q: isn't inclusion just a special case of soft prerequisity?
@@ -620,11 +620,11 @@ the introductory programming can improve the accuracy of the overlaying student 
 
 \subsection{Prerequisites}
 
-Prerequisites specify which learning objects need to mastered prior to
+Prerequisites specify which learning objects need to be mastered prior to
 tackling a given learning object.
-For example, \emph{single loop} is a prerequisite for \emph{nested loops}.
+For example, \emph{single loops} are a prerequisite for \emph{nested loops}.
 % If learning objects has multiple prerequisites, there are two common interpretations:
-There are two common interpretations of multiple prerequisites:
+There are two conventional interpretations of multiple prerequisites:
 \emph{conjunctive prerequisites} (all must be mastered)
 and \emph{disjunctive prerequisites} (one mastered is enough).
 Conjunctive and disjunctive prerequisites can be represented together by
@@ -665,7 +665,7 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 \end{figure}
 
 %\begin{itemize}
-%\item multiple edges -- multiple interpretations: e.g.:
+%\item multiple edges -- multiple interpretations: e.g.,:
 %  AND (all prerequistes must be met),
 %  OR (at least one prerequisity must be met),
 %  (TODO?: noisy and, noisy or),
@@ -695,7 +695,7 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 \subsection{Similarities}
 
 %Similarity is a symmetric relationship between learning objects of the same type, for example tasks.
-Similarities can be represented either as a matrix of values from range $[0, 1]$
+Similarities can be represented either as a matrix of values from the range $[0, 1]$
 (the higher number, the more similar objects),
 or as a graph with edges between the most similar learning objects
 (\cref{fig:similarities-tasks}).
@@ -703,7 +703,7 @@ In the \emph{network model} \cite{rihak-phd}, task similarities are used to prop
 knowledge about one task (observed performance) to other tasks (estimated performance)
 directly, without using concepts.
 % example: if student solves a task -> update our performance estimates on all other tasks
-The most important decision when computing similarities is what data to use
+The most crucial decision when computing similarities is what data to use
 \cite{alg.similarity}.
 The decision depends both on the intended usage and on the amount of collected data
 available. For example, performance data are useful if the similarities are used in a
@@ -748,11 +748,11 @@ performance data is collected in order for the computed similarities to be stabl
 %  (if we want to optimize a continous parameters of the domain, then it
 %    is more difficult).
 %  (2) Requires the ability to evaluate the application, which is not
-%    always possible (e.g.: getting insight, open learner model) or is
-%    slow (e.g. requires online experiment).
+%    always possible (e.g.,: getting insight, open learner model) or is
+%    slow (e.g., requires online experiment).
 %\item REF to details on evaluation in the last sections of this chapter
 %\item TODO: illustrate: select one example of evalution and describe properly
-%  (some approaches to evalution are e.g. in \cite{rihak-phd})
+%  (some approaches to evalution are e.g., in \cite{rihak-phd})
 %\item TODO: example -- learning curve analysis \cite{its-domain-models}
 %\item example: verification of homogeneity of tasks that are assumed to be
 %  homogenous (interchangeable) according to current model (ie. they should
@@ -767,7 +767,7 @@ performance data is collected in order for the computed similarities to be stabl
 \section{Student Modeling}
 \label{sec:student-modeling}
 
-Student model captures the state of the student (e.g. skills) estimated from the
+Student model captures the state of the student (e.g., skills) estimated from the
 past performance. Usually, it enables to predict future performance
 %Comprehensive overviews of student modeling:
 \cite{student-models-review-2012, pelanek-learner-modeling,its-learner-models}.
@@ -841,12 +841,12 @@ are the main properties that differentiate different models.
 \begin{itemize}
 \item \emph{Modeled components.}
 In addition to modeling skills, broader student models can
-include also emotions (e.g. frustration, boredom), needs, preferences, motivation,
+also include emotions (e.g., frustration, boredom), needs, preferences, motivation,
 and metacognition \cite{affect-sensor-free,its-review-2010}.
 In this thesis, we restrict our attention to the models of skill.
 %(knowledge about their knowledge) (REF).
-% NOTE: + preferences, e.g. about ideal challenge level, amount of text, theme,
-% e.g. prefer tasks with a shooting spaceship or with ice-skating princesses
+% NOTE: + preferences, e.g., about ideal challenge level, amount of text, theme,
+% e.g., prefer tasks with a shooting spaceship or with ice-skating princesses
 \item \emph{Underlying domain model.}
 The simplest models assume a single concept,
 % or each task as separate concept. %(REF: slepe-mapy).
@@ -859,8 +859,8 @@ while others describe the state of the student only between tasks %sessions
 \cite{kli-framework}. % TODO: check, add citation
 % or even only between finished problem sets.
 \item \emph{Discrete or continuous skills.}
-Some models assume discrete skills (e.g. known/unknown, or with multiple levels),
-% e.g. unknown -> known -> fluent; or LogisticHMM
+Some models assume discrete skills (e.g., known/unknown, or with multiple levels),
+% e.g., unknown -> known -> fluent; or LogisticHMM
 %(CITE/REF:BKT)
 while others assume continuous skill
 %(CITE/REF: logistic models).
@@ -871,11 +871,11 @@ most models track only a single point estimate
 (possibly with another parameter describing its uncertainty).
 % TODO:CITE?
 %?? or they assume a specific shape of the distribution that can be described by
-%a few numbers (e.g. mean and standard deviation for normal distribution).
+%a few numbers (e.g., mean and standard deviation for normal distribution).
 \item \emph{Representation of performance}.
-  Performance can be represented as a binary correctness (solved or failed),
+  Performance can be represented as binary correctness (solved or failed),
   discrete performance levels (e.g., poor, good, and excellent),
-  continuous performance (in range $[0, 1]$),
+  continuous performance (in the range $[0, 1]$),
   %(\emph{partial credit} CITE) ($p_{ij} \in [0, 1]$)
   or (log-transformed) solving time.
   %log-time (REF: why log; possibly also REF to a relevant figure in Analysis chapter),
@@ -886,11 +886,11 @@ most models track only a single point estimate
 \item \emph{Predictive or descriptive}.
 Predictive models can predict the performance of the student on a given task,
 while descriptive models only summarize the past performance of the student
-(e.g. a model can count the number of consecutive tasks solved with good performance).
+(e.g., a model can count the number of consecutive tasks solved with good performance).
 % TODO:CITE/example (NCC)
 \item \emph{Online or offline.}
 In online models, parameters can be updated gradually after each task session
-(i.e. there exist an efficient online algorithm for learning model parameters).
+(i.e., there exist an efficient online algorithm for learning model parameters).
 % CITE: online algorithms.
 \item \emph{Assumptions about learning.}
 Models used in \emph{adaptive testing} \cite{cat} assume no learning.
@@ -902,7 +902,7 @@ Models that include learning use additional assumptions
 about how the learning happens. % TODO:CITE:examples
 For example, some models assume constant skill increase after each solved task.
 % TODO: cite (PFA / Rash?)
-% e.g. a constant increase of skill after each attempted task (CITE:PFA?).
+% e.g., a constant increase of skill after each attempted task (CITE:PFA?).
 %For example, BKT (\cref{sec:bkt}) assumes a discrete transtion from unknown
 %state to the known state.
 %\item \emph{Complexity} (\cite{pelanek-learner-modeling} + TODO:page)
@@ -934,7 +934,7 @@ that can incorporate multiple concepts, learning and allow for online update. % 
 \subsection{Skills and Performance}
 %\subsection{Data and Algorithms}
 
-Student model use a domain model as an underlying structure,
+Student models use a domain model as an underlying structure,
 assigning estimated \emph{skills} to each concept, % either estimated or self-declared
 and \emph{performances} (either observed or predicted) to each task.
 % NOTE: space-time tradeoof: Typically, all but the predicted performances are stored.
@@ -945,7 +945,7 @@ performance is a compressed information about the series of
 interactions with the task (code edits, executions, taken hints, user rating). %self-evaluation).
 
 Performance measurement can range from simple heuristics based on summary statistics
-(e.g. specifying solving time thresholds for excellent and for good performance),
+(e.g., specifying solving time thresholds for excellent and for good performance),
 through more complex algorithms that consider all interactions with the task,
 to a recurrent neural network reading the series
 of program snapshots embeddings  % AST transformed to vectors of floats
@@ -957,9 +957,9 @@ explosion of considering each type of model with multiple different types of
 input data and their combinations.
 The most important consideration for performance measurement is what data
 (correctness, solving time, etc.) to use \cite{alg.mastery}.
-%Used data play an important role, e.g. in \cite{alg.mastery}
+%Used data play an important role, e.g., in \cite{alg.mastery}
 %Having a unified simple performance input makes the models simpler and easier to interpret.
-%Used data play an important role, e.g. in \cite{alg.mastery} they achieved
+%Used data play an important role, e.g., in \cite{alg.mastery} they achieved
 %better results in mastery learning by incorporating solving times into the
 %performance instead of using just binary correctness (TODO: domains? math,
 %czech).
@@ -967,8 +967,8 @@ The most important consideration for performance measurement is what data
 % EXT:
 %There are three types of algorithms linked to student models: online update
 %of skills after a new task session, prediction of performance on given task,
-%and insight algorithms that work either with a single student (e.g. skills
-%visualization), or a population (e.g. plotting learning curves).
+%and insight algorithms that work either with a single student (e.g., skills
+%visualization), or a population (e.g., plotting learning curves).
 
 
 
@@ -978,7 +978,7 @@ The most important consideration for performance measurement is what data
 %\item Observed data from a task session:
 %  solved/not, solving time, number of code executions, number of edits,
 %  or even the individual edits (program snapshot), hints taken,
-%  rating or labels provided by the student (e.g. perceived difficulty).
+%  rating or labels provided by the student (e.g., perceived difficulty).
 %\item TODO: mention different granularity/frequency levels for taking program
 %  snapshots: edits (AST changes), executions
 %  (REF: Educational Data Mining and Learning Analytics in Programming:
@@ -989,7 +989,7 @@ The most important consideration for performance measurement is what data
 %\item We first compress these \emph{observational data} into a
 %  single number representation of \emph{performance}.
 %\item The chosen representation/computation may play important role for the usage
-%  of the student model, e.g. in \cite{alg.mastery} they achieved better results
+%  of the student model, e.g., in \cite{alg.mastery} they achieved better results
 %  in mastery learning by incorporating solving times into the performance instead
 %  of using just binary correctness (?? domains: math, czech).
 %\item Performance representation in introductory programming:
@@ -1014,14 +1014,14 @@ The most important consideration for performance measurement is what data
 %  table)
 %\item Example of performance compression/extraction:
 %  based on solving time thresholds
-%  (e.g., $0.5 \times \text{median}$, $2 \times \text{median}$)
+%  (e.g.,, $0.5 \times \text{median}$, $2 \times \text{median}$)
 %  (+ possibly REF other examples)
 %  (??TODO: figure -- with multiple possible representations).
 %\item The compression algorithm can be much more complex;
 %  for example, a trained recurrent neural network reading a series
 %  of program snapshots embeddings  % AST transformed to vectors of floats
 %  \cite{student-models-deep-learning}.
-%\item Another option would be to model log-times (used e.g. in Tutor - REF),
+%\item Another option would be to model log-times (used e.g., in Tutor - REF),
 %  or continuous partial credit by mapping solving times to the 0-1 range
 %  (e.g linear fn from 0s to 2*median secs, then 0 \cite{alg.mastery}).
 %\item While the compression causes a loss of information,
@@ -1077,8 +1077,8 @@ The most important consideration for performance measurement is what data
 %
 %\subsubsection{Model Data}
 %\begin{itemize}
-%\item underalying domain (e.g. disjunctive concepts),
-%\item population parameters, e.g. initial skills, learning rate,
+%\item underalying domain (e.g., disjunctive concepts),
+%\item population parameters, e.g., initial skills, learning rate,
 %\item skills for each student-??concept pair.
 %\end{itemize}
 %
@@ -1092,8 +1092,8 @@ The most important consideration for performance measurement is what data
 %  (online learning),
 %\item \emph{prediction} of performance for given student and task.
 %  (?? also prediction of skill for student-concept,
-%  if the data are more complex, e.g. hierarchical model?),
-%\item \emph{visualization} of a group of learners, e.g. learning curves
+%  if the data are more complex, e.g., hierarchical model?),
+%\item \emph{visualization} of a group of learners, e.g., learning curves
 %  (?? broader -- insight: also clustering of students, ...)
 %\item TODO: figure showing interaction between the data and algorithms.
 %\end{itemize}
@@ -1119,7 +1119,7 @@ The most important consideration for performance measurement is what data
 %\item input: domain $D$, (?? population parameters $P$),
 %  student state $\theta^{t}_{j}$, task $i$, (context)
 %\item output: predicted response of the student to the task,
-%  e.g. performance $\hat{p}^t_{ij}$
+%  e.g., performance $\hat{p}^t_{ij}$
 %\item TODO: replace text be a figure
 %\end{itemize}
 
@@ -1259,7 +1259,7 @@ The size of the change is proportional to the prediction error, which is the dif
 
 Another family of student models is based on \emph{Bayesian networks} \cite{probabilistic-ai},
 in which nodes correspond to skills and performances,
-and edges are given by the underlying domain (e.g. prerequisites).
+and edges are given by the underlying domain (e.g., prerequisites).
 % (inclusion, prerequisites, and generalization).  % TODO:check.
 % BN estimates probability distribution of possible values of the hidden nodes.
 % Structure of a BN is a DAG, in which edges encode conditional dependencies between nodes.
@@ -1317,7 +1317,7 @@ With these assumptions, each skill can be tracked by a separate
 %\item for each skill, two hidden states (known/mastered) or not, observed: performance
 %\item assumes: learning (in contrast to basic IRT)
 %\item assumes: discrete knowledge state (eithter known or not known) (?! not compatible?)
-%\item assumes: on each opportunity to use the skill (e.g. solving a task with
+%\item assumes: on each opportunity to use the skill (e.g., solving a task with
 %  the corresponding concept), there is a constant probability of learning that skill
 %\item TODO: formulas for prediction and update; figure / or just REF
 %\item TODO: relevant extension: BKT with hiearchical model of skills
@@ -1331,7 +1331,7 @@ between BKT and general DBN.
 For example, the state function in DBN can be restricted to a specific form
 \cite[section 5.1.2]{student-models-review-2012},
 domain of each node can be restricted to a small number of values
-(e.g. learned, ready to learn, not ready to learn) \cite{its-programming},
+(e.g., learned, ready to learn, not ready to learn) \cite{its-programming},
 or BKT can be combined with logistic regression to estimate the contribution
 of multiple skills \cite{bn-logreg}.
 
@@ -1342,10 +1342,10 @@ of multiple skills \cite{bn-logreg}.
 %determines the form of its state function
 %\cite[section 5.1.2]{student-models-review-2012}. % TODO? elaborate/example
 %Another strategy is to restrict domain of each node to a small number values,
-%(e.g. learned, ready to learn, not ready to learn),
+%(e.g., learned, ready to learn, not ready to learn),
 %which then allows to model general prerequisites %between concepts
 %\cite{its-programming}.
-%(e.g. easy, just right, difficult) \cite{its-programming}
+%(e.g., easy, just right, difficult) \cite{its-programming}
 % NOTE: Can be also used for hierarchies (probably).
 % NOTE: In this work, some of the concepts are self declared, other inferred; so there
 % is no inclusion-relationship, I'm not sure if that is also important factor (?)
@@ -1400,7 +1400,7 @@ Although better predictions often have a positive impact on the application,
 it is not guaranteed \cite{evaluation-leopard},
 % and stability of parameters (CITE).
 % TODO: (all above) briefly describe
-% TODO: another proxies? e.g. reread \cite{pelanek-evaluation-student-models}
+% TODO: another proxies? e.g., reread \cite{pelanek-evaluation-student-models}
 so it is safer to observe several proxy measures,
 instead of blindly maximizing one of them. % predictive accuracy,
 % NOTE: If online experiments show that the more accurate predictions would
@@ -1412,7 +1412,7 @@ instead of blindly maximizing one of them. % predictive accuracy,
 %\item Vector of observed performances $p$ is compared to the vector of predicted performances $\hat{p}$ (usually element-wise, summing the individual errors).
 %\item Many metrics. Depends on the performance representation.
 %\item For interval variables
-%  (e.g. log-times, continuous partial credit, probability of success):
+%  (e.g., log-times, continuous partial credit, probability of success):
 %  default choice is RMSE (Root Mean Squar Error). (REF paper supporting this choice).
 %  $$
 %  RMSE(p, \hat{p}) = \sqrt{\frac{1}{n} \sum_{i=1}^n (p_i - \hat{p}_i)^2}
@@ -1467,7 +1467,7 @@ instead of blindly maximizing one of them. % predictive accuracy,
 %, \emph{instructional strategy})
 are used to help students with learning.
 %They either substitute a teacher
-%(e.g. for learning at home), or support them by making some decisions ...
+%(e.g., for learning at home), or support them by making some decisions ...
 They support teachers by making decisions that are difficult for people
 to do optimally, % "that require data analysis,"
 such as assigning the most suitable task to each student individually.
@@ -1491,7 +1491,7 @@ which is the area where the computers perform best \cite{als-future}.
 % ... "so adaptive learning systems often focus only on the outer loop decisions"
 % Of course, human instructors are not always available, so it make sense
 % to develop an inner loop tutor as well.
-% TODO: think over (e.g. it's also clear that teachers/students usually want
+% TODO: think over (e.g., it's also clear that teachers/students usually want
 % to control curriculum loop themselves, so only the mastery decision
 % and task recommendation within given problem set is left for the ALS.)
 % - it also mixes two possible arguments: are people better in inner-loop
@@ -1520,7 +1520,7 @@ obtaining labeled training data is not straightforward.
 \emph{Reinforcement learning}  \cite{rl}
 % (with actions being either problem sets, tasks, or hints)
 allows learning of action preferences using future rewards
-(derived e.g. from the estimated time spent in flow)
+(derived e.g., from the estimated time spent in flow)
 \cite{rl-for-tutors-evaluation}.
 % TODO: Explore->cite.
 % TODO: Cite/elaborate. Rethink/explore: other paradigms?
@@ -1548,7 +1548,7 @@ allows learning of action preferences using future rewards
 %  (\emph{outer loop}, \emph{macroadaptivity}, \emph{problem selection tutors})
 %  \cite{its-learner-models}.
 %  Both loops can be further decomposed hierarchically
-%  (e.g. in outer loop: choosing a problem set to practice vs. choosing a task
+%  (e.g., in outer loop: choosing a problem set to practice vs. choosing a task
 %  within that problem set).
 %  % TODO: add example for inner loop (note: not common)
 %  % View from \cite{its-learner-models}: inner = problem step,
@@ -1558,18 +1558,18 @@ allows learning of action preferences using future rewards
 %\item \emph{Curriculum sequencing}. (?? Content sequencing)
 %  What topic to learn next? (What problem set to practice next?)
 %  Relevant for systems with a lot of diverse content with prerequisity structure.
-%  (e.g. in \cite{its-programming}).  % \emph{learning path}
+%  (e.g., in \cite{its-programming}).  % \emph{learning path}
 %  (Alson known as \emph{curriculum loop} \cite{its-learner-models}.)
 %\item \emph{Mastery learning}.
 %  Continue to practice the current topic or progress to another one?
-%  (e.g. in Umime Programovat)
+%  (e.g., in Umime Programovat)
 %% TODO: unify/clarify topic = problem set?
 %\item \emph{Task recommendation}.
 %  Which task to tackle next (possibly from a given problem set)?
-% (e.g.: Tutor)
+% (e.g.,: Tutor)
 %\item \emph{Adaptive scaffolding} (??).
 %  Should we provide the student with a help to solve the current task
-%  (e.g., show an instruction, a hint, a worked out example, or an explatanation)?
+%  (e.g.,, show an instruction, a hint, a worked out example, or an explatanation)?
 %  (or even a suggestion to give up and try an easier task).
 %  (Example: cognitive tutors - REF.)
 %\end{itemize}
@@ -1611,7 +1611,7 @@ allows learning of action preferences using future rewards
 %  (Action selection for distributions: max / randomly-by-weights +
 %  exploration.)
 %  Available actions depend on the tutor task;
-%  e.g. which hint to show, which task to recommend, etc.
+%  e.g., which hint to show, which task to recommend, etc.
 %\item Possible representations of the tutor:
 %\begin{itemize}
 %\item ?? \emph{Value function + student model.}  % terminology borrowed from RL
@@ -1636,7 +1636,7 @@ allows learning of action preferences using future rewards
 %  (prefererence -- REF to evalution section).
 %  For a finite amount of states, the mapping can be stored as a table
 %  (i.e. no weights are used)
-%  otherwise is approximated, e.g. through linear regression -- a weighted sum
+%  otherwise is approximated, e.g., through linear regression -- a weighted sum
 %  of some features that depend on the given student and action.
 %  (Rules can be transformed to action-value fn by aggregating preferences of
 %  all rules that trigger for current state. TODO: formula)
@@ -1648,8 +1648,8 @@ allows learning of action preferences using future rewards
 %\item \emph{Policy.}  % terminology borrowed from RL
 %  Mapping $\pi(s, w): S \times \mathbb{R}^n\rightarrow A$
 %  from student state (and parameters) directly to an action
-%  (e.g. decision tree?, first unmastered PS)
-%  or distribution on actions. (e.g. uniformly random).
+%  (e.g., decision tree?, first unmastered PS)
+%  or distribution on actions. (e.g., uniformly random).
 %  (REF example)
 %  (Action-value fn can be streightforwardly transformed to a
 %  deterministic/stochastic policy.)
@@ -1693,7 +1693,7 @@ balance between over-practice and under-practice
 \cite{alg.mastery, evaluation-leopard, learner-models-integration-skills} % TODO: check
 help to choose the threshold.
 Alternatively, the threshold can be calibrated by requiring a specific time or
-number of tasks for specific students (e.g. exactly three tasks for a genius who
+number of tasks for specific students (e.g., exactly three tasks for a genius who
 solves each task with a high performance). % TODO:CITE
 
 
@@ -1723,14 +1723,14 @@ solves each task with a high performance). % TODO:CITE
 %\item If the problem set is homogeneous (tasks in PS have approximately same difficulty
 %  and cover the same concepts), than simple EMA works well \cite{alg.mastery}.
 %\item More important than chosen type of model is its input data;
-%  e.g. if the solving time is included in the performance (REF to performance section),
+%  e.g., if the solving time is included in the performance (REF to performance section),
 %  and value of the threshold
 %  \cite{alg.mastery}. % in the cited paper: they improved "quality" of MS by including
 %  % solving times over just binary correctness, ?? in both Math and Czech?
 %\item Disadvantage: no knowledge transfer (using the student history to improve
 %  mastery learning). Solution: using a sophisticated student model -- either completely,
 %  or just for initial setting of parameters of the simple model
-%  (e.g. inital score and/or learning rate and/or threshold for EMA).
+%  (e.g., inital score and/or learning rate and/or threshold for EMA).
 %\item TODO: REF some research/systems examples using sophisticated student models
 %  for mastery learning (hub: bibliography in \cite{alg.mastery}).
 %\item Parameters:
@@ -1740,7 +1740,7 @@ solves each task with a high performance). % TODO:CITE
 %\item TODO: Effort vs. Score plot/metrics
 %  \cite{evaluation-leopard, learner-models-integration-skills}
 %\item Manually: ?? using effort-score graphs \cite{alg.mastery} TODO: (elaborate)
-%\item Heuristically (1-step learning): e.g. require specific maximum time (e.g. 1 minute)
+%\item Heuristically (1-step learning): e.g., require specific maximum time (e.g., 1 minute)
 %  to achieve mastery for genius.
 %\item Joint vs. 2-phase optimization
 %  (2-phase: for predictive models: first optimize the student model for its
@@ -1755,7 +1755,7 @@ solves each task with a high performance). % TODO:CITE
 % TODO: cite relevant research
 
 % NOTE: Relevant for systems with a lot of diverse content with prerequisity structure.
-% (e.g. in \cite{its-programming}).  % \emph{learning path}
+% (e.g., in \cite{its-programming}).  % \emph{learning path}
 % NOTE: Also known as \emph{curriculum loop} \cite{its-learner-models}.
 
 Selecting the best task from the pool of all tasks in the system
@@ -1765,7 +1765,7 @@ This decomposition makes the problem easier to handle, because
 both subproblems can be solved reasonably well even by simple heuristics.
 Furthermore, it ensures coherence of recommended tasks;
 students know what they are learning and they do not need to adjust to a very
-different setting (e.g. toolbox) with every task.
+different setting (e.g., toolbox) with every task.
 
 Instead of selecting a single recommended problem set, some systems may
 instead need to filter, rank, or score all problem sets.
@@ -1903,7 +1903,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %or \emph{soft}, i.e. they are presented as suggestions, but the the choice
 %is left on the student.
 %% Only a single task can be chosen as hard recommendation.
-%Even just showing predictions to the student (e.g. in the form of predicted
+%Even just showing predictions to the student (e.g., in the form of predicted
 %solving times or showing difficulty predictions such as
 %``too easy'', ``too difficult'', and ''ready to attempt'')
 %can be already perceived as a very mild form of recommendation.
@@ -1935,7 +1935,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %\item Balance diversity and coherence.
 %  Avoid too similar task as the previous one(s),
 %  especially if the student solved the task easily.
-%  On the other hand, do not make too "big jumps" (e.g. different toolbox or
+%  On the other hand, do not make too "big jumps" (e.g., different toolbox or
 %  story in each task).
 %\item (?? Soft prerequisities)
 %\item Exploration (value of information).
@@ -1960,9 +1960,9 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %  (Task selection: minimizing the sum of errors / randomly-weighted)
 %  (Alternative combination of errors: maximum, product/sum-logs).
 %\item Instead of manually picking the error functions, we can directly learn
-%  them (e.g. via multilayer perceptron) %, or genetic algorithms, ...?
+%  them (e.g., via multilayer perceptron) %, or genetic algorithms, ...?
 %  ?? not used (or is there an example to REF?)
-%\item ?? Policy learning? -- e.g. a decison tree mapping student to a task
+%\item ?? Policy learning? -- e.g., a decison tree mapping student to a task
 %  (?? used anywhere?).
 %\item \emph{$\epsilon$-greedy strategy}: combination of random selection choose randomly $\epsilon$
 %  to balance exploration and exploitation.
@@ -1975,7 +1975,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %\subsection{Adaptive Scaffolding}
 %
 %Should we provide the student with a help to solve the current task
-%(e.g., show an instruction, a hint, a worked out example, or an explatanation)?
+%(e.g.,, show an instruction, a hint, a worked out example, or an explatanation)?
 %(or even a suggestion to give up and try an easier task).
 %(Example: cognitive tutors - REF.)
 %
@@ -1991,16 +1991,16 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %\begin{itemize}
 %\item TODO: refine terminology.
 %\item \emph{pre-explanations} --
-%  how something works, e.g. semantics of repeat-block,
+%  how something works, e.g., semantics of repeat-block,
 %  % Note: currently called "mini-instructions" in the system
 %\item \emph{post-explanations} --
-%  why something happened (REF example print-screen, e.g. that the task was not
+%  why something happened (REF example print-screen, e.g., that the task was not
 %  solved because the spaceship has not reached the final line),
 %\item \emph{worked-out examples} --
 %  special type of explanations, "inductive explanations",
 %  short programs/snippets to illustrate a concept.
 %\item \emph{instructions}: what to do right now
-%  (e.g. ``Drag and drop this block into the workspace.''),
+%  (e.g., ``Drag and drop this block into the workspace.''),
 %\item \emph{interruption suggestion} --
 %  (special type of instruction),
 %  suggestion to give up and try an easier task.
@@ -2038,7 +2038,7 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %\item \emph{Rule-based approach.}
 %  More generally, the tutor can include arbitrary conditions on current student state,
 %  mapping them to hints (and possibly preferences).
-%  The preferences can be then optimized e.g. using ?? buckshort heuristic (REF) (or RL, see below).
+%  The preferences can be then optimized e.g., using ?? buckshort heuristic (REF) (or RL, see below).
 %  % ?? Even new completely rules can be learned automatically, using
 %  % population-based heuristic search such as genetic algorthms (REF). --
 %  % probably not enough/useful data and you don't want to do that online...
@@ -2046,8 +2046,8 @@ a random task otherwise (\emph{$\epsilon$-greedy strategy})
 %  Optimizing policy for an (unknown) MDP, in which
 %  state = student model for given task (inner loop),
 %  actions = possible hints (or none),
-%  time steps: e.g. after each edit or code execution,
-%  reward: e.g. +1 if solves the task (+ discount to prefer shorter paths).
+%  time steps: e.g., after each edit or code execution,
+%  reward: e.g., +1 if solves the task (+ discount to prefer shorter paths).
 %  -> ?? RL techniques (enough data? used or not?)
 %\end{itemize}
 %\end{itemize}
@@ -2074,7 +2074,7 @@ Nevertheless, realizing that the offline evaluation serves just as
 a limited proxy metric,
 % and its results must be intrpreted carefully, / "taken with a grain of salt,"
 it can be still useful to perform at least some offline evaluation,
-e.g. to limit the number of models to evaluate online to just a few.
+e.g., to limit the number of models to evaluate online to just a few.
 % - "before putting the recommender to the wild of real world."
 % - (in order to avoid confronting users with very poor
 % tutor models and to collect more data for each of the evaluated model).
@@ -2090,7 +2090,7 @@ result in neither too low nor too high performance.
 %(TODO:check)
 An ideal recommender would recommend all of the suitable tasks and none of
 the unsuitable tasks.
-The error can be quantified in many ways, e.g. by \emph{RMSE} or \emph{AUC}
+The error can be quantified in many ways, e.g., by \emph{RMSE} or \emph{AUC}
 \cite[section\,8.3.2]{recsys}.
 %A \emph{confusion matrix} can be computed for a series of events,
 %based on the suitability of the item and whether the
@@ -2124,12 +2124,12 @@ or evaluation using simulated students (requires strong assumptions).
 
 In addition to the accuracy of recommendations, % (how likely they are good / lead to flow)
 further properties of tutor models can also be explored,
-e.g. robustness, diversity, % TODO:CITE
+e.g., robustness, diversity, % TODO:CITE
 composition (balance between the introduction of new concepts and practicing the old ones)
 \cite{progression-analysis},  % balanced progression, balanced composition.
 or the amount of effort needed to learn new concepts \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
 %It is also possible to measure metrics that quantify the amount of effort needed
-%to learn some concepts , e.g. \emph{WHITE} (Whole Intelligent Tutoring System Empirical Evaluation) \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
+%to learn some concepts , e.g., \emph{WHITE} (Whole Intelligent Tutoring System Empirical Evaluation) \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
 
 %% EXT (removed to make the thesis shorter; but it is highly relevant)
 %Another evaluation strategy is to measure agreement between recommendations
@@ -2172,7 +2172,7 @@ or the amount of effort needed to learn new concepts \cite{evaluation-leopard}. 
 %  \cite{evaluation-leopard}
 %\end{itemize}
 %
-%\item Hierarchical tutor evaluation (e.g. combined effect of a particular combination
+%\item Hierarchical tutor evaluation (e.g., combined effect of a particular combination
 %  of a PS selection algorithm, mastery decision algorithm and task selection algorithm):
 %\begin{itemize}
 %\item The combination can be view as just a more complicated task selection algorithm
@@ -2210,9 +2210,9 @@ User interface (UI) is also a common subject of personalization. % (TODO:CITE).
 % Not only in ALS, generally in HCI research.
 % NOTE: also called "tutor-student interface"
 UI provides visualizations that are based on
-the domain model (e.g. overview of problem sets),
-the student model (e.g. visualization of skills \cite{open-learner-model}),
-or the tutor model (e.g. displaying recommendations). % TODO: citations
+the domain model (e.g., overview of problem sets),
+the student model (e.g., visualization of skills \cite{open-learner-model}),
+or the tutor model (e.g., displaying recommendations). % TODO: citations
 % progress towards mastery (= tutor+student model) (progressbar)
 All these visualizations can be personalized using
 % preferences or other
@@ -2223,7 +2223,7 @@ For example,
 task stories can use student's favorite characters. % and colors.
 % NOTE: Reference to self has been shown to improve retention.
 % TODO: better examples? (favourite colors, favourite music, sound volume,
-% possibly even theme if it doesn't change semantics of the task, e.g.
+% possibly even theme if it doesn't change semantics of the task, e.g.,
 % flowers instead of diamonds).
 
 UI influences what are the best underlying models
@@ -2345,7 +2345,7 @@ Such formulation reminds developers of the system not to overfocus on one factor
 Mission statements are not measurable.
 However, measurable metrics are needed to make informed decisions,
 such as which of two recommendation algorithms to prefer
-(e.g. after conducting an A/B test). % TODO: cite A/B tests, in the context of ALS or RecSys
+(e.g., after conducting an A/B test). % TODO: cite A/B tests, in the context of ALS or RecSys
 While being precise and measurable, these proxy metrics
 should still be related to the mission as much as possible.
 
@@ -2356,7 +2356,7 @@ Next, we need to define terms used in this objective in a measurable way.
   %terms ``mastering elementary programming'', ``quickly'', and ``having fun''
 While ``achieving mastery in elementary programming'' can be
   formulated as an objective criterion
-  (e.g. the student solved at least 3 tasks for each concept with at least good performance),
+  (e.g., the student solved at least 3 tasks for each concept with at least good performance),
   ``having fun'' requires the system to ask students about their subjective feelings.
 % NOTE: Terminology: objective = metric that we know we want to either maximize/minimize
 % TODO: note that looking at the mission statement above,
@@ -2411,10 +2411,10 @@ to understand how their values are influenced by changes in the learning system
 %and directly attributable to individual recommendations \cite[][Rule \#12]{google-ml-rules}.
 %The attributable metrics are presented in \cref{sec:live-evaluation}.
 
-% TODO: diagram of A/B testing, e.g. https://receiptful.com/blog/ab-testing-for-ecommerce
+% TODO: diagram of A/B testing, e.g., https://receiptful.com/blog/ab-testing-for-ecommerce
 % TODO: note on AB experiments: there will be always a difference -> needs to asses statistical significance (is the difference due to changed condition or just because of random noise)
 % -> t-test and similar (but mind their assumptions!) -> p-value + alpha-level -> decision
-% -> add error bars to measured metrics: e.g. 95% confidence interval / standard error / standard deviation / range (+ effect size)
+% -> add error bars to measured metrics: e.g., 95% confidence interval / standard error / standard deviation / range (+ effect size)
 
 
 Limitation of these simple metrics is that they only capture \emph{engagement},
@@ -2449,7 +2449,7 @@ weighting the observed performance by the difficulty of the chosen task.
 
 %The tasks environment in the learning systems usually differs significantly
 %  from the real-world environment,
-%  e.g. by using block-based programming language,
+%  e.g., by using block-based programming language,
 %  or by other aspects mentioned in \cref{sec:strategies-for-easier-learning}.
 %Ultimately, what matters is the performance of students in the real world,
 %  outside the simplified learning environment%
@@ -2477,7 +2477,7 @@ weighting the observed performance by the difficulty of the chosen task.
 %For example, after the student solves the task, the system can show a dialog
 %asking about the perceived difficulty -- whether the task was ``too
 %easy'', ``too difficult'' or `just right''.
-%Other tags about tasks can be collected as well, e.g. ``boring'', ``weird'', or ``fun''.
+%Other tags about tasks can be collected as well, e.g., ``boring'', ``weird'', or ``fun''.
 %
 %Collecting these tags allows to compute metrics that looks as close proxies to
 %the system mission, such as the total time spent in flow.
@@ -2493,7 +2493,7 @@ weighting the observed performance by the difficulty of the chosen task.
 %(but it is negligible compared to the practicing time).
 %
 %TODO: quantitative vs. qualitative and online vs. field studies are othogonal,
-%all combinations possible: e.g. in the field study \cite{comparing-blocks-text-weintrop2017},
+%all combinations possible: e.g., in the field study \cite{comparing-blocks-text-weintrop2017},
 %they measured both quantiative data (performance) and qualitative (attitude);
 %the same can be done in the online learning system.
 %
@@ -2549,7 +2549,7 @@ They allow reusing the same data to evaluate several models,
   to obtain the results quickly,
   and to avoid negative impact on students if the evaluated model is poor.
 Offline evaluation is typically used
-for model selection (e.g. hyperparameters search),
+for model selection (e.g., hyperparameters search),
 and as a check before deploying a new model. % online.
 %Finally, offline learning algorithms typically use
 %  a metric to guide them
@@ -2570,11 +2570,11 @@ to predicting past from the future. % optimistic bias
 The evaluation should mimic as close as possible the real scenario of how the
 trained model will be used, which leads to a methodology called \emph{online
 evaluation with generalization to new learners} \cite{pelanek-learner-modeling}.
-If generalization to new tasks or problem sets %, or user populations (e.g. schools)
+If generalization to new tasks or problem sets %, or user populations (e.g., schools)
 is desirable, then the data should be split accordingly \cite{student-models-review-2012}.
 
 
-%TODO: comparing to other (e.g. currently used) model (e.g. correlation between predictions, delta between recommendations):
+%TODO: comparing to other (e.g., currently used) model (e.g., correlation between predictions, delta between recommendations):
 %1. for a prototype (idea) of new model: if the correlations are high, there is probably no significant gain in exploring this model (compared to using the current one);
 %2. for same model with retrained parameters for newly collected data - if the delta is too big, we should be suspicious and investigate.
 %
@@ -2583,7 +2583,7 @@ is desirable, then the data should be split accordingly \cite{student-models-rev
 %\subsection{Cross Validation}
 %
 %TODO: consider removing this section and only point to a relevant description
-%of CV in the context of student models evaluation, e.g. in \cite{pelanek-learner-modeling}
+%of CV in the context of student models evaluation, e.g., in \cite{pelanek-learner-modeling}
 %(our main scenario/methodology: "online evaluation with generalization to new learners")
 %
 %Trained models must be evaluated on data unseen during training.
@@ -2656,7 +2656,7 @@ is desirable, then the data should be split accordingly \cite{student-models-rev
 %As a common example, some loss functions allow to specify weights for each training example.
 %If it is derived from the long-term goals that predicting one class correctly
 %  is more important than predicting the other class correctly
-%  (e.g. if it is more important to predict correctly failure than success),
+%  (e.g., if it is more important to predict correctly failure than success),
 %  larger weights should be assigned to the examples with the more important class.
 %
 %Note that these metrics are not limited to the offline environment. Specifically, if the
@@ -2683,18 +2683,18 @@ finding the best possible performance achievable by a model
 \cite{mastery-overpractice-underpractice-tradeoff},
 exploring hypothetical scenarios where the collected data would be too biased
 and for which the ground truth does not exist
-(e.g. clustering of tasks into concepts \cite[section\,3.3]{rihak-phd}),
+(e.g., clustering of tasks into concepts \cite[section\,3.3]{rihak-phd}),
 or understanding which parameters are sensitive and should be learned from data,
 and which can be safely set manually
-(e.g. role of threshold and used student model in mastery learning
+(e.g., role of threshold and used student model in mastery learning
 \cite{alg.mastery}). % without frequent retraining.
 % the last technique is called \emph{Sensitivity analysis}
-% TODO: CITE examples (e.g. in thran-thesis)
+% TODO: CITE examples (e.g., in thran-thesis)
 Simulations can take advantage of historical data that are available.
 For example, in \cite{instructor-dashboard-realtime} an instructor dashboard is
 evaluated by combining collected performance data % TODO:check
 with simulated instructors interacting with the dashboard.
-% TODO: cite relevant research - examples, e.g. thran-thesis, papi-thesis,
+% TODO: cite relevant research - examples, e.g., thran-thesis, papi-thesis,
 % Radek-mastery papers
 
 
@@ -2703,7 +2703,7 @@ with simulated instructors interacting with the dashboard.
 
 %\subsection{Data Collection}
 %
-%TODO: overview of issues e.g. in \cite{pelanek-learner-modeling}
+%TODO: overview of issues e.g., in \cite{pelanek-learner-modeling}
 %
 %TODO: attrition bias (type of selection bias, can be caused by self-selection)
 %
