@@ -100,11 +100,6 @@ We can use the collected data to check the requirements on system behavior menti
 which tasks were recommended and which were self-selected, so we cannot determine
 how much are the results influenced by the adaptive behavior. % of the system.
 
-From all attempts, 86\% are successful, and 84\% are solved in less than 15 minutes.
-If we look at the first 5 practiced tasks for each student, 87\% of them are solved,
-85\% are solved in less than 15 minutes, but only 66\% are solved in less than 2 minutes.
-
-
 % TODO: how to create horizontal space between them?
 \begin{figure}[htb]
 \centering
@@ -126,6 +121,11 @@ If we look at the first 5 practiced tasks for each student, 87\% of them are sol
 \caption{Levels and solving times.}
 \label{fig:solving-times}
 \end{figure}
+
+From all attempts, 86\% are successful, and 84\% are solved in less than 15 minutes.
+If we look at the first 5 practiced tasks for each student, 87\% of them are solved,
+85\% are solved in less than 15 minutes, but only 66\% are solved in less than 2 minutes.
+
 
 
 
@@ -180,7 +180,7 @@ Currently, we measure %three-valued performance representation, and a
 performance using only observed solving time
 (\cref{sec:robomission.student}).
 However, due to variations in speeds of different students
-(which are even partially influenced by external factors, such as used device),
+(which are influenced by external factors, such as used device),
 solving time is a rather noisy approximation of the true performance.
 Could using other observational data, such as the number of edits,
 bring more information about the performance?
@@ -192,7 +192,7 @@ However, if computed for individual tasks,
 median correlation drops to 0.64, % (interquartile range 0.5 -- 0.72),
 and $25\%$ of tasks have correlation below 0.5 % check the number
 (\cref{fig:time-vs-edits}), which suggests that incorporating the number of edits into the
-measurement should be at least considered.
+measurement should be considered.
 
 We propose the following heuristic for combining solving times with the number
 of edits and runs (executions): a log-transformed sum of edits, runs, and \emph{thinking

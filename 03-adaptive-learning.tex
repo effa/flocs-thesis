@@ -630,8 +630,8 @@ and \emph{disjunctive prerequisites} (one mastered is enough).
 Conjunctive and disjunctive prerequisites can be represented together by
 \emph{and-or graph} (\cref{fig:prerequisites-and-or}).
 If only conjunctive prerequisites are needed, then it is enough to represent
-prerequisites by a DAG, called \emph{Partial Order Knowledge Structure}
-(POKS \cite{poks}, \cref{fig:prerequisites-poks}).
+prerequisites by a DAG %, called \emph{Partial Order Knowledge Structure} (POKS \cite{poks}, ...)
+\cite{poks} (\cref{fig:prerequisites-poks}).
 More generally, each learning object can specify a function from skills of
 its prerequisites
 into a prior skill (and leave the \emph{ready-to-tackle decision} on a tutor model).
@@ -648,18 +648,18 @@ is a \emph{Bayesian network}; this approach was used in \cite{its-programming}.
 
 \begin{figure}[htb]
 \centering
-\begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[height=40mm]{img/prerequisites-poks}
-\caption{POKS of concepts}
-\label{fig:prerequisites-poks}
-\end{subfigure}%
-\begin{subfigure}[t]{0.55\textwidth}
+\begin{subfigure}[t]{0.54\textwidth}
 \centering
 \includegraphics[height=40mm]{img/prerequisites-and-or}
 \caption{And-Or graph of tasks}
 \label{fig:prerequisites-and-or}
 \end{subfigure}
+\begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[height=40mm]{img/prerequisites-poks}
+\caption{DAG of concepts}
+\label{fig:prerequisites-poks}
+\end{subfigure}%
 \caption{Domain models with prerequisites.}
 \label{fig:chunks-prerequisites}
 \end{figure}
@@ -1661,7 +1661,7 @@ allows learning of action preferences using future rewards
 \subsection{Mastery Learning}
 \label{sec:mastery-learning}
 
-In mastery learning (\cite{mastery-learning-scale}), each topic
+In mastery learning \cite{mastery-learning-scale}, each topic
 % topic = either concept or a PS
 is practiced until it is mastered, and only then student moves
 to the next topic.  % TODO: concept / topic / PS?
@@ -1679,7 +1679,7 @@ Typically, mastery is decided by comparing skill estimated by a student model
 If the practiced problem set is homogeneous (all tasks have approximately same difficulty
 and cover the same concepts), then it is sufficient to use a concept-free
 single-difficulty descriptive student model,  % TODO: make sure the terms are defined
-such as \emph{Exponential Moving Average} (EMA) of past performances
+such as \emph{Exponential Moving Average} of past performances
 \cite{alg.mastery}.
 % TODO: It would be maybe better to define EMA in Student models section
 % and to adapt it to our domain.
@@ -2104,8 +2104,8 @@ The error can be quantified in many ways, e.g., by \emph{RMSE} or \emph{AUC}
 %AUC (Area Under Curve), or MAP (Mean Average Precision) (CITE).  % TODO: or DCG?
 % TODO: explore, check (with reffed book) -> elaborate/delete
 
-Unfortunately, collected data are highly biased, either by the
-adaptive behavior of the system or by the self-selection bias \cite{data-collection-bias}.
+Unfortunately, collected data are highly biased by the
+adaptive behavior of the system and by the self-selection bias \cite{data-collection-bias}.
 % (REF to the section on feedback loops for how to partially deal with this issue).
 % It's possible to use only a ranodmly recommended tasks, but then it limits
 % the amount of evaluation data.
@@ -2374,7 +2374,7 @@ which are also easier to measure and interpret
 % TODO: consider: Users --> Students
 \begin{table}[htb]
 \centering
-\label{tbl:long-term-metrics}
+\caption{Examples of long-term objectives.}
 \begin{tabular}{l l}
 \toprule
 Metric & Description \\
@@ -2391,7 +2391,7 @@ Daily Flow Tasks & tasks solved with not too low/high performance \\
 % "Solving hours"
 \bottomrule
 \end{tabular}
-\caption{Examples of long-term objectives.}
+\label{tbl:long-term-metrics}
 \end{table}
 
 It is not clear which of these metrics is the best proxy for the mission.

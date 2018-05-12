@@ -31,7 +31,7 @@ which is the secret sauce of adaptive learning systems.
 % TODO: clarify the relationship between this section and AL.analysis (or
 % possibly also this-chapter.analysis) sections.
 
-A wide range of task difficulties, combined with the adaptive behavior,
+A wide range of difficulties, combined with the adaptive behavior,
 should make the system useful for everybody who wants to learn programming.
 However, %this long-term goal requires many iterations; % and a lot of data.
 currently the system targets children 10-15 years old.
@@ -50,7 +50,7 @@ and motivate them for the further learning of programming. %computer science.
 % NOTE: flow is a goal; but at the same time it supports the other 2 goals
 
 After each solved task, the student is shown % a dialog window with one
-one recommended task and a link to the page with an overview of all tasks.
+a recommended task and a link to the page with an overview of all tasks.
 % Terminology: \emph{good recommendation}
 Ideally, each recommended task would lead to the state of flow.
 % TODO: How to measure? One way: looking ath the long-term objectives
@@ -58,7 +58,8 @@ As we cannot directly observe whether the student is in the state of flow,
 we must rely on proxy data.
 Currently, we only use objective attributable metrics based on observed performance
 % which should be neither too low, nor too high
-(details in \cref{sec:robomission.student}). % TODO: specific subsection
+(\cref{sec:robomission.student}). % TODO: specific subsection
+%(details in \cref{sec:robomission.student}). % TODO: specific subsection
 % "qualitative" vs. "quantitative"
 % TODO: REF:performance
 % as we have discussed in section on attributable metrics (\cref{sec:live-evaluation}).
@@ -263,9 +264,9 @@ since it never decreases (which would be demotivating).
 
 We use a discrete representation of performance with three levels (poor, good,
 excellent). Currently, only solving time is considered for the performance
-compression: for each task, we define a threshold for a solution to be
+measurement: for each task, we define a threshold for a solution to be
 considered as good or excellent
-(set as 1.5 and 0.75 multiples of median time).
+(1.5 and 0.75 multiples of median time).
 % TODO: support the decision by an analysis (REF)
 % TODO: Note that it's huge simplification and a subject of future research.
 
