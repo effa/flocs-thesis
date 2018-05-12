@@ -10,7 +10,7 @@ Students learn programming by solving programming tasks.
 % and students spent nearly all the time in the system by solving them.
 Therefore, tasks are the key component of a system for learning introductory
 programming, and the design of a programming game deserves a careful attention.
-Similarly to the design of adaptive behavior, design of game is also an iterative
+Similarly to the design of adaptive behavior, a design of a game is also an iterative
 process of prototyping and testing new ideas.
 Good programming games are a result of many gradual improvements
 (\emph{rule of the loop}) \cite{book-of-lenses}.
@@ -22,7 +22,7 @@ Good programming games are a result of many gradual improvements
 
 %% Requirements.
 The game should allow for tasks practicing all basic
-programming concepts, such as sequence of commands, loops, and conditional
+programming concepts, such as sequences of commands, loops, and conditional
 statements. % repeat, while, if, if-else, simple tests (comparing)
 To enable outer-loop adaptive behavior, multiple diverse tasks practicing the same
 concepts are needed, including a lot of tasks using only sequences of commands
@@ -36,7 +36,7 @@ solved.  % TODO: Fix English.
 % (how we incorporated the strategies for easier learning and for motivation)
 
 We have designed a game which is a variation on a robot
-on grid with a space theme, and which uses Blockly (\cref{sec:blockly-games})
+on a grid with a space theme, and which uses Blockly (\cref{sec:blockly-games})
 for building programs
 (\cref{fig:robomission-task2}).
 These choices support all main strategies for easier learning of programming
@@ -53,16 +53,16 @@ and recommending tasks of optimal difficulty
 %  between 10-15 years? (or simply primary school)
 
 \imgW[0.73]{robomission-task2}{%
-  Example of a task with the space themed grid world.}
+  Example of a task with the space-themed grid world.}
 
 % NOTE: rule of the loop \cite{book-of-lenses}
 
 \section{Game World}  % Space World
 \label{sec:robomission.game-world}
 
-The game world itself should be pleasure to look at and fun to play with,
+The game world itself should be a pleasure to look at and fun to play with,
 even without a specific task to solve \cite{book-of-lenses}.
-We have based the game world on a popular choice of a robot on grid,
+We have based the game world on a popular choice of a robot on a grid,
 using a theme of a spaceship flying through space and collecting diamonds
 (\cref{fig:spaceworld}).
 % TODO: better word than "popular"?
@@ -76,7 +76,7 @@ there are the following game objects:
 diamonds, that need to be collected,
 large asteroids, that destroy the spaceship if it hits them,
 small meteoroids, that can be destroyed,
-and wormholes that serves as teleports.
+and wormholes that serve as teleports.
 
 The spaceship start on the bottom row and it always moves one row forward
 after any action. % towards its final destination (the last row).
@@ -204,11 +204,11 @@ The easiest tasks use only commands for actions (fly, left, right, shoot),
 while the more advanced tasks offer \emph{repeat} loop, \emph{while} loop,
 \emph{if} and \emph{if-else} statements,
 and tests for colors and position.
-No special test for the last row is needed, since all tasks follow a convention
+No special test for the last row is needed since all tasks follow a convention
 of coloring the last row by blue color.
 
 %% Programs
-In order to simplify future learning of a textual programming language,
+In order to simplify the future learning of a textual programming language,
 labels on blocks approximately match Python syntax. % translated to Czech in Czech localization
 The most notable exception is the repeat block (\texttt{repeat 5}),
 where the Python equivalent (\texttt{for i in range(5)}) is more difficult
@@ -220,14 +220,14 @@ to understand for beginners.
 
 %% Limits.
 To force students to use loops instead of a long sequence of actions,
-a task can specify \emph{length limit}
+a task can specify a \emph{length limit}
 on the maximum number of statements in the program.
 Limit on the number of statements rather than blocks was chosen in
 order to make the limit a smaller number and thus the counting easier.
 (Another advantage is that this definition could be used for textual
 programming as well.)
 To force students to think when they need to shoot, a task can specify
-\emph{energy limit} on the number of shots.
+an \emph{energy limit} on the number of shots.
 
 %%% Limits.
 %There are two limits that a task can specify.
@@ -327,7 +327,7 @@ or the spaceship has not reached the final row
 
 The online Game Editor (\cref{fig:game-editor})
 helps to create new tasks easily.
-In the editor, the author of a task can immediately see visualization of the
+In the editor, the author of a task can immediately see a visualization of the
 space world,
 test a solution in either Blockly or its text-based equivalent %(\emph{RoboCode})
 (\cref{fig:game-editor-vim}),

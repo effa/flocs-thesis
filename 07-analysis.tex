@@ -96,7 +96,7 @@ so the mean solving time is much higher
 \section{System Behavior}
 
 We can use the collected data to check the requirements on system behavior mentioned in
-\cref{sec:robomission.behavior}. Unfortunatelly, the system is currently not logging
+\cref{sec:robomission.behavior}. Unfortunately, the system is currently not logging
 which tasks were recommended and which were self-selected, so we cannot determine
 how much are the results influenced by the adaptive behavior. % of the system.
 
@@ -136,7 +136,7 @@ The curve of median times stays similar
 if only students with at least 40 task sessions are used for the computation,
 which rules out the possibility that this behavior is caused by \emph{attrition bias}
 (only better students staying in the system, making the later tasks seem easier than they are).
-The plot of average level per task order during practice
+The plot of the average level per task order during practice
 (\cref{fig:solving-times-per-order} bottom) reveals a possible explanation:
 an average student is still in the 4th level after 30 tasks,
 and the 3rd and 4th level have similar difficulty with a median solving time below 90 seconds
@@ -181,23 +181,23 @@ performance using only observed solving time
 (\cref{sec:robomission.student}).
 However, due to variations in speeds of different students
 (which are even partially influenced by external factors, such as used device),
-solving time is rather noisy approximation of the true performance.
-Could using other observational data, such as number of edits,
+solving time is a rather noisy approximation of the true performance.
+Could using other observational data, such as the number of edits,
 bring more information about the performance?
 
 %(TODO: Goal: find a compression function that maximizes performance of student model.)
-Overall Pearson correlation between solving times and number of edits (both
+Overall Pearson correlation between solving times and the number of edits (both
 log-transformed) is quite high, about 0.73 (\cref{fig:performance-corrs-ts}).
 However, if computed for individual tasks,
 median correlation drops to 0.64, % (interquartile range 0.5 -- 0.72),
 and $25\%$ of tasks have correlation below 0.5 % check the number
-(\cref{fig:time-vs-edits}), which suggests that incorporating number of edits into the
+(\cref{fig:time-vs-edits}), which suggests that incorporating the number of edits into the
 measurement should be at least considered.
 
 We propose the following heuristic for combining solving times with the number
-of edits and runs (executions): log-transformed sum of edits, runs, and \emph{thinking
+of edits and runs (executions): a log-transformed sum of edits, runs, and \emph{thinking
 actions}.
-Thinking action is only assumed to be between two edits or runs, if the time interval
+Thinking action is only assumed to be between two edits or runs if the time interval
 is at least 5 seconds long, in order to reduce the noise caused e.g. by
 different screen sizes
 (5 seconds seems to be enough to drag and drop a block anywhere on any screen).
@@ -295,7 +295,7 @@ T = solving time.}
 Our tutor model (\cref{robomission.tutor}) assumes that difficulties of tasks
 in each phase are approximately the same,
 and that the overall difficulty is increasing as the level increases.   % even phase.
-Using collected data, we can determine whether these assumption are satisifed,
+Using collected data, we can determine whether these assumptions are satisfied,
 and if not, suggest adjustments to improve their validity.
 \Cref{fig:solving-times} (right) shows that on average the difficulty of levels
 is increasing, but it also reveals that level 7 is more difficult than level 8.
@@ -308,7 +308,7 @@ Looking at the difficulty of individual tasks (\cref{fig:difficulties-tasks-leve
 help us to discover outliers, whose difficulty is significantly
 different from the other tasks in the same level.
 The \cref{fig:difficulties-tasks-levels} also suggests that dividing levels
-into phases is necessary to achieve reasonable homogenity. For example, in the 2nd
+into phases is necessary to achieve reasonable homogeneity. For example, in the 2nd
 level (World), there are two clear groups of tasks with significantly different
 difficulty. Although in the other levels such a clear split does not exist,
 they still contain tasks with a wide range of difficulties. %, so the refinement into phases seems appropriate.

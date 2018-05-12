@@ -7,7 +7,7 @@ We are developing what one could flippantly call stupid tutoring systems: tutors
 
 Among the strategies to support learning and motivation,
 we focus on recommending tasks of optimal difficulty,
-which is the secret sauce of adpative learning systems.
+which is the secret sauce of adaptive learning systems.
 
 %In the previous chapter, we have described how we incorporated many of the
 %strategies to support learning and motivation into the game.
@@ -31,12 +31,12 @@ which is the secret sauce of adpative learning systems.
 % TODO: clarify the relationship between this section and AL.analysis (or
 % possibly also this-chapter.analysis) sections.
 
-Wide range of task difficulties, combined with the adaptive behavior,
+A wide range of task difficulties, combined with the adaptive behavior,
 should make the system useful for everybody who wants to learn programming.
 However, %this long-term goal requires many iterations; % and a lot of data.
-currently the system targets at children 10-15 years old.
+currently the system targets children 10-15 years old.
 % "between 10 and 15 years."
-The main use case of the system is a 1-2 hours in-classroom tutorial.
+The main use case of the system is a 1-2 hour in-classroom tutorial.
 % (Hour of Code format) %  as described in \cref{sec:hoc}),
 % possibly followed by individual practice at home.
 In line with the mission outlined in \cref{sec:mission}, goals of this tutorial
@@ -50,7 +50,7 @@ and motivate them for the further learning of programming. %computer science.
 % NOTE: flow is a goal; but at the same time it supports the other 2 goals
 
 After each solved task, the student is shown % a dialog window with one
-one recommended task, and a link to the page with overview of all tasks.
+one recommended task, and a link to the page with an overview of all tasks.
 % Terminology: \emph{good recommendation}
 Ideally, each recommended task would lead to the state of flow.
 % TODO: How to measure? One way: looking ath the long-term objectives
@@ -69,7 +69,7 @@ Currently, we only use objective attributable metrics based on observed performa
 From the general goals, we derive weaker,
 \emph{necessary, but not sufficient} requirements, that can be more reliably observed,
 % (with less noise)
-to guide us during design of the system,
+to guide us during the design of the system,
 and to provide us with more specific evaluation:  % more actionable
 % NOTE: It reminds me of hypothesis testing of goodness-of-fit: there are
 % various tests (metrics we can measure), that can tell us, that the given
@@ -83,7 +83,7 @@ and to provide us with more specific evaluation:  % more actionable
   in a reasonable time (at most 15 minutes).
   Furthermore, they are able to solve the first few tasks quickly
   (each in 2 minutes), and progress to the second level in at most 10 minutes.
-\item The best performing students % (supposedly with a prior programming skill)
+\item The best-performing students % (supposedly with a prior programming skill)
 progress through initial levels quickly, spending at most 5 minutes
 on tasks with only sequences of commands, and get to the more
 challenging tasks containing both types of loops and conditional statements
@@ -261,7 +261,7 @@ An advantage is that this skill can be shown directly to the student,
 e.g. visualized as a progress bar towards completion of the current level,
 since it never decreases (which would be demotivating).
 
-We use discrete representation of performance with 3 levels (poor, good,
+We use a discrete representation of performance with 3 levels (poor, good,
 excellent). Currently, only solving time is considered for the performance
 compression: for each task, we define a threshold for a solution to be
 considered as good or excellent
@@ -289,7 +289,7 @@ where $n$ is the number of tasks in the phase.
 % NOTE: we never want to decrease skill of a student
 % TODO: link to the student model described in theory part
 To aggregate the skills of the phases into the skill of the level,
-we take average of the phase skills, which means
+we average the phase skills, which means
 that all phases must be solved in order to solve the level.
 %We plan to use a more sophisticated aggregation in the future,
 %which would allow to compensate unsolved tasks in the first phase
@@ -329,14 +329,14 @@ them,
 % TODO: further increased by the tendency to "get everything green"
 in which case it is preferable to solve them in the order from the
 easiest to the most difficult.
-Homogenity of phases allow to safely select a task uniformly at random from
+Homogeneity of phases allow to safely select a task uniformly at random from
 all unsolved tasks in that phase, which is a strategy maximizing exploration.
 % UI:
 Recommendations provided by the system are \emph{soft};
 i.e. students can ignore them and select any task
 from the overview of all tasks.
 
-Progression through the problem sets guarantees gradual increase of difficulty,
+Progression through the problem sets guarantees a gradual increase of difficulty,
 but the increase is not monotonous.
 % TODO: Reformulate not to use so many "increase"
 Perceived difficulty rises after progress to a new phase,
@@ -395,7 +395,7 @@ Google Analytics, monitoring dashboard, error reports, user feedback,
 data exports, and logs.
 
 Google Analytics
-  shows distribution of users with respect to the space and time
+  shows the distribution of users with respect to space and time
   (\cref{fig:google-analytics}).
   In addition to page views,
   it can also process events sent from the frontend
@@ -430,7 +430,7 @@ The dashboard is implemented as a weekly-recomputed Jupyter Notebook \cite{jupyt
 
 %\emph{Error Reports and User Feedback}.
   If an unhandled top-level error occurs on the server,
-  it is not only logged, but also sent to the administrators.
+  it is not only logged but also sent to the administrators.
   Administrators also receive emails with messages provided by users via
   a feedback form that can be invoked on any page.
 %\emph{Data Exports and Logs}.

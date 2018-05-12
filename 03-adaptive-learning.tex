@@ -7,11 +7,11 @@ If it is possible that a student can effectively learn something in 10 seconds, 
 % TODO: check terminonogly ALS vs. ITS, citation for ALS
 \emph{Adaptive Learning Systems}
 %ALS\footnote{They are more often called \emph{Intelligent Tutoring Systems} \cite{its-overview}, but we prefer to use the term Adaptive Learning System to emphasize learning (goal), rather than teaching (means).}
-optimize efficiency of the learning process
+optimize the efficiency of the learning process
 using techniques of artificial intelligence.
 Adaptivity is not necessary for a learning system to be useful%
 \footnote{Indeed, most of the systems presented in \cref{sec:existing-systems} are not adaptive.};
-however, it can greatly improve the learning effiency.
+however, it can greatly improve the learning.
 Artificial intelligence can be used, for example, to
 personalize the sequence of tasks \cite{proso}, %  for every student,
 % TODO: better citation?
@@ -50,7 +50,7 @@ It has been used by tens of thousands of students and
 % TODO: examples of ALS for programming?
 From the existing systems for learning introductory programming,
 Problem Solving Tutor (\cref{sec:problem-solving-tutor}) can be considered
-as adaptive learning system, since it recommends next tasks to solve after completion of a task.
+as an adaptive learning system, since it recommends next tasks to solve after completion of a task.
 % TODO: mention Umime programovat (mastery for the decision-making game)
 
 \smallskip
@@ -72,19 +72,19 @@ Typical adaptive learning system consists of the following parts % five componen
 \item \emph{Tutor model}
   (instructional policy)
   %(instructional policy, instructional strategy, pedagogical module) --
-  decides what should given student do next
+  decides what should the student do next
   (e.g. which topic to practice, which task to solve)
   (\cref{sec:tutor-modeling}).
 \item \emph{User interface model} %(tutor-student interface) --
   describes how the domain, student, and tutor models are presented to
-  the student (e.g., task environment, overview of problem sets, achieved
+  the student (e.g., task environment, an overview of problem sets, achieved
   skills, recommended tasks)
   (\cref{sec:user-interface}).
 %\item \emph{Sensor model} - collecting data from the interactions with the system
 %  (includes monitoring?).
 \item \emph{Analysis layer}
   monitors and evaluates system behavior,
-  allows to perform AB experiments,
+  allows performing AB experiments,
   and manages online training of model parameters.
   In addition to these online (inside-the-system) analyses,
   offline (outside-the-system) analyses are often performed as well
@@ -145,9 +145,9 @@ between them
 % (TODO: improve the definition, REF to examples), make sure it's consistent
 % with the short definition in the chapter intro
 It is used in student models to provide structure
-for student skills, in tutor models to filter tasks containing chosen
+for student skills, in tutor models to filter tasks containing a chosen
 concept, in the user interface to group tasks into problem sets, and in
-analyses for example to compare each task to the other tasks in the same problem set.
+analyses, for example, to compare each task to the other tasks in the same problem set.
 
 %\begin{itemize}
 %\item Usage:
@@ -405,7 +405,7 @@ edge weights, and the values in Q-matrix are continuous from range $[0, 1]$.
 %\end{figure}
 
 
-Concepts can be either set manually, or detected automatically
+Concepts can be either set manually or detected automatically
 % NOTE: Automatically: a clustering algoritm (e.g. k-means, k-medoids, spectral clustering)
 % operating on task-features or task-task similarity matrix
 % (REF: our paper about similarity of programming problems)
@@ -557,12 +557,12 @@ Concepts vary in granularity and create hierarchies.
 For example, programming concept include loops, loops include while loops,
 and while loops include programs with a single while-not-end loop.
 % TODO: CITE \cite{kli-framework}?
-Hierarchy can be modeled either as a rooted tree (single parent concept allowed),
+The hierarchy can be modeled either as a rooted tree (single parent concept allowed),
 or as a directed acyclic graph (DAG) (\cref{fig:concepts-hierarchical}).
 Although hierarchical concepts can be used without modeling the hierarchy
 (using overlapping concepts, e.g. a task can contain while loops and
 a more general loops concept), explicitly modeling the hierarchy of concepts in
-the introductory programming can improve accuracy of the overlaying student model
+the introductory programming can improve the accuracy of the overlaying student model
 \cite{learner-models-integration-skills}.
 % NOTE: paper: they model domain as BN with 4
 %types of nodes: observations, base concepts, integration concepts (TODO:
@@ -622,10 +622,10 @@ the introductory programming can improve accuracy of the overlaying student mode
 
 Prerequisites specify which learning objects need to mastered prior to
 tackling a given learning object.
-For example, single loop is a prerequisite for nested loops.
+For example, \emph{single loop} is a prerequisite for \emph{nested loops}.
 % If learning objects has multiple prerequisites, there are two common interpretations:
 There are two common interpretations of multiple prerequisites:
-\emph{conjunctive prerequisites} (all must be be mastered)
+\emph{conjunctive prerequisites} (all must be mastered)
 and \emph{disjunctive prerequisites} (one mastered is enough).
 Conjunctive and disjunctive prerequisites can be represented together by
 \emph{and-or graph} (\cref{fig:prerequisites-and-or}).
@@ -700,7 +700,7 @@ Similarities can be represented either as a matrix of values from range $[0, 1]$
 or as a graph with edges between the most similar learning objects
 (\cref{fig:similarities-tasks}).
 In the \emph{network model} \cite{rihak-phd}, task similarities are used to propagate
-knowledge about one task (observed performance) to another tasks (estimated performance)
+knowledge about one task (observed performance) to other tasks (estimated performance)
 directly, without using concepts.
 % example: if student solves a task -> update our performance estimates on all other tasks
 The most important decision when computing similarities is what data to use
@@ -767,7 +767,7 @@ performance data is collected in order for the computed similarities to be stabl
 \section{Student Modeling}
 \label{sec:student-modeling}
 
-Student model captures state of the student (e.g. skills) estimated from the
+Student model captures the state of the student (e.g. skills) estimated from the
 past performance. Usually, it enables to predict future performance
 %Comprehensive overviews of student modeling:
 \cite{student-models-review-2012, pelanek-learner-modeling,its-learner-models}.
@@ -859,7 +859,7 @@ while others describe the state of the student only between tasks %sessions
 \cite{kli-framework}. % TODO: check, add citation
 % or even only between finished problem sets.
 \item \emph{Discrete or continuous skills.}
-Some models assume discrete skills (e.g. known/unknow, or with multiple levels),
+Some models assume discrete skills (e.g. known/unknown, or with multiple levels),
 % e.g. unknown -> known -> fluent; or LogisticHMM
 %(CITE/REF:BKT)
 while others assume continuous skill
@@ -1301,7 +1301,7 @@ parents to the probability distribution of its values.  % TODO: check
 
 \emph{Bayesian Knowledge Tracing} (BKT) \cite{bkt} % TODO: check the paper
 is a widely used special case of DBN, which makes several assumptions to allow
-for simple online update: % of hidden skills: % and prediction of performances.
+for a simple online update: % of hidden skills: % and prediction of performances.
 disjoint concepts, binary skills, and constant rate of learning.
 %It assumes flat disjoint concepts, binary skills (i.e. each skill is either
 %known or not known), and constant rate of learning (after each task session, there
@@ -1332,7 +1332,7 @@ For example, the state function in DBN can be restricted to a specific form
 \cite[section 5.1.2]{student-models-review-2012},
 domain of each node can be restricted to a small number of values
 (e.g. learned, ready to learn, not ready to learn) \cite{its-programming},
-or BKT can be combined with logistic regression to estimate contribution
+or BKT can be combined with logistic regression to estimate the contribution
 of multiple skills \cite{bn-logreg}.
 
 
@@ -1388,7 +1388,7 @@ of multiple skills \cite{bn-logreg}.
 Ideally, student models should be evaluated with respect to their intended usage.
 For example, if the student model is used as a component for task recommendation,
 then the model that leads to the best recommendations is preferred.
-However, evaluating impact of the student model is difficult, % TODO:CITE:example
+However, evaluating the impact of the student model is difficult, % TODO:CITE:example
 so proxy quality measures are used instead,
 % (with the hope that it would lead to the improvement in the application).
 such as accuracy of predictions,
@@ -1477,14 +1477,14 @@ such as assigning the most suitable task to each student individually.
 According to modeled decisions, tutor models can be divided into two categories:
 \emph{problem selection tutors} (\emph{outer loop}, \emph{macroadaptivity})
 for decisions between tasks, % task sessions,
-and \emph{problem solving tutors} (\emph{inner loop}, \emph{microadaptivity})
+and \emph{problem-solving tutors} (\emph{inner loop}, \emph{microadaptivity})
 for decisions within a task \cite{its-learner-models}. % TODO:CITE:page/more specific resource
 Problem selection tutors can be further decomposed % hierarchically
 into
 \emph{mastery decision} (Continue to practice the current topic?),
 \emph{curriculum sequencing} (Which topic to learn next?),
 and \emph{task recommendation} (Which task to solve next?).
-Problem solving tutors decide when and which hint to show to the student.
+Problem-solving tutors decide when and which hint to show to the student.
 In this thesis, we restrict our attention to the outer loop decisions,
 which is the area where the computers perform best \cite{als-future}.
 % ... which are currently better performed by people than by computers \cite{als-future}.
@@ -1519,7 +1519,7 @@ While training tutor models can be approached as a \emph{supervised learning pro
 obtaining labeled training data is not straightforward.
 \emph{Reinforcement learning}  \cite{rl}
 % (with actions being either problem sets, tasks, or hints)
-allows to learn action preferences using future rewards
+allows learning of action preferences using future rewards
 (derived e.g. from the estimated time spent in flow)
 \cite{rl-for-tutors-evaluation}.
 % TODO: Explore->cite.
@@ -1677,7 +1677,7 @@ Typically, mastery is decided by comparing skill estimated by a student model
 %If the student model is predictive, then the probability that the current problem
 %set is mastered can be used for comparison instead of the skill.
 If the practiced problem set is homogeneous (all tasks have approximately same difficulty
-and cover the same concepts), than it is sufficient to use a concept-free
+and cover the same concepts), then it is sufficient to use a concept-free
 single-difficulty descriptive student model,  % TODO: make sure the terms are defined
 such as \emph{Exponential Moving Average} (EMA) of past performances
 \cite{alg.mastery}.
@@ -1771,7 +1771,7 @@ Instead of selecting a single recommended problem set, some systems may
 instead need to filter, rank, or score all problem sets.
 % \emph{Problem set selection}: domain, student $\rightarrow$ single problem set.
 A planning tutor can even generate a \emph{learning path}, which is a sequence
-of problem sets that lead to acquiring of a requested knowledge
+of problem sets that lead to acquiring a requested knowledge
 \cite{its-programming}.
 
 % NOTE: "The main difference between problem set selection and task selection is that
@@ -1787,7 +1787,7 @@ Problem set selection focuses on the prerequisite structure.
 %  (consider units in a textbook).
 % Especially, if the UI shows which PS are solved and which not.
 If the number of problem sets is reasonably small, students often want
-to solve all of them, in which case it make sense to recommend the problem
+to solve all of them, in which case it is preferable to recommend the problem
 sets from the easiest to the most difficult.
 If the ordering is not total, one of the problem sets with satisfied prerequisites
 can be recommended.
@@ -1823,20 +1823,20 @@ First, filters (\emph{hard constraints}) are applied,
 such as avoiding already solved
 tasks, avoiding the task which was just given up, % by the student,
 and not violating prerequisites.  % prerequisites are more suited for PS
-Second, for all remaining tasks a preference is computed based on several criteria
+Second, for all remaining tasks, a preference is computed based on several criteria
 (\emph{soft constraints}), such as
-optimal difficulty (how well does the task matches student skills),
+optimal difficulty (how well does the task match student skills),
 balance between diversity and coherence
 (avoiding too similar tasks as the previous one, especially if the student
 solved the task easily, but also avoiding too large changes),
 and exploration (value of information gained by observing the student solving this task).
 % TODO: Rewrite to avoit too long sentences.
 
-If the problem set is homogeneous, than all tasks should have similar preferences,
+If the problem set is homogeneous, then all tasks should have similar preferences,
 in which case it is safe to select the task \emph{uniformly at random},
 maximizing exploration.
 Otherwise, a typical approach is to manually select an error function for each
-soft constraint, compute \emph{weighted sum of errors} for each task and
+soft constraint, compute a \emph{weighted sum of errors} for each task and
 select the task with the smallest error \cite{alg.geography}.
 % TODO:+CITE
 
@@ -1860,7 +1860,7 @@ select the task with the smallest error \cite{alg.geography}.
 % at least as a simulated experiment.
 
 There are three common ways how to balance exploration and exploitation.
-First approach is to incorporate the uncertainty about the task into the selection
+The first approach is to incorporate the uncertainty about the task into the selection
 preference, % = prefer unexplored tasks, "UCB"
 second is to select the task at random with the probability proportional to its
 preference, %  (inverted and normalized error),
@@ -2067,7 +2067,7 @@ at that point, there is no easy way to tell if the recommendation is correct. % 
 The degree of data sparsity makes offline evaluation so challenging,
 that many adaptive learning systems completely skip this type of evaluation,
 apply offline evaluation only to student models (\cref{sec:student-model-evaluation}),
-and check quality of the deployed tutor model on the live traffic
+and check the quality of the deployed tutor model on the live traffic
 (\cref{sec:live-evaluation}).
 % (possible paragraph split)
 Nevertheless, realizing that the offline evaluation serves just as
@@ -2086,7 +2086,7 @@ e.g. to limit the number of models to evaluate online to just a few.
 %Supervise learning
 Evaluation of recommendations accuracy requires to define which
 recommendations are correct. For example, a \emph{suitable task} should
-result in neither too low, nor too high performance.
+result in neither too low nor too high performance.
 %(TODO:check)
 An ideal recommender would recommend all of the suitable tasks and none of
 the unsuitable tasks.
@@ -2110,7 +2110,7 @@ adaptive behavior of the system, or by the self-selection bias \cite{data-collec
 % It's possible to use only a ranodmly recommended tasks, but then it limits
 % the amount of evaluation data.
 Strategies to avoid the bias in the collected data include
-evaluation on only random recommendations (decreases the amount of data),
+using only random recommendations for the evaluation (decreases the amount of data),
 % TODO: or more generally, correcting/reweighting the distribution of collected
 % data to be uniform (or rather to match expected distribution when the evaluated
 % model would be used?)
@@ -2123,9 +2123,9 @@ or evaluation using simulated students (requires strong assumptions).
 % TODO: RL view (briefly)
 
 In addition to the accuracy of recommendations, % (how likely they are good / lead to flow)
-further properties of tutor models can be also explored,
+further properties of tutor models can also be explored,
 e.g. robustness, diversity, % TODO:CITE
-composition (balance between introduction of new concepts and practicing the old ones)
+composition (balance between the introduction of new concepts and practicing the old ones)
 \cite{progression-analysis},  % balanced progression, balanced composition.
 or the amount of effort needed to learn new concepts \cite{evaluation-leopard}.  % TODO: reread and consider to move somewhere else
 %It is also possible to measure metrics that quantify the amount of effort needed
@@ -2220,7 +2220,7 @@ information from the student model
 \cite[chapter 9]{its-domain-models}.
 For example,
 %explanations of concepts can include student's name, and
-task stories can use student's favourite characters. % and colors.
+task stories can use student's favorite characters. % and colors.
 % NOTE: Reference to self has been shown to improve retention.
 % TODO: better examples? (favourite colors, favourite music, sound volume,
 % possibly even theme if it doesn't change semantics of the task, e.g.
@@ -2234,7 +2234,7 @@ all tasks in the current problem set are displayed ordered by their score.
 % TODO: more about soft/hard rcm (see above, task rcm section)
 Adaptive learning systems can model UI explicitly in order to compare different versions
 of UI in an online AB experiment,
-which allows to investigate influence of various aspects of
+which allows to investigate the influence of various aspects of
 the UI, such as that different types of programming blocks are colored differently,
 or using text instead of blocks % (everything else being equal).
 \cite{comparing-blocks-text-weintrop2017}.
@@ -2322,7 +2322,7 @@ Frequent high-quality evaluation is achieved by a combination of
 %%       ... we will just adopt this paradigm for the rest of this thesis.
 
 At first sight, the mission of a system for learning programming is clear:
-  long-term increase in algorithmic problem solving skill in the population.
+  long-term increase in algorithmic problem-solving skill in the population.
 However, other factors than the skill should be considered as well.
 For example, how much students enjoy the time in the system,
   how they are satisfied with their accomplishments,
@@ -2337,7 +2337,7 @@ Such formulation reminds developers of the system not to overfocus on one factor
   at the cost of the others.
 
 
-\subsection{Long Term Objectives}
+\subsection{Long-Term Objectives}
 \label{sec:long-term-objectives}
 
 % TODO: Term AB experiments should be explained in this section!
@@ -2350,7 +2350,7 @@ While being precise and measurable, these proxy metrics
 should still be related to the mission as much as possible.
 
 The mission statement can be refined into the following
-  long term objective: ``maximize the number of students
+  long-term objective: ``maximize the number of students
   who mastered elementary programming while having fun''.  % + "quickly"?
 Next, we need to define terms used in this objective in a measurable way.
   %terms ``mastering elementary programming'', ``quickly'', and ``having fun''
@@ -2367,7 +2367,7 @@ While ``achieving mastery in elementary programming'' can be
 %the period must be long enough to collect enough data for statistical significant results
 %and to avoid seasonality effects (such as different user behavior during weekends).
 %% NOTE + to allow for more exploration, which improves long-term performance of the system.
-To avoid subjective ratings, the system can initialy use simpler long-term objectives,
+To avoid subjective ratings, the system can initially use simpler long-term objectives,
 which are also easier to measure and interpret
 (examples in \cref{tbl:long-term-metrics}).
 
@@ -2428,7 +2428,7 @@ post-test,
 but adaptive learning systems need to evaluate students continuously to collect data about
 all students and not only those that stay in the system and are willing
 to take a post-test.
-For example, the system can assign a randomly selected task after each 20 minutes of practice,
+For example, the system can assign a randomly selected task after every 20 minutes of practice,
 and measure the average performance.
 % TODO: it's not really possible to select any tasks from the system, they may be
 % too difficult and frustrate students for a long time (as opposed to geography,
@@ -2544,8 +2544,8 @@ Finally, individual errors are aggregated, and the average error is reported.
 
 \subsection{Offline Evaluation}
 
-Offline experiments use historical data to avoid the cost of live evaluation.
-They allow to reuse the same data to evaluate several models,
+Offline experiments use historical data to avoid the cost of the live evaluation.
+They allow reusing the same data to evaluate several models,
   to obtain the results quickly,
   and to avoid negative impact on students if the evaluated model is poor.
 Offline evaluation is typically used
@@ -2565,7 +2565,7 @@ were discussed in \cref{sec:student-model-evaluation,tutors.evaluation}.
 A common consideration for an unbiased offline evaluation is to ensure that
 the model is tested on different data then it was trained on.
 Unlike in many supervised learning problems, events from learning systems
-cannot be divided into train and test set randomly, since that would lead
+cannot be divided into train and test set randomly since that would lead
 to predicting past from the future. % optimistic bias
 The evaluation should mimic as close as possible the real scenario of how the
 trained model will be used, which leads to a methodology called \emph{online
@@ -2666,7 +2666,7 @@ is desirable, then the data should be split accordingly \cite{student-models-rev
 
 \subsection{Simulation Experiments}
 
-Online experiments relies on live data,
+Online experiments rely on live data,
 while offline experiments use historical data.
 Simulation experiments provide a third alternative,
   which does not require any collected data at all.

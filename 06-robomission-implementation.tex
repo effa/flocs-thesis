@@ -11,9 +11,9 @@ A programmer is ideally an essayist who works with traditional aesthetic and lit
 %and transformation between programming blocks and code.
 
 We present the overall architecture of RoboMission,
-and describe aspects specific for system for learning programming.
+and describe aspects specific to the system for learning programming.
 We intentionally avoid discussing details of used technologies,
-which would make the text obsole soon.
+which would make the text obsolete soon.
 An overview of technologies used in the project is included as \cref{chap:technologies}.
 
 \section{System Architecture}
@@ -36,7 +36,7 @@ and tools for offline analysis of collected data
 %TODO: diagram of overall architecture (client-server, communication, monitoring, scheduled jobs, offline analysis)
 
 % \section{Frontend}
-Frontend is a single page application with \emph{redux architecture}
+The frontend is a single page application with a \emph{redux architecture}
 \cite[ch.\,12]{flux},
 which means that a single immutable state stores all application data.
 % The state cannot be mutated directly;
@@ -152,8 +152,8 @@ e.g. for program interpretation, and task solving process. %, or sending events 
 
 % TODO?: more about the relationship between the backend and ALS components
 % (domain, student, tutor, UI, analysis layer)
-Backend is decomposed into modules defining database entities,
-their serializers (JSON for sending data to frontend, CSV for exports),
+The backend is decomposed into modules defining database entities,
+their serializers (JSON for sending data to the frontend, CSV for exports),
 \emph{view sets} describing REST API, % TODO: cite view-sets
 and core modules with mostly pure functions
 for computing performance, skills, and recommendations.
@@ -166,7 +166,7 @@ for computing performance, skills, and recommendations.
 
 \section{Domain Representation}
 
-Domain is represented by a JSON file containing all problem sets %missions, phases, and
+The domain is represented by a JSON file containing all problem sets %missions, phases, and
 and relationships between them, as well as their setting (e.g. which toolbox to use)
 and names of their tasks.
 Each task is then described in a separate file (\cref{sec:impl.task-sources}).
@@ -300,7 +300,7 @@ Object -> 'S' | 'A' | 'M' | 'D' | 'W'
 {Example Space World with its description. % source code.
 Each line represents one row of the grid
 and is split by pipes (``|'') into fields.
-Each field starts with a lower-cased letter denoting color of the field
+Each field starts with a lower-case letter denoting color of the field
 (e.g. b = blue, k = black),
 followed by an optional upper-case letter denoting an object
 (A = asteroid, S = spaceship, etc.).
@@ -326,7 +326,7 @@ transitional phase from block-based to text-based programming.
 The language was designed % with the following requirements in mind:
 to be simple for beginners, understandable without its previous knowledge,
 concise (short, but readable programs),
-and matching Python closely (for easy transition to Python).
+and matching Python closely (for an easy transition to Python).
 
 %\subsection{Syntax and Semantic}
 %\label{sec:syntax-semantic}
@@ -394,11 +394,11 @@ while color() != 'b':
 \subsection{RoboAST}
 
 While Python-like RoboCode is convenient for writing sample solutions,
-more compact form would be better for logging, storing in DB and analysis.
+a more compact form would be better for logging, storing in DB and analysis.
 Secondly, a block-based presentation of the code is needed for students.
 Last but not least, a JavaScript equivalent of the code is useful for
 interpreting the code in the browser.
-\Cref{tbl:code-representation} shows overview of all representations.
+\Cref{tbl:code-representation} shows an overview of all representations.
 
 
 \begin{table}[htb]
@@ -504,7 +504,7 @@ For example, the preprocessed code for the program shown in
 
 MiniRoboCode is a condensed form of the RoboCode.
 It replaces indentation by curly brackets,
-key words and functions by their first letters,
+keywords and functions by their first letters,
 and removes whitespace characters
 in order to fit programs into a single short line.
 The mapping from the RoboCode is described by the following rules:
@@ -618,7 +618,7 @@ R6{Ix>1{s}/{r}}
 %%\label{fig:minirobocode-transformations}
 %\end{figure}
 
-MiniRoboCode is useful not only for logging and storing programs in database,
+MiniRoboCode is useful not only for logging and storing programs in the database,
 but also for many analyses, because it is easy to process by counting
 letters or matching simple regular expressions, and because they are short
 enough to be used as labels in plots.
