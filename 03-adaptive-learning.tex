@@ -30,7 +30,7 @@ or to analyze collected data and get an actionable insight \cite{alg.mastery}.
 Adaptive learning systems have been already successful in some domains.
 For instance, Map Outlines%
   \footnote{Available at \url{https://outlinemaps.org}.},
-  developed by Adaptive Learning research group at Masaryk University,
+  developed by the Adaptive Learning group at Masaryk University,
   is an intelligent web application for learning geography.
 It has been used by tens of thousands of students, and
   online experiments have confirmed
@@ -59,7 +59,7 @@ Typical adaptive learning system consists of the following parts % five componen
 %(extended version of \cite{its-learner-models})
 \begin{itemize}
 \item \emph{Domain model}
-  describes concepts, tasks, and relationships between them.
+  describes tasks and concepts, including relationships between them.
   It can also include knowledge of an ideal student (rules for solving tasks),
   and misconceptions (flawed rules)
   (\cref{sec:domain-modeling}).
@@ -72,8 +72,8 @@ Typical adaptive learning system consists of the following parts % five componen
 \item \emph{Tutor model}
   (instructional policy)
   %(instructional policy, instructional strategy, pedagogical module) --
-  decides what should the student do next
-  (e.g., which topic to practice, which task to solve)
+  decides what should the student do next,
+  e.g., which topic to practice, which task to solve
   (\cref{sec:tutor-modeling}).
 \item \emph{User interface model} %(tutor-student interface) --
   describes how the domain, student, and tutor models are presented to
@@ -176,7 +176,7 @@ analyses, for example, to compare each task to the other tasks in the same probl
 %\subsection{Data and Algorithms}
 % consider: "Chunks", "Chunks and Relationships", "General Chunk Model", "Domain Ontology"
 
-Entities in the domain, \emph{learning objects} \cite{learning-objects} % TODO:reread
+Entities in the domain, \emph{learning objects} \cite{learning-objects}, % TODO:reread
 include not only tasks, texts, videos, interactive visualizations,
 and other educational content,
 but also problem sets, concepts, and misconceptions.
@@ -344,7 +344,7 @@ concepts are either \emph{disjoint} (1:m) or \emph{overlapping} (n:m)
 % there is no hierarchy).
 % Single programming task may require multiple skills at once, e.g., both loops
 % and conditional commands.
-Overlapping concepts can be represented as sets of tasks, bipartite graph,
+Overlapping concepts can be represented as sets of tasks, a bipartite graph,
 or a feature matrix
 (\emph{Q-matrix} \cite{qmatrix}, \cref{fig:concepts-tasks-qmatrix}),
 where rows correspond to tasks, columns to concepts,
@@ -412,7 +412,7 @@ Concepts can be either set manually or detected automatically
 \cite{niznan-thesis, rihak-phd}. % TODO: spec.pages
 To use collected data while keeping the interpretability of manually defined
 concepts, automatic techniques can be used to suggest small improvements to the
-current tasks to concepts mapping \cite[chapter 3]{its-domain-models}.
+current mapping of tasks to concepts \cite[chapter 3]{its-domain-models}.
 
 
 %Manually defined concepts are interpretable and do not require collected data,
@@ -767,8 +767,8 @@ performance data is collected in order for the computed similarities to be stabl
 \section{Student Modeling}
 \label{sec:student-modeling}
 
-Student model captures the state of the student (e.g., skills) estimated from the
-past performance. Usually, it enables to predict future performance
+The student model captures the state of the student (e.g., skills) estimated from the
+past performance and it usually enables to predict future performance
 %Comprehensive overviews of student modeling:
 \cite{student-models-review-2012, pelanek-learner-modeling,its-learner-models}.
 It is used in tutor models to detect mastery, or to select tasks matching
@@ -836,7 +836,7 @@ and in the analyses to get insight into how the students are learning.  % TODO: 
 
 A lot of diverse student models were proposed, to cover many possible scenarios
 based on the available data and usage of the model. The following
-are the main properties that differentiate different models.
+are the main properties that differentiate the models.
 
 \begin{itemize}
 \item \emph{Modeled components.}
@@ -852,7 +852,7 @@ The simplest models assume a single concept,
 % or each task as separate concept. %(REF: slepe-mapy).
 more complex models can include multiple concepts,
 hierarchies, prerequisites, or similarities (\cref{sec:domain-modeling}).
-\item \emph{Granularity of modeled events.}
+\item \emph{Time scale of modeled events.}
 Some models track the state of the student during solving a task
 \cite{bkt, sqltutor}, % TODO:CITE: rule-based models, constraint based models),
 while others describe the state of the student only between tasks %sessions
@@ -2265,7 +2265,8 @@ incremental improvements performed, so it is beneficial to
 evaluate and update the system frequently.
 This \emph{rule of the loop} \cite{book-of-lenses}
 %\emph{``Plan to launch and iterate''}
-was observed to hold for adaptive learning systems \cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}, % TODO: better resource?
+was observed to hold for adaptive learning systems \cite{stupid-tutoring-systems-intelligent-humans,its-domain-models}, % TODO: better resource?
+%\cite[p.124]{its-domain-models, stupid-tutoring-systems-intelligent-humans}
 as well as for recommender systems in general \cite[][Rule 16]{google-ml-rules}.
 % TODO and for SW development (SCRUM); and for games (Book of lenses)
 % - our project includes all these elements (game design, SW devel., RecSys, ALS)
@@ -2345,7 +2346,7 @@ Such formulation reminds developers of the system not to overfocus on one factor
 Mission statements are not measurable.
 However, measurable metrics are needed to make informed decisions,
 such as which of two recommendation algorithms to prefer
-(e.g., after conducting an A/B test). % TODO: cite A/B tests, in the context of ALS or RecSys
+(e.g., after conducting an AB experiment). % TODO: cite A/B tests, in the context of ALS or RecSys
 While being precise and measurable, these proxy metrics
 should still be related to the mission as much as possible.
 

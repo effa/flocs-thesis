@@ -429,8 +429,8 @@ programming.
 %\label{sec:transition-strategy}
 %Weintrop and Wilensky suggest that the block representation of the code
 To make the transition easier, the block representation of the code
-  should match the underlying programming language
-  to which the student is expected to move in the next phase
+  should match the programming language
+  to which the students are expected to move in the next phase
   \cite{challenges-of-blocks-based-environments}.
 However, resemblance to a programming language sometimes
   conflicts with the readability of the blocks for novices.
@@ -455,7 +455,7 @@ Learning systems can help students to track program execution
   and effects performed by the program.
 For example, in turtle graphics,
   the whole state is just a position and orientation of the turtle,
-  and effects are the drawn lines.
+  and effects are the drawn lines (\cref{fig:turtle}).
 Similarly, in simple games, such as those described in
   \cref{sec:lightbot,sec:problem-solving-tutor,sec:blockly-games,sec:hoc},
   the grid world visualization contains complete information about the current
@@ -477,17 +477,12 @@ However, many students ignore instructions,
   which cannot be closed manually by the student,
   and disappear only once the student performs the action described in the instruction.
 
-A solution to this problem are actionable non-ignorable instructions,
-  which cannot be closed manually by the student, and disappear only once the
-  student performs the action described in the instruction
-  (\cref{fig:blockly-games}).
-
 In addition to the instructions, some systems offer hints, which appear either
-  upon a student request or automatically after a certain time of unsuccessful
-  solving. Although it is possible to generate a hint in any state,
-  using data of students which have successfully solved the task before
-  \cite{generating-hints}, most existing systems use a few manually prepared
-  hints, instead of relying on the automatic approaches.
+upon a student request or automatically after a certain time of unsuccessful solving.
+Although it is possible to generate a hint in any state, using data of students
+who have successfully solved the task in the past \cite{generating-hints},
+most existing systems use a few manually prepared hints, instead of relying on
+the automatic approaches.
 
 \section{Strategies to Support Motivation}
 %\section{Strategies for Motivation}
@@ -535,7 +530,7 @@ even without tasks to solve,
   it should be an attractive toy to play with \cite{book-of-lenses}.
 That is why all Hour of Code tutorials are based on movies and games
   popular among children, such as Angry Birds, Frozen, or Star Wars
-  (\cref{fig:hoc}).
+  (\cref{fig:hoc,fig:turtle}).
 In such environments, it is possible to assign open-ended tasks,
   or even let the students create whatever they want,
   which works well especially for creative students seeking for self-expression.
@@ -585,7 +580,7 @@ The complete immersion into the task the student is solving at the moment is cal
 Achieving the state of flow maximizes the learning outcome \cite{adaptive-practice}.
   % and even increases the long-term level of happiness. % TODO: find a source of this claim
 \Cref{chap:adaptive-learning} describes techniques for estimating student's skills
-and recommending tasks of optimal difficulty.
+and recommending tasks of the optimal difficulty.
 % for estimating student’s skill and show how to use that estimate for task recommendation and mastery learning.
 
 \begin{figure}[htb]
@@ -614,9 +609,15 @@ and recommending tasks of optimal difficulty.
 \subsection{Gamification and Progress Visualization}
 
 A sense of progress and learning can be boosted by visualizations of
-progress towards mastery in the current topic, solved tasks, completed problems sets,
-or acquired skills.
+solved tasks and completed problems sets,
+acquired skills,
+and progress towards mastery in the current topic.
 \Cref{fig:progress-visualization} shows examples of progress bars from various systems.
+Although the programming tasks themselves can be considered as a game,
+%(e.g. Human Resource Machine from \cref{sec:human-resource-machine} is presented purely as a game),
+most learning systems add further gamification elements to increase the sense
+of progress.
+Common gamification elements include points, levels, badges, and leaderboards.
 
 % TODO: cite relevant research, open learner model
 % NOTE: also helps to decide what to practice next, while preserving student's
@@ -649,11 +650,6 @@ or acquired skills.
 
 %\subsection{Gamification}
 
-Although the programming tasks themselves can be considered as a game,
-%(e.g. Human Resource Machine from \cref{sec:human-resource-machine} is presented purely as a game),
-most learning systems add further gamification elements to increase the sense
-of progress.
-Common gamification elements include points, levels, badges, and leaderboards.
 
 % TODO: figures: Project Euler, KA
 % TODO: ref relevant research

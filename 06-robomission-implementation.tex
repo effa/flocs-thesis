@@ -170,7 +170,7 @@ The domain is represented by a JSON file containing all problem sets %missions, 
 and relationships between them, as well as their setting (e.g., which toolbox to use)
 and names of their tasks.
 Each task is then described in a separate file (\cref{sec:impl.task-sources}).
-Furthermore, there is a separate file containing parameters
+Furthermore, there is a JSON file containing parameters
 of domain entities (e.g., a time threshold for good performance for each task).
 %EXT:
 %It is convenient to have the relationships and the parameters in different files,
@@ -315,6 +315,7 @@ For example, ``rD'' is a red field with a diamond.}
 for representing solutions in task sources.
 It closely corresponds to the text written on Blockly blocks
 with a few exceptions, such as %added parentheses
+abbreviated literals (e.g., \texttt{'b'} instead of \texttt{blue}),
 shorter function names and added parentheses
 (e.g., \texttt{left()} instead of \texttt{fly left}).
 % also: fly right -vs- fly()
@@ -367,14 +368,14 @@ Conditions %inside while-loops and if-statements
 are restricted to the following forms.
 % (again in order to match the respective Blockly blocks):
 (Color codes are same as in the Space World description,
-i.e. 'r' is red, 'g' is green' etc.)
+i.e. \texttt{'r'} is red, \texttt{'g'} is green, etc.)
 % (again in order to match the respective Blockly blocks):
 \begin{lstlisting}
 position() [==|!=|>|<|>=|<=] [1..6]
 color() [==|!=] ['r'|'g'|'b'|'y'|'k']
 <test> [and|or] <test>
 \end{lstlisting}
-Control structures can nest arbitrarily:
+Control structures can be nested arbitrarily:
 % TODO: Program for solvint the task from the previous section
 %       (change either the program, the task, or both).
 %\begin{figure}[h]
@@ -627,7 +628,7 @@ enough to be used as labels in plots.
 \subsection{RoboBlocks}
 
 Blockly%
-\footnote{Available at \url{https://developers.google.com/blockly/}.}
+\footnote{\url{https://developers.google.com/blockly/}}
 is an implementation of a block-based programming
 environment from Google,
 which we use in the code editor for students
@@ -766,7 +767,7 @@ for (var i1_ = 0; i1_ < 4; i1_++) {
 %otherwise, there is no technical obstacle and the parser would be based on a similar PEG gramamar as for the RoboCode.
 
 We use an existing JavaScript interpreter%
-\footnote{JS-interpreter, available at \url{https://github.com/NeilFraser/JS-Interpreter}.}
+\footnote{\url{https://github.com/NeilFraser/JS-Interpreter}}
 and wrap it into two
 additional layers: the first layer is a generator
 that yields actions, sensor requests and
