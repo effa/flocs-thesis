@@ -5,36 +5,36 @@
 %% The original source files were:
 %%
 %% mubeamer.dtx  (with options: `theme')
-%% 
+%%
 %% Copyright 2017  Vít Novotný <witiko@mail.muni.cz>
 %% Faculty of Informatics, Masaryk University (Brno, Czech Republic)
-%% 
+%%
 %% Copyright 2017  Aleš Křenek <ljocha@ics.muni.cz>
 %% Institute of Computer Science, Masaryk University (Brno, Czech Republic)
-%% 
+%%
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version
 %% 1.3 of this license or (at your option) any later version.
 %% The latest version of this license is available at
-%% 
+%%
 %%   http://www.latex-project.org/lppl.txt
-%% 
+%%
 %% and version 1.3 or later is part of all distributions of LaTeX
 %% version 2005/12/01 or later.
-%% 
+%%
 %% This work has the LPPL maintenance status `maintained'.
-%% 
+%%
 %% The Current Maintainer of this work is Vít Novotný.
 %% Send bug reports, requests for additions and questions
 %% either to the fithesis discussion forum at
-%% 
+%%
 %%   http://is.muni.cz/auth/df/fithesis-sazba/
-%% 
+%%
 %% or to the e-mail address <witiko@mail.muni.cz>.
-%% 
-%% 
+%%
+%%
 %% MODIFICATION ADVICE:
-%% 
+%%
 %% If you want to customize this file, it is best to make a copy of
 %% the source file(s) from which it was produced.  Use a different
 %% name for your copy(ies) and modify the copy(ies); this will ensure
@@ -42,14 +42,14 @@
 %% new release of the standard system.  You should also ensure that
 %% your modified source file does not generate any modified file with
 %% the same name as a standard file.
-%% 
+%%
 %% You will also need to produce your own, suitably named, .ins file to
 %% control the generation of files from your source file; this file
 %% should contain your own preambles for the files it generates, not
 %% those in the standard .ins files.
-%% 
+%%
 %% The names of the source files used are shown above.
-%% 
+%%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{beamerthemeMU}[2017/08/29]
 \mode<presentation>
@@ -278,14 +278,15 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}{%
   \hskip\mubeamer@length@margin
+  %% Tom: Remove auther, title and date from the foooter (but leave the color and font).
   \usebeamercolor[fg]{author in head/foot}%
-    \usebeamerfont{author in head/foot}\insertshortauthor
-  \ \lower2pt\hbox{\Large$\cdot$}\
-  \usebeamercolor[fg]{title in head/foot}%
-    \usebeamerfont{title in head/foot}\insertshorttitle
-  \ \lower2pt\hbox{\Large$\cdot$}\
-  \usebeamercolor[fg]{date in head/foot}%
-    \usebeamerfont{date in head/foot}\insertshortdate
+    \usebeamerfont{author in head/foot}%\insertshortauthor
+  %\ \lower2pt\hbox{\Large$\cdot$}\
+  %\usebeamercolor[fg]{title in head/foot}%
+  %  \usebeamerfont{title in head/foot}\insertshorttitle
+  %\ \lower2pt\hbox{\Large$\cdot$}\
+  %\usebeamercolor[fg]{date in head/foot}%
+  %  \usebeamerfont{date in head/foot}\insertshortdate
   \hfill
   \insertframenumber{} / \inserttotalframenumber
   \hskip\mubeamer@length@margin

@@ -14,13 +14,14 @@
 
 \begin{document}
 
+% TODO: Remove the left part of the footer.
 \title{Adaptabilní systém pro výuku programování}
-\subtitle{Program rektora}
-\author[T.\,Effenberger]{Tomáš Effenberger\\ 410350@mail.muni.cz}
+%\subtitle{Obhajoba diplomové práce}
+\author[T.\,Effenberger]{Tomáš Effenberger} %\\ 410350@mail.muni.cz}
 \institute[FI MU]{Fakulta informatiky Masarykovy univerzity}
 \date{\today}
-\subject{Předmět prezentace}
-\keywords{klíčová, slova, prezentace}
+%\subject{Předmět prezentace}
+%\keywords{klíčová, slova, prezentace}
 
 \begin{frame}[plain]
 \maketitle
@@ -30,69 +31,68 @@
 %\tableofcontents
 %\end{frame}
 
-\begin{frame}{Výuka programování}
+% Mozna rozsireni:
+% - dalsi analyzy (napr. mereni vykonu)
+% - implementace, napr. transformace RoboKodu
+
+\begin{frame}{RoboMise}
 % Mise, rozsah, optimalni obtiznost, flow, blokove programovani.
 % Existujici systemy (HoC) a pridana hodnota (vyzkum adaptability).
 % Stav (2. prototyp), testovani na skolach.
 \begin{figure}
-\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-task1}
+\includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-task1}
 \end{figure}
 \end{frame}
+
+\begin{frame}{InterSoB}
+% Strategie pro podporu motivace a uceni
+% -> tak jednoduche, ze to jde zvladnout i poslepou.
+\begin{figure}
+\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/intersob}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Herní svět}
+% Navrh programovací hry: musi bavit a umoznovat rozpeti obtiznosti.
+% robot na mrizce, staly let vpred, vice zakladnich akci.
+% Herni prvky: diamanty, asteroidy, meteorodiy, cervi diry, barvy.
+% Zduraznit inovaci oproti znamym hram ve stalem letu vpred.
+\begin{figure}
+\includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/spaceworld-path}
+%\includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-task3}
+\end{figure}
+\end{frame}
+
 
 \begin{frame}{Programovací bloky}
 % Proc: odstraneni problemu se syntaxi.
 % Bloky: prikazy, cykly, podminky; kontrola barev a pozice.
 \begin{figure}
-\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-task2}
+\includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-yellow-is-not-red-whiles}
+%\includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-task2}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Herní prvky}
-% Navrh hry: musi bavit a umoznovat rozpeti obtiznosti.
-% robot na mrizce, staly let vpred, vice zakladnich akci.
-% Herni prvky: diamanty, asteroidy, meteorodiy, cervi diry, barvy.
-\begin{figure}
-\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-task3}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Adaptabilní instrukce}
+\begin{frame}{Instrukce a vysvětlení}
 % Adaptabilni instrukce a mini-vysvetleni.
 \begin{figure}
-\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-mini-instruction}
+\includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-mini-instruction}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Levely a kredity}
 % Motivacni prvky: kredity, levely.
-% Aktualni verze je dost ad-hoc, uz brzy: mastery learning.
+% Mastery learning.
 %\vspace{-10pt}
 \begin{figure}
-\includegraphics[width=0.9\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-levels-credits}
+\includegraphics[width=0.9\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-levels-credits}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Přehled úloh}
-% Pres 80 uloh, rozdelenych do 9 levelu.
+% Pres 80 uloh, rozdelenych do 9 levelu, kazdy level do 3 fazi.
 \begin{figure}
 \includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-tasks-overview}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Doporučování úloh}
-% Doporuceni uloh (jednoducha heuristika), predmet vyzkumu a aktualnich zmen.
-% Snaha o optimalni obtiznost -> flow.
-\begin{figure}
-\begin{tikzpicture}[font=\sffamily,xscale=5, yscale=5]
-\large
-%\draw [lightgray, fill=gray] (0,0) -- (0.1,0) -- (1,0.8) -- (0.8,1) -- (0,0.1) -- (0,0);
-\draw (0.1,0) -- (1,0.8);
-\draw (0,0.1) -- (0.8,1);
-\draw [thick, <->] (0,1) node [left] {obtížnost} -- (0,0) -- (1,0) node [below right] {dovednost};
-\node at (0.27,0.82) {frustrace};
-\node at (0.6,0.6) {flow};
-\node at (0.7,0.2) {nuda};
-\end{tikzpicture}
 \end{figure}
 \end{frame}
 
@@ -102,6 +102,7 @@
 \end{figure}
 \end{frame}
 
+
 \begin{frame}{Editor úloh}
 % Online editor úloh. Moznost psat reseni v Pythonu a editovat mrizku ve vimu.
 % Textovy format (markdown).
@@ -110,20 +111,57 @@
 \end{figure}
 \end{frame}
 
+
+\begin{frame}{Model domény}
+% Pres 80 uloh, rozdelenych do 9 levelu, kazdy level do 3 fazi.
+\begin{figure}
+\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-domain}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Model studenta}
+\begin{figure}
+\includegraphics[width=\textwidth,height=.45\textheight,keepaspectratio]{../img/robomission-student-model}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Doporučování úloh}
+% Snaha o optimalni obtiznost -> flow.
+% Dekompozice na vyber mise a vyber faze -> nahodna uloha z faze. Mastery learning.
+\begin{figure}
+\begin{tikzpicture}[font=\sffamily,xscale=5, yscale=5]
+\large
+\draw [dashed] (0.1,0) -- (1,0.8);
+\draw [dashed] (0,0.1) -- (0.8,1);
+\draw [thick] (0.0,0.05) -- (0.1,0.05)
+           -- (0.1,0.15) -- (0.2,0.15)
+           -- (0.2,0.25) -- (0.3,0.25)
+           -- (0.3,0.375) -- (0.45,0.375)
+           -- (0.45,0.505) -- (0.6,0.505)
+           -- (0.6,0.7) -- (0.8,0.7)
+           -- (0.8,0.9) -- (1.0,0.9);
+\draw [thick, <->] (0,1) node [left] {\emph{obtížnost}} -- (0,0) -- (1,0) node [below right] {\emph{dovednost}};
+\node at (0.27,0.82) {frustrace};
+%\node at (0.95,0.95) {flow};
+\node at (0.7,0.2) {nuda};
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Monitoring}
 % Google Analytics.
 % Monitorovaci nastenka - metriky (napocitavane kazdy noc).
 % Tydne updatovany jupyter notebook -- pohodlne rozsirovani.
 \begin{figure}
-\includegraphics[width=0.44\textwidth]{../img/monitoring-dashboard}
-\includegraphics[width=0.45\textwidth]{../img/investigation-notebook}
+\includegraphics[width=0.62\textwidth]{../img/dashboard-metrics}
+\includegraphics[width=0.37\textwidth]{../img/monitoring-notebook-repeat}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Počet vyřešených úloh denně}
 % Jednoduchý příklad sledované metriky - počet vyřešených úloh denně.
 \begin{figure}
-\includegraphics[width=0.8\textwidth]{../img/daily-task-sessions}
+\includegraphics[width=0.7\textwidth]{../img/daily-task-sessions}
 \end{figure}
 \end{frame}
 
@@ -136,73 +174,34 @@
 \end{figure}
 \end{frame}
 
-\begin{frame}{Shrnutí}
+\begin{frame}{Přínosy práce}
 \begin{itemize}
 \item adaptabilní systém pro výuku programování
-\item úlohy na mřížce, blokové programování
+      % - navrh a implementace
+      % - kombinace strategii pro podporu motivaci i uceni
+\item nová výuková hra na mřížce
+      % - osvedcene prvky + poutave tema + staly let vpred
+      % - blokové programování
 \item optimální obtížnost úloh $\rightarrow$ flow
-\item prototyp: \url{https://robomise.cz}
-\item kód: \url{github.com/adaptive-learning/robomission}
+      % - hlavne bonus oproti existujicim systemum
+      % - nas pristup k adaptivite, ktery dekomponuje doporucovani uloh
+      % na 3 slozky: vyber levelu, vyber faze a mastery learning
+\item monitoring, analýza dat
+      % monitoring + analyzy -> postupne vylepsovani - nekolik iteraci design loop
+      % analyza dat -- 4 mesice pouzivani;
+      % -> 2 clanky (navrh adaptability a podobnost polozek), dalsi spousta vyzkumu pred nami
+\item testování na školách, použití v soutěžích
 \end{itemize}
 \end{frame}
 
-
-%\section[Název sekce 1]{Dlouhý název sekce 1}
-%\subsection[Název podsekce 1]{Dlouhý název podsekce 1}
-
-%\begin{frame}{Nadpis}{Podnadpis}
-%běžný text, \structure{struktura stránky}, \alert{zvýrazněný text}
+%\begin{frame}{Shrnutí}
 %\begin{itemize}
-%  \item položka odrážkového seznamu na jeden řádek
-%  \item položka odrážkového seznamu dlouhá, moc dlouhá (to aby se zalomila),
-%    která navíc obsahuje \alert{zvýrazněný text}
+%\item adaptabilní systém pro výuku programování
+%\item úlohy na mřížce, blokové programování
+%\item optimální obtížnost úloh $\rightarrow$ flow
+%\item \url{https://robomise.cz}
+%%\item kód: \url{github.com/adaptive-learning/robomission}
 %\end{itemize}
-%\begin{enumerate}
-%  \item a číslovaná odrážka
-%  \begin{enumerate}
-%    \item odrážka druhé úrovně se vzorečkem
-%      \[ E = mc^2 \]
-%  \end{enumerate}
-%\end{enumerate}
-%\end{frame}
-
-
-%\begin{frame}{Textové bloky}
-%text nad blokem
-%\begin{block}{Blok}
-%  text
-%\end{block}
-%\begin{exampleblock}{Blok s příkladem}
-%  text
-%\end{exampleblock}
-%\begin{alertblock}{Zvýrazněný blok}
-%  text
-%\end{alertblock}
-%\end{frame}
-
-%\begin{frame}{Obrázky}
-%\begin{figure}
-%  \includegraphics[width=.5\textwidth,height=.5\textheight,keepaspectratio]{cow-black.mps}
-%  \caption{Kráva černostrakatého holštýnského skotu}
-%\end{figure}
-%\end{frame}
-
-%\begin{frame}{Tabulky}
-%\begin{table}
-%\begin{tabular}{llc}
-%  Jméno & Příjmení & Rok narození \\ \midrule
-%  Albert & Einstein & 1879 \\
-%  Marie & Curie & 1867 \\
-%  Thomas & Edison & 1847 \\
-%\end{tabular}
-%\end{table}
-%\end{frame}
-
-%\begin{frame}[plain]
-%% Prostor na otazky.
-%\vfill
-%\centerline{Děkuji za pozornost.}
-%\vfill\vfill
 %\end{frame}
 
 \end{document}
