@@ -14,7 +14,6 @@
 
 \begin{document}
 
-% TODO: Remove the left part of the footer.
 \title{Adaptabilní systém pro výuku programování}
 %\subtitle{Obhajoba diplomové práce}
 \author[T.\,Effenberger]{Tomáš Effenberger} %\\ 410350@mail.muni.cz}
@@ -42,6 +41,23 @@
 \begin{figure}
 \includegraphics[width=\textwidth,height=.65\textheight,keepaspectratio]{../img/robomission-task1}
 \end{figure}
+\end{frame}
+
+\begin{frame}{Motivace}
+\begin{itemize}
+\item mnoho existujících systémů
+\item nejsou personalizované
+\item optimální obtížnost úloh $\rightarrow$ stav plynutí
+\item RoboMise: výuková hra, adaptabilita
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Programovací prostředí}
+\begin{itemize}
+\item usnadnění procesu učení
+\item programování pomocí bloků
+\item herní svět -- znázornění vykonávaného programu
+\end{itemize}
 \end{frame}
 
 \begin{frame}{InterSoB}
@@ -96,7 +112,7 @@
 \end{figure}
 \end{frame}
 
-\begin{frame}{Anglická lokalizace}
+\begin{frame}{Anglická a česká lokalizace}
 \begin{figure}
 \includegraphics[width=0.5\textwidth,height=.75\textheight,keepaspectratio]{../img/roboblocks-english-czech}
 \end{figure}
@@ -112,6 +128,17 @@
 \end{frame}
 
 
+\begin{frame}{Komponenty adaptabilního systému}
+\begin{itemize}
+\item model domény % ulohy sady uloh a vztahy mezi nimi
+\item model studenta  % model dovednosti pro kazdeho jednoho studenta
+\item model učitele (doporučování úloh)
+\item uživatelské rozhraní  % o tom jsme uz mluvili
+\item monitorování systému  % a analýzy
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Model domény}
 % Pres 80 uloh, rozdelenych do 9 levelu, kazdy level do 3 fazi.
 \begin{figure}
@@ -120,6 +147,13 @@
 \end{frame}
 
 \begin{frame}{Model studenta}
+\begin{figure}
+%\includegraphics[width=\textwidth,height=.45\textheight,keepaspectratio]{../img/robomission-student-model}
+\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-student-model-complete}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Výpočet dovednosti}
 \begin{figure}
 \includegraphics[width=\textwidth,height=.45\textheight,keepaspectratio]{../img/robomission-student-model}
 \end{figure}
@@ -148,7 +182,13 @@
 \end{figure}
 \end{frame}
 
-\begin{frame}{Monitoring}
+\begin{frame}{Model učitele}
+\begin{figure}
+\includegraphics[width=\textwidth,height=.75\textheight,keepaspectratio]{../img/robomission-tutor-model}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Monitorování}
 % Google Analytics.
 % Monitorovaci nastenka - metriky (napocitavane kazdy noc).
 % Tydne updatovany jupyter notebook -- pohodlne rozsirovani.
@@ -179,18 +219,31 @@
 \item adaptabilní systém pro výuku programování
       % - navrh a implementace
       % - kombinace strategii pro podporu motivaci i uceni
-\item nová výuková hra na mřížce
-      % - osvedcene prvky + poutave tema + staly let vpred
-      % - blokové programování
-\item optimální obtížnost úloh $\rightarrow$ flow
-      % - hlavne bonus oproti existujicim systemum
-      % - nas pristup k adaptivite, ktery dekomponuje doporucovani uloh
-      % na 3 slozky: vyber levelu, vyber faze a mastery learning
-\item monitoring, analýza dat
-      % monitoring + analyzy -> postupne vylepsovani - nekolik iteraci design loop
-      % analyza dat -- 4 mesice pouzivani;
-      % -> 2 clanky (navrh adaptability a podobnost polozek), dalsi spousta vyzkumu pred nami
-\item testování na školách, použití v soutěžích
+  \begin{itemize}
+  \item nová výuková hra na mřížce
+        % - osvedcene prvky + poutave tema + staly let vpred
+        % - blokové programování
+  \item doporučování úloh optimální obtížnosti % $\rightarrow$ stav plynutí
+        % - hlavne bonus oproti existujicim systemum
+        % - nas pristup k adaptivite, ktery dekomponuje doporucovani uloh
+        % na 3 slozky: vyber levelu, vyber faze a mastery learning
+  \end{itemize}
+\item testování na školách, použití v soutěžích (\emph{Purkiáda}, \emph{InterSoB})
+%  \begin{itemize}
+%  \item \emph{Purkiáda}
+%  \item \emph{InterSoB}
+%  \end{itemize}
+%\item monitoring, analýza dat
+\item přes 30 tisíc vyřešených úloh \emph{(květen 2018)} % stabilne stovky uloh denne
+  % = je vyuzivany a taky nam to poskytuje data pro vyzkum
+\item analýza dat $\rightarrow$ 2 články na konferenci \emph{Learning @ Scale}
+  % monitoring + analyzy -> postupne vylepsovani - nekolik iteraci design loop
+  % analyza dat -- 4 mesice pouzivani;
+    % -> 2 clanky (navrh adaptability a podobnost polozek), dalsi spousta vyzkumu pred nami
+  \begin{itemize}
+  \item \emph{Towards Making Block-based Programming Activities Adaptive}
+  \item \emph{Measuring Item Similarity in Introductory Programming}
+  \end{itemize}
 \end{itemize}
 \end{frame}
 
